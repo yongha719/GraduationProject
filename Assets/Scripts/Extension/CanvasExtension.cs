@@ -21,8 +21,12 @@ public class CanvasExtension : MonoBehaviour
         if (Input.GetMouseButtonDown(0))
         {
             RectTransformUtility.ScreenPointToLocalPointInRectangle(CanvasTr, Input.mousePosition, Camera, out screenPoint);
-            print(screenPoint);
         }
     }
+
+    /// <summary>
+    /// 마우스 위치를 캔버스 좌표 기준으로 가져오는 함수
+    /// </summary>
+    public Vector2 GetMousePosToCanvasPos() => screenPoint;
 
 }
