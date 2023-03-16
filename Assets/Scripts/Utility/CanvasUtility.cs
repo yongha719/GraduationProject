@@ -2,6 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// 이 스크립트는 Canvas에 있어야 합니다
+/// </summary>
 public class CanvasUtility : MonoBehaviour
 {
     private static Vector2 screenPoint;
@@ -10,7 +13,7 @@ public class CanvasUtility : MonoBehaviour
 
     private void Start()
     {
-        CanvasTr = GetComponent<RectTransform>();
+        CanvasTr = transform as RectTransform;
     }
 
     /// <summary>
