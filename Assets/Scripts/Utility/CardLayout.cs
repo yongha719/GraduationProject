@@ -7,11 +7,13 @@ public class CardLayout : MonoBehaviour
 {
     private void OnTransformChildrenChanged()
     {
+        print(transform.childCount);
+
         for (int i = 0; i < transform.childCount; i++)
         {
-            var rect = transform.GetChild(i) as RectTransform;
+            float angle = i * 120 / transform.childCount;
 
-            rect.localEulerAngles = new Vector3(0, 0, Mathf.Sin(Mathf.PI * i * 2 / transform.childCount));
+            transform.GetChild(i).rotation = Quaternion.Euler(0, 0, -angle * Mathf.Rad2Deg);
         }
     }
 }
