@@ -5,6 +5,11 @@ using UnityEngine;
 [AddComponentMenu("MyComponent/CardLayout", int.MinValue)]
 public class CardDeckLayout : MonoBehaviour
 {
+    Vector3 leftPosition = new Vector3(-200, -50, 0);
+    Vector3 rightPosition = new Vector3(420, -50, 0);
+    Quaternion leftRotation = Quaternion.Euler(new Vector3(0, 0, 15f));
+    Quaternion rightRotation = Quaternion.Euler(new Vector3(0, 0, -15f));
+
     private void OnTransformChildrenChanged()
     {
         float[] lerpValue = new float[transform.childCount];
@@ -27,20 +32,21 @@ public class CardDeckLayout : MonoBehaviour
                 break;
         }
 
-        Vector3 distance = new Vector3(400, 0, 0);
-        Quaternion leftRotation = Quaternion.Euler(new Vector3(0, 0, 15));
-        Quaternion rightRotation = Quaternion.Euler(new Vector3(0, 0, -15));
         for (int i = 0; i < transform.childCount; i++)
         {
-            Vector3 targetPos = Vector3.Lerp(-distance, distance, lerpValue[i]);
+            Vector3 targetPos = Vector3.Lerp(leftPosition, rightPosition, lerpValue[i]);
             Quaternion targetRos = Quaternion.identity;
+
             if (transform.childCount >= 4)
             {
-                float curve = Mathf.Sqrt(Mathf.Pow(0.5f, 2) - Mathf.Pow(lerpValue[i] - 0.5f, 2));
+                print(Mathf.Pow(lerpValue[i] - 0.5f, 2));
+                float curve = Mathf.Sqrt(Mathf.Pow(-0.5f, 2f) - Mathf.Pow(lerpValue[i] - 0.5f, 2));
+                print($"curve {curve}");
                 targetPos.y += curve;
                 targetRos = Quaternion.Slerp(leftRotation, rightRotation, lerpValue[i]);
             }
-            RectTransform rect = transform.GetChild(i) as RectTransform;
+
+            RectTransform rect = transform.GetChild(i).GetComponent<RectTransform>();
             rect.anchoredPosition = targetPos;
             rect.localRotation = targetRos;
         }

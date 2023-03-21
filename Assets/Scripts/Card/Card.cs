@@ -1,4 +1,7 @@
-using System.Collections;
+#if UNITY_EDITOR
+#define DDDD
+#endif
+
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -7,7 +10,7 @@ public enum CardState
     Deck, Field
 }
 
-public class Card : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler
+public class Card : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler, IDropHandler
 {
     private int hp;
     public int Hp
@@ -34,7 +37,7 @@ public class Card : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHand
         {
             cardState = value;
 
-            if(cardState == CardState.Deck)
+            if (cardState == CardState.Deck)
             {
                 rect.localScale = Vector3.one;
             }
@@ -59,7 +62,18 @@ public class Card : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHand
         rect = GetComponent<RectTransform>();
     }
 
-    public void OnBeginDrag(PointerEventData eventData)
+
+    private void OnMouseEnter()
+    {
+        // 카드가 덱에 있을 때
+        if (cardState == CardState.Deck)
+        {
+            // TODO 카드커지게 하기
+            return;
+        }
+    }
+
+    void IBeginDragHandler.OnBeginDrag(PointerEventData eventData)
     {
         // 왼쪽 버튼으로 드래그 시작했을때 원래 포지션 저장과 마우스 포인터와 거리도 저장
         if (eventData.button == PointerEventData.InputButton.Left)
@@ -69,7 +83,7 @@ public class Card : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHand
         }
     }
 
-    public void OnDrag(PointerEventData eventData)
+    void IDragHandler.OnDrag(PointerEventData eventData)
     {
         // 드래그할 때 포지션 바꿔줌
         if (eventData.button == PointerEventData.InputButton.Left)
@@ -80,25 +94,22 @@ public class Card : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHand
         }
     }
 
-    public void OnEndDrag(PointerEventData eventData)
+    void IEndDragHandler.OnEndDrag(PointerEventData eventData)
     {
         // 다시 돌아가
         rect.anchoredPosition = originPos;
     }
 
-    private void OnMouseEnter()
+    void IDropHandler.OnDrop(PointerEventData eventData)
     {
-        // 카드가 덱에 있을 때
-        if (cardState == CardState.Deck)
+        var rayhits = Physics2D.RaycastAll(transform.position + Vector3.back, Vector3.forward, 10f);
+
+        for (int i = 0; i < rayhits.Length; i++)
         {
-            // TODO 카드커지게 하기
+            if (rayhits[i].collider.TryGetComponent(out Card card) && card.IsEnemy)
+            {
+                print("드디어");
+            }
         }
     }
-
-    private void OnMouseExit()
-    {
-
-    }
-
-
 }
