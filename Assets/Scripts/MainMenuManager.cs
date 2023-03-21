@@ -12,15 +12,12 @@ public class MainMenuManager : MonoBehaviour
     [Header("µ¦ Æí¼º UIs")]
     public Button deckOrganizationButton;//µ¦ Æí¼º ¹öÆ°
     public GameObject deckOrganizationUI;//µ¦ Æí¼ºUI
-    public Button deckUIquit;
 
     [Space(10f)]
     [Header("¼³Á¤ UIs")]
     public Button settingBtn;
     public GameObject settingUI;
-    public Button settingUIquit;
 
-    public Button gameQuit;
 
     void Start()
     {
@@ -37,13 +34,9 @@ public class MainMenuManager : MonoBehaviour
         #region SettingUI
         settingBtn.onClick.AddListener(() =>
         {
-
+            settingUI.SetActive(true);
         });
 
-        settingUIquit.onClick.AddListener(() =>
-        {
-
-        });
         #endregion
         #region µ¦ Æí¼ºButtonUI
         deckOrganizationButton.onClick.AddListener(() =>
@@ -51,10 +44,6 @@ public class MainMenuManager : MonoBehaviour
             deckOrganizationUI.SetActive(true);
         });
 
-        deckUIquit.onClick.AddListener(() =>
-        {
-            deckOrganizationUI.SetActive(false);
-        });
         #endregion
     }
 }

@@ -26,23 +26,44 @@ public class CardDeck : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, I
     [SerializeField]
     private CardData cardData;
 
+    private Vector3 rayOriginPos = new Vector3(0, 0, -1f);
+    private Vector3 rayDir = Vector3.forward;
+
+    private RaycastHit ray;
+
     private void Start()
     {
         rect = GetComponent<RectTransform>();
     }
 
+    private void Update()
+    {
+        DrawRay();
+    }
     private void SetCardDeck()
     {
-        
+
     }
+
+    private void DrawRay()
+    {
+        Debug.DrawRay(transform.position + rayOriginPos, rayDir, Color.red, 10f);
+        print(ray.transform.position);
+        if (Physics.Raycast(transform.position + rayOriginPos, rayDir, out ray, 10f))
+        {
+            print(ray.collider.name);
+        }
+    }
+
     public void OnDrag(PointerEventData eventData)
     {
-        
+        transform.position = eventData.position;
+
     }
 
     public void OnPointerDown(PointerEventData eventData)
     {
-        
+
     }
 
     public void OnPointerUp(PointerEventData eventData)
