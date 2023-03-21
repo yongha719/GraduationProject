@@ -1,16 +1,40 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Net.NetworkInformation;
+using Unity.VisualScripting;
 using UnityEngine;
 
 [AddComponentMenu("MyComponent/CardLayout", int.MinValue)]
 public class CardDeckLayout : MonoBehaviour
 {
-    Vector3 leftPosition = new Vector3(-200, -50, 0);
-    Vector3 rightPosition = new Vector3(420, -50, 0);
-    Quaternion leftRotation = Quaternion.Euler(new Vector3(0, 0, 15f));
-    Quaternion rightRotation = Quaternion.Euler(new Vector3(0, 0, -15f));
+    Vector3 leftPosition = new Vector3(-200, -30, 0);
+    Vector3 rightPosition = new Vector3(420, -30, 0);
+    Quaternion leftRotation = Quaternion.Euler(0, 0, 15f);
+    Quaternion rightRotation = Quaternion.Euler(0, 0, -15f);
+
+    List<(Vector3 Pos, Quaternion Rot)> targetPosAndRot = new List<(Vector3 Pos, Quaternion Rot)>();
+
+    public GameObject card;
+
+    private void Start()
+    {
+        SetPosAndRot();
+    }
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Alpha1))
+        {
+            Instantiate(card, transform);
+        }
+    }
 
     private void OnTransformChildrenChanged()
+    {
+        SetPosAndRot();
+    }
+
+    void SetPosAndRot()
     {
         float[] lerpValue = new float[transform.childCount];
 
@@ -32,6 +56,8 @@ public class CardDeckLayout : MonoBehaviour
                 break;
         }
 
+        targetPosAndRot.Clear();
+
         for (int i = 0; i < transform.childCount; i++)
         {
             Vector3 targetPos = Vector3.Lerp(leftPosition, rightPosition, lerpValue[i]);
@@ -40,15 +66,20 @@ public class CardDeckLayout : MonoBehaviour
             if (transform.childCount >= 4)
             {
                 print(Mathf.Pow(lerpValue[i] - 0.5f, 2));
-                float curve = Mathf.Sqrt(Mathf.Pow(-0.5f, 2f) - Mathf.Pow(lerpValue[i] - 0.5f, 2));
+                float curve = Mathf.Sqrt(Mathf.Pow(-0.5f, 2f) - Mathf.Pow(lerpValue[i] - 0.5f, 2)) * 100;
                 print($"curve {curve}");
                 targetPos.y += curve;
                 targetRos = Quaternion.Slerp(leftRotation, rightRotation, lerpValue[i]);
             }
+            targetPosAndRot.Add((targetPos, targetRos));
+        }
 
-            RectTransform rect = transform.GetChild(i).GetComponent<RectTransform>();
-            rect.anchoredPosition = targetPos;
-            rect.localRotation = targetRos;
+        for (int i = 0; i < transform.childCount; i++)
+        {
+            RectTransform rect = transform.GetChild(i) as RectTransform;
+            print(rect.name);
+            rect.anchoredPosition = targetPosAndRot[i].Pos;
+            rect.localRotation = targetPosAndRot[i].Rot;
         }
     }
 }
