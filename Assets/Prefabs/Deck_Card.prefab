@@ -365,7 +365,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cardData: {fileID: 11400000, guid: 315674ac850803b409544d0b1cf879e0, type: 2}
-  IsEnemy: 1
+  IsEnemy: 0
 --- !u!61 &584926971
 BoxCollider2D:
   m_ObjectHideFlags: 0

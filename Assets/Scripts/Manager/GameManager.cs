@@ -2,7 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public static class CardManager
+public class GameManager : MonoBehaviour
 {
-    public static Card card;
+    void Start()
+    {
+        
+    }
 }
