@@ -10,7 +10,7 @@ public enum CardState
     Deck, Field
 }
 
-public class Card : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler, IDropHandler
+public class Card : MonoBehaviour, IHandlers
 {
     private int hp;
     public int Hp
@@ -52,7 +52,7 @@ public class Card : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHand
     public bool IsEnemy;
 
     Vector2 originPos;
-    /// <summary>클릭했을때 마우스 포인터와 카드 중앙에서의 거리</summary>
+    /// <summary> - 클릭했을때 마우스 포인터와 카드 중앙에서의 거리</summary>
     Vector2 mousePosDistance;
 
     private RectTransform rect;
@@ -62,9 +62,18 @@ public class Card : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHand
         rect = GetComponent<RectTransform>();
     }
 
+    protected virtual void Start()
+    {
+        if (this is ICard card)
+        {
+            card.Print();
+        }
+    }
 
     private void OnMouseEnter()
     {
+        if (IsEnemy) return;
+
         // 카드가 덱에 있을 때
         if (cardState == CardState.Deck)
         {
@@ -75,6 +84,8 @@ public class Card : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHand
 
     void IBeginDragHandler.OnBeginDrag(PointerEventData eventData)
     {
+        if (IsEnemy) return;
+
         // 왼쪽 버튼으로 드래그 시작했을때 원래 포지션 저장과 마우스 포인터와 거리도 저장
         if (eventData.button == PointerEventData.InputButton.Left)
         {
@@ -85,6 +96,8 @@ public class Card : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHand
 
     void IDragHandler.OnDrag(PointerEventData eventData)
     {
+        if (IsEnemy) return;
+
         // 드래그할 때 포지션 바꿔줌
         if (eventData.button == PointerEventData.InputButton.Left)
         {
@@ -96,13 +109,19 @@ public class Card : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHand
 
     void IEndDragHandler.OnEndDrag(PointerEventData eventData)
     {
+        if (IsEnemy) return;
+
         // 다시 돌아가
         rect.anchoredPosition = originPos;
     }
 
     void IDropHandler.OnDrop(PointerEventData eventData)
     {
+        if (IsEnemy) return;
+
         var rayhits = Physics2D.RaycastAll(transform.position + Vector3.back, Vector3.forward, 10f);
+
+        print(transform.position);
 
         for (int i = 0; i < rayhits.Length; i++)
         {
@@ -112,4 +131,14 @@ public class Card : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHand
             }
         }
     }
+}
+
+interface IHandlers : IBeginDragHandler, IDragHandler, IEndDragHandler, IDropHandler
+{
+
+}
+
+interface ICard : IBeginDragHandler, IDragHandler, IEndDragHandler, IDropHandler
+{
+    public void Print();
 }

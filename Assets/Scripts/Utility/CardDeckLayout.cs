@@ -1,16 +1,38 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Net.NetworkInformation;
+using Unity.VisualScripting;
 using UnityEngine;
 
 [AddComponentMenu("MyComponent/CardLayout", int.MinValue)]
 public class CardDeckLayout : MonoBehaviour
 {
-    Vector3 leftPosition = new Vector3(-200, -50, 0);
-    Vector3 rightPosition = new Vector3(420, -50, 0);
-    Quaternion leftRotation = Quaternion.Euler(new Vector3(0, 0, 15f));
-    Quaternion rightRotation = Quaternion.Euler(new Vector3(0, 0, -15f));
+    Vector3 leftPosition = new Vector3(-200, -30, 0);
+    Vector3 rightPosition = new Vector3(420, -30, 0);
+    Quaternion leftRotation = Quaternion.Euler(0, 0, 15f);
+    Quaternion rightRotation = Quaternion.Euler(0, 0, -15f);
 
+    public GameObject card;
+
+    private void Start()
+    {
+        SetPosAndRot();
+    }
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Alpha1) && card != null)
+        {
+            Instantiate(card, transform);
+        }
+    }
+    
     private void OnTransformChildrenChanged()
+    {
+        SetPosAndRot();
+    }
+
+    void SetPosAndRot()
     {
         float[] lerpValue = new float[transform.childCount];
 
@@ -39,14 +61,12 @@ public class CardDeckLayout : MonoBehaviour
 
             if (transform.childCount >= 4)
             {
-                print(Mathf.Pow(lerpValue[i] - 0.5f, 2));
-                float curve = Mathf.Sqrt(Mathf.Pow(-0.5f, 2f) - Mathf.Pow(lerpValue[i] - 0.5f, 2));
-                print($"curve {curve}");
+                float curve = Mathf.Sqrt(Mathf.Pow(0.5f, 2f) - Mathf.Pow(lerpValue[i] - 0.5f, 2)) * 80f;
                 targetPos.y += curve;
                 targetRos = Quaternion.Slerp(leftRotation, rightRotation, lerpValue[i]);
             }
 
-            RectTransform rect = transform.GetChild(i).GetComponent<RectTransform>();
+            RectTransform rect = transform.GetChild(i) as RectTransform;
             rect.anchoredPosition = targetPos;
             rect.localRotation = targetRos;
         }
