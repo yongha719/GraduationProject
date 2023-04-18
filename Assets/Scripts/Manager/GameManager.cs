@@ -9,5 +9,6 @@ public class GameManager : Singleton<GameManager>
 
     void Start()
     {
+        PhotonManager.Instance.JoinLobby();
     }
 }
