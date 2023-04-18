@@ -1,18 +1,17 @@
-#if UNITY_EDITOR
-#define DDDD
-#endif
-
 using UnityEngine;
 using UnityEngine.EventSystems;
 
 public enum CardState
 {
-    Deck, Field
+    Deck, // 덱에 있을 때
+    Field // 필드에 냈을 때
 }
 
-public class Card : MonoBehaviour, IHandlers
+public class UnitCard : MonoBehaviour, IUnitCard
 {
     private int hp;
+
+    [Tooltip("시봉봉의 억지")]
     public int Hp
     {
         get
@@ -43,16 +42,18 @@ public class Card : MonoBehaviour, IHandlers
             }
             else if (cardState == CardState.Field)
             {
+                
                 rect.localScale = Vector3.one * 0.6f;
             }
         }
     }
 
-    public CardData cardData;
+    public CardData CardData;
     public bool IsEnemy;
 
+    
     Vector2 originPos;
-    /// <summary> - 클릭했을때 마우스 포인터와 카드 중앙에서의 거리</summary>
+    [Tooltip("클릭했을때 마우스 포인터와 카드 중앙에서의 거리")]
     Vector2 mousePosDistance;
 
     private RectTransform rect;
@@ -64,10 +65,7 @@ public class Card : MonoBehaviour, IHandlers
 
     protected virtual void Start()
     {
-        if (this is ICard card)
-        {
-            card.Print();
-        }
+        //printf
     }
 
     private void OnMouseEnter()
@@ -125,20 +123,25 @@ public class Card : MonoBehaviour, IHandlers
 
         for (int i = 0; i < rayhits.Length; i++)
         {
-            if (rayhits[i].collider.TryGetComponent(out Card card) && card.IsEnemy)
+            if (rayhits[i].collider.TryGetComponent(out UnitCard card) && card.IsEnemy)
             {
                 print("드디어");
             }
         }
+    }
+
+    void IUnitCard.Heal(int healhp)
+    {
+        throw new System.NotImplementedException();
+    }
+
+    void IUnitCard.Hit(int damage)
+    {
+        throw new System.NotImplementedException();
     }
 }
 
 interface IHandlers : IBeginDragHandler, IDragHandler, IEndDragHandler, IDropHandler
 {
 
-}
-
-interface ICard : IBeginDragHandler, IDragHandler, IEndDragHandler, IDropHandler
-{
-    public void Print();
 }

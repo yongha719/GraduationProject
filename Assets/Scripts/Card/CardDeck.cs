@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using TMPro;
+using Photon.Pun.UtilityScripts;
 
 public class CardDeck : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, IDragHandler
 {

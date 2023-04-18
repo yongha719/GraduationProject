@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class TestChildCard : Card, ICard
+public class TestChildCard : UnitCard, IUnitCard
 {
     protected override void Start()
     {
