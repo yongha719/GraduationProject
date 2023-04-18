@@ -1,3 +1,4 @@
+using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
 using System.Net.NetworkInformation;
@@ -24,9 +25,12 @@ public class CardDeckLayout : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Alpha1) && card != null)
         {
             Instantiate(card, transform);
+            GameObject testcard = PhotonNetwork.Instantiate("Prefabs/Deck_Card", Vector2.zero, Quaternion.identity);
+            testcard.transform.parent = transform;
+            testcard.transform.localScale = Vector3.one;
         }
     }
-    
+
     private void OnTransformChildrenChanged()
     {
         SetPosAndRot();

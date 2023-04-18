@@ -1,4 +1,6 @@
 using Photon.Pun;
+using Photon.Pun.Demo.Cockpit;
+using Photon.Realtime;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -12,15 +14,67 @@ using UnityEngine;
 
 public class PhotonManager : MonoBehaviourPunCallbacks
 {
+    public static PhotonManager Instance { get; private set; }
+
+    private TypedLobby TestLobby = new TypedLobby("TestLobby", LobbyType.Default);
+    private List<RoomInfo> roomInfos = new List<RoomInfo>();
+
+
     private void Awake()
     {
+        Instance = this;
+        DontDestroyOnLoad(this.gameObject);
+
         PhotonNetwork.ConnectUsingSettings();
     }
 
+    public void JoinLobby()
+    {
+        PhotonNetwork.JoinLobby(TestLobby);
+    }
+
+    private void UpdateRoomList(List<RoomInfo> roomlist)
+    {
+        foreach (RoomInfo roominfo in roomlist)
+        {
+            if (roominfo.RemovedFromList)
+            {
+                roomInfos.Remove(roominfo);
+            }
+            else
+            {
+                roomInfos.Add(roominfo);
+                print(roominfo.Name);
+            }
+
+        }
+    }
+
+    public override void OnRoomListUpdate(List<RoomInfo> roomList)
+    {
+        print(nameof(OnRoomListUpdate));
+        UpdateRoomList(roomList);
+
+    }
+
+    public override void OnJoinedLobby()
+    {
+        print("Join Lobby");
+    }
+
+    public override void OnConnected()
+    {
+        print("On Connected");
+    }
+
+    //
     public override void OnConnectedToMaster()
     {
-        print("æ»≥Á ≥ª ¿Ã∏ß ±ËΩ√ø¯");
+        print("ÏïàÎÖï ÎÇ¥ Ïù¥Î¶ÑÏùÄ ÍπÄÏãúÏõê");
+        RoomOptions options = new RoomOptions();
+        options.MaxPlayers = 2;
 
-
+        PhotonNetwork.JoinOrCreateRoom("ÏïàÎÖï", options, TestLobby);
+        //Player player = PhotonNetwork.LocalPlayer;
     }
 }
