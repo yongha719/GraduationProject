@@ -75,6 +75,5 @@ public class PhotonManager : MonoBehaviourPunCallbacks
         options.MaxPlayers = 2;
 
         PhotonNetwork.JoinOrCreateRoom("안녕", options, TestLobby);
-        //Player player = PhotonNetwork.LocalPlayer;
     }
 }

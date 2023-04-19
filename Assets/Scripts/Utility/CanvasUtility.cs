@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-/// <summary> ÀÌ ½ºÅ©¸³Æ®´Â Canvas¿¡ ÀÖ¾î¾ß ÇÕ´Ï´Ù </summary>
+/// <summary> ì´ ìŠ¤í¬ë¦½íŠ¸ëŠ” Canvasì— ìˆì–´ì•¼ í•©ë‹ˆë‹¤ </summary>
 public class CanvasUtility : MonoBehaviour
 {
     private static Vector2 screenPoint;
@@ -13,13 +13,14 @@ public class CanvasUtility : MonoBehaviour
     private static Vector2 EnemyFieldBottomLeft = new Vector2(230, 0);
     private static Vector2 EnemyFieldBottomRight = new Vector2(1690, 950);
 
+    
 
     private void Start()
     {
         CanvasTr = transform as RectTransform;
     }
 
-    /// <summary> - ÇöÀç ¸¶¿ì½º À§Ä¡¸¦ Äµ¹ö½º ÁÂÇ¥ ±âÁØÀ¸·Î °¡Á®¿À´Â ÇÔ¼ö </summary>
+    /// <summary> - í˜„ì¬ ë§ˆìš°ìŠ¤ ìœ„ì¹˜ë¥¼ ìº”ë²„ìŠ¤ ì¢Œí‘œ ê¸°ì¤€ìœ¼ë¡œ ê°€ì ¸ì˜¤ëŠ” í•¨ìˆ˜ </summary>
     public static Vector2 GetMousePosToCanvasPos()
     {
         RectTransformUtility.ScreenPointToLocalPointInRectangle(CanvasTr, Input.mousePosition, Camera.main, out screenPoint);
@@ -27,7 +28,7 @@ public class CanvasUtility : MonoBehaviour
         return screenPoint;
     }
 
-    /// <summary> - World PositionÀ» Äµ¹ö½º ÁÂÇ¥ ±âÁØÀ¸·Î °¡Á®¿À´Â ÇÔ¼ö</summary>
+    /// <summary> - World Positionì„ ìº”ë²„ìŠ¤ ì¢Œí‘œ ê¸°ì¤€ìœ¼ë¡œ ê°€ì ¸ì˜¤ëŠ” í•¨ìˆ˜</summary>
     public static Vector2 GetWorldPosToCanvasPos(Vector3 pos)
     {
         RectTransformUtility.ScreenPointToLocalPointInRectangle(CanvasTr, pos, Camera.main, out screenPoint);
@@ -35,13 +36,13 @@ public class CanvasUtility : MonoBehaviour
         return screenPoint;
     }
 
-    /// <returns> »ó´ë ÇÊµåÀÇ Bottom Left¿Í Top Right¸¦ (Vector2, Vector2) Æ©ÇÃ·Î ¹İÈ¯ </returns>
+    /// <returns> ìƒëŒ€ í•„ë“œì˜ Bottom Leftì™€ Top Rightë¥¼ (Vector2, Vector2) íŠœí”Œë¡œ ë°˜í™˜ </returns>
     public static (Vector2, Vector2) GetEnemyFieldPosition()
     {
         return (EnemyFieldBottomLeft, EnemyFieldBottomRight);
     }
 
-    /// <returns> - ³» ÇÊµåÀÇ Bottom Left¿Í Top Right¸¦ AnchorPosition (Vector2, Vector2) Æ©ÇÃ·Î ¹İÈ¯ </returns>
+    /// <returns> - ë‚´ í•„ë“œì˜ Bottom Leftì™€ Top Rightë¥¼ AnchorPosition (Vector2, Vector2) íŠœí”Œë¡œ ë°˜í™˜ </returns>
     public static (Vector2, Vector2) GetMyFieldPosition()
     {
         return (MyFieldBottomLeft, MyFieldBottomRight);
