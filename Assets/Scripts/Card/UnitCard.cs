@@ -1,17 +1,18 @@
+using Photon.Pun;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
 public enum CardState
 {
-    Deck, // µ¦¿¡ ÀÖÀ» ¶§
-    Field // ÇÊµå¿¡ ³ÂÀ» ¶§
+    Deck, // ë±ì— ìˆì„ ë•Œ
+    Field // í•„ë“œì— ëƒˆì„ ë•Œ
 }
 
-public class UnitCard : MonoBehaviour, IUnitCard
+public class UnitCard : MonoBehaviourPun, IUnitCard, IPunObservable
 {
     private int hp;
 
-    [Tooltip("½ÃºÀºÀÀÇ ¾ïÁö")]
+    [Tooltip("ì‹œë´‰ë´‰ì˜ ì–µì§€")]
     public int Hp
     {
         get
@@ -53,7 +54,7 @@ public class UnitCard : MonoBehaviour, IUnitCard
 
     
     Vector2 originPos;
-    [Tooltip("Å¬¸¯ÇßÀ»¶§ ¸¶¿ì½º Æ÷ÀÎÅÍ¿Í Ä«µå Áß¾Ó¿¡¼­ÀÇ °Å¸®")]
+    [Tooltip("í´ë¦­í–ˆì„ë•Œ ë§ˆìš°ìŠ¤ í¬ì¸í„°ì™€ ì¹´ë“œ ì¤‘ì•™ì—ì„œì˜ ê±°ë¦¬")]
     Vector2 mousePosDistance;
 
     private RectTransform rect;
@@ -61,21 +62,33 @@ public class UnitCard : MonoBehaviour, IUnitCard
     void Awake()
     {
         rect = GetComponent<RectTransform>();
+
+        print(rect == null);
     }
 
     protected virtual void Start()
     {
-        //printf
+        
     }
+
+    [PunRPC]
+    private void setParentAndViewID(int viewID)
+    {
+        print("RPC");
+        PhotonView parentView = PhotonView.Find(viewID);
+        transform.SetParent(parentView.gameObject.transform);
+        transform.localScale = Vector3.one;
+    }
+
 
     private void OnMouseEnter()
     {
         if (IsEnemy) return;
 
-        // Ä«µå°¡ µ¦¿¡ ÀÖÀ» ¶§
+        // ì¹´ë“œê°€ ë±ì— ìˆì„ ë•Œ
         if (cardState == CardState.Deck)
         {
-            // TODO Ä«µåÄ¿Áö°Ô ÇÏ±â
+            // TODO ì¹´ë“œì»¤ì§€ê²Œ í•˜ê¸°
             return;
         }
     }
@@ -84,7 +97,7 @@ public class UnitCard : MonoBehaviour, IUnitCard
     {
         if (IsEnemy) return;
 
-        // ¿ŞÂÊ ¹öÆ°À¸·Î µå·¡±× ½ÃÀÛÇßÀ»¶§ ¿ø·¡ Æ÷Áö¼Ç ÀúÀå°ú ¸¶¿ì½º Æ÷ÀÎÅÍ¿Í °Å¸®µµ ÀúÀå
+        // ì™¼ìª½ ë²„íŠ¼ìœ¼ë¡œ ë“œë˜ê·¸ ì‹œì‘í–ˆì„ë•Œ ì›ë˜ í¬ì§€ì…˜ ì €ì¥ê³¼ ë§ˆìš°ìŠ¤ í¬ì¸í„°ì™€ ê±°ë¦¬ë„ ì €ì¥
         if (eventData.button == PointerEventData.InputButton.Left)
         {
             originPos = rect.anchoredPosition;
@@ -96,7 +109,7 @@ public class UnitCard : MonoBehaviour, IUnitCard
     {
         if (IsEnemy) return;
 
-        // µå·¡±×ÇÒ ¶§ Æ÷Áö¼Ç ¹Ù²ãÁÜ
+        // ë“œë˜ê·¸í•  ë•Œ í¬ì§€ì…˜ ë°”ê¿”ì¤Œ
         if (eventData.button == PointerEventData.InputButton.Left)
         {
             Vector2 mousePos = CanvasUtility.GetMousePosToCanvasPos();
@@ -109,7 +122,7 @@ public class UnitCard : MonoBehaviour, IUnitCard
     {
         if (IsEnemy) return;
 
-        // ´Ù½Ã µ¹¾Æ°¡
+        // ë‹¤ì‹œ ëŒì•„ê°€
         rect.anchoredPosition = originPos;
     }
 
@@ -125,7 +138,7 @@ public class UnitCard : MonoBehaviour, IUnitCard
         {
             if (rayhits[i].collider.TryGetComponent(out UnitCard card) && card.IsEnemy)
             {
-                print("µåµğ¾î");
+                print("ë“œë””ì–´");
             }
         }
     }
@@ -138,6 +151,18 @@ public class UnitCard : MonoBehaviour, IUnitCard
     void IUnitCard.Hit(int damage)
     {
         throw new System.NotImplementedException();
+    }
+
+    public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
+    {
+        if (stream.IsWriting)
+        {
+
+        }
+        else
+        {
+
+        }
     }
 }
 

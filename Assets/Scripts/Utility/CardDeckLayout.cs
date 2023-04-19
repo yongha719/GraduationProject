@@ -6,7 +6,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 
 [AddComponentMenu("MyComponent/CardLayout", int.MinValue)]
-public class CardDeckLayout : MonoBehaviour
+public class CardDeckLayout : MonoBehaviourPunCallbacks, IPunObservable
 {
     Vector3 leftPosition = new Vector3(-200, -30, 0);
     Vector3 rightPosition = new Vector3(420, -30, 0);
@@ -24,11 +24,21 @@ public class CardDeckLayout : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Alpha1) && card != null)
         {
-            Instantiate(card, transform);
-            GameObject testcard = PhotonNetwork.Instantiate("Prefabs/Deck_Card", Vector2.zero, Quaternion.identity);
-            testcard.transform.parent = transform;
-            testcard.transform.localScale = Vector3.one;
+            GameObject testcard = PhotonNetwork.Instantiate("Prefabs/InGame_Card", Vector2.zero, Quaternion.identity);
+            PhotonView cardView = testcard.GetComponent<PhotonView>();
+            cardView.RPC("setParentAndViewID", RpcTarget.AllBufferedViaServer, photonView.ViewID);
         }
+    }
+
+    public void CardDraw()
+    {
+
+    }
+
+    [PunRPC]
+    private void TestInstantiate()
+    {
+
     }
 
     private void OnTransformChildrenChanged()
@@ -74,5 +84,10 @@ public class CardDeckLayout : MonoBehaviour
             rect.anchoredPosition = targetPos;
             rect.localRotation = targetRos;
         }
+    }
+
+    void IPunObservable.OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
+    {
+
     }
 }
