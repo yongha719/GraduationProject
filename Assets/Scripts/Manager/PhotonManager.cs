@@ -1,6 +1,6 @@
 using Photon.Pun;
-using Photon.Pun.Demo.Cockpit;
 using Photon.Realtime;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -12,6 +12,19 @@ using UnityEngine;
 // MonoBehaviourPunCallbacks Reference
 // https://doc-api.photonengine.com/en/pun/v2/class_photon_1_1_pun_1_1_mono_behaviour_pun_callbacks.html
 
+
+// 플레이어 관련 ViewId는 100부터 시작
+// 적 관련 ViewId는 200부터 시작
+public enum PhotonViewType
+{
+    PlayerDeck = 100,
+    PlayerField = 101,
+
+    EnemyDeck = 200,
+    EnemyField = 201,
+}
+
+
 public class PhotonManager : MonoBehaviourPunCallbacks
 {
     public static PhotonManager Instance { get; private set; }
@@ -19,14 +32,21 @@ public class PhotonManager : MonoBehaviourPunCallbacks
     private TypedLobby TestLobby = new TypedLobby("TestLobby", LobbyType.Default);
     private List<RoomInfo> roomInfos = new List<RoomInfo>();
 
+    private static Dictionary<PhotonViewType, PhotonView> PhotonViews = new Dictionary<PhotonViewType, PhotonView>();
 
     private void Awake()
     {
         Instance = this;
-        DontDestroyOnLoad(this.gameObject);
+        DontDestroyOnLoad(gameObject);
 
         PhotonNetwork.ConnectUsingSettings();
+
+        foreach (PhotonViewType photonView in Enum.GetValues(typeof(PhotonViewType)))
+        {
+            PhotonViews.Add(photonView, PhotonView.Find((int)photonView));
+        }
     }
+
 
     public void JoinLobby()
     {
@@ -67,7 +87,6 @@ public class PhotonManager : MonoBehaviourPunCallbacks
         print("On Connected");
     }
 
-    //
     public override void OnConnectedToMaster()
     {
         print("안녕 내 이름은 김시원");
@@ -76,4 +95,6 @@ public class PhotonManager : MonoBehaviourPunCallbacks
 
         PhotonNetwork.JoinOrCreateRoom("안녕", options, TestLobby);
     }
+
+    public static PhotonView GetPhotonView(PhotonViewType photonViewType) => PhotonViews[photonViewType];
 }

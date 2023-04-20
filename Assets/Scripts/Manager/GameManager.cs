@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class GameManager : Singleton<GameManager>
 {
-    public bool IsPlayerTurn;
+    public bool IsPlayerTurn = true;
 
     void Start()
     {

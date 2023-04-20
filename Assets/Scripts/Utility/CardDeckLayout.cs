@@ -13,42 +13,44 @@ public class CardDeckLayout : MonoBehaviourPunCallbacks, IPunObservable
     Quaternion leftRotation = Quaternion.Euler(0, 0, 15f);
     Quaternion rightRotation = Quaternion.Euler(0, 0, -15f);
 
-    public GameObject card;
-
     private void Start()
     {
-        SetPosAndRot();
+        print(photonView.ViewID);
     }
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Alpha1) && card != null)
+        if (Input.GetKeyDown(KeyCode.Alpha1))
         {
-            GameObject testcard = PhotonNetwork.Instantiate("Prefabs/InGame_Card", Vector2.zero, Quaternion.identity);
-            PhotonView cardView = testcard.GetComponent<PhotonView>();
-            cardView.RPC("setParentAndViewID", RpcTarget.AllBufferedViaServer, photonView.ViewID);
+            CardDraw();
         }
     }
 
     public void CardDraw()
     {
-
+        PhotonView cardPhotonView = PhotonNetwork.Instantiate("Prefabs/InGame_Card", Vector2.zero, Quaternion.identity).GetPhotonView();
+        photonView.RPC(nameof(SetDeckParent), RpcTarget.AllBufferedViaServer, cardPhotonView.ViewID);
     }
 
     [PunRPC]
-    private void TestInstantiate()
+    private void SetDeckParent(int cardViewId)
     {
+        PhotonView card = PhotonNetwork.GetPhotonView(cardViewId);
 
+        PhotonView parentPhotonView;
+
+        if (card.IsMine)
+            parentPhotonView = PhotonManager.GetPhotonView(PhotonViewType.PlayerDeck);
+        else
+            parentPhotonView = PhotonManager.GetPhotonView(PhotonViewType.EnemyDeck);
+
+        card.gameObject.transform.SetParent(parentPhotonView.gameObject.transform);
+        card.gameObject.transform.localScale = Vector3.one;
     }
 
     private void OnTransformChildrenChanged()
     {
-        SetPosAndRot();
-    }
-
-    void SetPosAndRot()
-    {
-        float[] lerpValue = new float[transform.childCount];
+        float[] lerpValue;
 
         switch (transform.childCount)
         {
@@ -62,6 +64,7 @@ public class CardDeckLayout : MonoBehaviourPunCallbacks, IPunObservable
                 lerpValue = new float[] { 0.1f, 0.5f, 0.9f };
                 break;
             default:
+                lerpValue = new float[transform.childCount];
                 float interval = 1f / (transform.childCount - 1);
                 for (int i = 0; i < transform.childCount; i++)
                     lerpValue[i] = interval * i;

@@ -1,4 +1,5 @@
 using Photon.Pun;
+using Photon.Pun.Demo.PunBasics;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -43,7 +44,7 @@ public class UnitCard : MonoBehaviourPun, IUnitCard, IPunObservable
             }
             else if (cardState == CardState.Field)
             {
-                
+
                 rect.localScale = Vector3.one * 0.6f;
             }
         }
@@ -52,34 +53,22 @@ public class UnitCard : MonoBehaviourPun, IUnitCard, IPunObservable
     public CardData CardData;
     public bool IsEnemy;
 
-    
-    Vector2 originPos;
+
+    private Vector2 originPos;
     [Tooltip("클릭했을때 마우스 포인터와 카드 중앙에서의 거리")]
-    Vector2 mousePosDistance;
+    private Vector2 mousePosDistance;
 
     private RectTransform rect;
 
     void Awake()
     {
         rect = GetComponent<RectTransform>();
-
-        print(rect == null);
     }
 
     protected virtual void Start()
     {
-        
+        IsEnemy = !photonView.IsMine;
     }
-
-    [PunRPC]
-    private void setParentAndViewID(int viewID)
-    {
-        print("RPC");
-        PhotonView parentView = PhotonView.Find(viewID);
-        transform.SetParent(parentView.gameObject.transform);
-        transform.localScale = Vector3.one;
-    }
-
 
     private void OnMouseEnter()
     {
