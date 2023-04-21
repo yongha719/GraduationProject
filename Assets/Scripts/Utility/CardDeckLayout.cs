@@ -40,9 +40,9 @@ public class CardDeckLayout : MonoBehaviourPunCallbacks, IPunObservable
         PhotonView parentPhotonView;
 
         if (card.IsMine)
-            parentPhotonView = PhotonManager.GetPhotonView(PhotonViewType.PlayerDeck);
+            parentPhotonView = PhotonManager.GetPhotonViewByType(PhotonViewType.PlayerDeck);
         else
-            parentPhotonView = PhotonManager.GetPhotonView(PhotonViewType.EnemyDeck);
+            parentPhotonView = PhotonManager.GetPhotonViewByType(PhotonViewType.EnemyDeck);
 
         card.gameObject.transform.SetParent(parentPhotonView.gameObject.transform);
         card.gameObject.transform.localScale = Vector3.one;

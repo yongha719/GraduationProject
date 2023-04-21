@@ -5,31 +5,31 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "CardData", menuName = "Data/CardData", order = int.MinValue)]
 public class CardData : ScriptableObject
 {
-    [Tooltip("ÀÌ¸§")]
+    [Tooltip("ì´ë¦„")]
     public string Name;
-    [Tooltip("¼³¸í")]
+    [Tooltip("ì„¤ëª…")]
     public string Explain;
-    [Tooltip("ÄÚ½ºÆ®")]
+    [Tooltip("ì½”ìŠ¤íŠ¸"), Range(1, 15)]
     public int Cost;
 
-    /// <summary> °è»êµÈ µ¥¹ÌÁö </summary>
+    /// <summary> ê³„ì‚°ëœ ë°ë¯¸ì§€ </summary>
     public int Damage
     {
         get
         {
             if (Random.Range(0, 100) <= CriticalPercentage)
-                return Power + CriticalPower; // Å©¸®Æ¼ÄÃ µ¥¹ÌÁö±îÁö Ãß°¡µÈ °ø°İ·Â
+                return Power + CriticalPower; // í¬ë¦¬í‹°ì»¬ ë°ë¯¸ì§€ê¹Œì§€ ì¶”ê°€ëœ ê³µê²©ë ¥
             else
                 return Power;
         }
     }
 
-    [Tooltip("°ø°İ·Â")]
+    [Tooltip("ê³µê²©ë ¥"), Range(1, 10)]
     public int Power;
-    [Tooltip("Ã¼·Â")]
+    [Tooltip("ì²´ë ¥"), Range(1, 15)]
     public int Hp;
-    [Tooltip("Ä¡¸íÅ¸ È®·ü")]
+    [Tooltip("ì¹˜ëª…íƒ€ í™•ë¥ ")]
     public int CriticalPercentage = -1;
-    [Tooltip("Ä¡¸íÅ¸ °ø°İ·Â")]
+    [Tooltip("ì¹˜ëª…íƒ€ ê³µê²©ë ¥")]
     public int CriticalPower = 0;
 }

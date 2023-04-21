@@ -11,4 +11,12 @@ public class GameManager : Singleton<GameManager>
     {
         PhotonManager.Instance.JoinLobby();
     }
+
+     /// <summary>  </summary>
+    public void TurnChange()
+    {
+        IsPlayerTurn = !IsPlayerTurn;
+
+
+    }
 }

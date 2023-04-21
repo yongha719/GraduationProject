@@ -1,0 +1,30 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<CodeSnippets xmlns="http://schemas.microsoft.com/VisualStudio/20022/CodeSnippet">
+	<CodeSnippet Format="1.0.0">
+		<Header>
+			<Title>My-Coroutine</Title>
+			<Author>Yongha</Author>
+			<Description>My Coroutine and Call Method</Description>
+			<Shortcut>CoroutineAndCall</Shortcut>
+		</Header>
+		<Snippet>
+			<Declarations>
+				<Literal>
+					<ID>Method</ID>
+					<Default>MyMethod</Default>
+				</Literal>
+			</Declarations>
+			<Code Language="CSharp" Kind ="method decl">
+				<![CDATA[ private void $Method$()
+	{
+							StartCoroutine(E$Method$());
+	}
+	
+						  private IEnumerator E$Method$()
+	{
+							yield return null;
+	}]]>
+			</Code>
+		</Snippet>
+	</CodeSnippet>
+</CodeSnippets>

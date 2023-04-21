@@ -15,6 +15,8 @@ using UnityEngine;
 
 // 플레이어 관련 ViewId는 100부터 시작
 // 적 관련 ViewId는 200부터 시작
+
+ /// <summary> 내 PhotonView들을 ViewId를 값으로 Type을 만들었음 </summary>
 public enum PhotonViewType
 {
     PlayerDeck = 100,
@@ -47,6 +49,8 @@ public class PhotonManager : MonoBehaviourPunCallbacks
         }
     }
 
+    /// <summary> Type으로 PhotonView를 가져옴 </summary>
+    public static PhotonView GetPhotonViewByType(PhotonViewType photonViewType) => PhotonViews[photonViewType];
 
     public void JoinLobby()
     {
@@ -96,5 +100,4 @@ public class PhotonManager : MonoBehaviourPunCallbacks
         PhotonNetwork.JoinOrCreateRoom("안녕", options, TestLobby);
     }
 
-    public static PhotonView GetPhotonView(PhotonViewType photonViewType) => PhotonViews[photonViewType];
 }

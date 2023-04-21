@@ -133,6 +133,7 @@ GameObject:
   m_Component:
   - component: {fileID: 20103896}
   - component: {fileID: 20103897}
+  - component: {fileID: 20103899}
   m_Layer: 5
   m_Name: My_Card_Field
   m_TagString: Untagged
@@ -182,6 +183,32 @@ MonoBehaviour:
   sceneViewId: 101
   InstantiationId: 0
   isRuntimeInstantiated: 0
+--- !u!114 &20103899
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 20103895}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 30649d3a9faa99c48a7b1166b86bf2a0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Padding:
+    m_Left: 0
+    m_Right: 0
+    m_Top: 0
+    m_Bottom: 0
+  m_ChildAlignment: 4
+  m_Spacing: 30
+  m_ChildForceExpandWidth: 0
+  m_ChildForceExpandHeight: 0
+  m_ChildControlWidth: 0
+  m_ChildControlHeight: 0
+  m_ChildScaleWidth: 0
+  m_ChildScaleHeight: 0
+  m_ReverseArrangement: 0
 --- !u!1 &44141131
 GameObject:
   m_ObjectHideFlags: 0
@@ -415,7 +442,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9da0e5c6b94886740af4d794920b7431, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  card: {fileID: 0}
 --- !u!114 &865640729
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -862,7 +888,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9da0e5c6b94886740af4d794920b7431, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  card: {fileID: 6383597969553335793, guid: bdfde4db23679fd4993125fa63f91078, type: 3}
 --- !u!114 &1895077808
 MonoBehaviour:
   m_ObjectHideFlags: 0

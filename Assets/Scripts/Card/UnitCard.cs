@@ -1,5 +1,6 @@
 using Photon.Pun;
 using Photon.Pun.Demo.PunBasics;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -23,6 +24,9 @@ public class UnitCard : MonoBehaviourPun, IUnitCard, IPunObservable
 
         set
         {
+            if (value > CardData.Hp)
+                return;
+
             hp = value;
         }
     }
@@ -63,12 +67,15 @@ public class UnitCard : MonoBehaviourPun, IUnitCard, IPunObservable
     void Awake()
     {
         rect = GetComponent<RectTransform>();
+        hp = CardData.Hp;
+
     }
 
     protected virtual void Start()
     {
         IsEnemy = !photonView.IsMine;
     }
+
 
     private void OnMouseEnter()
     {
@@ -134,7 +141,7 @@ public class UnitCard : MonoBehaviourPun, IUnitCard, IPunObservable
 
     void IUnitCard.Heal(int healhp)
     {
-        throw new System.NotImplementedException();
+        Hp += healhp;
     }
 
     void IUnitCard.Hit(int damage)
