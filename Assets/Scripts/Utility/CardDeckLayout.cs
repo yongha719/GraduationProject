@@ -5,6 +5,10 @@ using System.Net.NetworkInformation;
 using Unity.VisualScripting;
 using UnityEngine;
 
+
+/// <summary>
+/// 인게임에서 카드의 레이아웃
+/// </summary>
 [AddComponentMenu("MyComponent/CardLayout", int.MinValue)]
 public class CardDeckLayout : MonoBehaviourPunCallbacks, IPunObservable
 {
@@ -37,14 +41,7 @@ public class CardDeckLayout : MonoBehaviourPunCallbacks, IPunObservable
     {
         PhotonView card = PhotonNetwork.GetPhotonView(cardViewId);
 
-        PhotonView parentPhotonView;
-
-        if (card.IsMine)
-            parentPhotonView = PhotonManager.GetPhotonViewByType(PhotonViewType.PlayerDeck);
-        else
-            parentPhotonView = PhotonManager.GetPhotonViewByType(PhotonViewType.EnemyDeck);
-
-        card.gameObject.transform.SetParent(parentPhotonView.gameObject.transform);
+        card.gameObject.transform.SetParent(photonView.gameObject.transform);
         card.gameObject.transform.localScale = Vector3.one;
     }
 
