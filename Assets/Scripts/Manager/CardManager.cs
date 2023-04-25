@@ -8,7 +8,16 @@ public static class CardManager
     private static List<UnitCard> PlayerUnits = new List<UnitCard>(10);
     private static List<UnitCard> EnemyUnits = new List<UnitCard>(10);
 
-    private static Action EnemySpawnEvent;
+    private static Action enemySpawnEvent;
+    public static Action EnemySpawnEvent
+    {
+        get => enemySpawnEvent;
+
+        set
+        {
+            enemySpawnEvent = value;
+        }
+    }
 
     public static string Name;
 
@@ -23,9 +32,9 @@ public static class CardManager
     {
         EnemyUnits.Add(card);
 
-        if (EnemySpawnEvent != null)
+        if (enemySpawnEvent != null)
         {
-            EnemySpawnEvent();
+            enemySpawnEvent();
         }
     }
 
@@ -45,5 +54,5 @@ public static class CardManager
     }
 
     /// <summary> 적 소환할 때 이벤트 추가 </summary>
-    public static void AddEnemySpawnEvent(System.Action call) => EnemySpawnEvent += call;
+    public static void AddEnemySpawnEvent(System.Action call) => enemySpawnEvent += call;
 }

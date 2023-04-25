@@ -287,7 +287,7 @@ namespace Photon.Realtime
 
 
         /// <summary>
-        /// Brief summary string of the Player: ActorNumber and NickName
+        /// "#{0:00} '{1}'",this.ActorNumber, this.NickName
         /// </summary>
         public override string ToString()
         {

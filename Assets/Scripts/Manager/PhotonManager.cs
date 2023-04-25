@@ -1,8 +1,10 @@
 using Photon.Pun;
+using Photon.Pun.UtilityScripts;
 using Photon.Realtime;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Net.NetworkInformation;
 using UnityEngine;
 
 
@@ -16,7 +18,7 @@ using UnityEngine;
 // 플레이어 관련 ViewId는 100부터 시작
 // 적 관련 ViewId는 200부터 시작
 
- /// <summary> 내 PhotonView들을 ViewId를 값으로 Type을 만들었음 </summary>
+/// <summary> 내 PhotonView들을 ViewId를 값으로 Type을 만들었음 </summary>
 public enum PhotonViewType
 {
     PlayerDeck = 100,
@@ -39,6 +41,14 @@ public class PhotonManager : SingletonPunCallbacks<PhotonManager>
 
     private Room room;
 
+    private PunTurnManager turnManager;
+
+    /// <summary> Type으로 PhotonView를 가져옴 </summary>
+    public static PhotonView GetPhotonViewByType(PhotonViewType photonViewType) => PhotonViews[photonViewType];
+    public void JoinLobby()
+    {
+        PhotonNetwork.JoinLobby(TestLobby);
+    }
 
     protected override void Awake()
     {
@@ -53,14 +63,12 @@ public class PhotonManager : SingletonPunCallbacks<PhotonManager>
         }
     }
 
-    /// <summary> Type으로 PhotonView를 가져옴 </summary>
-    public static PhotonView GetPhotonViewByType(PhotonViewType photonViewType) => PhotonViews[photonViewType];
 
-    public void JoinLobby()
+    public override void OnRoomListUpdate(List<RoomInfo> roomList)
     {
-        PhotonNetwork.JoinLobby(TestLobby);
+        print(nameof(OnRoomListUpdate));
+        UpdateRoomList(roomList);
     }
-
     private void UpdateRoomList(List<RoomInfo> roomlist)
     {
         foreach (RoomInfo roominfo in roomlist)
@@ -78,13 +86,7 @@ public class PhotonManager : SingletonPunCallbacks<PhotonManager>
         }
     }
 
-    public override void OnRoomListUpdate(List<RoomInfo> roomList)
-    {
-        print(nameof(OnRoomListUpdate));
-        UpdateRoomList(roomList);
-
-    }
-
+    /// <summary> 방에 다른 플레이어가 들어왔을 때 </summary>
     public override void OnPlayerEnteredRoom(Player newPlayer)
     {
         print(newPlayer);

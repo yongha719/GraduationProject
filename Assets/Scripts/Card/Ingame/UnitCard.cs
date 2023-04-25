@@ -60,23 +60,13 @@ public class UnitCard : Card
     protected override void Start()
     {
         base.Start();
-    }
 
-
-
-    void Heal(int healhp)
-    {
-        Hp += healhp;
-    }
-
-    void Hit(int damage)
-    {
-        throw new System.NotImplementedException();
+      
+      
     }
 
     public override void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
     {
-        base.OnPhotonSerializeView(stream, info);
         if (stream.IsWriting)
         {
 
