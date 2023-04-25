@@ -16,12 +16,15 @@ public class Card : MonoBehaviourPun, IBeginDragHandler, IDragHandler, IEndDragH
     protected bool IsEnemy;
     protected bool CanDrag => IsEnemy == false && cardState == CardState.Deck;
 
-    protected CardState cardState;
+    protected CardState cardState = CardState.Deck;
     public virtual CardState CardState { get; set; }
 
     private Vector2 originPos;
+    private Quaternion layoutRot;
     [Tooltip("클릭했을때 마우스 포인터와 카드 중앙에서의 거리")]
     private Vector2 mousePosDistance;
+
+
 
     protected RectTransform rect;
 
@@ -36,7 +39,6 @@ public class Card : MonoBehaviourPun, IBeginDragHandler, IDragHandler, IEndDragH
         IsEnemy = !photonView.IsMine;
     }
 
-
     public virtual void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
     {
 
@@ -44,7 +46,7 @@ public class Card : MonoBehaviourPun, IBeginDragHandler, IDragHandler, IEndDragH
 
     private void OnMouseEnter()
     {
-        if (IsEnemy) return;
+        if (CanDrag == false) return;
 
         // 카드가 덱에 있을 때
         if (cardState == CardState.Deck)
@@ -56,19 +58,26 @@ public class Card : MonoBehaviourPun, IBeginDragHandler, IDragHandler, IEndDragH
 
     void IBeginDragHandler.OnBeginDrag(PointerEventData eventData)
     {
-        if (CanDrag) return;
+        print("Begin");
+
+
+        if (CanDrag == false) return;
 
         // 왼쪽 버튼으로 드래그 시작했을때 원래 포지션 저장과 마우스 포인터와 거리도 저장
         if (eventData.button == PointerEventData.InputButton.Left)
         {
             originPos = rect.anchoredPosition;
             mousePosDistance = originPos - CanvasUtility.GetMousePosToCanvasPos();
+            layoutRot = transform.localRotation;
+            transform.localRotation = Quaternion.identity;
         }
     }
 
     void IDragHandler.OnDrag(PointerEventData eventData)
     {
-        if (CanDrag) return;
+        print("OnDrag");
+
+        if (CanDrag == false) return;
 
         // 드래그할 때 포지션 바꿔줌
         if (eventData.button == PointerEventData.InputButton.Left)
@@ -81,15 +90,19 @@ public class Card : MonoBehaviourPun, IBeginDragHandler, IDragHandler, IEndDragH
 
     void IEndDragHandler.OnEndDrag(PointerEventData eventData)
     {
-        if (CanDrag) return;
+        print("End");
+
+
+        if (CanDrag == false) return;
 
         // 다시 돌아가
+        transform.localRotation = layoutRot;
         rect.anchoredPosition = originPos;
     }
 
     void IDropHandler.OnDrop(PointerEventData eventData)
     {
-        if (CanDrag) return;
+        if (CanDrag == false) return;
 
         var rayhits = Physics2D.RaycastAll(transform.position + Vector3.back, Vector3.forward, 10f);
 

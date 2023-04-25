@@ -10,14 +10,16 @@ public static class CardManager
 
     private static Action EnemySpawnEvent;
 
+    public static string Name;
+
     /// <summary> Player Unit Card를 필드에 스폰했을 때 </summary>
-    public static void AddPlayerUnit(UnitCard card)
+    public static void AddPlayerUnit(this UnitCard card)
     {
         PlayerUnits.Add(card);
     }
 
     /// <summary> Enemy Unit Card를 필드에 스폰했을 때 </summary>
-    public static void AddEnemyUnit(UnitCard card)
+    public static void AddEnemyUnit(this UnitCard card)
     {
         EnemyUnits.Add(card);
 
@@ -26,13 +28,15 @@ public static class CardManager
             EnemySpawnEvent();
         }
     }
-    
-    
+
+    public static List<UnitCard> GetPlayerUnitCards(this UnitCard card) => PlayerUnits;
+    public static List<UnitCard> GetEnemyUnitCards(this UnitCard card) => EnemyUnits;
+
     public static void RemovePlayerUnit(UnitCard card)
     {
         PlayerUnits.Remove(card);
     }
-    
+
 
     /// <summary>  </summary>
     public static void RemoveEnemyUnit(UnitCard card)

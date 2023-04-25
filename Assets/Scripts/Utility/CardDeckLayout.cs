@@ -12,19 +12,24 @@ using UnityEngine;
 [AddComponentMenu("MyComponent/CardLayout", int.MinValue)]
 public class CardDeckLayout : MonoBehaviourPunCallbacks, IPunObservable
 {
-    Vector3 leftPosition = new Vector3(-200, -30, 0);
-    Vector3 rightPosition = new Vector3(420, -30, 0);
-    Quaternion leftRotation = Quaternion.Euler(0, 0, 15f);
-    Quaternion rightRotation = Quaternion.Euler(0, 0, -15f);
+    private Vector3 leftPosition = new Vector3(-200, -30, 0);
+    private Vector3 rightPosition = new Vector3(420, -30, 0);
+    private Quaternion leftRotation = Quaternion.Euler(0, 0, 15f);
+    private Quaternion rightRotation = Quaternion.Euler(0, 0, -15f);
+
+    private List<RectTransform> childs = new List<RectTransform>();
+
+    [SerializeField]
+    private bool IsMine;
 
     private void Start()
     {
-        print(photonView.ViewID);
+        IsMine = photonView.ViewID == (int)PhotonViewType.PlayerDeck;
     }
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Alpha1))
+        if (Input.GetKeyDown(KeyCode.Alpha1) && IsMine)
         {
             CardDraw();
         }
@@ -33,15 +38,21 @@ public class CardDeckLayout : MonoBehaviourPunCallbacks, IPunObservable
     public void CardDraw()
     {
         PhotonView cardPhotonView = PhotonNetwork.Instantiate("Prefabs/InGame_Card", Vector2.zero, Quaternion.identity).GetPhotonView();
-        photonView.RPC(nameof(SetDeckParent), RpcTarget.AllBufferedViaServer, cardPhotonView.ViewID);
+        photonView.RPC(nameof(SetDeckParent), RpcTarget.AllBuffered, cardPhotonView.ViewID);
     }
 
     [PunRPC]
     private void SetDeckParent(int cardViewId)
     {
         PhotonView card = PhotonNetwork.GetPhotonView(cardViewId);
+        PhotonView parentPhotonView = null;
 
-        card.gameObject.transform.SetParent(photonView.gameObject.transform);
+        if (card.IsMine)
+            parentPhotonView = PhotonManager.GetPhotonViewByType(PhotonViewType.PlayerDeck);
+        else
+            parentPhotonView = PhotonManager.GetPhotonViewByType(PhotonViewType.EnemyDeck);
+
+        card.gameObject.transform.SetParent(parentPhotonView.gameObject.transform);
         card.gameObject.transform.localScale = Vector3.one;
     }
 

@@ -1,3 +1,4 @@
+using Photon.Pun.UtilityScripts;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -10,13 +11,13 @@ public class GameManager : Singleton<GameManager>
     void Start()
     {
         PhotonManager.Instance.JoinLobby();
+
+
     }
 
      /// <summary>  </summary>
     public void TurnChange()
     {
-        IsPlayerTurn = !IsPlayerTurn;
-
-
+        
     }
 }

@@ -27,18 +27,22 @@ public enum PhotonViewType
 }
 
 
-public class PhotonManager : MonoBehaviourPunCallbacks
+public class PhotonManager : SingletonPunCallbacks<PhotonManager>
 {
-    public static PhotonManager Instance { get; private set; }
-
     private TypedLobby TestLobby = new TypedLobby("TestLobby", LobbyType.Default);
     private List<RoomInfo> roomInfos = new List<RoomInfo>();
 
     private static Dictionary<PhotonViewType, PhotonView> PhotonViews = new Dictionary<PhotonViewType, PhotonView>();
 
-    private void Awake()
+    private Photon.Realtime.Player Player;
+    private Photon.Realtime.Player EnemyPlayer;
+
+    private Room room;
+
+
+    protected override void Awake()
     {
-        Instance = this;
+        base.Awake();
         DontDestroyOnLoad(gameObject);
 
         PhotonNetwork.ConnectUsingSettings();
@@ -81,6 +85,11 @@ public class PhotonManager : MonoBehaviourPunCallbacks
 
     }
 
+    public override void OnPlayerEnteredRoom(Player newPlayer)
+    {
+        print(newPlayer);
+    }
+
     public override void OnJoinedLobby()
     {
         print("Join Lobby");
@@ -89,6 +98,8 @@ public class PhotonManager : MonoBehaviourPunCallbacks
     public override void OnConnected()
     {
         print("On Connected");
+        Player = PhotonNetwork.LocalPlayer;
+        Player.NickName = CardManager.Name;
     }
 
     public override void OnConnectedToMaster()
@@ -97,7 +108,8 @@ public class PhotonManager : MonoBehaviourPunCallbacks
         RoomOptions options = new RoomOptions();
         options.MaxPlayers = 2;
 
-        PhotonNetwork.JoinOrCreateRoom("안녕", options, TestLobby);
-    }
+        PhotonNetwork.JoinOrCreateRoom("TestRoom", options, TestLobby);
 
+        room = PhotonNetwork.CurrentRoom;
+    }
 }

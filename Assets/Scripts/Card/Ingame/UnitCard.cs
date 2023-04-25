@@ -87,8 +87,3 @@ public class UnitCard : Card
         }
     }
 }
-
-interface IHandlers : IBeginDragHandler, IDragHandler, IEndDragHandler, IDropHandler
-{
-
-}

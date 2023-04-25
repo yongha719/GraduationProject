@@ -3,25 +3,30 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using TMPro;
 
 public class MainMenuManager : MonoBehaviour
 {
     public Button gameStartBtn;
 
     [Space(10f)]
-    [Header("µ¦ Æí¼º UIs")]
-    public Button deckOrganizationButton;//µ¦ Æí¼º ¹öÆ°
-    public GameObject deckOrganizationUI;//µ¦ Æí¼ºUI
+    [Header("ë± íŽ¸ì„± UIs")]
+    public Button deckOrganizationButton;//ë± íŽ¸ì„± ë²„íŠ¼
+    public GameObject deckOrganizationUI;//ë± íŽ¸ì„±UI
 
     [Space(10f)]
-    [Header("¼³Á¤ UIs")]
+    [Header("ì„¤ì • UIs")]
     public Button settingBtn;
     public GameObject settingUI;
 
+    [SerializeField]
+    private TMP_InputField InputName;
 
     void Start()
     {
         AddListener();
+
+        InputName.onEndEdit.AddListener((name) => CardManager.Name = name);
     }
 
     private void AddListener()
@@ -38,7 +43,7 @@ public class MainMenuManager : MonoBehaviour
         });
 
         #endregion
-        #region µ¦ Æí¼ºButtonUI
+        #region ë± íŽ¸ì„±ButtonUI
         deckOrganizationButton.onClick.AddListener(() =>
         {
             deckOrganizationUI.SetActive(true);
