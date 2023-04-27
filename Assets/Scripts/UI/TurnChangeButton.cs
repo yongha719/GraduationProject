@@ -1,8 +1,20 @@
 using System;
 using UnityEngine;
+using UnityEngine.UI;
 
 [Serializable]
 public class TurnChangeButton : MonoBehaviour
 {
-    public void TurnChange() => TurnManager.Instance.TurnChange();
+    private Button button;
+
+    private void Start()
+    {
+        button = GetComponent<Button>();
+    }
+
+    public void TurnChange()
+    {
+        if (TurnManager.Instance.MyTurn)
+            TurnManager.Instance.TurnChange();
+    }
 }

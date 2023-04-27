@@ -76,10 +76,7 @@ public class PhotonManager : SingletonPunCallbacks<PhotonManager>
         RoomOptions options = new RoomOptions();
         options.MaxPlayers = 2;
 
-        if (PhotonNetwork.IsMasterClient)
-            PhotonNetwork.CreateRoom("TestRoom", options, TestLobby);
-        else
-            PhotonNetwork.JoinRoom("TestRoom");
+        PhotonNetwork.JoinOrCreateRoom("TestRoom", options, TestLobby);
     }
 
 
