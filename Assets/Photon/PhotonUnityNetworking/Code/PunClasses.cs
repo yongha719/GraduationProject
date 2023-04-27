@@ -31,6 +31,7 @@ namespace Photon.Pun
     using UnityEngine.SceneManagement;
     using Photon.Realtime;
     using SupportClassPun = ExitGames.Client.Photon.SupportClass;
+    using Codice.Client.BaseCommands.Ls;
 
 
     /// <summary>Replacement for RPC attribute with different name. Used to flag methods as remote-callable.</summary>
@@ -640,6 +641,38 @@ namespace Photon.Pun
                 if (this.readData.Length > this.currentItem)
                 {
                     myBool = (bool) this.readData[this.currentItem];
+                    this.currentItem++;
+                }
+            }
+        }
+
+        public void Serialize<T>(List<T> list)
+        {
+            if (IsWriting)
+            {
+                writeData.Add(list);
+            }
+            else
+            {
+                if(readData.Length > currentItem)
+                {
+                    list = (List<T>)readData[currentItem];
+                    currentItem++;
+                }
+            }
+        }
+
+        public void Serialize<T>(List<T> left, List<T> right)
+        {
+            if (this.IsWriting)
+            {
+                this.writeData.Add(left);
+            }
+            else
+            {
+                if (this.readData.Length > this.currentItem)
+                {
+                    right = (List<T>)this.readData[this.currentItem];
                     this.currentItem++;
                 }
             }

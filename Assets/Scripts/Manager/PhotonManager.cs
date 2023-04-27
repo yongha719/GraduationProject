@@ -1,11 +1,7 @@
 using Photon.Pun;
-using Photon.Pun.UtilityScripts;
 using Photon.Realtime;
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Net.NetworkInformation;
-using UnityEngine;
 
 
 // PhotonNetwork Reference
@@ -18,7 +14,7 @@ using UnityEngine;
 // 플레이어 관련 ViewId는 100부터 시작
 // 적 관련 ViewId는 200부터 시작
 
-/// <summary> 내 PhotonView들을 ViewId를 값으로 Type을 만들었음 </summary>
+/// <summary> 내 PhotonView들을 ViewId로 값으로 Type을 만들었음 </summary>
 public enum PhotonViewType
 {
     PlayerDeck = 100,
@@ -41,21 +37,13 @@ public class PhotonManager : SingletonPunCallbacks<PhotonManager>
 
     private Room room;
 
-    private PunTurnManager turnManager;
-
     /// <summary> Type으로 PhotonView를 가져옴 </summary>
     public static PhotonView GetPhotonViewByType(PhotonViewType photonViewType) => PhotonViews[photonViewType];
-    public void JoinLobby()
-    {
-        PhotonNetwork.JoinLobby(TestLobby);
-    }
 
     protected override void Awake()
     {
         base.Awake();
         DontDestroyOnLoad(gameObject);
-
-        PhotonNetwork.ConnectUsingSettings();
 
         foreach (PhotonViewType photonView in Enum.GetValues(typeof(PhotonViewType)))
         {
@@ -63,12 +51,59 @@ public class PhotonManager : SingletonPunCallbacks<PhotonManager>
         }
     }
 
+    private void Start()
+    {
+        PhotonNetwork.ConnectUsingSettings();
+    }
+
+    public override void OnConnected()
+    {
+        print("On Connected");
+        Player = PhotonNetwork.LocalPlayer;
+        Player.NickName = CardManager.Name;
+    }
+
+    public override void OnConnectedToMaster()
+    {
+        PhotonNetwork.JoinLobby(TestLobby);
+    }
+
+    public override void OnJoinedLobby()
+    {
+        print("Join Lobby");
+
+        print("안녕 내 이름은 김시원");
+        RoomOptions options = new RoomOptions();
+        options.MaxPlayers = 2;
+
+        if (PhotonNetwork.IsMasterClient)
+            PhotonNetwork.CreateRoom("TestRoom", options, TestLobby);
+        else
+            PhotonNetwork.JoinRoom("TestRoom");
+    }
+
+
+    public override void OnJoinedRoom()
+    {
+        print("Join Room");
+
+        room = PhotonNetwork.CurrentRoom;
+    }
+
+    /// <summary> 방에 다른 플레이어가 들어왔을 때 </summary>
+    public override void OnPlayerEnteredRoom(Player newPlayer)
+    {
+        print(newPlayer);
+
+        TurnManager.Instance.FirstTurn();
+    }
 
     public override void OnRoomListUpdate(List<RoomInfo> roomList)
     {
         print(nameof(OnRoomListUpdate));
         UpdateRoomList(roomList);
     }
+
     private void UpdateRoomList(List<RoomInfo> roomlist)
     {
         foreach (RoomInfo roominfo in roomlist)
@@ -84,34 +119,5 @@ public class PhotonManager : SingletonPunCallbacks<PhotonManager>
             }
 
         }
-    }
-
-    /// <summary> 방에 다른 플레이어가 들어왔을 때 </summary>
-    public override void OnPlayerEnteredRoom(Player newPlayer)
-    {
-        print(newPlayer);
-    }
-
-    public override void OnJoinedLobby()
-    {
-        print("Join Lobby");
-    }
-
-    public override void OnConnected()
-    {
-        print("On Connected");
-        Player = PhotonNetwork.LocalPlayer;
-        Player.NickName = CardManager.Name;
-    }
-
-    public override void OnConnectedToMaster()
-    {
-        print("안녕 내 이름은 김시원");
-        RoomOptions options = new RoomOptions();
-        options.MaxPlayers = 2;
-
-        PhotonNetwork.JoinOrCreateRoom("TestRoom", options, TestLobby);
-
-        room = PhotonNetwork.CurrentRoom;
     }
 }

@@ -803,7 +803,7 @@ namespace Photon.Pun
 
 
         /// <summary>
-        /// Are we the master client?
+        /// 방에 연결되어 있을 때 확인할 수 있음
         /// </summary>
         public static bool IsMasterClient
         {

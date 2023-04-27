@@ -1,23 +1,22 @@
+using Photon.Pun;
 using Photon.Pun.UtilityScripts;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class GameManager : Singleton<GameManager>
+
+public class GameManager : Singleton<GameManager>, IPunObservable
 {
-    public bool IsPlayerTurn = true;
+    public bool IsPlayerTurn => TurnManager.Instance.TurnState == TurnState.PlayerTurn;
 
     void Start()
     {
-        PhotonManager.Instance.JoinLobby();
-
 
     }
 
-     /// <summary>  </summary>
-    public void TurnChange()
+    public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
     {
-        
+        stream.SerializeUnitCards();
     }
 }

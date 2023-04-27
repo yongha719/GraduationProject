@@ -6,9 +6,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 
 
-/// <summary>
-/// 인게임에서 카드의 레이아웃
-/// </summary>
+/// <summary>인게임에서 덱에 있는 카드의 레이아웃 </summary>
 [AddComponentMenu("MyComponent/CardLayout", int.MinValue)]
 public class CardDeckLayout : MonoBehaviourPunCallbacks, IPunObservable
 {
@@ -21,6 +19,12 @@ public class CardDeckLayout : MonoBehaviourPunCallbacks, IPunObservable
 
     [SerializeField]
     private bool IsMine;
+
+    [SerializeField, Tooltip("테스트 카드")]
+    private GameObject Card;
+
+
+    private string CardPath => $"Cards/{Card.name}";
 
     private void Start()
     {
@@ -37,7 +41,7 @@ public class CardDeckLayout : MonoBehaviourPunCallbacks, IPunObservable
 
     public void CardDraw()
     {
-        PhotonView cardPhotonView = PhotonNetwork.Instantiate("Prefabs/InGame_Card", Vector2.zero, Quaternion.identity).GetPhotonView();
+        PhotonView cardPhotonView = PhotonNetwork.Instantiate(CardPath, Vector2.zero, Quaternion.identity).GetPhotonView();
         photonView.RPC(nameof(SetDeckParent), RpcTarget.AllBuffered, cardPhotonView.ViewID);
     }
 
@@ -48,9 +52,15 @@ public class CardDeckLayout : MonoBehaviourPunCallbacks, IPunObservable
         PhotonView parentPhotonView = null;
 
         if (card.IsMine)
+        {
             parentPhotonView = PhotonManager.GetPhotonViewByType(PhotonViewType.PlayerDeck);
+            card.GetComponent<UnitCard>().AddPlayerUnit();
+        }
         else
+        {
             parentPhotonView = PhotonManager.GetPhotonViewByType(PhotonViewType.EnemyDeck);
+            card.GetComponent<UnitCard>().AddEnemyUnit();
+        }
 
         card.gameObject.transform.SetParent(parentPhotonView.gameObject.transform);
         card.gameObject.transform.localScale = Vector3.one;
