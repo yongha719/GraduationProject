@@ -23,15 +23,13 @@
 
 namespace Photon.Pun
 {
+    using ExitGames.Client.Photon;
+    using Photon.Realtime;
     using System;
     using System.Collections.Generic;
     using System.Reflection;
-    using ExitGames.Client.Photon;
     using UnityEngine;
     using UnityEngine.SceneManagement;
-    using Photon.Realtime;
-    using SupportClassPun = ExitGames.Client.Photon.SupportClass;
-    using Codice.Client.BaseCommands.Ls;
 
 
     /// <summary>Replacement for RPC attribute with different name. Used to flag methods as remote-callable.</summary>

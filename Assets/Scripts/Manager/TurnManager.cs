@@ -1,6 +1,8 @@
 using Photon.Pun;
 using System;
 using System.Collections;
+using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public enum TurnState
@@ -24,11 +26,11 @@ public class TurnManager : SingletonPunCallbacks<TurnManager>, IPunObservable
 
         set
         {
-
-
             turnState = value;
         }
     }
+
+    public bool MyTurn => TurnState == TurnState.PlayerTurn;
 
     private Action<UnitCard> enemySpawnEvent;
     public Action<UnitCard> EnemySpawnEvent
@@ -41,6 +43,10 @@ public class TurnManager : SingletonPunCallbacks<TurnManager>, IPunObservable
         }
     }
 
+
+    [SerializeField]
+    private TextMeshProUGUI TestTurnStateText;
+
     /// <summary> 적 소환할 때 이벤트 추가 </summary>
     public void AddEnemySpawnEvent(System.Action<UnitCard> call) => enemySpawnEvent += call;
 
@@ -52,15 +58,19 @@ public class TurnManager : SingletonPunCallbacks<TurnManager>, IPunObservable
     public void FirstTurn()
     {
         TurnState = PhotonNetwork.IsMasterClient ? TurnState.PlayerTurn : TurnState.EnemyTurn;
-        TurnBegin();
+
+        if (MyTurn)
+            playerDeck.CardDraw();
     }
-    
+
     /// <summary> 턴의 시간이 끝났을 때 </summary>
     public void TurnChange()
     {
-        StartCoroutine(ETurnChange());
+        photonView.RPC(nameof(TurnChangeRPC), RpcTarget.AllBuffered);
     }
 
+    [PunRPC]
+    private void TurnChangeRPC() => StartCoroutine(ETurnChange());
     private IEnumerator ETurnChange()
     {
         TurnFinished();
@@ -71,10 +81,18 @@ public class TurnManager : SingletonPunCallbacks<TurnManager>, IPunObservable
         TurnBegin();
     }
 
+    /// <summary> 턴이 끝났을때? </summary>
+    public void TurnFinished()
+    {
+        TurnState = (MyTurn) ? TurnState.EnemyTurn : TurnState.PlayerTurn;
+
+        TestTurnStateText.text = TurnState.ToString();
+    }
+
     /// <summary> 턴이 시작했을 때 </summary>
     public void TurnBegin()
     {
-        if (TurnState == TurnState.PlayerTurn)
+        if (MyTurn)
             playerDeck.CardDraw();
         else
         {
@@ -82,20 +100,11 @@ public class TurnManager : SingletonPunCallbacks<TurnManager>, IPunObservable
         }
     }
 
-    /// <summary> 턴이 끝났을때? </summary>
-    public void TurnFinished()
-    {
-        TurnState = (TurnState == TurnState.PlayerTurn) ? TurnState.EnemyTurn : TurnState.PlayerTurn;
-    }
-
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
     {
         if (stream.IsWriting)
         {
-            if (TurnState == TurnState.PlayerTurn)
-                stream.SendNext(TurnState.EnemyTurn);
-            else
-                stream.SendNext(TurnState.PlayerTurn);
+            stream.SendNext(MyTurn ? TurnState.EnemyTurn : TurnState.PlayerTurn);
         }
         else
         {

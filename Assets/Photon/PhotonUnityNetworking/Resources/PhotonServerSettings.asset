@@ -46,6 +46,7 @@ MonoBehaviour:
   - SetParent
   - SetDeckParent
   - CardDraw
+  - TurnChangeRPC
   DisableAutoOpenWizard: 1
   ShowSettings: 0
   DevRegionSetOnce: 1

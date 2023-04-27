@@ -13,8 +13,8 @@ public static class CardManager
     public static string Name;
 
     [Tooltip("내 덱")]
-    private static List<Card> myDeck = new List<Card>();
-    public static List<Card> MyDeck
+    private static List<string> myDeck = new List<string>();
+    public static List<string> MyDeck
     {
         get => myDeck;
 
@@ -25,18 +25,15 @@ public static class CardManager
     }
 
     /// <summary> Player Unit Card를 필드에 스폰했을 때 </summary>
-    public static void AddPlayerUnit(this UnitCard card)
-    {
-        PlayerUnits.Add(card);
-    }
+    public static void AddPlayerUnit(this UnitCard card) => PlayerUnits.Add(card);
 
     /// <summary> Enemy Unit Card를 필드에 스폰했을 때 </summary>
-    public static void AddEnemyUnit(this UnitCard card)
-    {
-        EnemyUnits.Add(card);
-    }
+    public static void AddEnemyUnit(this UnitCard card) => EnemyUnits.Add(card);
 
+     /// <summary> Player의 Unit Card들을 반환 </summary>
     public static List<UnitCard> GetPlayerUnitCards(this UnitCard card) => PlayerUnits;
+
+     /// <summary> Enemy의 Unit Card들을 반환 </summary>
     public static List<UnitCard> GetEnemyUnitCards(this UnitCard card) => EnemyUnits;
 
     public static void RemovePlayerUnit(this UnitCard card)
@@ -44,7 +41,6 @@ public static class CardManager
         if (PlayerUnits.Contains(card))
             PlayerUnits.Remove(card);
     }
-
 
     /// <summary>  </summary>
     public static void RemoveEnemyUnit(this UnitCard card)
