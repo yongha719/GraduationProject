@@ -24,8 +24,27 @@ public class CardDeck : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, I
     [SerializeField]
     private TextMeshProUGUI hp;
 
-    [SerializeField]
-    private CardData cardData;
+
+    private CardData data;
+    public CardData Data 
+    {
+        get
+        {
+            return data;
+        }
+        set
+        {
+            data = value;
+        }
+    }
+
+    /// <summary>
+    /// CardDeckSetter함수
+    /// </summary>
+    private void SetCardDeck()
+    {
+
+    }
 
     private Vector3 rayOriginPos = new Vector3(0, 0, -1f);
     private Vector3 rayDir = Vector3.forward;
@@ -40,10 +59,6 @@ public class CardDeck : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, I
     private void Update()
     {
         DrawRay();
-    }
-    private void SetCardDeck()
-    {
-
     }
 
     private void DrawRay()

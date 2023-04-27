@@ -1,28 +1,35 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 
 public class DeckManager : MonoBehaviour
 {
-    [Tooltip("±âÁØ X °ª")]
+    [Tooltip("ê¸°ì¤€ X ê°’")]
     public float standardX;
 
-    public List<CardDeck> allHaveCardList = new List<CardDeck>();
+    public List<CardData> allHaveCardList = new List<CardData>();
 
-    public List<CardDeck> deckList = new List<CardDeck>();
+    public List<CardData> cardList = new List<CardData>();
 
     [SerializeField]
-    private Transform cardSpawnPos;
+    private Transform cardSpawnParent;
+
+    public CardDeck card;
 
     private void Start()
     {
         
     }
 
-    public void AddCard(CardData data)
+    public void SelectCard(CardData data)
     {
-
+        cardList.Add(data);
+        SortDeck(cardList);
     }
 
-
+    private void SortDeck(List<CardData> list)
+    {
+        list.OrderBy(item => item.Cost);
+    }
 }
