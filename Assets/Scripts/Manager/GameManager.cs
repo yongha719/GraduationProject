@@ -8,11 +8,9 @@ using UnityEngine.UI;
 
 public class GameManager : Singleton<GameManager>, IPunObservable
 {
-    public bool IsPlayerTurn => TurnManager.Instance.TurnState == TurnState.PlayerTurn;
-
     void Start()
     {
-
+        MyDebug.Log("Test Log");
     }
 
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)

@@ -49,6 +49,7 @@ public static class CardManager
             EnemyUnits.Remove(card);
     }
 
+    /// <summary> 적 카드 스폰시 이벤트 </summary>
     public static void CardSpawnEvent(this Action<UnitCard> action)
     {
         action?.Invoke(EnemyUnits.Last());
@@ -58,6 +59,8 @@ public static class CardManager
     {
         // 적과 플레이어는 반대로 받아와야 하기 때문에 메서드를 만들었음
         stream.Serialize(PlayerUnits, EnemyUnits);
+        MyDebug.Log($"Player Unit Count : {PlayerUnits.Count}");
+        MyDebug.Log($"Enemy Unit Count : {EnemyUnits.Count}");
         stream.Serialize(EnemyUnits, PlayerUnits);
     }
 }

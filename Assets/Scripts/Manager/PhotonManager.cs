@@ -2,6 +2,7 @@ using Photon.Pun;
 using Photon.Realtime;
 using System;
 using System.Collections.Generic;
+using UnityEngine;
 
 
 // PhotonNetwork Reference
@@ -59,6 +60,7 @@ public class PhotonManager : SingletonPunCallbacks<PhotonManager>
     public override void OnConnected()
     {
         print("On Connected");
+
         Player = PhotonNetwork.LocalPlayer;
         Player.NickName = CardManager.Name;
     }

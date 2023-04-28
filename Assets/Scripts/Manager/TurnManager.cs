@@ -97,6 +97,8 @@ public class TurnManager : SingletonPunCallbacks<TurnManager>, IPunObservable
         else
         {
             EnemySpawnEvent.CardSpawnEvent();
+
+            MyDebug.Log("Enemy Turn");
         }
     }
 
