@@ -4,6 +4,7 @@ using System.Collections;
 using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.UI;
 
 public enum TurnState
 {
@@ -45,7 +46,10 @@ public class TurnManager : SingletonPunCallbacks<TurnManager>, IPunObservable
 
 
     [SerializeField]
-    private TextMeshProUGUI TestTurnStateText;
+    private TextMeshProUGUI testTurnStateText;
+
+    [SerializeField]
+    private Button turnChangeButton;
 
     /// <summary> 적 소환할 때 이벤트 추가 </summary>
     public void AddEnemySpawnEvent(System.Action<UnitCard> call) => enemySpawnEvent += call;
@@ -59,6 +63,9 @@ public class TurnManager : SingletonPunCallbacks<TurnManager>, IPunObservable
     {
         TurnState = PhotonNetwork.IsMasterClient ? TurnState.PlayerTurn : TurnState.EnemyTurn;
 
+        turnChangeButton.interactable = MyTurn;
+        testTurnStateText.text = TurnState.ToString();
+
         if (MyTurn)
             playerDeck.CardDraw();
     }
@@ -71,11 +78,13 @@ public class TurnManager : SingletonPunCallbacks<TurnManager>, IPunObservable
 
     [PunRPC]
     private void TurnChangeRPC() => StartCoroutine(ETurnChange());
+
     private IEnumerator ETurnChange()
     {
         TurnFinished();
 
         // 나중에 턴 전환시 액션 넣을 예정
+        testTurnStateText.text = TurnState.ToString();
         yield return null;
 
         TurnBegin();
@@ -86,7 +95,7 @@ public class TurnManager : SingletonPunCallbacks<TurnManager>, IPunObservable
     {
         TurnState = (MyTurn) ? TurnState.EnemyTurn : TurnState.PlayerTurn;
 
-        TestTurnStateText.text = TurnState.ToString();
+        turnChangeButton.interactable = MyTurn;
     }
 
     /// <summary> 턴이 시작했을 때 </summary>
@@ -97,8 +106,6 @@ public class TurnManager : SingletonPunCallbacks<TurnManager>, IPunObservable
         else
         {
             EnemySpawnEvent.CardSpawnEvent();
-
-            MyDebug.Log("Enemy Turn");
         }
     }
 

@@ -36,17 +36,21 @@ public static class CardManager
      /// <summary> Enemy의 Unit Card들을 반환 </summary>
     public static List<UnitCard> GetEnemyUnitCards(this UnitCard card) => EnemyUnits;
 
-    public static void RemovePlayerUnit(this UnitCard card)
+    public static void RemoveUnit(this UnitCard card)
     {
         if (PlayerUnits.Contains(card))
+        {
             PlayerUnits.Remove(card);
-    }
+            PhotonNetwork.Destroy(card.gameObject);
 
-    /// <summary>  </summary>
-    public static void RemoveEnemyUnit(this UnitCard card)
-    {
+            return;
+        }
+
         if (EnemyUnits.Contains(card))
+        {
+            PhotonNetwork.Destroy(card.gameObject);
             EnemyUnits.Remove(card);
+        }
     }
 
     /// <summary> 적 카드 스폰시 이벤트 </summary>
@@ -57,10 +61,10 @@ public static class CardManager
 
     public static void SerializeUnitCards(this PhotonStream stream)
     {
-        // 적과 플레이어는 반대로 받아와야 하기 때문에 메서드를 만들었음
+        // 적과 나는 반대로 받아와야 함
+        // 적 플레이어는 내 카드가 적 카드이기 때문
         stream.Serialize(PlayerUnits, EnemyUnits);
-        MyDebug.Log($"Player Unit Count : {PlayerUnits.Count}");
-        MyDebug.Log($"Enemy Unit Count : {EnemyUnits.Count}");
+        MyDebug.Log($"Player Unit Count : {PlayerUnits.Count}\n Enemy Unit Count : {EnemyUnits.Count}");
         stream.Serialize(EnemyUnits, PlayerUnits);
     }
 }

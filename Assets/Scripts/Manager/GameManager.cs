@@ -1,20 +1,18 @@
 using Photon.Pun;
-using Photon.Pun.UtilityScripts;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.UI;
+using static MyDebug;
 
-
-public class GameManager : Singleton<GameManager>, IPunObservable
+public class GameManager : SingletonPunCallbacks<GameManager>, IPunObservable
 {
+    public string PlayerName;
+
     void Start()
     {
-        MyDebug.Log("Test Log");
+        Log("Test Log");
     }
 
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
     {
+        Log($"{nameof(GameManager)} {nameof(OnPhotonSerializeView)}");
         stream.SerializeUnitCards();
     }
 }

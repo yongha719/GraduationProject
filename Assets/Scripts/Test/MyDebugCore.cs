@@ -1,11 +1,5 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Net.NetworkInformation;
-using TMPro;
 using UnityEngine;
-
-
 
 public class MyDebugCore : MonoBehaviour
 {
@@ -23,6 +17,7 @@ public class MyDebugCore : MonoBehaviour
         string log = $"[{time.Hour}:{time.Minute}:{time.Second}] {message}";
 
         Instantiate(debugContent, debugListParent).GetComponent<DebugContent>().SetLog(log);
+        Debug.Log(message);
     }
 }
 

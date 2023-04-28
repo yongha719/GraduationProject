@@ -23,20 +23,11 @@ public class CardDeckLayout : MonoBehaviourPunCallbacks, IPunObservable
     [SerializeField, Tooltip("테스트 카드")]
     private GameObject Card;
 
-
     private string CardPath => $"Cards/{Card.name}";
 
     private void Start()
     {
         IsMine = photonView.ViewID == (int)PhotonViewType.PlayerDeck;
-    }
-
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.Alpha1) && IsMine)
-        {
-            CardDraw();
-        }
     }
 
     public void CardDraw()

@@ -2,7 +2,6 @@ using System;
 using UnityEngine;
 using UnityEngine.UI;
 
-[Serializable]
 public class TurnChangeButton : MonoBehaviour
 {
     private Button button;
