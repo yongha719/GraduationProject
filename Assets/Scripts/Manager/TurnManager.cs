@@ -57,9 +57,24 @@ public class TurnManager : SingletonPunCallbacks<TurnManager>, IPunObservable
     private void Start()
     {
         playerDeck = PhotonManager.GetPhotonViewByType(PhotonViewType.PlayerDeck).GetComponent<CardDeckLayout>();
+
+        turnChangeButton.onClick.AddListener(() =>
+        {
+            if (MyTurn)
+            {
+                TurnChange();
+            }
+        });
     }
 
+    /// <summary> 처음 턴 시작시 호출 </summary>
     public void FirstTurn()
+    {
+        photonView.RPC(nameof(FirstTurnRPC), RpcTarget.AllBuffered);
+    }
+
+    [PunRPC]
+    private void FirstTurnRPC()
     {
         TurnState = PhotonNetwork.IsMasterClient ? TurnState.PlayerTurn : TurnState.EnemyTurn;
 
@@ -77,7 +92,10 @@ public class TurnManager : SingletonPunCallbacks<TurnManager>, IPunObservable
     }
 
     [PunRPC]
-    private void TurnChangeRPC() => StartCoroutine(ETurnChange());
+    private void TurnChangeRPC()
+    {
+        StartCoroutine(ETurnChange());
+    }
 
     private IEnumerator ETurnChange()
     {
@@ -104,9 +122,7 @@ public class TurnManager : SingletonPunCallbacks<TurnManager>, IPunObservable
         if (MyTurn)
             playerDeck.CardDraw();
         else
-        {
             EnemySpawnEvent.CardSpawnEvent();
-        }
     }
 
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)

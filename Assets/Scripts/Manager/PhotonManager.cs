@@ -63,7 +63,6 @@ public class PhotonManager : SingletonPunCallbacks<PhotonManager>
         print("On Connected");
 
         Player = PhotonNetwork.LocalPlayer;
-        Player.NickName = CardManager.Name;
     }
 
     public override void OnConnectedToMaster()

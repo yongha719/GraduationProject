@@ -366,7 +366,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ff66b517c2ace044e840477961a53206, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CardData: {fileID: 0}
+  CardData: {fileID: 11400000, guid: 315674ac850803b409544d0b1cf879e0, type: 2}
 --- !u!61 &584926971
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -413,6 +413,7 @@ MonoBehaviour:
   observableSearch: 2
   ObservedComponents:
   - {fileID: 2779581622520894037}
+  - {fileID: -815403951443178334}
   sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0

@@ -22,6 +22,7 @@ public class UnitCard : Card, IPunObservable
             if (value <= 0)
             {
                 hp = 0;
+                MyDebug.Log("피 없엉");
                 this.RemoveUnit();
             }
 
@@ -61,18 +62,28 @@ public class UnitCard : Card, IPunObservable
 
     protected override void Start()
     {
-        base.Start();     
+        base.Start();
     }
 
 
     public void Hit(int Damage)
     {
         Hp -= Damage;
-    } 
+    }
 
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
     {
-        stream.Serialize(ref hp);
-        Hp = hp;
+
+    }
+
+    protected override void Test()
+    {
+        photonView.RPC(nameof(TestRPC), RpcTarget.AllBuffered);
+    }
+
+    [PunRPC]
+    private void TestRPC()
+    {
+        MyDebug.Log("Test Log");
     }
 }

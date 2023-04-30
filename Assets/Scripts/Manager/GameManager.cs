@@ -7,12 +7,11 @@ public class GameManager : SingletonPunCallbacks<GameManager>, IPunObservable
 
     void Start()
     {
-        Log("Test Log");
+        
     }
 
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
     {
-        Log($"{nameof(GameManager)} {nameof(OnPhotonSerializeView)}");
         stream.SerializeUnitCards();
     }
 }

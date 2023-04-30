@@ -50,7 +50,7 @@ public class Card : MonoBehaviourPun, IBeginDragHandler, IDragHandler, IEndDragH
         }
     }
 
-    protected virtual void Attack()
+    protected virtual void Attack(UnitCard card)
     {
 
     }
@@ -98,23 +98,27 @@ public class Card : MonoBehaviourPun, IBeginDragHandler, IDragHandler, IEndDragH
 
         var rayhits = Physics2D.RaycastAll(transform.position + Vector3.back, Vector3.forward, 10f);
 
-        var field = eventData.pointerCurrentRaycast.gameObject;
-
-        if (field.CompareTag("PlayerField"))
-        {
-            MyDebug.Log("필드");
-            photonView.RPC(nameof(MoveCardFromDeckToField), RpcTarget.AllBuffered);
-        }
-
         for (int i = 0; i < rayhits.Length; i++)
         {
+            if (rayhits[i].collider.TryGetComponent(out CardFieldLayout field))
+            {
+                photonView.RPC(nameof(MoveCardFromDeckToField), RpcTarget.AllBuffered);
+                Test();
+                CardState = CardState.Field;
+                break;
+            }
+
             if (rayhits[i].collider.TryGetComponent(out UnitCard card) && card.IsEnemy)
             {
-                card.Hit(CardData.Damage);
+                card.Attack(card);
             }
         }
     }
 
+    protected virtual void Test()
+    {
+
+    }
 
     [PunRPC]
     private void MoveCardFromDeckToField()

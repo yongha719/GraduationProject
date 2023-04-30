@@ -660,7 +660,7 @@ namespace Photon.Pun
             }
         }
 
-        public void Serialize<T>(List<T> left, List<T> right)
+        public void Serialize<T>(T left, T right)
         {
             if (this.IsWriting)
             {
@@ -670,7 +670,7 @@ namespace Photon.Pun
             {
                 if (this.readData.Length > this.currentItem)
                 {
-                    right = (List<T>)this.readData[this.currentItem];
+                    right = (T)this.readData[this.currentItem];
                     this.currentItem++;
                 }
             }
