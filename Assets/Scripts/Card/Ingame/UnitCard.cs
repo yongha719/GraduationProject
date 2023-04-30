@@ -76,14 +76,16 @@ public class UnitCard : Card, IPunObservable
 
     }
 
-    protected override void Test()
+    protected override void MoveCardFromDeckToField()
     {
-        photonView.RPC(nameof(TestRPC), RpcTarget.AllBuffered);
+        photonView.RPC(nameof(MoveCardFromDeckToFieldRPC), RpcTarget.AllBuffered);
     }
 
     [PunRPC]
-    private void TestRPC()
+    private void MoveCardFromDeckToFieldRPC()
     {
-        MyDebug.Log("Test Log");
+        PhotonView parentView = PhotonManager.GetPhotonViewByType(photonView.IsMine ? PhotonViewType.PlayerField : PhotonViewType.EnemyField);
+
+        rect.SetParent(parentView.gameObject.transform);
     }
 }

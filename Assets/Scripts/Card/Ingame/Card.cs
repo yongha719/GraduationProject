@@ -102,8 +102,7 @@ public class Card : MonoBehaviourPun, IBeginDragHandler, IDragHandler, IEndDragH
         {
             if (rayhits[i].collider.TryGetComponent(out CardFieldLayout field))
             {
-                photonView.RPC(nameof(MoveCardFromDeckToField), RpcTarget.AllBuffered);
-                Test();
+                MoveCardFromDeckToField();
                 CardState = CardState.Field;
                 break;
             }
@@ -115,16 +114,8 @@ public class Card : MonoBehaviourPun, IBeginDragHandler, IDragHandler, IEndDragH
         }
     }
 
-    protected virtual void Test()
+    protected virtual void MoveCardFromDeckToField()
     {
 
-    }
-
-    [PunRPC]
-    private void MoveCardFromDeckToField()
-    {
-        PhotonView parentView = PhotonManager.GetPhotonViewByType(photonView.IsMine ? PhotonViewType.PlayerField : PhotonViewType.EnemyField);
-
-        rect.SetParent(parentView.gameObject.transform);
     }
 }
