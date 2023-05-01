@@ -4,6 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEditor;
 
 [Serializable]
 public class SerializationList<T>
@@ -33,6 +34,13 @@ public class CardManager : SingletonPunCallbacks<CardManager>, IPunObservable
         {
             myDeck = value;
         }
+    }
+
+    public void SetDeck(List<string> cardPaths)
+    {
+        AssetBundle assetBundle;
+
+        
     }
 
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)

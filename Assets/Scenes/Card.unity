@@ -829,7 +829,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 214781206}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.16757543, y: -0.5574428, z: -0.0785659}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -849,9 +849,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   PlayerUnits:
-    list: []
+  - {fileID: 0}
   EnemyUnits:
-    list: []
+  - {fileID: 0}
 --- !u!114 &214781209
 MonoBehaviour:
   m_ObjectHideFlags: 0
