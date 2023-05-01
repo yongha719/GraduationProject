@@ -1,7 +1,10 @@
 using Photon.Pun;
 using System;
 using System.Collections;
+using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.UI;
 
 public enum TurnState
 {
@@ -24,11 +27,11 @@ public class TurnManager : SingletonPunCallbacks<TurnManager>, IPunObservable
 
         set
         {
-
-
             turnState = value;
         }
     }
+
+    public bool MyTurn => TurnState == TurnState.PlayerTurn;
 
     private Action<UnitCard> enemySpawnEvent;
     public Action<UnitCard> EnemySpawnEvent
@@ -41,22 +44,55 @@ public class TurnManager : SingletonPunCallbacks<TurnManager>, IPunObservable
         }
     }
 
+
+    [SerializeField]
+    private TextMeshProUGUI testTurnStateText;
+
+    [SerializeField]
+    private Button turnChangeButton;
+
     /// <summary> 적 소환할 때 이벤트 추가 </summary>
     public void AddEnemySpawnEvent(System.Action<UnitCard> call) => enemySpawnEvent += call;
 
     private void Start()
     {
         playerDeck = PhotonManager.GetPhotonViewByType(PhotonViewType.PlayerDeck).GetComponent<CardDeckLayout>();
+
+        turnChangeButton.onClick.AddListener(() =>
+        {
+            if (MyTurn)
+            {
+                TurnChange();
+            }
+        });
     }
 
+    /// <summary> 처음 턴 시작시 호출 </summary>
     public void FirstTurn()
     {
-        TurnState = PhotonNetwork.IsMasterClient ? TurnState.PlayerTurn : TurnState.EnemyTurn;
-        TurnBegin();
+        photonView.RPC(nameof(FirstTurnRPC), RpcTarget.AllBuffered);
     }
-    
+
+    [PunRPC]
+    private void FirstTurnRPC()
+    {
+        TurnState = PhotonNetwork.IsMasterClient ? TurnState.PlayerTurn : TurnState.EnemyTurn;
+
+        turnChangeButton.interactable = MyTurn;
+        testTurnStateText.text = TurnState.ToString();
+
+        if (MyTurn)
+            playerDeck.CardDraw();
+    }
+
     /// <summary> 턴의 시간이 끝났을 때 </summary>
     public void TurnChange()
+    {
+        photonView.RPC(nameof(TurnChangeRPC), RpcTarget.AllBuffered);
+    }
+
+    [PunRPC]
+    private void TurnChangeRPC()
     {
         StartCoroutine(ETurnChange());
     }
@@ -66,36 +102,34 @@ public class TurnManager : SingletonPunCallbacks<TurnManager>, IPunObservable
         TurnFinished();
 
         // 나중에 턴 전환시 액션 넣을 예정
+        testTurnStateText.text = TurnState.ToString();
         yield return null;
 
         TurnBegin();
     }
 
-    /// <summary> 턴이 시작했을 때 </summary>
-    public void TurnBegin()
-    {
-        if (TurnState == TurnState.PlayerTurn)
-            playerDeck.CardDraw();
-        else
-        {
-            EnemySpawnEvent.CardSpawnEvent();
-        }
-    }
-
     /// <summary> 턴이 끝났을때? </summary>
     public void TurnFinished()
     {
-        TurnState = (TurnState == TurnState.PlayerTurn) ? TurnState.EnemyTurn : TurnState.PlayerTurn;
+        TurnState = (MyTurn) ? TurnState.EnemyTurn : TurnState.PlayerTurn;
+
+        turnChangeButton.interactable = MyTurn;
+    }
+
+    /// <summary> 턴이 시작했을 때 </summary>
+    public void TurnBegin()
+    {
+        if (MyTurn)
+            playerDeck.CardDraw();
+        else
+            EnemySpawnEvent.CardSpawnEvent();
     }
 
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
     {
         if (stream.IsWriting)
         {
-            if (TurnState == TurnState.PlayerTurn)
-                stream.SendNext(TurnState.EnemyTurn);
-            else
-                stream.SendNext(TurnState.PlayerTurn);
+            stream.SendNext(MyTurn ? TurnState.EnemyTurn : TurnState.PlayerTurn);
         }
         else
         {

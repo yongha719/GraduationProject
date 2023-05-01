@@ -1,15 +1,12 @@
 using Photon.Pun;
-using Photon.Pun.Demo.PunBasics;
-using System.Collections;
+using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.EventSystems;
 
 
-public class UnitCard : Card
+public class UnitCard : Card, IPunObservable
 {
     private int hp;
 
-    [Tooltip("시봉봉의 억지")]
     public int Hp
     {
         get
@@ -21,6 +18,13 @@ public class UnitCard : Card
         {
             if (value > CardData.Hp)
                 return;
+
+            if (value <= 0)
+            {
+                hp = 0;
+                MyDebug.Log("피 없엉");
+                this.RemoveUnit();
+            }
 
             hp = value;
         }
@@ -48,32 +52,40 @@ public class UnitCard : Card
         }
     }
 
-    public CardData CardData;
 
     protected override void Awake()
     {
         base.Awake();
 
-        //Hp = CardData.Hp;
+        Hp = CardData.Hp;
     }
 
     protected override void Start()
     {
         base.Start();
-
-      
-      
     }
 
-    public override void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
+
+    public void Hit(int Damage)
     {
-        if (stream.IsWriting)
-        {
+        Hp -= Damage;
+    }
 
-        }
-        else
-        {
+    public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
+    {
 
-        }
+    }
+
+    protected override void MoveCardFromDeckToField()
+    {
+        photonView.RPC(nameof(MoveCardFromDeckToFieldRPC), RpcTarget.AllBuffered);
+    }
+
+    [PunRPC]
+    private void MoveCardFromDeckToFieldRPC()
+    {
+        PhotonView parentView = PhotonManager.GetPhotonViewByType(photonView.IsMine ? PhotonViewType.PlayerField : PhotonViewType.EnemyField);
+
+        rect.SetParent(parentView.gameObject.transform);
     }
 }

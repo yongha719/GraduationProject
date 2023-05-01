@@ -25,8 +25,6 @@ public class MainMenuManager : MonoBehaviour
     void Start()
     {
         AddListener();
-
-        InputName.onEndEdit.AddListener((name) => CardManager.Name = name);
     }
 
     private void AddListener()

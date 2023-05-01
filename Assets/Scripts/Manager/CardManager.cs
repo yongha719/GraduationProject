@@ -1,20 +1,17 @@
-using Photon.Pun;
-using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 
-public static class CardManager
+public class CardManager : SingletonPunCallbacks<CardManager>
 {
-    private static List<UnitCard> PlayerUnits = new List<UnitCard>(10);
-    private static List<UnitCard> EnemyUnits = new List<UnitCard>(10);
-
-    public static string Name;
-
-    [Tooltip("내 덱")]
-    private static List<Card> myDeck = new List<Card>();
-    public static List<Card> MyDeck
+    // 필드에 낼 수 있는 카드가 최대 10개임
+    public List<UnitCard> PlayerUnits = new List<UnitCard>(10);
+    public List<UnitCard> EnemyUnits = new List<UnitCard>(10);
+    
+    // 포톤은 오브젝트를 리소스 폴더에서 가져와서 오브젝트 이름으로 저장했음
+    private List<string> myDeck = new List<string>();
+    /// <summary> 내 덱 </summary>
+    public List<string> MyDeck
     {
         get => myDeck;
 
@@ -24,44 +21,5 @@ public static class CardManager
         }
     }
 
-    /// <summary> Player Unit Card를 필드에 스폰했을 때 </summary>
-    public static void AddPlayerUnit(this UnitCard card)
-    {
-        PlayerUnits.Add(card);
-    }
 
-    /// <summary> Enemy Unit Card를 필드에 스폰했을 때 </summary>
-    public static void AddEnemyUnit(this UnitCard card)
-    {
-        EnemyUnits.Add(card);
-    }
-
-    public static List<UnitCard> GetPlayerUnitCards(this UnitCard card) => PlayerUnits;
-    public static List<UnitCard> GetEnemyUnitCards(this UnitCard card) => EnemyUnits;
-
-    public static void RemovePlayerUnit(this UnitCard card)
-    {
-        if (PlayerUnits.Contains(card))
-            PlayerUnits.Remove(card);
-    }
-
-
-    /// <summary>  </summary>
-    public static void RemoveEnemyUnit(this UnitCard card)
-    {
-        if (EnemyUnits.Contains(card))
-            EnemyUnits.Remove(card);
-    }
-
-    public static void CardSpawnEvent(this Action<UnitCard> action)
-    {
-        action?.Invoke(EnemyUnits.Last());
-    }
-
-    public static void SerializeUnitCards(this PhotonStream stream)
-    {
-        // 적과 플레이어는 반대로 받아와야 하기 때문에 메서드를 만들었음
-        stream.Serialize(PlayerUnits, EnemyUnits);
-        stream.Serialize(EnemyUnits, PlayerUnits);
-    }
 }

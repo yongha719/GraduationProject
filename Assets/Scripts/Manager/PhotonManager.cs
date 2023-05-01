@@ -2,6 +2,7 @@ using Photon.Pun;
 using Photon.Realtime;
 using System;
 using System.Collections.Generic;
+using UnityEngine;
 
 
 // PhotonNetwork Reference
@@ -30,12 +31,12 @@ public class PhotonManager : SingletonPunCallbacks<PhotonManager>
     private TypedLobby TestLobby = new TypedLobby("TestLobby", LobbyType.Default);
     private List<RoomInfo> roomInfos = new List<RoomInfo>();
 
-    private static Dictionary<PhotonViewType, PhotonView> PhotonViews = new Dictionary<PhotonViewType, PhotonView>();
-
     private Photon.Realtime.Player Player;
     private Photon.Realtime.Player EnemyPlayer;
 
     private Room room;
+
+    private static Dictionary<PhotonViewType, PhotonView> PhotonViews = new Dictionary<PhotonViewType, PhotonView>();
 
     /// <summary> Type으로 PhotonView를 가져옴 </summary>
     public static PhotonView GetPhotonViewByType(PhotonViewType photonViewType) => PhotonViews[photonViewType];
@@ -49,18 +50,19 @@ public class PhotonManager : SingletonPunCallbacks<PhotonManager>
         {
             PhotonViews.Add(photonView, PhotonView.Find((int)photonView));
         }
+
+        PhotonNetwork.ConnectUsingSettings();
     }
 
     private void Start()
     {
-        PhotonNetwork.ConnectUsingSettings();
     }
 
     public override void OnConnected()
     {
         print("On Connected");
+
         Player = PhotonNetwork.LocalPlayer;
-        Player.NickName = CardManager.Name;
     }
 
     public override void OnConnectedToMaster()
@@ -72,14 +74,10 @@ public class PhotonManager : SingletonPunCallbacks<PhotonManager>
     {
         print("Join Lobby");
 
-        print("안녕 내 이름은 김시원");
         RoomOptions options = new RoomOptions();
         options.MaxPlayers = 2;
 
-        if (PhotonNetwork.IsMasterClient)
-            PhotonNetwork.CreateRoom("TestRoom", options, TestLobby);
-        else
-            PhotonNetwork.JoinRoom("TestRoom");
+        PhotonNetwork.JoinOrCreateRoom("TestRoom", options, TestLobby);
     }
 
 

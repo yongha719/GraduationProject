@@ -1,18 +1,13 @@
 using Photon.Pun;
-using Photon.Pun.UtilityScripts;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.UI;
+using static MyDebug;
 
-
-public class GameManager : Singleton<GameManager>, IPunObservable
+public class GameManager : SingletonPunCallbacks<GameManager>, IPunObservable
 {
-    public bool IsPlayerTurn => TurnManager.Instance.TurnState == TurnState.PlayerTurn;
+    public string PlayerName;
 
     void Start()
     {
-
+        
     }
 
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)

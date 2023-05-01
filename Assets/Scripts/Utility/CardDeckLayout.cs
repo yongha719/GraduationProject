@@ -10,10 +10,10 @@ using UnityEngine;
 [AddComponentMenu("MyComponent/CardLayout", int.MinValue)]
 public class CardDeckLayout : MonoBehaviourPunCallbacks, IPunObservable
 {
-    private Vector3 leftPosition = new Vector3(-200, -30, 0);
-    private Vector3 rightPosition = new Vector3(420, -30, 0);
-    private Quaternion leftRotation = Quaternion.Euler(0, 0, 15f);
-    private Quaternion rightRotation = Quaternion.Euler(0, 0, -15f);
+    private readonly Vector3 leftPosition = new Vector3(-200, -30, 0);
+    private readonly Vector3 rightPosition = new Vector3(420, -30, 0);
+    private readonly Quaternion leftRotation = Quaternion.Euler(0, 0, 15f);
+    private readonly Quaternion rightRotation = Quaternion.Euler(0, 0, -15f);
 
     private List<RectTransform> childs = new List<RectTransform>();
 
@@ -22,21 +22,12 @@ public class CardDeckLayout : MonoBehaviourPunCallbacks, IPunObservable
 
     [SerializeField, Tooltip("테스트 카드")]
     private GameObject Card;
-
-
     private string CardPath => $"Cards/{Card.name}";
+
 
     private void Start()
     {
         IsMine = photonView.ViewID == (int)PhotonViewType.PlayerDeck;
-    }
-
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.Alpha1) && IsMine)
-        {
-            CardDraw();
-        }
     }
 
     public void CardDraw()
@@ -51,16 +42,8 @@ public class CardDeckLayout : MonoBehaviourPunCallbacks, IPunObservable
         PhotonView card = PhotonNetwork.GetPhotonView(cardViewId);
         PhotonView parentPhotonView = null;
 
-        if (card.IsMine)
-        {
-            parentPhotonView = PhotonManager.GetPhotonViewByType(PhotonViewType.PlayerDeck);
-            card.GetComponent<UnitCard>().AddPlayerUnit();
-        }
-        else
-        {
-            parentPhotonView = PhotonManager.GetPhotonViewByType(PhotonViewType.EnemyDeck);
-            card.GetComponent<UnitCard>().AddEnemyUnit();
-        }
+        parentPhotonView = PhotonManager.GetPhotonViewByType(card.IsMine ? PhotonViewType.PlayerDeck : PhotonViewType.EnemyDeck);
+        card.GetComponent<UnitCard>().AddPlayerUnit();
 
         card.gameObject.transform.SetParent(parentPhotonView.gameObject.transform);
         card.gameObject.transform.localScale = Vector3.one;

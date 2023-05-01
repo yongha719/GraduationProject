@@ -13,6 +13,9 @@ MonoBehaviour:
   m_Name: CardData
   m_EditorClassIdentifier: 
   Name: "\uC2DC\uBD09\uBD09"
+  Explain: "\uBB34\uB824 \uC2DC\uBD09\uBD09\uC774\uB2E4.."
   Cost: 3
   Power: 2
   Hp: 2
+  CriticalPercentage: -1
+  CriticalPower: 0

@@ -11,23 +11,22 @@ public enum CardState
     Field // 필드에 냈을 때
 }
 
-public class Card : MonoBehaviourPun, IBeginDragHandler, IDragHandler, IEndDragHandler, IDropHandler, IPunObservable
+public class Card : MonoBehaviourPun, IBeginDragHandler, IDragHandler, IEndDragHandler, IDropHandler
 {
+    public CardData CardData;
+
     protected bool IsEnemy;
     protected bool CanDrag => IsEnemy == false && cardState == CardState.Deck;
 
     protected CardState cardState = CardState.Deck;
     public virtual CardState CardState { get; set; }
 
+    protected RectTransform rect;
+
     private Vector2 originPos;
     private Quaternion layoutRot;
     [Tooltip("클릭했을때 마우스 포인터와 카드 중앙에서의 거리")]
     private Vector2 mousePosDistance;
-
-
-
-    protected RectTransform rect;
-
 
     protected virtual void Awake()
     {
@@ -37,11 +36,6 @@ public class Card : MonoBehaviourPun, IBeginDragHandler, IDragHandler, IEndDragH
     protected virtual void Start()
     {
         IsEnemy = !photonView.IsMine;
-    }
-
-    public virtual void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
-    {
-
     }
 
     private void OnMouseEnter()
@@ -56,11 +50,14 @@ public class Card : MonoBehaviourPun, IBeginDragHandler, IDragHandler, IEndDragH
         }
     }
 
+    protected virtual void Attack(UnitCard card)
+    {
+
+    }
+
+
     void IBeginDragHandler.OnBeginDrag(PointerEventData eventData)
     {
-        print("Begin");
-
-
         if (CanDrag == false) return;
 
         // 왼쪽 버튼으로 드래그 시작했을때 원래 포지션 저장과 마우스 포인터와 거리도 저장
@@ -75,8 +72,6 @@ public class Card : MonoBehaviourPun, IBeginDragHandler, IDragHandler, IEndDragH
 
     void IDragHandler.OnDrag(PointerEventData eventData)
     {
-        print("OnDrag");
-
         if (CanDrag == false) return;
 
         // 드래그할 때 포지션 바꿔줌
@@ -90,9 +85,6 @@ public class Card : MonoBehaviourPun, IBeginDragHandler, IDragHandler, IEndDragH
 
     void IEndDragHandler.OnEndDrag(PointerEventData eventData)
     {
-        print("End");
-
-
         if (CanDrag == false) return;
 
         // 다시 돌아가
@@ -108,11 +100,22 @@ public class Card : MonoBehaviourPun, IBeginDragHandler, IDragHandler, IEndDragH
 
         for (int i = 0; i < rayhits.Length; i++)
         {
+            if (rayhits[i].collider.TryGetComponent(out CardFieldLayout field))
+            {
+                MoveCardFromDeckToField();
+                CardState = CardState.Field;
+                break;
+            }
+
             if (rayhits[i].collider.TryGetComponent(out UnitCard card) && card.IsEnemy)
             {
-                print("드디어");
+                card.Attack(card);
             }
         }
     }
 
+    protected virtual void MoveCardFromDeckToField()
+    {
+
+    }
 }
