@@ -5,8 +5,8 @@ using System.Linq;
 
 public class DeckManager : MonoBehaviour
 {
-    [Tooltip("기준 X 값")]
-    public float standardX;
+    [Tooltip("카드 선택 드레그 포지션X(RectTransform)")]
+    public const float standardX = 450;
 
     public List<CardData> allHaveCardList = new List<CardData>();
 

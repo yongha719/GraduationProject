@@ -24,7 +24,12 @@ public class CardDeck : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, I
     [SerializeField]
     private TextMeshProUGUI hp;
 
+    [SerializeField]
+    private GameObject selectCard;
 
+    [SerializeField]
+    private GameObject deSelectCard;
+    
     private CardData data;
     public CardData Data 
     {
@@ -74,6 +79,10 @@ public class CardDeck : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, I
     public void OnDrag(PointerEventData eventData)
     {
         transform.position = eventData.position;
+        if(rect.position.x >= DeckManager.standardX)
+        {
+
+        }
 
     }
 
