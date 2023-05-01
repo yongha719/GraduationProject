@@ -22,7 +22,6 @@ public class UnitCard : Card, IPunObservable
             if (value <= 0)
             {
                 hp = 0;
-                MyDebug.Log("피 없엉");
                 this.RemoveUnit();
             }
 
@@ -86,6 +85,7 @@ public class UnitCard : Card, IPunObservable
     {
         PhotonView parentView = PhotonManager.GetPhotonViewByType(photonView.IsMine ? PhotonViewType.PlayerField : PhotonViewType.EnemyField);
 
+        rect.localScale = Vector3.one * 0.6f;
         rect.SetParent(parentView.gameObject.transform);
     }
 }
