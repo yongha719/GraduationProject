@@ -6,6 +6,13 @@ using UnityEngine.EventSystems;
 using TMPro;
 using Photon.Pun.UtilityScripts;
 
+
+public enum ECardDeckState
+{
+    HaveCardList,//아직 아무것도 하지 않은 상태
+    PutOnCard,//카드를 장착한 경우
+    Dragging,//드래그 중일 경우
+}
 public class CardDeck : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, IDragHandler
 {
     private RectTransform rect;
@@ -20,15 +27,16 @@ public class CardDeck : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, I
     private TextMeshProUGUI costText;
 
     [SerializeField]
-    private TextMeshProUGUI power;
+    private TextMeshProUGUI powerText;
     [SerializeField]
-    private TextMeshProUGUI hp;
+    private TextMeshProUGUI hpText;
 
     [SerializeField]
     private GameObject selectCard;
 
     [SerializeField]
     private GameObject deSelectCard;
+
     
     private CardData data;
     public CardData Data 
@@ -51,10 +59,6 @@ public class CardDeck : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, I
 
     }
 
-    private Vector3 rayOriginPos = new Vector3(0, 0, -1f);
-    private Vector3 rayDir = Vector3.forward;
-
-    private RaycastHit ray;
 
     private void Start()
     {
@@ -68,12 +72,12 @@ public class CardDeck : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, I
 
     private void DrawRay()
     {
-        Debug.DrawRay(transform.position + rayOriginPos, rayDir, Color.red, 10f);
-        print(ray.transform.position);
-        if (Physics.Raycast(transform.position + rayOriginPos, rayDir, out ray, 10f))
-        {
-            print(ray.collider.name);
-        }
+        //Debug.DrawRay(transform.position + rayOriginPos, rayDir, Color.red, 10f);
+        //print(ray.transform.position);
+        //if (Physics.Raycast(transform.position + rayOriginPos, rayDir, out ray, 10f))
+        //{
+        //    print(ray.collider.name);
+        //}
     }
 
     public void OnDrag(PointerEventData eventData)
