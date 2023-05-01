@@ -660,7 +660,7 @@ namespace Photon.Pun
             }
         }
 
-        public void Serialize<T>(T left, T right)
+        public void Serialize<T>(object left, object right)
         {
             if (this.IsWriting)
             {

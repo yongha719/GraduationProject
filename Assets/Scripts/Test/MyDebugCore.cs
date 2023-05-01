@@ -9,21 +9,22 @@ public class MyDebugCore : MonoBehaviour
     [SerializeField]
     private RectTransform debugListParent;
 
-    private void Awake() => MyDebug.debugCore = this;
+    private void Start()
+    {
+        Application.logMessageReceived += LogHandler;
+    }
 
-    public void Log(string message)
+    void LogHandler(string message, string stackTrace, LogType logType)
+    {
+        Log(message);
+    }
+    
+    private void Log(string message)
     {
         var time = DateTime.Now;
-        string log = $"[{time.Hour}:{time.Minute}:{time.Second}] {message}";
+        string log = $"[{time.Hour:D2}:{time.Minute:D2}:{time.Second:D2}] {message}";
 
         Instantiate(debugContent, debugListParent).GetComponent<DebugContent>().SetLog(log);
-        Debug.Log(message);
     }
 }
 
-public static class MyDebug
-{
-    public static MyDebugCore debugCore;
-
-    public static void Log(string message) => debugCore.Log(message);
-}

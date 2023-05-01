@@ -1,5 +1,4 @@
 using Photon.Pun;
-using static MyDebug;
 
 public class GameManager : SingletonPunCallbacks<GameManager>, IPunObservable
 {
@@ -7,11 +6,11 @@ public class GameManager : SingletonPunCallbacks<GameManager>, IPunObservable
 
     void Start()
     {
-        
+        print("Debug Test");
     }
 
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
     {
-        stream.SerializeUnitCards();
+        
     }
 }

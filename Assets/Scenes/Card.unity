@@ -133,6 +133,7 @@ GameObject:
   m_Component:
   - component: {fileID: 20103896}
   - component: {fileID: 20103897}
+  - component: {fileID: 20103901}
   - component: {fileID: 20103899}
   - component: {fileID: 20103900}
   m_Layer: 5
@@ -236,6 +237,20 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1920, y: 310}
   m_EdgeRadius: 0
+--- !u!114 &20103901
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 20103895}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8790b843f1b17a24a91be7b417d06136, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  IsMine: 0
+  Cards: []
 --- !u!1 &44141131
 GameObject:
   m_ObjectHideFlags: 0
@@ -788,6 +803,78 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   debugContent: {fileID: 5112492084789625200, guid: 27194ae74de19a94ea5f9b6264b063ec, type: 3}
   debugListParent: {fileID: 1231272627}
+--- !u!1 &214781206
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 214781207}
+  - component: {fileID: 214781208}
+  - component: {fileID: 214781209}
+  m_Layer: 0
+  m_Name: CardManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &214781207
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 214781206}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.16757543, y: -0.5574428, z: -0.0785659}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 5
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &214781208
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 214781206}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c7c0ba11b64ec354fa922b5c21e3cc6d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  PlayerUnits:
+    list: []
+  EnemyUnits:
+    list: []
+--- !u!114 &214781209
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 214781206}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ObservedComponentsFoldoutOpen: 1
+  Group: 0
+  prefixField: -1
+  Synchronization: 3
+  OwnershipTransfer: 0
+  observableSearch: 2
+  ObservedComponents:
+  - {fileID: 214781208}
+  sceneViewId: 3
+  InstantiationId: 0
+  isRuntimeInstantiated: 0
 --- !u!1 &478015931
 GameObject:
   m_ObjectHideFlags: 0
