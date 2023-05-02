@@ -25,7 +25,7 @@ public class DeckManager : MonoBehaviour
 
     public Sprite[] sprites = new Sprite[30];
 
-    [Tooltip("시작 지점")]
+    [Tooltip("정렬 시작 지점")]
     public Vector3 startSortPosition;
 
     [SerializeField]
@@ -43,10 +43,6 @@ public class DeckManager : MonoBehaviour
 
     private void SetHaveCards()
     {
-        for (int i = 0; i < allHaveCardList.Count; i++)
-        {
-
-        }
     }
 
     private void Update()
