@@ -9,16 +9,21 @@ public class DeckManager : MonoBehaviour
     public const float standardX = 450;
 
     [Tooltip("카드 정렬 간격")]
-    public static Vector2 Spacing = new Vector2(300, 300);
+    [HideInInspector]
+    public Vector2 spacing = new Vector2(300, 300);
 
-    [Tooltip("카드 가로 최대 숫자")]
+    [Tooltip("Have카드 가로 최대 숫자")]
     public const int MAXHORIZONTALCOUNT = 4;
 
     [Tooltip("가지고 있는 카드")]
     public List<CardDeck> allHaveCardList = new List<CardDeck>();
 
-    [Tooltip("deck")]
+    [Tooltip("SelectDeck")]
     public List<CardDeck> cardList = new List<CardDeck>();
+
+    public List<CardData> dataList = new List<CardData>();
+
+    public Sprite[] sprites = new Sprite[30];
 
     [Tooltip("시작 지점")]
     public Vector3 startSortPosition;
@@ -26,11 +31,35 @@ public class DeckManager : MonoBehaviour
     [SerializeField]
     private Transform cardSpawnParent;
 
+    [SerializeField]
+    private Transform haveCardParent;
+
     public CardDeck card;
 
     private void Start()
     {
+        SetHaveCards();
+    }
 
+    private void SetHaveCards()
+    {
+        for (int i = 0; i < allHaveCardList.Count; i++)
+        {
+
+        }
+    }
+
+    private void Update()
+    {
+        
+    }
+
+    private void InputKey()
+    {
+        if (Input.GetKeyDown(KeyCode.Alpha5))
+        {
+            
+        }
     }
 
     public void SelectCard(CardData data)
@@ -38,16 +67,25 @@ public class DeckManager : MonoBehaviour
 
     }
 
+    /// <summary>
+    /// PutOn카드 정렬
+    /// </summary>
+    /// <param name="list"></param>
     private void SortDeck(List<CardData> list)
     {
         list.OrderBy(item => item.Cost);
     }
 
+    /// <summary>
+    /// Have카드 위치 정렬
+    /// </summary>
     public void SortCard()
     {
         for (int i = 0; i < allHaveCardList.Count; i++)
         {
-            allHaveCardList[i].transform.position = new Vector2(allHaveCardList.Count % MAXHORIZONTALCOUNT * Spacing.x, i * Spacing.y);
+            allHaveCardList[i].transform.position = 
+                new Vector2((startSortPosition.x + allHaveCardList.Count) % MAXHORIZONTALCOUNT * spacing.x
+                ,(startSortPosition.y - i) * spacing.y);
         }
     }
 }
