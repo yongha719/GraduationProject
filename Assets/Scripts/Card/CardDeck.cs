@@ -7,16 +7,14 @@ using TMPro;
 using Photon.Pun.UtilityScripts;
 
 
-public enum ECardDeckState
+public enum ECardDeckState//현재 어디위치에 있는지
 {
-    HaveCardList,//아직 아무것도 하지 않은 상태
-    PutOnCard,//카드를 장착한 경우
-    Dragging,//드래그 중일 경우
+    HaveCardArea,
+    PutOnCardArea,
+    Dragging,
 }
 public class CardDeck : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, IDragHandler
 {
-    private RectTransform rect;
-
     [SerializeField]
     private Image illust;
     [SerializeField]
@@ -62,7 +60,7 @@ public class CardDeck : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, I
 
     private void Start()
     {
-        rect = GetComponent<RectTransform>();
+
     }
 
     private void Update()
@@ -83,10 +81,15 @@ public class CardDeck : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, I
     public void OnDrag(PointerEventData eventData)
     {
         transform.position = eventData.position;
-        if(rect.position.x >= DeckManager.standardX)
+        if(transform.position.x >= DeckManager.standardX)
         {
 
         }
+
+    }
+
+    private void ChangeState()
+    {
 
     }
 
