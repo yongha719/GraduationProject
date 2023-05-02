@@ -1,7 +1,7 @@
-using System.Collections;
-using System.Collections.Generic;
+using System;
 using UnityEngine;
 
+[Serializable]
 //[CreateAssetMenu(fileName = "CardData", menuName = "Data/CardData", order = int.MinValue)]
 public class CardData
 {
@@ -21,7 +21,7 @@ public class CardData
     {
         get
         {
-            if (Random.Range(0, 100) <= CriticalPercentage)
+            if (UnityEngine.Random.Range(0, 100) <= CriticalPercentage)
                 return Power + CriticalPower; // 크리티컬 데미지까지 추가된 공격력
             else
                 return Power;

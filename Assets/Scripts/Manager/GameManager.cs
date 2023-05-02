@@ -1,3 +1,5 @@
+using AYellowpaper.SerializedCollections;
+using AYellowpaper.SerializedCollections.Editor;
 using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
@@ -8,7 +10,8 @@ public class GameManager : SingletonPunCallbacks<GameManager>, IPunObservable
 {
     public string PlayerName;
 
-    public Dictionary<string, CardData> CardDatas = new Dictionary<string, CardData>();
+    [SerializedDictionary("Card Rating", "Card Data")]
+    public SerializedDictionary<string, CardData> CardDatas = new SerializedDictionary<string, CardData>();
 
     private const string CARDDATA_URL = "https://docs.google.com/spreadsheets/d/1y26T7EyZe3DPMKAMjTs2PpUJ34UlDPmmy7k9oEy1Ye0/export?format=tsv&range=A5:I18";
 

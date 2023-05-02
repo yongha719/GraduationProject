@@ -38,9 +38,7 @@ public class CardManager : SingletonPunCallbacks<CardManager>, IPunObservable
 
     public void SetDeck(List<string> cardPaths)
     {
-        AssetBundle assetBundle;
 
-        
     }
 
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
