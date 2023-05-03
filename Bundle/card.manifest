@@ -1,12 +1,12 @@
 ManifestFileVersion: 0
-CRC: 595222931
+CRC: 1777232948
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: d4e459b23a4ef4d8b3e0da96c944c878
+    Hash: c87bb1f9e249da7fb47b87f07df77f73
   TypeTreeHash:
     serializedVersion: 2
-    Hash: 5534739642da53a43618e1a15c116c7d
+    Hash: 3fee6c98bd5d899665a0bd0515df4f40
 HashAppended: 0
 ClassTypes:
 - Class: 1
@@ -26,8 +26,6 @@ ClassTypes:
 - Class: 114
   Script: {fileID: 11500000, guid: ff66b517c2ace044e840477961a53206, type: 3}
 - Class: 114
-  Script: {fileID: 11500000, guid: 0cc65dd3d93ccae42ba095fa3c61c786, type: 3}
-- Class: 114
   Script: {fileID: 11500000, guid: 71c1514a6bd24e1e882cebbe1904ce04, type: 3}
 - Class: 114
   Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
@@ -37,11 +35,15 @@ ClassTypes:
   Script: {instanceID: 0}
 - Class: 128
   Script: {instanceID: 0}
+- Class: 213
+  Script: {instanceID: 0}
 - Class: 222
   Script: {instanceID: 0}
 - Class: 224
   Script: {instanceID: 0}
 SerializeReferenceClassIdentifiers:
+- AssemblyName: Assembly-CSharp
+  ClassName: CardData
 - AssemblyName: Unity.TextMeshPro
   ClassName: TMPro.FaceInfo_Legacy
 - AssemblyName: Unity.TextMeshPro
@@ -69,5 +71,6 @@ SerializeReferenceClassIdentifiers:
 - AssemblyName: UnityEngine.UI
   ClassName: UnityEngine.UI.MaskableGraphic/CullStateChangedEvent
 Assets:
-- Assets/Prefabs/Card/InGame_Card.prefab
+- Assets/Resources/Cards/Ingame Cards/A1.prefab
+- Assets/Resources/Cards/Ingame Cards/InGame_Card.prefab
 Dependencies: []

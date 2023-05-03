@@ -1,7 +1,14 @@
 ManifestFileVersion: 0
-CRC: 3663232314
+CRC: 1344605542
 AssetBundleManifest:
   AssetBundleInfos:
     Info_0:
       Name: card
+      Dependencies: {}
+    Info_1:
+      Name: testbundle.testvari
+      Dependencies:
+        Dependency_0: yhbundle/testbundle
+    Info_2:
+      Name: yhbundle/testbundle
       Dependencies: {}
