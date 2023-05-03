@@ -30,10 +30,20 @@ public class CardDeckLayout : MonoBehaviourPunCallbacks, IPunObservable
         IsMine = photonView.ViewID == (int)PhotonViewType.PlayerDeck;
     }
 
+    private void Update()
+    {
+        if (GameManager.Instance.IsTest && IsMine && Input.GetKeyDown(KeyCode.Alpha1))
+            CardDraw();
+    }
+
     public void CardDraw()
     {
         PhotonView cardPhotonView = PhotonNetwork.Instantiate(CardPath, Vector2.zero, Quaternion.identity).GetPhotonView();
-        photonView.RPC(nameof(SetDeckParent), RpcTarget.AllBuffered, cardPhotonView.ViewID);
+
+        if (GameManager.Instance.IsTest)
+            photonView.RPC(nameof(SetDeckParent), RpcTarget.AllBuffered, cardPhotonView.ViewID);
+        else
+            SetDeckParent(cardPhotonView.ViewID);
     }
 
     [PunRPC]

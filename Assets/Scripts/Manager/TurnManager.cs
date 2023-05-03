@@ -52,7 +52,10 @@ public class TurnManager : SingletonPunCallbacks<TurnManager>, IPunObservable
     private Button turnChangeButton;
 
     /// <summary> 적 소환할 때 이벤트 추가 </summary>
-    public void AddEnemySpawnEvent(System.Action<UnitCard> call) => enemySpawnEvent += call;
+    public void AddEnemySpawnEvent(System.Action<UnitCard> call)
+    {
+        enemySpawnEvent += call;
+    }
 
     private void Start()
     {

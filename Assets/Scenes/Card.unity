@@ -208,7 +208,7 @@ MonoBehaviour:
   m_ChildForceExpandHeight: 0
   m_ChildControlWidth: 0
   m_ChildControlHeight: 0
-  m_ChildScaleWidth: 0
+  m_ChildScaleWidth: 1
   m_ChildScaleHeight: 0
   m_ReverseArrangement: 0
 --- !u!61 &20103900
@@ -777,8 +777,8 @@ Canvas:
   m_GameObject: {fileID: 192736468}
   m_Enabled: 1
   serializedVersion: 3
-  m_RenderMode: 0
-  m_Camera: {fileID: 0}
+  m_RenderMode: 1
+  m_Camera: {fileID: 519420031}
   m_PlaneDistance: 100
   m_PixelPerfect: 0
   m_ReceivesEvents: 1
@@ -801,8 +801,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 02131da9d2ab5604a9bd30b1b8e4b844, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  debugContent: {fileID: 5112492084789625200, guid: 27194ae74de19a94ea5f9b6264b063ec, type: 3}
-  debugListParent: {fileID: 1231272627}
+  logContent: {fileID: 5112492084789625200, guid: 27194ae74de19a94ea5f9b6264b063ec, type: 3}
+  logListParent: {fileID: 1231272627}
 --- !u!1 &214781206
 GameObject:
   m_ObjectHideFlags: 0
@@ -814,7 +814,6 @@ GameObject:
   - component: {fileID: 214781207}
   - component: {fileID: 214781208}
   - component: {fileID: 214781209}
-  - component: {fileID: 214781210}
   m_Layer: 0
   m_Name: CardManager
   m_TagString: Untagged
@@ -874,18 +873,6 @@ MonoBehaviour:
   sceneViewId: 3
   InstantiationId: 0
   isRuntimeInstantiated: 0
---- !u!114 &214781210
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 214781206}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e144efea13466654b935c8fa6f4fc415, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &478015931
 GameObject:
   m_ObjectHideFlags: 0
@@ -979,7 +966,7 @@ Canvas:
   m_Enabled: 1
   serializedVersion: 3
   m_RenderMode: 1
-  m_Camera: {fileID: 0}
+  m_Camera: {fileID: 519420031}
   m_PlaneDistance: 100
   m_PixelPerfect: 0
   m_ReceivesEvents: 1
@@ -988,7 +975,7 @@ Canvas:
   m_SortingBucketNormalizedSize: 0
   m_AdditionalShaderChannelsFlag: 25
   m_SortingLayerID: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 1
   m_TargetDisplay: 0
 --- !u!1 &508665278
 GameObject:
@@ -1996,19 +1983,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   PlayerName: 
+  IsTest: 1
   CardDatas:
-    _serializedList:
-    - Key: 
-      Value:
-        CardRating: 
-        Name: 
-        BasicAttackExplain: 
-        SpecialAttackExplain: 
-        Cost: 0
-        Power: 0
-        Hp: 0
-        CriticalPercentage: 0
-        CriticalPower: 0
+    _serializedList: []
 --- !u!114 &1018583212
 MonoBehaviour:
   m_ObjectHideFlags: 0

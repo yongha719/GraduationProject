@@ -10,6 +10,8 @@ public class GameManager : SingletonPunCallbacks<GameManager>, IPunObservable
 {
     public string PlayerName;
 
+    public bool IsTest;
+
     [SerializedDictionary("Card Rating", "Card Data")]
     public SerializedDictionary<string, CardData> CardDatas = new SerializedDictionary<string, CardData>();
 
@@ -19,10 +21,10 @@ public class GameManager : SingletonPunCallbacks<GameManager>, IPunObservable
     {
         print("Debug Test");
 
-        StartCoroutine(ERequsetCardData());
+        StartCoroutine(ERequestCardData());
     }
 
-    private IEnumerator ERequsetCardData()
+    private IEnumerator ERequestCardData()
     {
         UnityWebRequest request = UnityWebRequest.Get(CARDDATA_URL);
 
@@ -37,14 +39,9 @@ public class GameManager : SingletonPunCallbacks<GameManager>, IPunObservable
 
         for (int i = 0; i < line.Length; i++)
         {
-            string[] data = line[i].Split('\t');
+            CardData cardData = new CardData(line[i].Split('\t'));
 
-            CardData cardData = new CardData(data);
-
-            string rating = data[8];
-            print(rating);
-
-            CardDatas.Add(rating, cardData);
+            CardDatas.Add(cardData.CardRating, cardData);
         }
     }
 

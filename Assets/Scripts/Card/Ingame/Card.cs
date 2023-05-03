@@ -102,6 +102,7 @@ public class Card : MonoBehaviourPun, IBeginDragHandler, IDragHandler, IEndDragH
         {
             if (rayhits[i].collider.TryGetComponent(out CardFieldLayout field))
             {
+                print("필드에 배치");
                 MoveCardFromDeckToField();
                 CardState = CardState.Field;
                 break;

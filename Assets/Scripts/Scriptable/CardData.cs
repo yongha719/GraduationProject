@@ -47,5 +47,6 @@ public class CardData
         CriticalPower = int.Parse(data[5]);
         BasicAttackExplain = data[6];
         SpecialAttackExplain = data[7];
+        CardRating = data[8];
     }
 }
