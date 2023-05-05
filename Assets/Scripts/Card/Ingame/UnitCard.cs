@@ -38,16 +38,6 @@ public class UnitCard : Card, IPunObservable
         set
         {
             cardState = value;
-
-            if (cardState == CardState.Deck)
-            {
-                rect.localScale = Vector3.one;
-            }
-            else if (cardState == CardState.Field)
-            {
-
-                rect.localScale = Vector3.one * 0.6f;
-            }
         }
     }
 
@@ -87,6 +77,8 @@ public class UnitCard : Card, IPunObservable
     private void MoveCardFromDeckToFieldRPC()
     {
         PhotonView parentView = PhotonManager.GetPhotonViewByType(photonView.IsMine ? PhotonViewType.PlayerField : PhotonViewType.EnemyField);
+
+        CardState = CardState.Field;
 
         rect.localScale = Vector3.one * 0.6f;
         rect.SetParent(parentView.gameObject.transform);
