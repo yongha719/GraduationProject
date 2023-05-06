@@ -22,8 +22,9 @@ public class CardDeckLayout : MonoBehaviourPunCallbacks, IPunObservable
 
     [SerializeField, Tooltip("테스트 카드")]
     private GameObject Card;
-    private string CardPath => $"Cards/{Card.name}";
 
+    /// <summary> 아직 테스트 중이라 이런식으로 함 </summary>
+    private string CardPath => $"Cards/Ingame Cards/{Card.name}";
 
     private void Start()
     {

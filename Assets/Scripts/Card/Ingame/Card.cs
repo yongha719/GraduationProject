@@ -96,18 +96,18 @@ public class Card : MonoBehaviourPun, IBeginDragHandler, IDragHandler, IEndDragH
     {
         if (CanDrag == false) return;
 
+        // 필드에 드롭된다면
+        if (CanvasUtility.IsDropMyField())
+        {
+            MoveCardFromDeckToField();
+            return;
+        }
+
         var rayhits = Physics2D.RaycastAll(transform.position + Vector3.back, Vector3.forward, 10f);
 
         for (int i = 0; i < rayhits.Length; i++)
         {
-            if (rayhits[i].collider.TryGetComponent(out CardFieldLayout field))
-            {
-                print("필드에 배치");
-                MoveCardFromDeckToField();
-                CardState = CardState.Field;
-                break;
-            }
-
+            // 임시 공격
             if (rayhits[i].collider.TryGetComponent(out UnitCard card) && card.IsEnemy)
             {
                 card.Attack(card);
@@ -115,8 +115,10 @@ public class Card : MonoBehaviourPun, IBeginDragHandler, IDragHandler, IEndDragH
         }
     }
 
+    // 원래 여기서 RPC로 호출하려고 했는데
+    // 부모 클래스여서 뭔가 안되는 듯?
+    // 자식 클래스로 옮기니까 잘됨
     protected virtual void MoveCardFromDeckToField()
     {
-
     }
 }
