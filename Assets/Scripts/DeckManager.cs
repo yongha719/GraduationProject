@@ -2,18 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
+using UnityEngine.UIElements;
 
-public class DeckManager : MonoBehaviour
+public class DeckManager : Singleton<DeckManager>
 {
+    public Canvas canvas;
+
     [Tooltip("카드 선택 드레그 포지션X(RectTransform)")]
     public const float standardX = 450;
-
-    [Tooltip("카드 정렬 간격")]
-    [HideInInspector]
-    public Vector2 spacing = new Vector2(300, 300);
-
-    [Tooltip("Have카드 가로 최대 숫자")]
-    public const int MAXHORIZONTALCOUNT = 4;
 
     [Tooltip("가지고 있는 카드")]
     public List<CardDeck> allHaveCardList = new List<CardDeck>();
@@ -23,18 +19,18 @@ public class DeckManager : MonoBehaviour
 
     public List<CardData> dataList = new List<CardData>();
 
-    public Sprite[] sprites = new Sprite[30];
-
-    [Tooltip("정렬 시작 지점")]
-    public Vector3 startSortPosition;
-
     [SerializeField]
+    [Tooltip("Have카드 소환할 부모 오브젝트")]
     private Transform cardSpawnParent;
 
     [SerializeField]
     private Transform haveCardParent;
 
     public CardDeck card;
+
+    public DragCard dragCard;
+
+    public GameObject currentDraggingCard;
 
     private void Start()
     {
@@ -43,6 +39,7 @@ public class DeckManager : MonoBehaviour
 
     private void SetHaveCards()
     {
+
     }
 
     private void Update()
@@ -63,6 +60,14 @@ public class DeckManager : MonoBehaviour
 
     }
 
+    public DragCard SpawnCardDeck(CardData data)
+    {
+        DragCard card = Instantiate(dragCard, canvas.transform);
+        
+
+        return card;
+    }
+
     /// <summary>
     /// PutOn카드 정렬
     /// </summary>
@@ -70,18 +75,5 @@ public class DeckManager : MonoBehaviour
     private void SortDeck(List<CardData> list)
     {
         list.OrderBy(item => item.Cost);
-    }
-
-    /// <summary>
-    /// Have카드 위치 정렬
-    /// </summary>
-    public void SortCard()
-    {
-        for (int i = 0; i < allHaveCardList.Count; i++)
-        {
-            allHaveCardList[i].transform.position = 
-                new Vector2((startSortPosition.x + allHaveCardList.Count) % MAXHORIZONTALCOUNT * spacing.x
-                ,(startSortPosition.y - i) * spacing.y);
-        }
     }
 }

@@ -13,7 +13,7 @@ public enum ECardDeckState//현재 어디위치에 있는지
     PutOnCardArea,
     Dragging,
 }
-public class CardDeck : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, IDragHandler
+public class CardDeck : MonoBehaviour,IPointerDownHandler
 {
     [SerializeField]
     private Image illust;
@@ -34,10 +34,9 @@ public class CardDeck : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, I
 
     [SerializeField]
     private GameObject deSelectCard;
-
     
     private CardData data;
-    public CardData Data 
+    public CardData Data
     {
         get
         {
@@ -57,7 +56,6 @@ public class CardDeck : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, I
 
     }
 
-
     private void Start()
     {
 
@@ -70,35 +68,10 @@ public class CardDeck : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, I
 
     private void DrawRay()
     {
-        //Debug.DrawRay(transform.position + rayOriginPos, rayDir, Color.red, 10f);
-        //print(ray.transform.position);
-        //if (Physics.Raycast(transform.position + rayOriginPos, rayDir, out ray, 10f))
-        //{
-        //    print(ray.collider.name);
-        //}
-    }
-
-    public void OnDrag(PointerEventData eventData)
-    {
-        transform.position = eventData.position;
-        if(transform.position.x >= DeckManager.standardX)
-        {
-
-        }
-
-    }
-
-    private void ChangeState()
-    {
 
     }
 
     public void OnPointerDown(PointerEventData eventData)
-    {
-
-    }
-
-    public void OnPointerUp(PointerEventData eventData)
     {
 
     }
