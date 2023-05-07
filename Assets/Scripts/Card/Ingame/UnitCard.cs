@@ -68,9 +68,9 @@ public class UnitCard : Card, IPunObservable
     protected override void MoveCardFromDeckToField()
     {
         if (GameManager.Instance.IsTest)
-            photonView.RPC(nameof(MoveCardFromDeckToFieldRPC), RpcTarget.AllBuffered);
-        else
             MoveCardFromDeckToFieldRPC();
+        else
+            photonView.RPC(nameof(MoveCardFromDeckToFieldRPC), RpcTarget.AllBuffered);
     }
 
     [PunRPC]
