@@ -1,4 +1,5 @@
 using System;
+using System.ComponentModel;
 using UnityEngine;
 
 [Serializable]
@@ -27,6 +28,8 @@ public class CardData
                 return Power;
         }
     }
+
+    BoxCollider2D dad;
 
     [Tooltip("공격력")]
     public int Power;

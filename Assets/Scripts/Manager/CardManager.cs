@@ -8,10 +8,11 @@ public class CardManager : SingletonPunCallbacks<CardManager>, IPunObservable
     public List<UnitCard> PlayerUnits = new List<UnitCard>(10);
     public List<UnitCard> EnemyUnits = new List<UnitCard>(10);
 
-    // 포톤은 오브젝트를 리소스 폴더에서 가져와서 오브젝트 이름으로 저장했음
-    private List<GameObject> myDeck = new List<GameObject>();
-    /// <summary> 내 덱 </summary>
-    public List<GameObject> MyDeck
+    // 포톤은 오브젝트를 리소스 폴더에서 가져와서 오브젝트의 이름으로 가져오기 위해 string으로 함
+    private List<string> myDeck = new List<string>();
+
+    /// <summary> - 내 덱 </summary>
+    public List<string> MyDeck
     {
         get => myDeck;
 
