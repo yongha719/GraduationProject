@@ -5,7 +5,7 @@ using System.Linq;
 using UnityEngine.UIElements;
 using Unity.Collections;
 
-public class DeckManager : Singleton<DeckManager>
+public class DeckManager : Singleton<DeckManager> 
 {
     public Canvas canvas;
 
@@ -16,12 +16,12 @@ public class DeckManager : Singleton<DeckManager>
     public List<CardData> allCardData = new List<CardData>();
 
     [Tooltip("가지고 있는 카드")]
-    public List<DeckCard> allHaveCardList = new List<DeckCard>();
+    public List<DeckBuildingCard> allHaveCardList = new List<DeckBuildingCard>();
 
     [Tooltip("SelectDeck")]
-    public List<DeckCard> cardList = new List<DeckCard>();
+    public List<DeckBuildingCard> cardList = new List<DeckBuildingCard>();
 
-    public List<DeckCard> dataList = new List<DeckCard>();
+    public List<DeckBuildingCard> dataList = new List<DeckBuildingCard>();
 
     [SerializeField]
     [Tooltip("Have카드 소환할 부모 오브젝트")]
@@ -30,16 +30,16 @@ public class DeckManager : Singleton<DeckManager>
     [SerializeField]
     private Transform haveCardParent;
 
-    public DeckCard card;
+    public DeckBuildingCard card;
 
     public DragCard dragCard;
 
     public GameObject currentDraggingCard;
 
 
-    private void Awake()
+    protected override void Awake()
     {
-        
+        base.Awake();
     }
 
     private void LoadData()
@@ -65,7 +65,7 @@ public class DeckManager : Singleton<DeckManager>
 
     }
 
-    public void SelectCard(DeckCard data)
+    public void SelectCard(DeckBuildingCard data)
     {
         cardList.Add(data);
     }
@@ -73,7 +73,6 @@ public class DeckManager : Singleton<DeckManager>
     public DragCard SpawnCardDeck(CardData data)
     {
         DragCard card = Instantiate(dragCard, canvas.transform);
-        
 
         return card;
     }

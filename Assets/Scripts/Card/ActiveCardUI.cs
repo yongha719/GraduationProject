@@ -10,7 +10,7 @@ public class ActiveCardUI : MonoBehaviour
 
     private Button informationBtn;
 
-    private DeckCard card;
+    private DeckBuildingCard card;
 
     private void Start()
     {

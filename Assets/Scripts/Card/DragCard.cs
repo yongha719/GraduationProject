@@ -4,13 +4,15 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class DragCard : MonoBehaviour,IPointerUpHandler
+public class DragCard : MonoBehaviour,IPointerUpHandler, IDragHandler
 {
     public Transform target;
 
     public CardData data;
 
     public GameObject selectCardObj;
+
+
 
     private void Start()
     {
@@ -27,6 +29,11 @@ public class DragCard : MonoBehaviour,IPointerUpHandler
     }
 
     public void OnPointerUp(PointerEventData eventData)
+    {
+
+    }
+
+    public void OnDrag(PointerEventData eventData)
     {
 
     }
