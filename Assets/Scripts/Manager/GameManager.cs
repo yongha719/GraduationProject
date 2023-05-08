@@ -47,7 +47,7 @@ public class GameManager : SingletonPunCallbacks<GameManager>, IPunObservable
 
         for (int i = 0; i < line.Length; i++)
         {
-            CardData cardData = new CardData(line[i].Split('\t'));
+            CardData cardData = new CardData(line);
 
             CardDatas.Add(cardData.CardRating, cardData);
         }
@@ -70,5 +70,10 @@ public class GameManager : SingletonPunCallbacks<GameManager>, IPunObservable
         // 제네릭으로 넣은 타입으로 인자로 넣은 이름과 맞는 에셋 번들을 찾아 가져온다.
         var prefab = myLoadedAssetBundle.LoadAsset<GameObject>("InGame_Card");
         Instantiate(prefab);
+    }
+
+    public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
+    {
+        
     }
 }

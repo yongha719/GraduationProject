@@ -3,6 +3,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 
 
+ /// <summary> 인게임 유닛 카드 </summary>
 public class UnitCard : Card, IPunObservable
 {
     private int hp;
@@ -41,6 +42,8 @@ public class UnitCard : Card, IPunObservable
         }
     }
 
+    public CardAttributeType CardAttributeType = CardAttributeType.None;
+
 
     protected override void Awake()
     {
@@ -52,6 +55,8 @@ public class UnitCard : Card, IPunObservable
     protected override void Start()
     {
         base.Start();
+
+        print(nameof(UnitCard));
     }
 
 
