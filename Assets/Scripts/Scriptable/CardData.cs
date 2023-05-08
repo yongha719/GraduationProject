@@ -1,21 +1,64 @@
 using System;
 using System.ComponentModel;
+using Unity.VisualScripting;
 using UnityEngine;
 
+public enum CardDataIndex
+{
+    Name = 0,
+    Power,
+    Hp,
+    Cost,
+    CriticalPercentage,
+    CriticalPower,
+    BasicAttackExplain,
+    CardAttributeType,
+    SpecialAttackExplain,
+    CardRating,
+    Damage
+}
+
+public enum CardAttributeType
+{
+    None,
+    Taunt,                      // 도발
+    Charge,                     // 속공
+    LastDitchEffort             // 최후의 발악
+}
+
+
 [Serializable]
-//[CreateAssetMenu(fileName = "CardData", menuName = "Data/CardData", order = int.MinValue)]
 public class CardData
 {
-    [Tooltip("등급")]
-    public string CardRating;
     [Tooltip("이름")]
     public string Name;
-    [Tooltip("기본 공격 설명")]
-    public string BasicAttackExplain;
-    [Tooltip("특수 공격 설명")]
-    public string SpecialAttackExplain;
+
+    [Tooltip("공격력")]
+    public int Power;
+
+    [Tooltip("체력")]
+    public int Hp;
+
     [Tooltip("코스트")]
     public int Cost;
+
+    [Tooltip("치명타 확률")]
+    public int CriticalPercentage = -1;
+
+    [Tooltip("치명타 공격력")]
+    public int CriticalPower = 0;
+
+    [Tooltip("기본 공격 설명")]
+    public string BasicAttackExplain;
+
+    [Tooltip("특성")]
+    public CardAttributeType CardAttributeType;
+
+    [Tooltip("특수 공격 설명")]
+    public string SpecialAttackExplain;
+
+    [Tooltip("등급")]
+    public string CardRating;
 
     /// <summary> 계산된 데미지 </summary>
     public int Damage
@@ -29,27 +72,68 @@ public class CardData
         }
     }
 
-    BoxCollider2D dad;
-
-    [Tooltip("공격력")]
-    public int Power;
-    [Tooltip("체력")]
-    public int Hp;
-    [Tooltip("치명타 확률")]
-    public int CriticalPercentage = -1;
-    [Tooltip("치명타 공격력")]
-    public int CriticalPower = 0;
-
     public CardData(string[] data)
     {
-        Name = data[0];
-        Power = int.Parse(data[1]);
-        Hp = int.Parse(data[2]);
-        Cost = int.Parse(data[3]);
-        CriticalPercentage = int.Parse(data[4]);
-        CriticalPower = int.Parse(data[5]);
-        BasicAttackExplain = data[6];
-        SpecialAttackExplain = data[7];
-        CardRating = data[8];
+        for (int i = 0; i < data.Length; i++)
+            this[i] = data[i];
+    }
+
+     /// <summary> 혹시나 쓰지 않을까 싶어서 만들어놨음 </summary>
+    public string this[int i]
+    {
+        get => i switch
+        {
+            0 => Name,
+            1 => Power.ToString(),
+            2 => Hp.ToString(),
+            3 => Cost.ToString(),
+            4 => CriticalPercentage.ToString(),
+            5 => CriticalPower.ToString(),
+            6 => BasicAttackExplain,
+            7 => CardAttributeType.ToString(),
+            8 => SpecialAttackExplain,
+            9 => CardRating.ToString(),
+            10 => Damage.ToString(),
+            _ => throw new IndexOutOfRangeException("Card Data Indexer Exception")
+        };
+
+        set
+        {
+            switch (i)
+            {
+                case 0:
+                    Name = value;
+                    break;
+                case 1:
+                    Power = int.Parse(value);
+                    break;
+                case 2:
+                    Cost = int.Parse(value);
+                    break;
+                case 3:
+                    Hp = int.Parse(value);
+                    break;
+                case 4:
+                    CriticalPercentage = int.Parse(value);
+                    break;
+                case 5:
+                    CriticalPower = int.Parse(value);
+                    break;
+                case 6:
+                    BasicAttackExplain = value;
+                    break;
+                case 7:
+                    CardAttributeType = (CardAttributeType)Enum.Parse(typeof(CardAttributeType), value);
+                    break;
+                case 8:
+                    SpecialAttackExplain = value;
+                    break;
+                case 9:
+                    CardRating = value;
+                    break;
+                default:
+                    throw new System.IndexOutOfRangeException("Card Data Indexer Exception");
+            }
+        }
     }
 }
