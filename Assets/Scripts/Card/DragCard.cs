@@ -3,38 +3,50 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using TMPro;
 
 public class DragCard : MonoBehaviour,IPointerUpHandler, IDragHandler
 {
-    public Transform target;
-
-    public CardData data;
+    private CardData data;
 
     public GameObject selectCardObj;
 
+    [SerializeField]
+    private TextMeshProUGUI costText;
 
+    [SerializeField]
+    private TextMeshProUGUI powerText;
 
-    private void Start()
+    [SerializeField]
+    private TextMeshProUGUI hpText;
+
+    [SerializeField]
+    private TextMeshProUGUI nameText;
+
+    [SerializeField]
+    private TextMeshProUGUI explainText;
+
+    public void SetDragCard(CardData data)
     {
-        
+        this.data = data;
+        costText.text = $"{data.Cost}";
+        powerText.text = $"{data.Damage}";
+        hpText.text = $"{data.Hp}";
+        nameText.text = $"{data.Name}";
+        explainText.text = $"{data.BasicAttackExplain}";
     }
 
-    public void SetDragCard(CardData data, GameObject selectCardObj)
-    {
-        
-    }
     private void Update()
     {
-        transform.position = target.position;
     }
 
     public void OnPointerUp(PointerEventData eventData)
     {
-
+        
     }
 
     public void OnDrag(PointerEventData eventData)
     {
-
+        transform.position = eventData.position;
     }
 }

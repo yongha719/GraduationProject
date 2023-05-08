@@ -24,6 +24,10 @@ public class DeckManager : Singleton<DeckManager>
     public List<DeckBuildingCard> dataList = new List<DeckBuildingCard>();
 
     [SerializeField]
+    [Tooltip("덱 편성 ")]
+    private List<GameObject> selectStateCardObjList = new List<GameObject>();
+
+    [SerializeField]
     [Tooltip("Have카드 소환할 부모 오브젝트")]
     private Transform cardSpawnParent;
 
@@ -70,9 +74,10 @@ public class DeckManager : Singleton<DeckManager>
         cardList.Add(data);
     }
 
-    public DragCard SpawnCardDeck(CardData data)
+    public DragCard SpawnDragCard(CardData data)
     {
         DragCard card = Instantiate(dragCard, canvas.transform);
+        card.SetDragCard(data);
 
         return card;
     }
