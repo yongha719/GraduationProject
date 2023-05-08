@@ -1,9 +1,7 @@
 using Photon.Pun;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using UnityEngine;
 
 public static class CardExetention
 {
@@ -50,6 +48,7 @@ public static class CardExetention
             EnemyUnits.Remove(card);
         }
     }
+
 
     /// <summary> 적 카드 스폰시 이벤트 </summary>
     public static void CardSpawnEvent(this Action<UnitCard> action)

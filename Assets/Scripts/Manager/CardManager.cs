@@ -1,5 +1,6 @@
 using Photon.Pun;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class CardManager : SingletonPunCallbacks<CardManager>, IPunObservable
@@ -22,11 +23,23 @@ public class CardManager : SingletonPunCallbacks<CardManager>, IPunObservable
         }
     }
 
-        
+    /// <summary>
+    /// 적이 도발 카드를 가지고 있는지 확인함 <br></br>
+    /// 적이 도발 카드가 있다면 도발카드만 공격해야 하기 때문이다 <br></br>
+    /// 만약 인자로 받은 카드가 도발 속성을 가지고 있으면 false 반환
+    /// </summary>
+    public bool EnemyHasTauntCard(UnitCard card)
+    {
+        if (card.CardAttributeType == CardAttributeType.Taunt)
+            return false;
+
+        return EnemyUnits.Select(card => card.CardAttributeType == CardAttributeType.Taunt) != null;
+    }
 
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
     {
-        // 적 플레이어는 내 카드가 적 카드이기 때문에 적과 나는 반대로 받아와야 함
+        // 내가 보낼 때는 플레이어 카드를 보내고
+        // 내가 보내는게 아닐 때는 적 카드를 받아옴
         Serialize(stream, PlayerUnits, EnemyUnits);
         Serialize(stream, EnemyUnits, PlayerUnits);
     }

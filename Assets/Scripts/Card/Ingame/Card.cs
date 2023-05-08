@@ -1,6 +1,7 @@
 using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -11,6 +12,7 @@ public enum CardState
     Field // 필드에 냈을 때
 }
 
+/// <summary> 인게임 카드의 부모 클래스 </summary>
 public class Card : MonoBehaviourPun, IBeginDragHandler, IDragHandler, IEndDragHandler, IDropHandler
 {
     public CardData CardData;
@@ -19,7 +21,13 @@ public class Card : MonoBehaviourPun, IBeginDragHandler, IDragHandler, IEndDragH
     protected bool CanDrag => IsEnemy == false && cardState == CardState.Deck;
 
     protected CardState cardState = CardState.Deck;
-    public virtual CardState CardState { get; set; }
+    public virtual CardState CardState
+    {
+        get => cardState;
+
+        set => photonView.RPC(nameof(SetCardStateRPC), RpcTarget.AllBuffered, value);
+    }
+
 
     protected RectTransform rect;
 
@@ -36,13 +44,15 @@ public class Card : MonoBehaviourPun, IBeginDragHandler, IDragHandler, IEndDragH
     protected virtual void Start()
     {
         IsEnemy = !photonView.IsMine;
+
+        print(nameof(Card));
     }
 
     private void OnMouseEnter()
     {
         if (CanDrag == false) return;
 
-        // 카드가 덱에 있을 때
+        // 카드가 덱에 있을 때 카드에 마우스 올리면
         if (cardState == CardState.Deck)
         {
             // TODO 카드커지게 하기
@@ -50,10 +60,29 @@ public class Card : MonoBehaviourPun, IBeginDragHandler, IDragHandler, IEndDragH
         }
     }
 
+    [PunRPC]
+    private void SetCardStateRPC(CardState value)
+    {
+        switch (value)
+        {
+            case CardState.Deck:
+                rect.localScale = Vector3.one;
+                break;
+            case CardState.ExpansionDeck:
+                // 덱에 있는 카드를 눌렀을 때 커지는 모션
+                break;
+            case CardState.Field:
+                rect.localScale = Vector3.one * 0.6f;
+                break;
+        }
+
+        CardState = value;
+    }
+
     protected virtual void Attack(UnitCard card)
     {
-
     }
+
 
 
     void IBeginDragHandler.OnBeginDrag(PointerEventData eventData)
@@ -65,6 +94,8 @@ public class Card : MonoBehaviourPun, IBeginDragHandler, IDragHandler, IEndDragH
         {
             originPos = rect.anchoredPosition;
             mousePosDistance = originPos - CanvasUtility.GetMousePosToCanvasPos();
+
+            // 드래그 할 때는 카드가 돌아가 있으면 안됨
             layoutRot = transform.localRotation;
             transform.localRotation = Quaternion.identity;
         }
@@ -94,6 +125,20 @@ public class Card : MonoBehaviourPun, IBeginDragHandler, IDragHandler, IEndDragH
 
     void IDropHandler.OnDrop(PointerEventData eventData)
     {
+        if (cardState == CardState.Field)
+        {
+            var rayhits = Physics2D.RaycastAll(transform.position + Vector3.back, Vector3.forward, 10f);
+
+            for (int i = 0; i < rayhits.Length; i++)
+            {
+                // 임시 공격
+                if (rayhits[i].collider.TryGetComponent(out UnitCard card) && card.IsEnemy)
+                {
+                    Attack(card);
+                }
+            }
+        }
+
         if (CanDrag == false) return;
 
         // 필드에 드롭된다면
@@ -103,16 +148,15 @@ public class Card : MonoBehaviourPun, IBeginDragHandler, IDragHandler, IEndDragH
             return;
         }
 
-        var rayhits = Physics2D.RaycastAll(transform.position + Vector3.back, Vector3.forward, 10f);
 
-        for (int i = 0; i < rayhits.Length; i++)
-        {
-            // 임시 공격
-            if (rayhits[i].collider.TryGetComponent(out UnitCard card) && card.IsEnemy)
-            {
-                card.Attack(card);
-            }
-        }
+    }
+
+    public bool CanAttack()
+    {
+        if (IsEnemy && cardState == CardState.Field && CardManager.Instance.EnemyHasTauntCard((UnitCard)this))
+            return true;
+        else
+            return false;
     }
 
     // 원래 여기서 RPC로 호출하려고 했는데
