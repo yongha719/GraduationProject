@@ -1,8 +1,10 @@
 using Photon.Pun;
+using System;
 using Unity.VisualScripting;
 using UnityEngine;
 
 
+[Serializable]
  /// <summary> 인게임 유닛 카드 </summary>
 public class UnitCard : Card, IPunObservable
 {
@@ -41,9 +43,6 @@ public class UnitCard : Card, IPunObservable
             cardState = value;
         }
     }
-
-    public CardAttributeType CardAttributeType = CardAttributeType.None;
-
 
     protected override void Awake()
     {

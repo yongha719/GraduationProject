@@ -18,8 +18,11 @@ public class GameManager : SingletonPunCallbacks<GameManager>, IPunObservable
     [Tooltip("카드 데이터들"), SerializedDictionary("Card Rating", "Card Data")]
     public SerializedDictionary<string, CardData> CardDatas = new SerializedDictionary<string, CardData>();
 
-    private const string CARD_DATA_URL = "https://docs.google.com/spreadsheets/d/1y26T7EyZe3DPMKAMjTs2PpUJ34UlDPmmy7k9oEy1Ye0/export?format=tsv&range=A5:I18";
 
+    [Tooltip("카드 데이터 받아올 스프레드시트 링크")]
+    private const string CARD_DATA_URL = "https://docs.google.com/spreadsheets/d/1uZHW4YokPwbg9gl0dDWcIjlWeieUlkiMwRk_PvQCPWU/edit?usp=sharing/export?format=tsv&range=A3:j16";
+
+    [Tooltip("에셋 번들 받아올 파일 경로")]
     private const string ASSET_BUNDLE_PATH = "Bundle/card";
 
     void Start()

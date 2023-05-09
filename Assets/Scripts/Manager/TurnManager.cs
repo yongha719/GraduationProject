@@ -33,14 +33,14 @@ public class TurnManager : SingletonPunCallbacks<TurnManager>, IPunObservable
 
     public bool MyTurn => TurnState == TurnState.PlayerTurn;
 
-    private Action<UnitCard> enemySpawnEvent;
-    public Action<UnitCard> EnemySpawnEvent
+    private Action<UnitCard> onEnemySpawnCallBack;
+    public Action<UnitCard> OnEnemySpawnCallBack
     {
-        get => enemySpawnEvent;
+        get => onEnemySpawnCallBack;
 
         set
         {
-            enemySpawnEvent = value;
+            onEnemySpawnCallBack = value;
         }
     }
 
@@ -50,12 +50,6 @@ public class TurnManager : SingletonPunCallbacks<TurnManager>, IPunObservable
 
     [SerializeField]
     private Button turnChangeButton;
-
-    /// <summary> 적 소환할 때 이벤트 추가 </summary>
-    public void AddEnemySpawnEvent(System.Action<UnitCard> call)
-    {
-        enemySpawnEvent += call;
-    }
 
     private void Start()
     {
@@ -125,7 +119,7 @@ public class TurnManager : SingletonPunCallbacks<TurnManager>, IPunObservable
         if (MyTurn)
             playerDeck.CardDraw();
         else
-            EnemySpawnEvent.CardSpawnEvent();
+            OnEnemySpawnCallBack.CardSpawnEvent();
     }
 
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)

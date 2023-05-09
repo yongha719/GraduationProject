@@ -94,15 +94,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   CardData:
-    CardRating: 
-    Name: 
-    BasicAttackExplain: 
-    SpecialAttackExplain: 
-    Cost: 0
-    Power: 0
-    Hp: 0
+    Name: TestCard
+    Power: 5
+    Hp: 5
+    Cost: 5
     CriticalPercentage: 0
     CriticalPower: 0
+    BasicAttackExplain: 
+    CardAttributeType: 0
+    SpecialAttackExplain: 
+    CardRating: 
+  CardAttributeType: 0
 --- !u!61 &584926971
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -189,7 +191,7 @@ LineRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 0}
+  - {fileID: 2100000, guid: 7d40d9fc7581a504daec55b0e356a819, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -209,32 +211,41 @@ LineRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 3
   m_Positions:
-  - {x: 0, y: 0, z: 0}
-  - {x: 0, y: 0, z: 1}
+  - {x: 0, y: 0, z: -1}
+  - {x: 0, y: 0, z: -1}
   m_Parameters:
     serializedVersion: 3
-    widthMultiplier: 1
+    widthMultiplier: 0.5
     widthCurve:
       serializedVersion: 2
       m_Curve:
       - serializedVersion: 3
-        time: 0
-        value: 1
-        inSlope: 0
-        outSlope: 0
+        time: 0.07174337
+        value: 0.6338042
+        inSlope: 0.09602835
+        outSlope: 0.09602835
         tangentMode: 0
         weightedMode: 0
         inWeight: 0.33333334
-        outWeight: 0.33333334
+        outWeight: 0.28571364
+      - serializedVersion: 3
+        time: 0.8730657
+        value: 0.09859154
+        inSlope: 0.37382498
+        outSlope: 0.37382498
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0.545315
+        outWeight: 0
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
     colorGradient:
       serializedVersion: 2
-      key0: {r: 1, g: 1, b: 1, a: 1}
-      key1: {r: 1, g: 1, b: 1, a: 1}
+      key0: {r: 0, g: 0, b: 0, a: 1}
+      key1: {r: 1, g: 0, b: 0, a: 1}
       key2: {r: 0, g: 0, b: 0, a: 0}
       key3: {r: 0, g: 0, b: 0, a: 0}
       key4: {r: 0, g: 0, b: 0, a: 0}
@@ -260,11 +271,11 @@ LineRenderer:
       m_Mode: 0
       m_NumColorKeys: 2
       m_NumAlphaKeys: 2
-    numCornerVertices: 0
-    numCapVertices: 0
+    numCornerVertices: 10
+    numCapVertices: 10
     alignment: 0
     textureMode: 0
     shadowBias: 0.5
-    generateLightingData: 0
-  m_UseWorldSpace: 1
+    generateLightingData: 1
+  m_UseWorldSpace: 0
   m_Loop: 0
