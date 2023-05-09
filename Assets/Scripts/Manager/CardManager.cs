@@ -30,10 +30,10 @@ public class CardManager : SingletonPunCallbacks<CardManager>, IPunObservable
     /// </summary>
     public bool EnemyHasTauntCard(UnitCard card)
     {
-        if (card.CardAttributeType == CardAttributeType.Taunt)
+        if (card.CardData.CardAttributeType == CardAttributeType.Taunt)
             return false;
 
-        return EnemyUnits.Select(card => card.CardAttributeType == CardAttributeType.Taunt) != null;
+        return EnemyUnits.Select(card => card.CardData.CardAttributeType == CardAttributeType.Taunt) != null;
     }
 
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)

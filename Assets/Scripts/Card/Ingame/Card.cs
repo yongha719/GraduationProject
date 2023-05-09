@@ -18,7 +18,9 @@ public class Card : MonoBehaviourPun, IBeginDragHandler, IDragHandler, IEndDragH
     public CardData CardData;
 
     protected bool IsEnemy;
-    protected bool CanDrag => IsEnemy == false && cardState == CardState.Deck;
+
+    /// <summary> 드래그 가능한 상태인지 체크 </summary>
+    protected bool CanDrag => IsEnemy == false && CardState == CardState.Deck && TurnManager.Instance.MyTurn;
 
     protected CardState cardState = CardState.Deck;
     public virtual CardState CardState
@@ -30,6 +32,7 @@ public class Card : MonoBehaviourPun, IBeginDragHandler, IDragHandler, IEndDragH
 
 
     protected RectTransform rect;
+    protected LineRenderer lineRenderer;
 
     private Vector2 originPos;
     private Quaternion layoutRot;
@@ -39,6 +42,7 @@ public class Card : MonoBehaviourPun, IBeginDragHandler, IDragHandler, IEndDragH
     protected virtual void Awake()
     {
         rect = GetComponent<RectTransform>();
+        lineRenderer = GetComponent<LineRenderer>();
     }
 
     protected virtual void Start()
@@ -67,12 +71,14 @@ public class Card : MonoBehaviourPun, IBeginDragHandler, IDragHandler, IEndDragH
         {
             case CardState.Deck:
                 rect.localScale = Vector3.one;
+                lineRenderer.positionCount = 0;
                 break;
             case CardState.ExpansionDeck:
                 // 덱에 있는 카드를 눌렀을 때 커지는 모션
                 break;
             case CardState.Field:
                 rect.localScale = Vector3.one * 0.6f;
+                lineRenderer.positionCount = 2;
                 break;
         }
 
@@ -87,6 +93,11 @@ public class Card : MonoBehaviourPun, IBeginDragHandler, IDragHandler, IEndDragH
 
     void IBeginDragHandler.OnBeginDrag(PointerEventData eventData)
     {
+        if (CardState == CardState.Field)
+        {
+            lineRenderer.SetPosition(0, (Vector3)CanvasUtility.GetMousePosToCanvasPos() + Vector3.back);
+        }
+
         if (CanDrag == false) return;
 
         // 왼쪽 버튼으로 드래그 시작했을때 원래 포지션 저장과 마우스 포인터와 거리도 저장
@@ -103,6 +114,11 @@ public class Card : MonoBehaviourPun, IBeginDragHandler, IDragHandler, IEndDragH
 
     void IDragHandler.OnDrag(PointerEventData eventData)
     {
+        if (CardState == CardState.Field)
+        {
+            lineRenderer.SetPosition(1, (Vector3)CanvasUtility.GetMousePosToCanvasPos() + Vector3.back);
+        }
+
         if (CanDrag == false) return;
 
         // 드래그할 때 포지션 바꿔줌
@@ -127,6 +143,11 @@ public class Card : MonoBehaviourPun, IBeginDragHandler, IDragHandler, IEndDragH
     {
         if (cardState == CardState.Field)
         {
+            for (int i = 0; i < lineRenderer.positionCount; i++)
+            {
+                lineRenderer.SetPosition(i, Vector3.zero);
+            }
+
             var rayhits = Physics2D.RaycastAll(transform.position + Vector3.back, Vector3.forward, 10f);
 
             for (int i = 0; i < rayhits.Length; i++)
@@ -147,8 +168,6 @@ public class Card : MonoBehaviourPun, IBeginDragHandler, IDragHandler, IEndDragH
             MoveCardFromDeckToField();
             return;
         }
-
-
     }
 
     public bool CanAttack()
