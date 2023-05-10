@@ -2,6 +2,7 @@ using System;
 using System.ComponentModel;
 using Unity.VisualScripting;
 using UnityEngine;
+using WebSocketSharp;
 
 [Serializable]
 public enum CardDataIndex
@@ -25,7 +26,8 @@ public enum CardAttributeType
     None,
     Taunt,                      // 도발
     Charge,                     // 속공
-    LastDitchEffort             // 최후의 발악
+    Poison,                     // 맹독
+    LastDitchEffort,            // 최후의 발악
 }
 
 
@@ -50,16 +52,16 @@ public class CardData
     [Tooltip("치명타 공격력")]
     public int CriticalPower = 0;
 
-    [Tooltip("기본 공격 설명")]
+    [Tooltip("기본 공격 설명"), TextArea]
     public string BasicAttackExplain;
 
     [Tooltip("특성")]
     public CardAttributeType CardAttributeType;
 
-    [Tooltip("특수 공격 설명")]
+    [Tooltip("특수 공격 설명"), TextArea]
     public string SpecialAttackExplain;
 
-    [Tooltip("등급")]
+    [Tooltip("등급"), TextArea]
     public string CardRating;
 
     /// <summary> 계산된 데미지 </summary>
@@ -80,7 +82,7 @@ public class CardData
             this[i] = data[i];
     }
 
-     /// <summary> 혹시나 쓰지 않을까 싶어서 만들어놨음 </summary>
+    /// <summary> 혹시나 쓰지 않을까 싶어서 만들어놨음 </summary>
     public string this[int i]
     {
         get => i switch
@@ -110,10 +112,10 @@ public class CardData
                     Power = int.Parse(value);
                     break;
                 case 2:
-                    Cost = int.Parse(value);
+                    Hp = int.Parse(value);
                     break;
                 case 3:
-                    Hp = int.Parse(value);
+                    Cost = int.Parse(value);
                     break;
                 case 4:
                     CriticalPercentage = int.Parse(value);
@@ -125,7 +127,8 @@ public class CardData
                     BasicAttackExplain = value;
                     break;
                 case 7:
-                    CardAttributeType = (CardAttributeType)Enum.Parse(typeof(CardAttributeType), value);
+                    if (value.IsNullOrEmpty() == false)
+                        CardAttributeType = (CardAttributeType)Enum.Parse(typeof(CardAttributeType), value);
                     break;
                 case 8:
                     SpecialAttackExplain = value;

@@ -40,6 +40,9 @@ public class CardDeckLayout : MonoBehaviourPunCallbacks, IPunObservable
     public void CardDraw()
     {
         PhotonView cardPhotonView = PhotonNetwork.Instantiate(CardPath, Vector2.zero, Quaternion.identity).GetPhotonView();
+        Card card = cardPhotonView.GetComponent<Card>();
+
+        card.CardData = GameManager.Instance.CardDatas[card.name];
 
         if (GameManager.Instance.IsTest)
             photonView.RPC(nameof(SetDeckParent), RpcTarget.AllBuffered, cardPhotonView.ViewID);

@@ -20,10 +20,17 @@ public class GameManager : SingletonPunCallbacks<GameManager>, IPunObservable
 
 
     [Tooltip("카드 데이터 받아올 스프레드시트 링크")]
-    private const string CARD_DATA_URL = "https://docs.google.com/spreadsheets/d/1uZHW4YokPwbg9gl0dDWcIjlWeieUlkiMwRk_PvQCPWU/edit?usp=sharing/export?format=tsv&range=A3:j16";
+    private const string CARD_DATA_URL = "https://docs.google.com/spreadsheets/d/1uZHW4YokPwbg9gl0dDWcIjlWeieUlkiMwRk_PvQCPWU/export?format=tsv&range=A3:j16";
 
     [Tooltip("에셋 번들 받아올 파일 경로")]
     private const string ASSET_BUNDLE_PATH = "Bundle/card";
+
+    protected override void Awake()
+    {
+        base.Awake();
+
+        print("GM Awake");
+    }
 
     void Start()
     {
@@ -50,7 +57,7 @@ public class GameManager : SingletonPunCallbacks<GameManager>, IPunObservable
 
         for (int i = 0; i < line.Length; i++)
         {
-            CardData cardData = new CardData(line);
+            CardData cardData = new CardData(line[i].Split('\t'));
 
             CardDatas.Add(cardData.CardRating, cardData);
         }
