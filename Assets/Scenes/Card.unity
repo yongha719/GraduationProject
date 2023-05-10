@@ -1780,7 +1780,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   IsMine: 0
-  Card: {fileID: 0}
+  Card: {fileID: 6383597969553335793, guid: 361d6ee4f4fb97346ba6473cc8655f66, type: 3}
 --- !u!114 &865640729
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2061,7 +2061,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   PlayerName: 
-  IsTest: 1
+  IsTest: 0
   CardDatas:
     _serializedList: []
 --- !u!114 &1018583212

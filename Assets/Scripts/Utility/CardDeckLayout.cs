@@ -37,27 +37,33 @@ public class CardDeckLayout : MonoBehaviourPunCallbacks, IPunObservable
             CardDraw();
     }
 
+    // 테스트 카드 소환
     public void CardDraw()
     {
         PhotonView cardPhotonView = PhotonNetwork.Instantiate(CardPath, Vector2.zero, Quaternion.identity).GetPhotonView();
 
+
         if (GameManager.Instance.IsTest)
-            photonView.RPC(nameof(SetDeckParent), RpcTarget.AllBuffered, cardPhotonView.ViewID);
+            photonView.RPC(nameof(SetDeckParentRPC), RpcTarget.AllBuffered, cardPhotonView.ViewID);
         else
-            SetDeckParent(cardPhotonView.ViewID);
+            SetDeckParentRPC(cardPhotonView.ViewID);
     }
 
     [PunRPC]
-    private void SetDeckParent(int cardViewId)
+    private void SetDeckParentRPC(int cardViewId)
     {
-        PhotonView card = PhotonNetwork.GetPhotonView(cardViewId);
+        PhotonView cardPhotonView = PhotonNetwork.GetPhotonView(cardViewId);
+
+        Card card = cardPhotonView.GetComponent<Card>();
+        card.CardData = GameManager.Instance.CardDatas[card.name.Replace("(Clone)", "")];
+
         PhotonView parentPhotonView = null;
 
-        parentPhotonView = PhotonManager.GetPhotonViewByType(card.IsMine ? PhotonViewType.PlayerDeck : PhotonViewType.EnemyDeck);
-        card.GetComponent<UnitCard>().AddPlayerUnit();
+        parentPhotonView = PhotonManager.GetPhotonViewByType(cardPhotonView.IsMine ? PhotonViewType.PlayerDeck : PhotonViewType.EnemyDeck);
+        cardPhotonView.GetComponent<UnitCard>().AddPlayerUnit();
 
-        card.gameObject.transform.SetParent(parentPhotonView.gameObject.transform);
-        card.gameObject.transform.localScale = Vector3.one;
+        cardPhotonView.gameObject.transform.SetParent(parentPhotonView.gameObject.transform);
+        cardPhotonView.gameObject.transform.localScale = Vector3.one;
     }
 
     private void OnTransformChildrenChanged()
