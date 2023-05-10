@@ -40,8 +40,25 @@ public class CardManager : SingletonPunCallbacks<CardManager>, IPunObservable
     {
         // 내가 보낼 때는 플레이어 카드를 보내고
         // 내가 보내는게 아닐 때는 적 카드를 받아옴
-        Serialize(stream, PlayerUnits, EnemyUnits);
-        Serialize(stream, EnemyUnits, PlayerUnits);
+
+        //if (stream.IsWriting)
+        //{
+        //    stream.SendNext(PlayerUnits.Count);
+
+        //    foreach (UnitCard card in PlayerUnits)
+        //        stream.SendNext(card);
+        //}
+        //else
+        //{
+        //    int count = (int)stream.ReceiveNext();
+        //    EnemyUnits.Clear();
+
+        //    for (int i = 0; i < count; i++)
+        //        EnemyUnits.Add((UnitCard)stream.ReceiveNext());
+        //}
+
+        //Serialize(stream, PlayerUnits, EnemyUnits);
+        //Serialize(stream, EnemyUnits, PlayerUnits);
     }
 
     /// <summary> left를 보내고 right로 받음</summary>

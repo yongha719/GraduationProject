@@ -3,6 +3,7 @@ using System.ComponentModel;
 using Unity.VisualScripting;
 using UnityEngine;
 
+[Serializable]
 public enum CardDataIndex
 {
     Name = 0,
@@ -18,6 +19,7 @@ public enum CardDataIndex
     Damage
 }
 
+[Serializable]
 public enum CardAttributeType
 {
     None,

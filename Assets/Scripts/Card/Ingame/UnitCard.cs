@@ -4,8 +4,8 @@ using Unity.VisualScripting;
 using UnityEngine;
 
 
-[Serializable]
  /// <summary> 인게임 유닛 카드 </summary>
+[Serializable]
 public class UnitCard : Card, IPunObservable
 {
     private int hp;
@@ -84,7 +84,7 @@ public class UnitCard : Card, IPunObservable
 
         CardState = CardState.Field;
 
-        rect.localScale = Vector3.one * 0.6f;
+        rect.localScale = Vector3.one;
         rect.SetParent(parentView.gameObject.transform);
     }
 }

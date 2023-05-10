@@ -2061,7 +2061,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   PlayerName: 
-  IsTest: 1
+  IsTest: 0
   CardDatas:
     _serializedList: []
 --- !u!114 &1018583212

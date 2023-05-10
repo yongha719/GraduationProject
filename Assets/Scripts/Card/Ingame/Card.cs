@@ -1,10 +1,9 @@
 using Photon.Pun;
-using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using System;
 
+[Serializable]
 public enum CardState
 {
     Deck, // 덱에 있을 때
@@ -12,6 +11,7 @@ public enum CardState
     Field // 필드에 냈을 때
 }
 
+[Serializable]
 /// <summary> 인게임 카드의 부모 클래스 </summary>
 public class Card : MonoBehaviourPun, IBeginDragHandler, IDragHandler, IEndDragHandler, IDropHandler
 {
