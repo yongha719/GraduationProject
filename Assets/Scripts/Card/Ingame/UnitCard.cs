@@ -34,13 +34,11 @@ public class UnitCard : Card, IPunObservable
 
     public override CardState CardState
     {
-        get
-        {
-            return cardState;
-        }
+        get => cardState;
+
         set
         {
-            cardState = value;
+            photonView.RPC(nameof(SetCardStateRPC), RpcTarget.AllBuffered, value);
         }
     }
 
@@ -58,6 +56,26 @@ public class UnitCard : Card, IPunObservable
         print(nameof(UnitCard));
     }
 
+    [PunRPC]
+    private void SetCardStateRPC(CardState value)
+    {
+        switch (value)
+        {
+            case CardState.Deck:
+                rect.localScale = Vector3.one;
+                lineRenderer.positionCount = 0;
+                break;
+            case CardState.ExpansionDeck:
+                // 덱에 있는 카드를 눌렀을 때 커지는 모션
+                break;
+            case CardState.Field:
+                rect.localScale = Vector3.one * 0.6f;
+                lineRenderer.positionCount = 2;
+                break;
+        }
+
+        cardState = value;
+    }
 
     public void Hit(int Damage)
     {
@@ -81,10 +99,9 @@ public class UnitCard : Card, IPunObservable
     private void MoveCardFromDeckToFieldRPC()
     {
         PhotonView parentView = PhotonManager.GetPhotonViewByType(photonView.IsMine ? PhotonViewType.PlayerField : PhotonViewType.EnemyField);
-
         CardState = CardState.Field;
 
-        rect.localScale = Vector3.one;
+
         rect.SetParent(parentView.gameObject.transform);
     }
 }

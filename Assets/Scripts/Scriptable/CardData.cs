@@ -134,7 +134,7 @@ public class CardData
                     SpecialAttackExplain = value;
                     break;
                 case 9:
-                    CardRating = value;
+                    CardRating = value.Replace("\r", "");
                     break;
                 default:
                     throw new System.IndexOutOfRangeException("Card Data Indexer Exception");

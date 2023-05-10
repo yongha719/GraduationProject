@@ -1,4 +1,5 @@
 using Photon.Pun;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -25,15 +26,15 @@ public class CardManager : SingletonPunCallbacks<CardManager>, IPunObservable
 
     /// <summary>
     /// 적이 도발 카드를 가지고 있는지 확인함 <br></br>
-    /// 적이 도발 카드가 있다면 도발카드만 공격해야 하기 때문이다 <br></br>
-    /// 만약 인자로 받은 카드가 도발 속성을 가지고 있으면 false 반환
     /// </summary>
-    public bool EnemyHasTauntCard(UnitCard card)
+    public bool HasEnemyTauntCardAndCardIsTaunt(UnitCard card)
     {
-        if (card.CardData.CardAttributeType == CardAttributeType.Taunt)
-            return false;
+        // 만약 인자로 받은 카드가 도발 속성을 가지고 있으면 true 반환
+        if (card.CardData.CardAttributeType== CardAttributeType.Taunt)
+            return true;
 
-        return EnemyUnits.Select(card => card.CardData.CardAttributeType == CardAttributeType.Taunt) != null;
+        // 도발 카드가 없을 때 true 반환
+        return EnemyUnits.Exists(enemy => enemy.CardData.CardAttributeType == CardAttributeType.Taunt) == false;
     }
 
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)

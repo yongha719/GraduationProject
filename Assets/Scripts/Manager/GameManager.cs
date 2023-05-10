@@ -28,14 +28,10 @@ public class GameManager : SingletonPunCallbacks<GameManager>, IPunObservable
     protected override void Awake()
     {
         base.Awake();
-
-        print("GM Awake");
     }
 
     void Start()
     {
-        print("Debug Test");
-
         StartCoroutine(ERequestCardData());
         //LoadAssetBundle();
     }
