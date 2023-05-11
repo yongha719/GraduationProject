@@ -11,7 +11,7 @@ using TMPro;
 /// </summary>
 public class DeckBuildingCard : MonoBehaviour, IPointerDownHandler
 {
-    public CardData data;
+    //public CardData data;
 
     [SerializeField]
     private TextMeshProUGUI costText;
@@ -35,7 +35,7 @@ public class DeckBuildingCard : MonoBehaviour, IPointerDownHandler
 
     private void SetCard(CardData data)
     {
-        this.data = data;
+        //this.data = data;
         costText.text = $"{data.Cost}";
         powerText.text = $"{data.Power}";
         hpText.text = $"{data.Hp}";
@@ -45,6 +45,7 @@ public class DeckBuildingCard : MonoBehaviour, IPointerDownHandler
 
     public void OnPointerDown(PointerEventData eventData)
     {
-        DeckManager.Instance.SpawnDragCard(data);
+        DeckManager.Instance.SpawnDragCardTemp(transform.position);
+        //DeckManager.Instance.SpawnDragCard(data);
     }
 }

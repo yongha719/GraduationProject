@@ -36,9 +36,11 @@ public class DeckManager : Singleton<DeckManager>
 
     public DeckBuildingCard card;
 
+    [Tooltip("prefab")]
     public DragCard dragCard;
 
-    public GameObject currentDraggingCard;
+    [Tooltip("지금 드레그 중인 카드")]
+    public DragCard currentDraggingCard;
 
 
     protected override void Awake()
@@ -77,8 +79,15 @@ public class DeckManager : Singleton<DeckManager>
     public DragCard SpawnDragCard(CardData data)
     {
         DragCard card = Instantiate(dragCard, canvas.transform);
-        card.SetDragCard(data);
+        //card.SetDragCard(data);
 
+        return card;
+    }
+
+    public DragCard SpawnDragCardTemp(Vector3 pos)
+    {
+        DragCard card = Instantiate(dragCard, canvas.transform);
+        card.transform.position = pos;
         return card;
     }
 

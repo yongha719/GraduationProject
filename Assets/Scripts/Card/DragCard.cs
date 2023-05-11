@@ -11,6 +11,8 @@ public class DragCard : MonoBehaviour,IPointerUpHandler, IDragHandler
 
     public GameObject selectCardObj;
 
+    public GameObject deSelectCardObj;
+
     [SerializeField]
     private TextMeshProUGUI costText;
 
@@ -25,6 +27,9 @@ public class DragCard : MonoBehaviour,IPointerUpHandler, IDragHandler
 
     [SerializeField]
     private TextMeshProUGUI explainText;
+
+    public float standardX;
+
 
     public void SetDragCard(CardData data)
     {
