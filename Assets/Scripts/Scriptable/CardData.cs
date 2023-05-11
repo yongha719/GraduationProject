@@ -64,7 +64,7 @@ public class CardData
     [Tooltip("등급"), TextArea]
     public string CardRating;
 
-    /// <summary> 계산된 데미지 </summary>
+    /// <summary> 크리티컬 확률까지 계산된 데미지 </summary>
     public int Damage
     {
         get

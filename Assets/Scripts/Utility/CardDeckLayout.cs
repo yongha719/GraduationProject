@@ -55,6 +55,7 @@ public class CardDeckLayout : MonoBehaviourPunCallbacks, IPunObservable
         PhotonView cardPhotonView = PhotonNetwork.GetPhotonView(cardViewId);
 
         Card card = cardPhotonView.GetComponent<Card>();
+        print(card != null);
         card.CardData = GameManager.Instance.CardDatas[card.name.Replace("(Clone)", "")];
 
         PhotonView parentPhotonView = null;

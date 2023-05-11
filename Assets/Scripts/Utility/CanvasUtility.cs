@@ -39,10 +39,7 @@ public class CanvasUtility : MonoBehaviour
     {
         var mousePos = GetMousePosToCanvasPos();
 
-        print("Field Drop Test=====");
-        print(MyFieldRect.rect.min);
-        print(mousePos);
-
+        // 마우스 포지션이 내 필드 안에 있는지 확인
         if (MyFieldRect.rect.xMin < mousePos.x && MyFieldRect.rect.yMin < mousePos.y
             && MyFieldRect.rect.xMax > mousePos.x & MyFieldRect.rect.yMax > mousePos.y)
         {
