@@ -14,8 +14,8 @@ public static class CardExetention
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
     private static void StaticReset()
     {
-        PlayerUnits = CardManager.Instance.PlayerUnits;
-        EnemyUnits = CardManager.Instance.EnemyUnits;
+        //PlayerUnits = CardManager.Instance.PlayerUnits;
+        //EnemyUnits = CardManager.Instance.EnemyUnits;
     }
 
     /// <summary> 플레이어의 카드 리스트에 추가 </summary>

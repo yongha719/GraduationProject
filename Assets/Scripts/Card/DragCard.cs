@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using TMPro;
 
-public class DragCard : MonoBehaviour,IPointerUpHandler, IDragHandler
+public class DragCard : MonoBehaviour
 {
     private CardData data;
 
@@ -30,6 +30,18 @@ public class DragCard : MonoBehaviour,IPointerUpHandler, IDragHandler
 
     public float standardX;
 
+    private bool isSelectPosition;
+    public bool IsSelectPosition
+    {
+        get => isSelectPosition;
+        set
+        {
+            isSelectPosition = value;
+
+            selectCardObj.SetActive(value);
+            deSelectCardObj.SetActive(!value);
+        }
+    }
 
     public void SetDragCard(CardData data)
     {
@@ -43,15 +55,6 @@ public class DragCard : MonoBehaviour,IPointerUpHandler, IDragHandler
 
     private void Update()
     {
-    }
-
-    public void OnPointerUp(PointerEventData eventData)
-    {
         
-    }
-
-    public void OnDrag(PointerEventData eventData)
-    {
-        transform.position = eventData.position;
     }
 }
