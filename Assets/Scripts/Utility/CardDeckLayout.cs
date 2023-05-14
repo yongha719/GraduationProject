@@ -33,8 +33,10 @@ public class CardDeckLayout : MonoBehaviourPunCallbacks, IPunObservable
 
     private void Update()
     {
-        if (GameManager.Instance.IsTest && IsMine && Input.GetKeyDown(KeyCode.Alpha1))
+#if UNITY_EDITOR
+        if (IsMine && Input.GetKeyDown(KeyCode.Alpha1))
             CardDraw();
+#endif
     }
 
     // 테스트 카드 소환
@@ -44,9 +46,9 @@ public class CardDeckLayout : MonoBehaviourPunCallbacks, IPunObservable
 
 
         if (GameManager.Instance.IsTest)
-            photonView.RPC(nameof(SetDeckParentRPC), RpcTarget.AllBuffered, cardPhotonView.ViewID);
-        else
             SetDeckParentRPC(cardPhotonView.ViewID);
+        else
+            photonView.RPC(nameof(SetDeckParentRPC), RpcTarget.AllBuffered, cardPhotonView.ViewID);
     }
 
     [PunRPC]
