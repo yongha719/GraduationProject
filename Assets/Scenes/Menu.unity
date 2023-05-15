@@ -1630,13 +1630,12 @@ MonoBehaviour:
   canvas: {fileID: 101285750}
   allCardData: []
   allHaveCardList: []
-  cardList: []
-  dataList: []
+  selectedCardList: []
   selectStateCardObjList: []
-  cardSpawnParent: {fileID: 0}
+  selectCardParent: {fileID: 1547283238}
   haveCardParent: {fileID: 0}
-  card: {fileID: 0}
-  dragCard: {fileID: -707121516639091281, guid: 408cf18b4bfe77b4a9247b4af88b567d, type: 3}
+  buildingCard: {fileID: 2001005036, guid: 010ebe416879eea4fb5c7084a4d83ff1, type: 3}
+  dragCard: {fileID: 3600143754089623510, guid: 2a41c06183f723243a34498223e07404, type: 3}
   currentDraggingCard: {fileID: 0}
 --- !u!1 &1371159956
 GameObject:

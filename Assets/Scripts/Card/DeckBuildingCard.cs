@@ -45,6 +45,7 @@ public class DeckBuildingCard : MonoBehaviour, IPointerDownHandler, IDragHandler
     private TextMeshProUGUI explainText;
     #endregion
 
+    [ReadOnlyAttributeA]
     private DragCard currentDranggingCard;
 
     public DragCard dragObj;
@@ -111,10 +112,11 @@ public class DeckBuildingCard : MonoBehaviour, IPointerDownHandler, IDragHandler
 
     public void OnPointerUp(PointerEventData eventData)
     {
-        if(currentDranggingCard.IsSelectPosition == true)
+        if (currentDranggingCard.IsSelectPosition == true)
         {
             DeckManager.Instance.SelectCard(data);
         }
+
         Destroy(currentDranggingCard);
     }
 }

@@ -43,6 +43,20 @@ public class DragCard : MonoBehaviour
         }
     }
 
+    private void Start()
+    {
+        StartCoroutine(IUpdate());
+    }
+
+    private IEnumerator IUpdate()
+    {
+        while (true)
+        {
+            yield return new WaitForSeconds(0.5f);
+            print(transform.position);
+        }
+    }
+
     public void SetDragCard(CardData data)
     {
         this.data = data;
@@ -55,6 +69,6 @@ public class DragCard : MonoBehaviour
 
     private void Update()
     {
-        
+
     }
 }
