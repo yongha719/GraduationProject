@@ -15,6 +15,9 @@ public class GameManager : SingletonPunCallbacks<GameManager>, IPunObservable
     [Tooltip("테스트")]
     public bool IsTest;
 
+    [Tooltip("플레이어 무적")]
+    public bool IsPlayerInvincibility;
+
     [Tooltip("카드 데이터들"), SerializedDictionary("Card Rating", "Card Data")]
     public SerializedDictionary<string, CardData> CardDatas = new SerializedDictionary<string, CardData>();
 
@@ -76,6 +79,8 @@ public class GameManager : SingletonPunCallbacks<GameManager>, IPunObservable
         // 제네릭으로 넣은 타입으로 인자로 넣은 이름과 맞는 에셋 번들을 찾아 가져온다.
         var prefab = myLoadedAssetBundle.LoadAsset<GameObject>("InGame_Card");
         Instantiate(prefab);
+
+        myLoadedAssetBundle.Unload(false);
     }
 
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
