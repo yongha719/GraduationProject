@@ -41,11 +41,11 @@ public class DeckBuildingCard : MonoBehaviour, IPointerDownHandler, IDragHandler
 
     [SerializeField]
     [Tooltip("선택된 상태의 오브젝트")]
-    private GameObject selectObj;
+    private Image selectObj;
 
     [SerializeField]
     [Tooltip("선택되지 않은 상태의 오브젝트")]
-    private GameObject deSelectObj;
+    private Image deSelectObj;
 
     [Tooltip("카드가 바뀌는 기준X좌표")]
     public float cardChangeStandardXPos;
@@ -79,16 +79,8 @@ public class DeckBuildingCard : MonoBehaviour, IPointerDownHandler, IDragHandler
 
     private void ChangeCard(bool isSelect)
     {
-        if(isSelect == true)
-        {
-            selectObj.SetActive(isSelect);
-            deSelectObj.SetActive(!isSelect);
-        }
-        else
-        {
-            selectObj.SetActive(!isSelect);
-            deSelectObj.SetActive(isSelect);
-        }
+        selectObj.gameObject.SetActive(isSelect);
+        deSelectObj.gameObject.SetActive(!isSelect);
     }
 
     public void OnPointerDown(PointerEventData eventData)
@@ -99,7 +91,7 @@ public class DeckBuildingCard : MonoBehaviour, IPointerDownHandler, IDragHandler
     public void OnDrag(PointerEventData eventData)
     {
         currentDranggingCard.transform.position = eventData.position;
-        if(currentDranggingCard.rect.anchoredPosition.x > cardChangeStandardXPos)
+        if (currentDranggingCard.rect.anchoredPosition.x > cardChangeStandardXPos)
         {
             currentDranggingCard.IsSelectPosition = true;
         }
@@ -115,7 +107,10 @@ public class DeckBuildingCard : MonoBehaviour, IPointerDownHandler, IDragHandler
         {
             DeckManager.Instance.SelectCard(data);
         }
+        else
+        {
 
+        }
         Destroy(currentDranggingCard.gameObject);
     }
 }

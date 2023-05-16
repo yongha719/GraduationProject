@@ -4,6 +4,7 @@ using UnityEngine;
 using System.Linq;
 using UnityEngine.UIElements;
 using Unity.Collections;
+using UnityEngine.UI;
 
 public class DeckManager : Singleton<DeckManager>
 {
@@ -103,4 +104,37 @@ public class DeckManager : Singleton<DeckManager>
         list.OrderBy(item => item.Cost);
     }
 
+
+    public void SortSelectDeck()
+    {
+        // 정렬할 개체들을 가져온다 (예: 자식 개체들)
+        DeckBuildingCard[] childObjects = selectCardParent.GetComponentsInChildren<DeckBuildingCard>();
+
+        // 개체들을 원하는 값으로 정렬한다
+        SortObjects(childObjects);
+
+        // Layout Group을 갱신하여 정렬을 적용한다
+        LayoutRebuilder.ForceRebuildLayoutImmediate(selectCardParent.GetComponent<RectTransform>());
+    }
+    
+    private void SortObjects(DeckBuildingCard[] objects)
+    {
+        // 개체들을 정렬하는 로직을 구현한다
+        for (int i = 0; i < objects.Length - 1; i++)
+        {
+            if (objects[i].data.Cost > objects[i + 1].data.Cost)
+            {
+                Swap(objects[i], objects[i + 1]);
+            }
+        }
+    }
+
+    private void Swap(DeckBuildingCard g1, DeckBuildingCard g2)
+    {
+        DeckBuildingCard temp = g1;
+
+        g1 = g2;
+
+        g2 = temp;
+    }
 }
