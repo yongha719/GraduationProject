@@ -64,6 +64,12 @@ public class TurnManager : SingletonPunCallbacks<TurnManager>, IPunObservable
         });
     }
 
+    public void PlayerCardDraw()
+    {
+        if (MyTurn)
+            playerDeck.CardDraw(isTest: true);
+    }
+
     /// <summary> 처음 턴 시작시 호출 </summary>
     public void FirstTurn()
     {
@@ -105,7 +111,7 @@ public class TurnManager : SingletonPunCallbacks<TurnManager>, IPunObservable
         TurnBegin();
     }
 
-    /// <summary> 턴이 끝났을때? </summary>
+    /// <summary> 턴이 끝났을때 </summary>
     public void TurnFinished()
     {
         TurnState = (MyTurn) ? TurnState.EnemyTurn : TurnState.PlayerTurn;

@@ -46,6 +46,7 @@ public class PhotonManager : SingletonPunCallbacks<PhotonManager>
         base.Awake();
         DontDestroyOnLoad(gameObject);
 
+        // ViewId로 찾아서 개체 가져옴
         foreach (PhotonViewType photonView in Enum.GetValues(typeof(PhotonViewType)))
         {
             PhotonViews.Add(photonView, PhotonView.Find((int)photonView));
@@ -99,12 +100,8 @@ public class PhotonManager : SingletonPunCallbacks<PhotonManager>
     public override void OnRoomListUpdate(List<RoomInfo> roomList)
     {
         print(nameof(OnRoomListUpdate));
-        UpdateRoomList(roomList);
-    }
 
-    private void UpdateRoomList(List<RoomInfo> roomlist)
-    {
-        foreach (RoomInfo roominfo in roomlist)
+        foreach (RoomInfo roominfo in roomList)
         {
             if (roominfo.RemovedFromList)
             {
@@ -115,7 +112,6 @@ public class PhotonManager : SingletonPunCallbacks<PhotonManager>
                 roomInfos.Add(roominfo);
                 print(roominfo.Name);
             }
-
         }
     }
 }

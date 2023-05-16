@@ -46,6 +46,9 @@ public class Card : MonoBehaviourPun, IBeginDragHandler, IDragHandler, IEndDragH
 
     protected virtual void Awake()
     {
+        // 카드 오브젝트의 이름은 카드의 등급으로 되어있기 때문에 이름을 카드 등급만 남게해줌
+        name = name.Replace("(Clone)", "");
+
         rect = GetComponent<RectTransform>();
         lineRenderer = GetComponent<LineRenderer>();
     }
@@ -158,7 +161,6 @@ public class Card : MonoBehaviourPun, IBeginDragHandler, IDragHandler, IEndDragH
         if (CanvasUtility.IsDropMyField())
         {
             MoveCardFromDeckToField();
-            return;
         }
     }
 
