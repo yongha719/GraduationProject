@@ -40,12 +40,12 @@ public class CardDeckLayout : MonoBehaviourPunCallbacks, IPunObservable
     }
 
     // 테스트 카드 소환
-    public void CardDraw()
+    public void CardDraw(bool isTest = false)
     {
         PhotonView cardPhotonView = PhotonNetwork.Instantiate(CardPath, Vector2.zero, Quaternion.identity).GetPhotonView();
 
 
-        if (GameManager.Instance.IsTest)
+        if (isTest)
             SetDeckParentRPC(cardPhotonView.ViewID);
         else
             photonView.RPC(nameof(SetDeckParentRPC), RpcTarget.AllBuffered, cardPhotonView.ViewID);
@@ -57,8 +57,9 @@ public class CardDeckLayout : MonoBehaviourPunCallbacks, IPunObservable
         PhotonView cardPhotonView = PhotonNetwork.GetPhotonView(cardViewId);
 
         Card card = cardPhotonView.GetComponent<Card>();
-        print(card != null);
-        card.CardData = GameManager.Instance.CardDatas[card.name.Replace("(Clone)", "")];
+
+        // 오브젝트의 이름이 카드의 등급이고 딕셔너리의 키 값이 카드의 등급임 
+        card.CardData = GameManager.Instance.CardDatas[card.name];
 
         PhotonView parentPhotonView = null;
 
