@@ -5,12 +5,18 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using TMPro;
 
+[RequireComponent(typeof(RectTransform))]
 public class DragCard : MonoBehaviour
 {
     private CardData data;
 
+    [HideInInspector]
+    public RectTransform rect;
+
+    [Tooltip("선택된 상태의 오브젝트")]
     public GameObject selectCardObj;
 
+    [Tooltip("선택되지 않은 상태의 오브젝트")]
     public GameObject deSelectCardObj;
 
     [SerializeField]
@@ -46,6 +52,7 @@ public class DragCard : MonoBehaviour
     private void Start()
     {
         StartCoroutine(IUpdate());
+        rect = GetComponent<RectTransform>();
     }
 
     private IEnumerator IUpdate()

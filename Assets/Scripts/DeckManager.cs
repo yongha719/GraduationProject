@@ -5,7 +5,7 @@ using System.Linq;
 using UnityEngine.UIElements;
 using Unity.Collections;
 
-public class DeckManager : Singleton<DeckManager> 
+public class DeckManager : Singleton<DeckManager>
 {
     public Canvas canvas;
 
@@ -15,15 +15,17 @@ public class DeckManager : Singleton<DeckManager>
     [Tooltip("모든 카드 정보")]
     public List<CardData> allCardData = new List<CardData>();
 
+    #region 카드 List들
+    [Header("카드List변수들")]
+    [Tooltip("간격")]
+    public float spacing;
+
     [Tooltip("가지고 있는 카드")]
     public List<DeckBuildingCard> allHaveCardList = new List<DeckBuildingCard>();
 
     [Tooltip("SelectDeck")]
     public List<DeckBuildingCard> selectedCardList = new List<DeckBuildingCard>();
-
-    [SerializeField]
-    [Tooltip("덱 편성 ")]
-    private List<GameObject> selectStateCardObjList = new List<GameObject>();
+    #endregion
 
     [SerializeField]
     [Tooltip("SelectCard부모 개체")]
@@ -61,7 +63,7 @@ public class DeckManager : Singleton<DeckManager>
 
     private void Update()
     {
-        
+
     }
 
     private void InputKey()
@@ -100,4 +102,5 @@ public class DeckManager : Singleton<DeckManager>
     {
         list.OrderBy(item => item.Cost);
     }
+
 }

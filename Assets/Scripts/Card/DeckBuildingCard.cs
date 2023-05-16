@@ -11,22 +11,9 @@ using TMPro;
 /// </summary>
 public class DeckBuildingCard : MonoBehaviour, IPointerDownHandler, IDragHandler, IPointerUpHandler
 {
-    public enum ECardType
-    {
-        DeSelect,
-        Select,
-    }
-
-    public struct ImageSize
-    {
-
-    }
-
     private RectTransform rect;
 
     public CardData data;
-
-    public ECardType cardType;
 
     #region UI
     [SerializeField]
@@ -50,13 +37,15 @@ public class DeckBuildingCard : MonoBehaviour, IPointerDownHandler, IDragHandler
 
     public DragCard dragObj;
 
-    [SerializeField]
-    [Tooltip("선택 Sprite")]
-    private Sprite selectSprite;
+    public Image img;
 
     [SerializeField]
-    [Tooltip("미선택 Sprite")]
-    private Sprite deSelectSprite;
+    [Tooltip("선택된 상태의 오브젝트")]
+    private GameObject selectObj;
+
+    [SerializeField]
+    [Tooltip("선택되지 않은 상태의 오브젝트")]
+    private GameObject deSelectObj;
 
     [Tooltip("카드가 바뀌는 기준X좌표")]
     public float cardChangeStandardXPos;
@@ -68,7 +57,8 @@ public class DeckBuildingCard : MonoBehaviour, IPointerDownHandler, IDragHandler
         set
         {
             isSelect = value;
-            //Sprite, 사이즈 바꿔서 표시
+
+            ChangeCard(isSelect);
         }
     }
 
@@ -87,9 +77,18 @@ public class DeckBuildingCard : MonoBehaviour, IPointerDownHandler, IDragHandler
         explainText.text = $"{data.BasicAttackExplain}";
     }
 
-    private void ChangeCard()
+    private void ChangeCard(bool isSelect)
     {
-
+        if(isSelect == true)
+        {
+            selectObj.SetActive(isSelect);
+            deSelectObj.SetActive(!isSelect);
+        }
+        else
+        {
+            selectObj.SetActive(!isSelect);
+            deSelectObj.SetActive(isSelect);
+        }
     }
 
     public void OnPointerDown(PointerEventData eventData)
@@ -100,7 +99,7 @@ public class DeckBuildingCard : MonoBehaviour, IPointerDownHandler, IDragHandler
     public void OnDrag(PointerEventData eventData)
     {
         currentDranggingCard.transform.position = eventData.position;
-        if(currentDranggingCard.transform.position.x > cardChangeStandardXPos)
+        if(currentDranggingCard.rect.anchoredPosition.x > cardChangeStandardXPos)
         {
             currentDranggingCard.IsSelectPosition = true;
         }
@@ -117,6 +116,6 @@ public class DeckBuildingCard : MonoBehaviour, IPointerDownHandler, IDragHandler
             DeckManager.Instance.SelectCard(data);
         }
 
-        Destroy(currentDranggingCard);
+        Destroy(currentDranggingCard.gameObject);
     }
 }
