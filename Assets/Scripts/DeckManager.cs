@@ -5,7 +5,7 @@ using System.Linq;
 using UnityEngine.UIElements;
 using Unity.Collections;
 
-public class DeckManager : Singleton<DeckManager> 
+public class DeckManager : Singleton<DeckManager>
 {
     public Canvas canvas;
 
@@ -15,33 +15,33 @@ public class DeckManager : Singleton<DeckManager>
     [Tooltip("모든 카드 정보")]
     public List<CardData> allCardData = new List<CardData>();
 
+    #region 카드 List들
+    [Header("카드List변수들")]
+    [Tooltip("간격")]
+    public float spacing;
+
     [Tooltip("가지고 있는 카드")]
     public List<DeckBuildingCard> allHaveCardList = new List<DeckBuildingCard>();
 
     [Tooltip("SelectDeck")]
-    public List<DeckBuildingCard> cardList = new List<DeckBuildingCard>();
-
-    public List<DeckBuildingCard> dataList = new List<DeckBuildingCard>();
-
-    [SerializeField]
-    [Tooltip("덱 편성 ")]
-    private List<GameObject> selectStateCardObjList = new List<GameObject>();
+    public List<DeckBuildingCard> selectedCardList = new List<DeckBuildingCard>();
+    #endregion
 
     [SerializeField]
-    [Tooltip("Have카드 소환할 부모 오브젝트")]
-    private Transform cardSpawnParent;
+    [Tooltip("SelectCard부모 개체")]
+    private Transform selectCardParent;
 
     [SerializeField]
+    [Tooltip("HaveCard부모 개체")]
     private Transform haveCardParent;
 
-    public DeckBuildingCard card;
+    public DeckBuildingCard buildingCard;
 
     [Tooltip("prefab")]
     public DragCard dragCard;
 
     [Tooltip("지금 드레그 중인 카드")]
     public DragCard currentDraggingCard;
-
 
     protected override void Awake()
     {
@@ -63,7 +63,7 @@ public class DeckManager : Singleton<DeckManager>
 
     private void Update()
     {
-        
+
     }
 
     private void InputKey()
@@ -71,9 +71,12 @@ public class DeckManager : Singleton<DeckManager>
 
     }
 
-    public void SelectCard(DeckBuildingCard data)
+    public void SelectCard(CardData data)
     {
-        cardList.Add(data);
+        DeckBuildingCard tempCard = Instantiate(buildingCard, selectCardParent);
+        tempCard.data = data;
+        tempCard.IsSelect = true;
+        selectedCardList.Add(tempCard);
     }
 
     public DragCard SpawnDragCard(CardData data)
@@ -99,4 +102,5 @@ public class DeckManager : Singleton<DeckManager>
     {
         list.OrderBy(item => item.Cost);
     }
+
 }
