@@ -1,4 +1,4 @@
-﻿
+
 namespace Photon.Pun
 {
     using UnityEngine;
@@ -127,6 +127,16 @@ namespace Photon.Pun
         /// <param name="rotation">The rotation for the instance.</param>
         /// <returns>A disabled instance to use by PUN or null if the prefabId is unknown.</returns>
         GameObject Instantiate(string prefabId, Vector3 position, Quaternion rotation);
+
+        /// <summary>
+        /// 내가 만든 함수~~<br></br>
+        /// Resources.Load말고 GameObject로 스폰하고 싶어서 만들었음
+        /// </summary>
+        /// <param name="prefab"></param>
+        /// <param name="position"></param>
+        /// <param name="rotation"></param>
+        /// <returns></returns>
+        GameObject MyInstantiate(GameObject prefab, Vector3 position, Quaternion rotation);
 
         /// <summary>
         /// Called to destroy (or just return) the instance of a prefab. It's disabled and the pool may reset and cache it for later use in Instantiate.

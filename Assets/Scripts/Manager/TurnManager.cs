@@ -73,11 +73,11 @@ public class TurnManager : SingletonPunCallbacks<TurnManager>, IPunObservable
     /// <summary> 처음 턴 시작시 호출 </summary>
     public void FirstTurn()
     {
-        photonView.RPC(nameof(FirstTurnRPC), RpcTarget.AllBuffered);
+        photonView.RPC(nameof(firstTurnRPC), RpcTarget.AllBuffered);
     }
 
     [PunRPC]
-    private void FirstTurnRPC()
+    private void firstTurnRPC()
     {
         TurnState = PhotonNetwork.IsMasterClient ? TurnState.PlayerTurn : TurnState.EnemyTurn;
 

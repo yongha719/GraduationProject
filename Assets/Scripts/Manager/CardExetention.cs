@@ -2,6 +2,7 @@ using Photon.Pun;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using UnityEngine;
 
 public static class CardExetention
@@ -41,7 +42,7 @@ public static class CardExetention
         return EnemyUnits;
     }
 
-    public static void RemoveUnit(this UnitCard card)
+    public static void RemovePlayerUnit(this UnitCard card)
     {
         int index = PlayerUnits.IndexOf(card);
 
@@ -49,18 +50,18 @@ public static class CardExetention
         {
             PlayerUnits.RemoveAt(index);
             PhotonNetwork.Destroy(card.gameObject);
-
-            return;
         }
+    }
 
-        index = EnemyUnits.IndexOf(card);
+    public static void RemoveEnemyUnit(this UnitCard card)
+    {
+        int index = EnemyUnits.IndexOf(card);
         if (index >= 0)
         {
             EnemyUnits.RemoveAt(index);
             PhotonNetwork.Destroy(card.gameObject);
         }
     }
-
 
     /// <summary> 적 카드 스폰시 이벤트 </summary>
     public static void CardSpawnEvent(this Action<UnitCard> action)

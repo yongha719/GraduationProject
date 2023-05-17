@@ -6,8 +6,8 @@ public class LogContent : MonoBehaviour
     [SerializeField]
     private TextMeshProUGUI Text;
 
-    public void SetLog(string message)
+    private void Awake()
     {
-        Text.text = message;
+        Text.text = LogManager.Message;
     }
 }

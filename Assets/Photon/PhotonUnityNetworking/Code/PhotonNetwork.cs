@@ -2469,6 +2469,24 @@ namespace Photon.Pun
             }
         }
 
+        /// <summary>
+        /// 유니티에 있는 Instantiate처럼 프리팹으로 생성할 수 있게 만들어봤음 
+        /// </summary>
+        /// <param name="gameObject"></param>
+        /// <param name="position"></param>
+        /// <param name="rotation"></param>
+        /// <returns></returns>
+        public static GameObject Instantiate(GameObject gameObject, Vector3 position, Quaternion rotation)
+        {
+            if (CurrentRoom == null)
+            {
+                Debug.LogError("Can not Instantiate before the client joined/created a room. State: " + PhotonNetwork.NetworkClientState);
+                return null;
+            }
+
+            Pun.InstantiateParameters netParams = new InstantiateParameters(gameObject.name, position, rotation, 0, null, currentLevelPrefix, null, LocalPlayer, ServerTimestamp);
+            return NetworkInstantiate(gameObject, netParams);
+        }
 
         public static GameObject Instantiate(string prefabName, Vector3 position, Quaternion rotation, byte group = 0, object[] data = null)
         {
@@ -2574,6 +2592,101 @@ namespace Photon.Pun
 
 
         private static readonly HashSet<string> PrefabsWithoutMagicCallback = new HashSet<string>();
+
+        /// <summary>
+        /// 프리팹으로 생성할 수 있게 해줌
+        /// </summary>
+        /// <param name="prefab"></param>
+        /// <param name="parameters"></param>
+        /// <param name="roomObject"></param>
+        /// <param name="instantiateEvent"></param>
+        /// <returns></returns>
+        private static GameObject NetworkInstantiate(GameObject prefab, Pun.InstantiateParameters parameters, bool roomObject = false, bool instantiateEvent = false)
+        {
+            GameObject go = null;
+            PhotonView[] photonViews;
+
+            go = prefabPool.MyInstantiate(prefab, parameters.position, parameters.rotation);
+
+            if (go == null)
+            {
+                Debug.LogError("Failed to network-Instantiate: " + parameters.prefabName);
+                return null;
+            }
+
+            if (go.activeSelf)
+            {
+                Debug.LogWarning("PrefabPool.Instantiate() should return an inactive GameObject. " + prefabPool.GetType().Name + " returned an active object. PrefabId: " + parameters.prefabName);
+            }
+
+
+            photonViews = go.GetPhotonViewsInChildren();
+
+            if (photonViews.Length == 0)
+            {
+                Debug.LogError("PhotonNetwork.Instantiate() can only instantiate objects with a PhotonView component. This prefab does not have one: " + parameters.prefabName);
+                return null;
+            }
+
+            bool localInstantiate = !instantiateEvent && LocalPlayer.Equals(parameters.creator);
+            if (localInstantiate)
+            {
+                // init viewIDs array, so it can be filled (below), before it gets sent
+                parameters.viewIDs = new int[photonViews.Length];
+            }
+
+            for (int i = 0; i < photonViews.Length; i++)
+            {
+                if (localInstantiate)
+                {
+                    // when this client instantiates a GO, it has to allocate viewIDs accordingly.
+                    // ROOM objects are created as actorNumber 0 (no matter which number this player has).
+                    parameters.viewIDs[i] = (roomObject) ? AllocateViewID(0) : AllocateViewID(parameters.creator.ActorNumber);
+                }
+
+                var view = photonViews[i];
+
+                view.ViewID = 0;
+                view.sceneViewId = 0;
+                view.isRuntimeInstantiated = true;
+                view.lastOnSerializeDataSent = null;
+                view.lastOnSerializeDataReceived = null;
+                view.Prefix = parameters.objLevelPrefix;
+                view.InstantiationId = parameters.viewIDs[0];
+                view.InstantiationData = parameters.data;
+                view.ViewID = parameters.viewIDs[i];    // with didAwake true and viewID == 0, this will also register the view
+
+                view.Group = parameters.group;
+            }
+
+            if (localInstantiate)
+            {
+                // send instantiate network event
+                SendInstantiate(parameters, roomObject);
+            }
+
+            go.SetActive(true);
+
+            // if IPunInstantiateMagicCallback is implemented on any script of the instantiated GO, let's call it directly:
+            if (!PrefabsWithoutMagicCallback.Contains(parameters.prefabName))
+            {
+                var list = go.GetComponents<IPunInstantiateMagicCallback>();
+                if (list.Length > 0)
+                {
+                    PhotonMessageInfo pmi = new PhotonMessageInfo(parameters.creator, parameters.timestamp, photonViews[0]);
+                    foreach (IPunInstantiateMagicCallback callbackComponent in list)
+                    {
+                        callbackComponent.OnPhotonInstantiate(pmi);
+                    }
+                }
+                else
+                {
+                    PrefabsWithoutMagicCallback.Add(parameters.prefabName);
+                }
+            }
+
+            return go;
+        }
 
         private static GameObject NetworkInstantiate(Pun.InstantiateParameters parameters, bool roomObject = false, bool instantiateEvent = false)
         {

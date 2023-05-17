@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class LogManager : MonoBehaviour
 {
+    public static string Message;
+
     [SerializeField]
     private GameObject logContent;
 
@@ -35,9 +37,9 @@ public class LogManager : MonoBehaviour
         yield return wait;
 
         var time = DateTime.Now;
-        string log = $"[{time.Hour:D2}:{time.Minute:D2}:{time.Second:D2}] {message}";
+        Message = $"[{time.Hour:D2}:{time.Minute:D2}:{time.Second:D2}] {message}";
 
-        Instantiate(logContent, logListParent).GetComponent<LogContent>().SetLog(log);
+        Instantiate(logContent, logListParent);
     }
 }
 

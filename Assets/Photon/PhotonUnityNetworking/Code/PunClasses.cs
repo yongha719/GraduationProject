@@ -28,6 +28,7 @@ namespace Photon.Pun
     using System;
     using System.Collections.Generic;
     using System.Reflection;
+    using System.Security.Cryptography;
     using UnityEngine;
     using UnityEngine.SceneManagement;
 
@@ -915,10 +916,37 @@ namespace Photon.Pun
             bool wasActive = res.activeSelf;
             if (wasActive) res.SetActive(false);
 
-            GameObject instance =GameObject.Instantiate(res, position, rotation) as GameObject;
+            GameObject instance = GameObject.Instantiate(res, position, rotation) as GameObject;
 
             if (wasActive) res.SetActive(true);
             return instance;
+        }
+
+        public GameObject MyInstantiate(GameObject prefab, Vector3 position, Quaternion rotation)
+        {
+            bool cached = this.ResourceCache.TryGetValue(prefab.name, out prefab);
+            if (!cached)
+            {                
+                if (prefab == null)
+                {
+                    Debug.LogError("야야 오브젝트 null이야");
+                }
+                else
+                {
+                    this.ResourceCache.Add(prefab.name, prefab);
+                }
+            }
+
+
+            bool wasActive = prefab.activeSelf;
+            if (wasActive) prefab.SetActive(false);
+
+            GameObject instance = GameObject.Instantiate(prefab, position, rotation) as GameObject;
+
+            if (wasActive) prefab.SetActive(true);
+
+
+            return prefab;
         }
 
         /// <summary>Simply destroys a GameObject.</summary>
