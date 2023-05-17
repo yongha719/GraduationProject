@@ -113,19 +113,30 @@ public class DeckManager : Singleton<DeckManager>
         // 개체들을 원하는 값으로 정렬한다
         SortObjects(childObjects);
 
+        // 개체들의 위치를 정렬한다
+        //IntervalAdjustment(childObjects);
+
         // Layout Group을 갱신하여 정렬을 적용한다
         LayoutRebuilder.ForceRebuildLayoutImmediate(selectCardParent.GetComponent<RectTransform>());
     }
     
     private void SortObjects(DeckBuildingCard[] objects)
     {
-        // 개체들을 정렬하는 로직을 구현한다
+        // 개체들을 정렬하는 로직
         for (int i = 0; i < objects.Length - 1; i++)
         {
             if (objects[i].data.Cost > objects[i + 1].data.Cost)
             {
                 Swap(objects[i], objects[i + 1]);
             }
+        }
+    }
+
+    private void IntervalAdjustment(DeckBuildingCard[] objects)
+    {
+        for (int i = 0; i < objects.Length; i++)
+        {
+            objects[i].transform.localPosition = new Vector3(0, spacing * i, 0);
         }
     }
 
