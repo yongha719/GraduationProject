@@ -40,10 +40,7 @@ public class UnitCard : Card, IPunObservable
     {
         get => cardState;
 
-        set
-        {
-            photonView.RPC(nameof(SetCardStateRPC), RpcTarget.AllBuffered, value);
-        }
+        set => photonView.RPC(nameof(SetCardStateRPC), RpcTarget.AllBuffered, value);
     }
 
     protected override void Awake()
@@ -56,6 +53,7 @@ public class UnitCard : Card, IPunObservable
     protected override void Start()
     {
         base.Start();
+
     }
 
     protected override void Attack()
