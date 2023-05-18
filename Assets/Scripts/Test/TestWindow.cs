@@ -20,6 +20,8 @@ public class TestWindow : EditorWindow
 
     private void OnGUI()
     {
+        GUILayout.Space(5);
+
         #region Card Draw
         // Card Draw 버튼 만들어주고 창 크기에 맞춰 자동으로 확장되게 해줌
         if (GUILayout.Button("Card Draw", GUILayout.Width(130), GUILayout.Height(40)))
