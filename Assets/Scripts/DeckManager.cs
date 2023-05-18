@@ -26,7 +26,19 @@ public class DeckManager : Singleton<DeckManager>
 
     [Tooltip("SelectDeck")]
     public List<DeckBuildingCard> selectedCardList = new List<DeckBuildingCard>();
+
     #endregion
+
+    public List<DeckBuildingCard> cardlist
+    {
+        get => allHaveCardList;
+        set
+        {
+            allHaveCardList = value;
+            
+
+        }
+    }
 
     [SerializeField]
     [Tooltip("SelectCard부모 개체")]
@@ -80,6 +92,11 @@ public class DeckManager : Singleton<DeckManager>
         selectedCardList.Add(tempCard);
     }
 
+    public void DeSelectCard(DeckBuildingCard card)
+    {
+        //selectedCardList.Find(card);
+        selectedCardList.Remove(card);
+    }
     public DragCard SpawnDragCard(CardData data)
     {
         DragCard card = Instantiate(dragCard, canvas.transform);

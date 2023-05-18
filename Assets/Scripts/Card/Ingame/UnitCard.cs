@@ -25,7 +25,7 @@ public class UnitCard : Card, IPunObservable
             if (value <= 0)
             {
                 hp = 0;
-                this.RemoveUnit();
+                //this.RemoveUnit();
             }
 
             hp = value;

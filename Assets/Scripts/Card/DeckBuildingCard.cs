@@ -50,6 +50,7 @@ public class DeckBuildingCard : MonoBehaviour, IPointerDownHandler, IDragHandler
     [Tooltip("카드가 바뀌는 기준X좌표")]
     public float cardChangeStandardXPos;
 
+    [SerializeField]
     private bool isSelect;
     public bool IsSelect
     {
@@ -111,6 +112,7 @@ public class DeckBuildingCard : MonoBehaviour, IPointerDownHandler, IDragHandler
         {
 
         }
+
         Destroy(currentDranggingCard.gameObject);
     }
 }
