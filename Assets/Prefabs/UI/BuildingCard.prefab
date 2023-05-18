@@ -828,7 +828,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: e6b707aa6bb06b44a8bf0b345e054f11, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 63dbaaa0b74a9304183287be9c437fcb, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -919,3 +919,4 @@ MonoBehaviour:
   selectObj: {fileID: 8001497877179181198}
   deSelectObj: {fileID: 611265094786717570}
   cardChangeStandardXPos: 0
+  isSelect: 0

@@ -87,6 +87,7 @@ public class DeckBuildingCard : MonoBehaviour, IPointerDownHandler, IDragHandler
     public void OnPointerDown(PointerEventData eventData)
     {
         currentDranggingCard = DeckManager.Instance.SpawnDragCardTemp(transform.position);
+        currentDranggingCard.IsSelectPosition = isSelect;
     }
 
     public void OnDrag(PointerEventData eventData)
