@@ -13,7 +13,7 @@ public enum CardState
 
 [Serializable]
 /// <summary> 인게임 카드의 부모 클래스 </summary>
-public class Card : MonoBehaviourPun, IBeginDragHandler, IDragHandler, IEndDragHandler, IDropHandler
+public abstract class Card : MonoBehaviourPun, IBeginDragHandler, IDragHandler, IEndDragHandler, IDropHandler
 {
     public CardData CardData;
 
@@ -26,20 +26,14 @@ public class Card : MonoBehaviourPun, IBeginDragHandler, IDragHandler, IEndDragH
     protected bool CanAttack => IsEnemy == false && CardState == CardState.Field && TurnManager.Instance.MyTurn;
 
 
-
     protected CardState cardState = CardState.Deck;
-    public virtual CardState CardState
-    {
-        get => cardState;
-
-        set => cardState = value;
-    }
-
+    public virtual CardState CardState { get; set; }
 
     protected RectTransform rect;
     protected LineRenderer lineRenderer;
 
     private Vector2 originPos;
+    [Tooltip("덱 레이아웃이 회전값")]
     private Quaternion layoutRot;
     [Tooltip("클릭했을때 마우스 포인터와 카드 중앙에서의 거리")]
     private Vector2 mousePosDistance;
@@ -57,7 +51,7 @@ public class Card : MonoBehaviourPun, IBeginDragHandler, IDragHandler, IEndDragH
     {
         IsEnemy = !photonView.IsMine;
 
-        print(nameof(Card));
+
     }
 
     private void OnMouseEnter()
@@ -73,7 +67,7 @@ public class Card : MonoBehaviourPun, IBeginDragHandler, IDragHandler, IEndDragH
     }
 
 
-    protected virtual void Attack(UnitCard card)
+    protected virtual void Attack()
     {
     }
 
@@ -136,24 +130,7 @@ public class Card : MonoBehaviourPun, IBeginDragHandler, IDragHandler, IEndDragH
 
     void IDropHandler.OnDrop(PointerEventData eventData)
     {
-        if (CanAttack)
-        {
-            for (int i = 0; i < lineRenderer.positionCount; i++)
-            {
-                lineRenderer.SetPosition(i, Vector3.zero);
-            }
-
-            // 임시 공격 시스템
-            var rayhits = Physics2D.RaycastAll(transform.position + Vector3.back, Vector3.forward, 10f);
-
-            for (int i = 0; i < rayhits.Length; i++)
-            {
-                if (rayhits[i].collider.TryGetComponent(out UnitCard enemyCard) && enemyCard.CanAttackThisCard())
-                {
-                    Attack(enemyCard);
-                }
-            }
-        }
+        Attack();
 
         if (CanDrag == false) return;
 
@@ -164,21 +141,9 @@ public class Card : MonoBehaviourPun, IBeginDragHandler, IDragHandler, IEndDragH
         }
     }
 
-    /// <summary> 이 카드를 공격할 수 있는지 확인 </summary>
-    public bool CanAttackThisCard()
-    {
-        // 이 카드가 적이고 필드에 도발 카드를 가지고 있는지 확인
-        // 도발 카드가 없거나 이 카드가 도발 카드일 때 공격 가능
-        if (IsEnemy && CardManager.Instance.HasEnemyTauntCardAndCardIsTaunt((UnitCard)this))
-            return true;
-        else
-            return false;
-    }
 
     // 원래 여기서 RPC로 호출하려고 했는데
     // 부모 클래스여서 뭔가 안되는 듯?
     // 자식 클래스로 옮기니까 잘됨
-    protected virtual void MoveCardFromDeckToField()
-    {
-    }
+    protected abstract void MoveCardFromDeckToField();
 }

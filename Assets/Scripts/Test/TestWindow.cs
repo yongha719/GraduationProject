@@ -22,7 +22,7 @@ public class TestWindow : EditorWindow
     {
         #region Card Draw
         // Card Draw 버튼 만들어주고 창 크기에 맞춰 자동으로 확장되게 해줌
-        if (GUILayout.Button("Card Draw", GUILayout.ExpandWidth(true)))
+        if (GUILayout.Button("Card Draw", GUILayout.Width(130), GUILayout.Height(40)))
         {
             // 여기에 버튼을 눌렀을 때 액션을 넣어주면됨
             Debug.Log("카드 소환");
@@ -32,6 +32,7 @@ public class TestWindow : EditorWindow
         }
         #endregion
 
+        GUILayout.Space(15);
 
         #region 플레이어 무적
         // 매 프레임마다 호출되는 함수이기 때문에 토글 값이 바뀔 때만 액션이 일어나도록 해야함
