@@ -19,8 +19,11 @@ public class GameManager : SingletonPunCallbacks<GameManager>, IPunObservable
     public bool IsPlayerInvincibility;
 
     [Tooltip("카드 데이터들"), SerializedDictionary("Card Rating", "Card Data")]
-    public SerializedDictionary<string, CardData> CardDatas = new SerializedDictionary<string, CardData>();
+    public SerializedDictionary<string, CardData> CardDatas = new();
 
+    [SerializeField]
+    [Tooltip("카드 오브젝트들"), SerializedDictionary("Card Rating", "Card Prefab")]
+    private SerializedDictionary<string, GameObject> CardPrefabs = new();
 
     [Tooltip("카드 데이터 받아올 스프레드시트 링크")]
     private const string CARD_DATA_URL = "https://docs.google.com/spreadsheets/d/1uZHW4YokPwbg9gl0dDWcIjlWeieUlkiMwRk_PvQCPWU/export?format=tsv&range=A3:j16";

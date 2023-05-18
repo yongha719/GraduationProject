@@ -129,13 +129,8 @@ namespace Photon.Pun
         GameObject Instantiate(string prefabId, Vector3 position, Quaternion rotation);
 
         /// <summary>
-        /// 내가 만든 함수~~<br></br>
         /// Resources.Load말고 GameObject로 스폰하고 싶어서 만들었음
         /// </summary>
-        /// <param name="prefab"></param>
-        /// <param name="position"></param>
-        /// <param name="rotation"></param>
-        /// <returns></returns>
         GameObject MyInstantiate(GameObject prefab, Vector3 position, Quaternion rotation);
 
         /// <summary>
