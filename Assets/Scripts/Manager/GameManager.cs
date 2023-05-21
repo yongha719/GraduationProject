@@ -53,7 +53,7 @@ public class GameManager : SingletonPunCallbacks<GameManager>, IPunObservable
     }
 
     /// <summary> Request로 받은 데이터를 카드 데이터로 파싱함 </summary>
-    void ParsingCardData(string requsetdata)
+    private void ParsingCardData(string requsetdata)
     {
         string[] line = requsetdata.Split('\n');
 

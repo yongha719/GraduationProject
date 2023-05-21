@@ -1862,7 +1862,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: d00551bafe6d2ae4a82f80b39c8c02c8, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 84612d3763306fb4cb719209ffe74a25, type: 3}
   m_Type: 0
   m_PreserveAspect: 1
   m_FillCenter: 1
@@ -2062,7 +2062,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   PlayerName: 
   IsTest: 0
+  IsPlayerInvincibility: 0
   CardDatas:
+    _serializedList: []
+  CardPrefabs:
     _serializedList: []
 --- !u!114 &1018583212
 MonoBehaviour:

@@ -69,7 +69,7 @@ public class CardManager : SingletonPunCallbacks<CardManager>, IPunObservable
         {
             stream.SendNext(left.Count);
 
-            foreach (UnitCard card in left)
+            foreach (var card in left)
                 stream.SendNext(card);
         }
         else
