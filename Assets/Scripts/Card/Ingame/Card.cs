@@ -21,7 +21,7 @@ public abstract class Card : MonoBehaviourPun
     protected CardState cardState = CardState.Deck;
     public virtual CardState CardState { get; set; }
 
-
+    [HideInInspector]
     /// <summary> 드래그 가능한 상태인지 체크 </summary>
     protected bool CanDrag => cardDragAndDrop.CanDrag;
 
@@ -74,7 +74,6 @@ public abstract class Card : MonoBehaviourPun
 
         if (CanvasUtility.IsDropMyField())
             MoveCardFromDeckToField();
-
     }
 
     protected abstract void Attack();

@@ -12,11 +12,8 @@ public class CardDragAndDrop : MonoBehaviourPun, IBeginDragHandler, IDragHandler
     /// <summary> 드래그 가능한 상태인지 체크 </summary>
     public bool CanDrag => IsEnemy == false && cardState == CardState.Deck && TurnManager.Instance.MyTurn;
 
-
     private bool IsEnemy;
     private CardState cardState => card.CardState;
-
-
 
     private Vector2 originPos;
     [Tooltip("덱 레이아웃이 회전값")]
@@ -96,8 +93,6 @@ public class CardDragAndDrop : MonoBehaviourPun, IBeginDragHandler, IDragHandler
 
     void IDropHandler.OnDrop(PointerEventData eventData)
     {
-        OnDrop();
-
-        
+        OnDrop();       
     }
 }

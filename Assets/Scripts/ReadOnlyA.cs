@@ -1,4 +1,4 @@
-#if UNITY_EDITOR
+
 using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
@@ -9,6 +9,7 @@ public class ReadOnlyAttributeA : PropertyAttribute
 
 }
 
+#if UNITY_EDITOR
 [CustomPropertyDrawer(typeof(ReadOnlyAttributeA))]
 public class ReadOnlyDrawer : PropertyDrawer
 {
