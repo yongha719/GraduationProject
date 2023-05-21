@@ -33,7 +33,7 @@ public class DeckBuildingCard : MonoBehaviour, IPointerDownHandler, IDragHandler
     #endregion
 
     [ReadOnlyAttributeA]
-    private DragCard currentDranggingCard;
+    private DragCard currentDraggingCard;
 
     public DragCard dragObj;
 
@@ -86,34 +86,35 @@ public class DeckBuildingCard : MonoBehaviour, IPointerDownHandler, IDragHandler
 
     public void OnPointerDown(PointerEventData eventData)
     {
-        currentDranggingCard = DeckManager.Instance.SpawnDragCardTemp(transform.position);
-        currentDranggingCard.IsSelectPosition = isSelect;
+        currentDraggingCard = DeckManager.Instance.SpawnDragCardTemp(transform.position);
+        currentDraggingCard.IsSelectPosition = isSelect;
+        currentDraggingCard.isOriginSelection = isSelect;
     }
 
     public void OnDrag(PointerEventData eventData)
     {
-        currentDranggingCard.transform.position = eventData.position;
-        if (currentDranggingCard.rect.anchoredPosition.x > cardChangeStandardXPos)
+        currentDraggingCard.transform.position = eventData.position;
+        if (currentDraggingCard.rect.anchoredPosition.x > cardChangeStandardXPos)
         {
-            currentDranggingCard.IsSelectPosition = true;
+            currentDraggingCard.IsSelectPosition = true;
         }
         else
         {
-            currentDranggingCard.IsSelectPosition = false;
+            currentDraggingCard.IsSelectPosition = false;
         }
     }
 
     public void OnPointerUp(PointerEventData eventData)
     {
-        if (currentDranggingCard.IsSelectPosition == true)
+        if (currentDraggingCard.IsSelectPosition == true && currentDraggingCard.isOriginSelection == false)
         {
             DeckManager.Instance.SelectCard(data);
         }
-        else
+        else if(currentDraggingCard.IsSelectPosition == false && currentDraggingCard.isOriginSelection == true)
         {
-
+            DeckManager.Instance.DeSelectCard(this);
         }
 
-        Destroy(currentDranggingCard.gameObject);
+        Destroy(currentDraggingCard.gameObject);
     }
 }

@@ -94,8 +94,10 @@ public class DeckManager : Singleton<DeckManager>
 
     public void DeSelectCard(DeckBuildingCard card)
     {
-        //selectedCardList.Find(card);
-        selectedCardList.Remove(card);
+        int index = selectedCardList.IndexOf(card);
+        Destroy(selectedCardList[index].gameObject);
+
+        card.IsSelect = false;
     }
     public DragCard SpawnDragCard(CardData data)
     {

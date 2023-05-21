@@ -49,6 +49,8 @@ public class DragCard : MonoBehaviour
         }
     }
 
+    public bool isOriginSelection;
+
     private void Start()
     {
         StartCoroutine(IUpdate());

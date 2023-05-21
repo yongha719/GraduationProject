@@ -918,5 +918,5 @@ MonoBehaviour:
   img: {fileID: 0}
   selectObj: {fileID: 8001497877179181198}
   deSelectObj: {fileID: 611265094786717570}
-  cardChangeStandardXPos: 0
+  cardChangeStandardXPos: 500
   isSelect: 0
