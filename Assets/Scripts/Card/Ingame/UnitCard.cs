@@ -1,6 +1,7 @@
 using Photon.Pun;
 using System;
 using Unity.VisualScripting;
+using UnityEditor;
 using UnityEngine;
 
 
@@ -12,10 +13,7 @@ public class UnitCard : Card, IPunObservable
 
     public int Hp
     {
-        get
-        {
-            return hp;
-        }
+        get => hp;
 
         set
         {
@@ -53,7 +51,6 @@ public class UnitCard : Card, IPunObservable
     protected override void Start()
     {
         base.Start();
-
     }
 
     protected override void Attack()
@@ -65,12 +62,13 @@ public class UnitCard : Card, IPunObservable
                 lineRenderer.SetPosition(i, Vector3.zero);
             }
 
-            // 임시 공격 시스템
-            var rayhits = Physics2D.RaycastAll(transform.position + Vector3.back, Vector3.forward, 10f);
+            Vector2 worldPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
 
-            for (int i = 0; i < rayhits.Length; i++)
+            var rayhits = Physics2D.RaycastAll(worldPosition, Vector2.zero);
+
+            foreach (RaycastHit2D hit in rayhits)
             {
-                if (rayhits[i].collider.TryGetComponent(out UnitCard enemyCard) && enemyCard.CanAttackThisCard())
+                if (hit.collider.TryGetComponent(out UnitCard enemyCard) && enemyCard.CanAttackThisCard())
                 {
                     enemyCard.Hit(Damage: CardData.Damage);
                 }
@@ -81,6 +79,10 @@ public class UnitCard : Card, IPunObservable
     [PunRPC]
     private void SetCardStateRPC(CardState value)
     {
+        print(value);
+
+        cardState = value;
+
         switch (value)
         {
             case CardState.Deck:
@@ -95,8 +97,6 @@ public class UnitCard : Card, IPunObservable
                 lineRenderer.positionCount = 2;
                 break;
         }
-
-        cardState = value;
     }
 
     public void Hit(int Damage)
@@ -105,18 +105,17 @@ public class UnitCard : Card, IPunObservable
     }
 
 
-
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
     {
-
     }
 
-    /// <summary> 이 카드를 공격할 수 있는지 확인 </summary>`
+    /// <summary> 이 카드를 공격할 수 있는지 확인 </summary>
+    /// 이 메서드는 플레이어의 적 카드의 개체에서 호출됨
     public bool CanAttackThisCard()
     {
         // 이 카드가 적이고 필드에 도발 카드를 가지고 있는지 확인
         // 도발 카드가 없거나 이 카드가 도발 카드일 때 공격 가능
-        if (IsEnemy && CardManager.Instance.HasEnemyTauntCardAndCardIsTaunt(this))
+        if (IsEnemy && CardManager.Instance.CanAttackWhenTaunt(this))
             return true;
         else
             return false;
@@ -133,7 +132,9 @@ public class UnitCard : Card, IPunObservable
     [PunRPC]
     private void MoveCardFromDeckToFieldRPC()
     {
-        PhotonView parentView = PhotonManager.GetPhotonViewByType(photonView.IsMine ? PhotonViewType.PlayerField : PhotonViewType.EnemyField);
+        PhotonView parentView =
+            PhotonManager.GetPhotonViewByType(
+                photonView.IsMine ? PhotonViewType.PlayerField : PhotonViewType.EnemyField);
         CardState = CardState.Field;
 
         rect.SetParent(parentView.gameObject.transform);

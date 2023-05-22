@@ -2,6 +2,7 @@ using Photon.Pun;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using System;
+using Unity.VisualScripting;
 
 [Serializable]
 public enum CardState
@@ -16,12 +17,13 @@ public enum CardState
 /// <summary> 인게임 카드의 부모 클래스 </summary>
 public abstract class Card : MonoBehaviourPun
 {
+    [SerializeField]
     protected bool IsEnemy;
 
+    [SerializeField]
     protected CardState cardState = CardState.Deck;
     public virtual CardState CardState { get; set; }
 
-    [HideInInspector]
     /// <summary> 드래그 가능한 상태인지 체크 </summary>
     protected bool CanDrag => cardDragAndDrop.CanDrag;
 
@@ -51,6 +53,7 @@ public abstract class Card : MonoBehaviourPun
     {
         IsEnemy = !photonView.IsMine;
 
+        cardDragAndDrop.OnEndDrag = OnEndDrag;
         cardDragAndDrop.OnDrop = OnDrop;
     }
 
@@ -66,12 +69,13 @@ public abstract class Card : MonoBehaviourPun
         }
     }
 
-    protected void OnDrop()
+    protected void OnEndDrag()
     {
         Attack();
+    }
 
-        if (CanDrag == false) return;
-
+    protected void OnDrop()
+    {
         if (CanvasUtility.IsDropMyField())
             MoveCardFromDeckToField();
     }

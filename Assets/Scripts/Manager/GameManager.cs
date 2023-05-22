@@ -42,9 +42,14 @@ public class GameManager : SingletonPunCallbacks<GameManager>, IPunObservable
         //LoadAssetBundle();
     }
 
+    void Update()
+    {
+        Debug.DrawRay(Input.mousePosition, Vector3.forward, Color.white, 3f);
+    }
+
     private IEnumerator ERequestCardData()
     {
-        UnityWebRequest request = UnityWebRequest.Get(CARD_DATA_URL);
+        var request = UnityWebRequest.Get(CARD_DATA_URL);
 
         // 요청한 데이터를 받을 때까지 기다림
         yield return request.SendWebRequest();

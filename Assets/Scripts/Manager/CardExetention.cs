@@ -11,11 +11,11 @@ public static class CardExetention
     private static List<UnitCard> EnemyUnits;
 
     // Awake 다음에 호출됨
-    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
-    private static void StaticReset()
+    //[RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
+    public static void Init()
     {
-        //PlayerUnits = CardManager.Instance.PlayerUnits;
-        //EnemyUnits = CardManager.Instance.EnemyUnits;
+        PlayerUnits = CardManager.Instance.PlayerUnits;
+        EnemyUnits = CardManager.Instance.EnemyUnits;
     }
 
     /// <summary> 플레이어의 카드 리스트에 추가 </summary>
@@ -29,8 +29,8 @@ public static class CardExetention
     {
         EnemyUnits.Add(card);
     }
-
-    /// <returns> 플레이어의 카드 리스트를 반환 </returns>
+        
+    /// <summary> 플레이어의 카드 리스트를 반환 </summary>
     public static List<UnitCard> GetPlayerUnitCards(this UnitCard card)
     {
         return PlayerUnits;
@@ -41,7 +41,8 @@ public static class CardExetention
     {
         return EnemyUnits;
     }
-
+    
+    /// <summary> 플레이어의 카드 리스트에서 인자로 넘긴 카드를 제거 </summary>
     public static void RemovePlayerUnit(this UnitCard card)
     {
         int index = PlayerUnits.IndexOf(card);
@@ -53,6 +54,7 @@ public static class CardExetention
         }
     }
 
+    /// <summary> 적의 카드 리스트에서 인자로 넘긴 카드를 제거 </summary>
     public static void RemoveEnemyUnit(this UnitCard card)
     {
         int index = EnemyUnits.IndexOf(card);

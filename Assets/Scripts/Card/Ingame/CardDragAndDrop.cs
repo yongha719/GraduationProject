@@ -1,12 +1,11 @@
 using Photon.Pun;
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
 public class CardDragAndDrop : MonoBehaviourPun, IBeginDragHandler, IDragHandler, IEndDragHandler, IDropHandler
 {
+    public Action OnEndDrag;
     public Action OnDrop;
 
     /// <summary> 드래그 가능한 상태인지 체크 </summary>
@@ -77,9 +76,12 @@ public class CardDragAndDrop : MonoBehaviourPun, IBeginDragHandler, IDragHandler
 
     void IEndDragHandler.OnEndDrag(PointerEventData eventData)
     {
+        OnEndDrag();
+
         if (card.CanAttack)
         {
             lineRenderer.positionCount = 2;
+
             return;
         }
 
@@ -93,6 +95,8 @@ public class CardDragAndDrop : MonoBehaviourPun, IBeginDragHandler, IDragHandler
 
     void IDropHandler.OnDrop(PointerEventData eventData)
     {
-        OnDrop();       
+        if (CanDrag == false) return;
+
+        OnDrop();
     }
 }

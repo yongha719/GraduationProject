@@ -24,18 +24,32 @@ public class CardManager : SingletonPunCallbacks<CardManager>, IPunObservable
         }
     }
 
+    void Start()
+    {
+        CardExetention.Init();
+    }
+
     /// <summary>
     /// 적이 도발 카드를 가지고 있는지 확인함 <br></br>
     /// </summary>
-    public bool HasEnemyTauntCardAndCardIsTaunt(UnitCard card)
+    /// 이 카드는 플레이어 클라이언트 기준으로 적 카드이기 때문에 적 카드 리스트에서 확인함
+    public bool CanAttackWhenTaunt(UnitCard card)
     {
-        // 만약 인자로 받은 카드가 도발 속성을 가지고 있으면 true 반환
-        if (card.CardData.CardAttributeType== CardAttributeType.Taunt)
+        // 인자로 받은 카드가 Taunt 속성을 가지고 있으면 true 반환
+        if (card.CardData.CardAttributeType == CardAttributeType.Taunt)
             return true;
 
-        // 도발 카드가 없을 때 true 반환
-        return EnemyUnits.Exists(enemy => enemy.CardData.CardAttributeType == CardAttributeType.Taunt) == false;
+        // 적 카드 중에 Taunt 속성이 있는지 확인
+        bool hasEnemyTauntCard = EnemyUnits.Exists(enemyCard => enemyCard.CardData.CardAttributeType == CardAttributeType.Taunt);
+
+        // 인자로 넘긴 카드가 Taunt 속성이 아니고, 적 카드 중에도 Taunt 속성이 없으면 true 반환
+        if (card.CardData.CardAttributeType != CardAttributeType.Taunt && hasEnemyTauntCard == false)
+            return true;
+
+        // 인자로 넘긴 카드가 Taunt 속성이 아니고, 적 카드 중에 Taunt 속성이 있으면 false 반환
+        return false;
     }
+
 
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
     {
