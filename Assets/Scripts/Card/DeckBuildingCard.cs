@@ -30,6 +30,9 @@ public class DeckBuildingCard : MonoBehaviour, IPointerDownHandler, IDragHandler
 
     [SerializeField]
     private TextMeshProUGUI explainText;
+
+    [SerializeField]
+    private TextMeshProUGUI cardCount;
     #endregion
 
     [ReadOnlyAttributeA]

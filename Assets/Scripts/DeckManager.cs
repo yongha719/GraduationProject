@@ -27,6 +27,10 @@ public class DeckManager : Singleton<DeckManager>
     [Tooltip("SelectDeck")]
     public List<DeckBuildingCard> selectedCardList = new List<DeckBuildingCard>();
 
+    [Tooltip("카드 보유개수")]
+    public List<int> cardCountList = new List<int>();
+    //카드 보유 표시 만들기
+
     #endregion
 
     public List<DeckBuildingCard> cardlist
@@ -70,15 +74,11 @@ public class DeckManager : Singleton<DeckManager>
         SetHaveCards();
     }
 
+
     private void SetHaveCards()
     {
+        allHaveCardList = haveCardParent.GetComponentsInChildren<DeckBuildingCard>().ToList();
     }
-
-    private void Update()
-    {
-
-    }
-
     private void InputKey()
     {
 
@@ -99,10 +99,11 @@ public class DeckManager : Singleton<DeckManager>
 
         card.IsSelect = false;
     }
-    public DragCard SpawnDragCard(CardData data)
+    public DragCard SpawnDragCard(CardData data, Sprite sprite1, Sprite sprite2)
     {
         DragCard card = Instantiate(dragCard, canvas.transform);
         //card.SetDragCard(data);
+        card.SetCardSprite(sprite1, sprite2);
 
         return card;
     }

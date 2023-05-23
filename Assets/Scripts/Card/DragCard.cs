@@ -70,14 +70,15 @@ public class DragCard : MonoBehaviour
     {
         this.data = data;
         costText.text = $"{data.Cost}";
-        powerText.text = $"{data.Damage}";
+        powerText.text = $"{data.Power}";
         hpText.text = $"{data.Hp}";
         nameText.text = $"{data.Name}";
         explainText.text = $"{data.BasicAttackExplain}";
     }
 
-    private void Update()
+    public void SetCardSprite(Sprite sprite1, Sprite sprite2)
     {
-
+        selectCardObj.GetComponent<SpriteRenderer>().sprite = sprite1;
+        deSelectCardObj.GetComponent<SpriteRenderer>().sprite = sprite2;
     }
 }
