@@ -44,30 +44,24 @@ public class CardDeckLayout : MonoBehaviourPunCallbacks, IPunObservable
     {
         PhotonView cardPhotonView = PhotonNetwork.Instantiate(CardPath, Vector2.zero, Quaternion.identity).GetPhotonView();
 
-
         if (isTest)
             SetDeckParentRPC(cardPhotonView.ViewID);
         else
             photonView.RPC(nameof(SetDeckParentRPC), RpcTarget.AllBuffered, cardPhotonView.ViewID);
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// RPC 호출이라 다른 개체에서는 viewId를 모르기 때문에 인자로 넘겨줘야함
     [PunRPC]
     private void SetDeckParentRPC(int cardViewId)
     {
-        PhotonView cardPhotonView = PhotonNetwork.GetPhotonView(cardViewId);
+        PhotonView cardPhotonView = PhotonManager.TryGetPhotonView(cardViewId);
 
-        Card card = cardPhotonView.GetComponent<Card>();
+        PhotonView parentPhotonView = PhotonManager.GetPhotonViewByType(cardPhotonView.IsMine ? PhotonViewType.PlayerDeck : PhotonViewType.EnemyDeck);
 
-        // 오브젝트의 이름이 카드의 등급이고 딕셔너리의 키 값이 카드의 등급임 
-        card.CardData = GameManager.Instance.CardDatas[card.name];
-
-        PhotonView parentPhotonView = null;
-
-        parentPhotonView = PhotonManager.GetPhotonViewByType(cardPhotonView.IsMine ? PhotonViewType.PlayerDeck : PhotonViewType.EnemyDeck);
-        cardPhotonView.GetComponent<UnitCard>().AddPlayerUnit();
-
-        cardPhotonView.gameObject.transform.SetParent(parentPhotonView.gameObject.transform);
-        cardPhotonView.gameObject.transform.localScale = Vector3.one;
+        cardPhotonView.GetComponent<Card>().Init(parentPhotonView.gameObject.transform);
     }
 
     private void OnTransformChildrenChanged()

@@ -97,16 +97,16 @@ MonoBehaviour:
   IsEnemy: 0
   cardState: 0
   CardData:
-    Name: TestCard
-    Power: 5
-    Hp: 5
-    Cost: 5
-    CriticalPercentage: 0
-    CriticalPower: 0
-    BasicAttackExplain: 
-    CardAttributeType: 0
-    SpecialAttackExplain: 
-    CardRating: 
+    name: 
+    power: 0
+    hp: 0
+    cost: 0
+    criticalPercentage: 0
+    criticalPower: 0
+    basicAttackExplain: 
+    cardAttributeType: 0
+    specialAttackExplain: 
+    cardRating: 
 --- !u!61 &584926971
 BoxCollider2D:
   m_ObjectHideFlags: 0

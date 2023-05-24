@@ -41,10 +41,11 @@ public abstract class Card : MonoBehaviourPun
     {
         // 카드 오브젝트의 이름은 카드의 등급으로 되어있기 때문에 이름을 카드 등급만 남게해줌
         name = name.Replace("(Clone)", "");
+        // 오브젝트의 이름이 카드의 등급이고 딕셔너리의 키 값이 카드의 등급임 
+        CardData = GameManager.Instance.CardDatas[name].Copy();
 
         rect = transform as RectTransform;
         lineRenderer = GetComponent<LineRenderer>();
-
 
         cardDragAndDrop = GetComponent<CardDragAndDrop>();
     }
@@ -55,6 +56,12 @@ public abstract class Card : MonoBehaviourPun
 
         cardDragAndDrop.OnEndDrag = OnEndDrag;
         cardDragAndDrop.OnDrop = OnDrop;
+    }
+
+    public void Init(Transform parent)
+    {
+        transform.SetParent(parent);
+        transform.localScale = Vector3.one;
     }
 
     private void OnMouseEnter()
@@ -86,4 +93,9 @@ public abstract class Card : MonoBehaviourPun
     // 부모 클래스여서 뭔가 안되는 듯?
     // 자식 클래스로 옮기니까 잘됨
     protected abstract void MoveCardFromDeckToField();
+
+    private void OnDestroy()
+    {
+        PhotonManager.PhotonViewRemove(photonView.ViewID);
+    }
 }

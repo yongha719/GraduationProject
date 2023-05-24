@@ -9,9 +9,9 @@ public class CardDragAndDrop : MonoBehaviourPun, IBeginDragHandler, IDragHandler
     public Action OnDrop;
 
     /// <summary> 드래그 가능한 상태인지 체크 </summary>
-    public bool CanDrag => IsEnemy == false && cardState == CardState.Deck && TurnManager.Instance.MyTurn;
+    public bool CanDrag => isEnemy == false && cardState == CardState.Deck && TurnManager.Instance.MyTurn;
 
-    private bool IsEnemy;
+    private bool isEnemy;
     private CardState cardState => card.CardState;
 
     private Vector2 originPos;
@@ -27,7 +27,7 @@ public class CardDragAndDrop : MonoBehaviourPun, IBeginDragHandler, IDragHandler
 
     private void Start()
     {
-        IsEnemy = !photonView.IsMine;
+        isEnemy = !photonView.IsMine;
 
         rectTransform = transform as RectTransform;
         lineRenderer = GetComponent<LineRenderer>();

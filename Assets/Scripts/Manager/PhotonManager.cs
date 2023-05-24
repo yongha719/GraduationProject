@@ -36,10 +36,20 @@ public class PhotonManager : SingletonPunCallbacks<PhotonManager>
 
     private Room room;
 
-    private static Dictionary<PhotonViewType, PhotonView> PhotonViews = new Dictionary<PhotonViewType, PhotonView>();
+    private static Dictionary<PhotonViewType, PhotonView> viewTypePhotonViews = new();
+
+    private static Dictionary<int, PhotonView> viewIdPhotonViews = new();
 
     /// <summary> Type으로 PhotonView를 가져옴 </summary>
-    public static PhotonView GetPhotonViewByType(PhotonViewType photonViewType) => PhotonViews[photonViewType];
+    public static PhotonView GetPhotonViewByType(PhotonViewType photonViewType) => viewTypePhotonViews[photonViewType];
+
+    public static PhotonView GetFieldPhotonView(bool isMine)
+    {
+        if (isMine)
+            return viewTypePhotonViews[PhotonViewType.PlayerField];
+        else
+            return viewTypePhotonViews[PhotonViewType.EnemyField];
+    }
 
     protected override void Awake()
     {
@@ -49,7 +59,7 @@ public class PhotonManager : SingletonPunCallbacks<PhotonManager>
         // ViewId로 찾아서 개체 가져옴
         foreach (PhotonViewType photonView in Enum.GetValues(typeof(PhotonViewType)))
         {
-            PhotonViews.Add(photonView, PhotonView.Find((int)photonView));
+            viewTypePhotonViews.Add(photonView, PhotonView.Find((int)photonView));
         }
 
         PhotonNetwork.ConnectUsingSettings();
@@ -57,6 +67,22 @@ public class PhotonManager : SingletonPunCallbacks<PhotonManager>
 
     private void Start()
     {
+    }
+
+    public static PhotonView TryGetPhotonView(int viewId)
+    {
+        if (viewIdPhotonViews.TryGetValue(viewId, out PhotonView view) == false)
+        {
+            view = PhotonNetwork.GetPhotonView(viewId);
+            viewIdPhotonViews.Add(viewId, view);
+        }
+
+        return view;
+    }
+
+    public static void PhotonViewRemove(int viewId)
+    {
+        viewIdPhotonViews.Remove(viewId);
     }
 
     public override void OnConnected()
