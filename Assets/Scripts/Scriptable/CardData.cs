@@ -17,7 +17,8 @@ public enum CardDataIndex
     CardAttributeType,
     SpecialAttackExplain,
     CardRating,
-    Damage
+    Damage,
+    End,
 }
 
 [Serializable]
@@ -34,45 +35,74 @@ public enum CardAttributeType
 [Serializable]
 public class CardData
 {
-    [Tooltip("이름")]
-    public string Name;
+    [Tooltip("이름"), SerializeField]
+    private string name;
+    public string Name => name;
 
-    [Tooltip("공격력")]
-    public int Power;
 
-    [Tooltip("체력")]
-    public int Hp;
+    [Tooltip("공격력"), SerializeField]
+    private int power;
+    public int Power => power;
 
-    [Tooltip("코스트")]
-    public int Cost;
 
-    [Tooltip("치명타 확률")]
-    public int CriticalPercentage = -1;
+    [Tooltip("체력"), SerializeField]
+    private int hp;
+    public int Hp => hp;
 
-    [Tooltip("치명타 공격력")]
-    public int CriticalPower = 0;
 
-    [Tooltip("기본 공격 설명"), TextArea]
-    public string BasicAttackExplain;
+    [Tooltip("코스트"), SerializeField]
+    private int cost;
+    public int Cost => cost;
 
-    [Tooltip("특성")]
-    public CardAttributeType CardAttributeType;
 
-    [Tooltip("특수 공격 설명"), TextArea]
-    public string SpecialAttackExplain;
+    [Tooltip("치명타 확률"), SerializeField]
+    private int criticalPercentage = -1;
+    public int CriticalPercentage => criticalPercentage;
 
-    [Tooltip("등급"), TextArea]
-    public string CardRating;
 
-    /// <summary> 크리티컬 확률까지 계산된 데미지 </summary>
+    [Tooltip("치명타 공격력"), SerializeField]
+    private int criticalPower = 0;
+    public int CriticalPower => criticalPower;
+
+
+    [Tooltip("기본 공격 설명"), TextArea, SerializeField]
+    private string basicAttackExplain;
+    public string BasicAttackExplain => basicAttackExplain;
+
+
+    [Tooltip("특성"), SerializeField]
+    private CardAttributeType cardAttributeType;
+    public CardAttributeType CardAttributeType => cardAttributeType;
+
+
+    [Tooltip("특수 공격 설명"), TextArea, SerializeField]
+    private string specialAttackExplain;
+    public string SpecialAttackExplain => specialAttackExplain;
+
+
+    [Tooltip("등급"), TextArea, SerializeField]
+    private string cardRating;
+    public string CardRating => cardRating;
+
+
+    /// <summary> 크리티컬까지 계산된 데미지 </summary>
     public int Damage
     {
         get
         {
-            if (UnityEngine.Random.Range(0, 100) <= CriticalPercentage)
-                return Power + CriticalPower; // 크리티컬 데미지까지 추가된 공격력
+            if (UnityEngine.Random.Range(0, 100) <= criticalPercentage)
+                return power + criticalPower; // 크리티컬 데미지까지 추가된 공격력
             else
-                return Power;
+                return power;
+        }
+    }
+
+
+    public CardData(CardData data)
+    {
+        for (int i = 0; i < (int)CardDataIndex.End; i++)
+        {
+            this[i] = data[i];
         }
     }
 
@@ -88,12 +118,12 @@ public class CardData
         get => i switch
         {
             0 => Name,
-            1 => Power.ToString(),
-            2 => Hp.ToString(),
+            1 => power.ToString(),
+            2 => hp.ToString(),
             3 => Cost.ToString(),
-            4 => CriticalPercentage.ToString(),
-            5 => CriticalPower.ToString(),
-            6 => BasicAttackExplain,
+            4 => criticalPercentage.ToString(),
+            5 => criticalPower.ToString(),
+            6 => basicAttackExplain,
             7 => CardAttributeType.ToString(),
             8 => SpecialAttackExplain,
             9 => CardRating.ToString(),
@@ -106,39 +136,44 @@ public class CardData
             switch (i)
             {
                 case 0:
-                    Name = value;
+                    name = value;
                     break;
                 case 1:
-                    Power = int.Parse(value);
+                    power = int.Parse(value);
                     break;
                 case 2:
-                    Hp = int.Parse(value);
+                    hp = int.Parse(value);
                     break;
                 case 3:
-                    Cost = int.Parse(value);
+                    cost = int.Parse(value);
                     break;
                 case 4:
-                    CriticalPercentage = int.Parse(value);
+                    criticalPercentage = int.Parse(value);
                     break;
                 case 5:
-                    CriticalPower = int.Parse(value);
+                    criticalPower = int.Parse(value);
                     break;
                 case 6:
-                    BasicAttackExplain = value;
+                    basicAttackExplain = value;
                     break;
                 case 7:
                     if (value.IsNullOrEmpty() == false)
-                        CardAttributeType = (CardAttributeType)Enum.Parse(typeof(CardAttributeType), value);
+                        cardAttributeType = (CardAttributeType)Enum.Parse(typeof(CardAttributeType), value);
                     break;
                 case 8:
-                    SpecialAttackExplain = value;
+                    specialAttackExplain = value;
                     break;
                 case 9:
-                    CardRating = value.Replace("\r", "");
+                    cardRating = value.Replace("\r", "");
                     break;
                 default:
-                    throw new System.IndexOutOfRangeException("Card Data Indexer Exception");
+                    break;
             }
         }
+    }
+
+    public CardData Copy()
+    {
+        return new CardData(this);
     }
 }

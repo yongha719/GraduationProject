@@ -51,6 +51,15 @@ public class UnitCard : Card, IPunObservable
     protected override void Start()
     {
         base.Start();
+
+        if (IsEnemy)
+        {
+            CardManager.Instance.EnemyUnits.Add(this);
+        }
+        else
+        {
+            CardManager.Instance.PlayerUnits.Add(this);
+        }
     }
 
     protected override void Attack()
@@ -71,6 +80,7 @@ public class UnitCard : Card, IPunObservable
                 if (hit.collider.TryGetComponent(out UnitCard enemyCard) && enemyCard.CanAttackThisCard())
                 {
                     enemyCard.Hit(Damage: CardData.Damage);
+                    print("Hit");
                 }
             }
         }
@@ -132,9 +142,7 @@ public class UnitCard : Card, IPunObservable
     [PunRPC]
     private void MoveCardFromDeckToFieldRPC()
     {
-        PhotonView parentView =
-            PhotonManager.GetPhotonViewByType(
-                photonView.IsMine ? PhotonViewType.PlayerField : PhotonViewType.EnemyField);
+        PhotonView parentView = PhotonManager.GetFieldPhotonView(photonView.IsMine);
         CardState = CardState.Field;
 
         rect.SetParent(parentView.gameObject.transform);
