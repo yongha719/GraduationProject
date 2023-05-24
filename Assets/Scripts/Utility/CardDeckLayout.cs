@@ -42,8 +42,12 @@ public class CardDeckLayout : MonoBehaviourPunCallbacks, IPunObservable
     // 테스트 카드 소환
     public void CardDraw(bool isTest = false)
     {
-        PhotonView cardPhotonView = PhotonNetwork.Instantiate(CardPath, Vector2.zero, Quaternion.identity).GetPhotonView();
+        var cardObj = CardManager.Instance.GetRandomCardGameObject();
+        
+        // PhotonView cardPhotonView = PhotonNetwork.Instantiate(CardPath, Vector2.zero, Quaternion.identity).GetPhotonView();
+        PhotonView cardPhotonView = PhotonNetwork.Instantiate(cardObj, Vector2.zero, Quaternion.identity).GetPhotonView();
 
+        
         if (isTest)
             SetDeckParentRPC(cardPhotonView.ViewID);
         else

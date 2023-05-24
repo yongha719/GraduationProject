@@ -3,30 +3,45 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class CardManager : SingletonPunCallbacks<CardManager>, IPunObservable
 {
-    // 필드에 낼 수 있는 카드가 최대 10개임
-    public List<UnitCard> PlayerUnits = new List<UnitCard>(10);
-    public List<UnitCard> EnemyUnits = new List<UnitCard>(10);
+    // 필드에 낼 수 있는 카드가 최대 10이기 때문에 Capacity를 10으로 정해줌
+    public List<UnitCard> PlayerUnits = new(10);
+    public List<UnitCard> EnemyUnits = new(10);
 
+    
+    // GameObject로 가져올 수 있게 커스텀해서 안 쓸듯
+    // 일단 남겨둠
     // 포톤은 오브젝트를 리소스 폴더에서 가져와서 오브젝트의 이름으로 가져오기 위해 string으로 함
-    private List<string> myDeck = new List<string>();
+    private List<string> myDeckName = new List<string>();
 
     /// <summary> - 내 덱 </summary>
-    public List<string> MyDeck
+    public List<string> MyDeckName
     {
-        get => myDeck;
+        get => myDeckName;
 
         set
         {
-            myDeck = value;
+            myDeckName = value;
         }
     }
 
+    [SerializeField] 
+    private List<GameObject> myDeckGameObjects = new(20);
+    
+    
     void Start()
     {
         CardExetention.Init();
+    }
+    
+    
+    // 아직 프로토타입이기 때문에 확률은 똑같이 해둠
+    public GameObject GetRandomCardGameObject()
+    {
+        return myDeckGameObjects[UnityEngine.Random.Range(0, myDeckGameObjects.Count)];
     }
 
     /// <summary>
