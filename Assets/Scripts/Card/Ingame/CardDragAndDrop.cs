@@ -5,8 +5,8 @@ using UnityEngine.EventSystems;
 
 public class CardDragAndDrop : MonoBehaviourPun, IBeginDragHandler, IDragHandler, IEndDragHandler, IDropHandler
 {
-    public Action OnEndDrag;
-    public Action OnDrop;
+    public event Action OnEndDrag;
+    public event Action OnDrop;
 
     /// <summary> 드래그 가능한 상태인지 체크 </summary>
     public bool CanDrag => isEnemy == false && cardState == CardState.Deck && TurnManager.Instance.MyTurn;

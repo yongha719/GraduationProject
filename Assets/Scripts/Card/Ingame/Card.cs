@@ -2,6 +2,7 @@ using Photon.Pun;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using System;
+using TMPro;
 using Unity.VisualScripting;
 
 [Serializable]
@@ -31,6 +32,10 @@ public abstract class Card : MonoBehaviourPun
     public bool CanAttack => IsEnemy == false && CardState == CardState.Field && TurnManager.Instance.MyTurn;
 
 
+    [SerializeField] protected TextMeshProUGUI hpText;
+    [SerializeField] protected TextMeshProUGUI powerText;
+    [SerializeField] protected TextMeshProUGUI costText;
+
     protected RectTransform rect;
     protected LineRenderer lineRenderer;
 
@@ -41,8 +46,9 @@ public abstract class Card : MonoBehaviourPun
     {
         // 카드 오브젝트의 이름은 카드의 등급으로 되어있기 때문에 이름을 카드 등급만 남게해줌
         name = name.Replace("(Clone)", "");
+        
         // 오브젝트의 이름이 카드의 등급이고 딕셔너리의 키 값이 카드의 등급임 
-        CardData = GameManager.Instance.CardDatas[name].Copy();
+        CardData = GameManager.Instance.GetCardData(name);
 
         rect = transform as RectTransform;
         lineRenderer = GetComponent<LineRenderer>();
@@ -54,8 +60,12 @@ public abstract class Card : MonoBehaviourPun
     {
         IsEnemy = !photonView.IsMine;
 
-        cardDragAndDrop.OnEndDrag = OnEndDrag;
-        cardDragAndDrop.OnDrop = OnDrop;
+        cardDragAndDrop.OnEndDrag += OnEndDrag;
+        cardDragAndDrop.OnDrop += OnDrop;
+
+        hpText.text = CardData.Hp.ToString();
+        powerText.text = CardData.Power.ToString();
+        costText.text = CardData.Cost.ToString();
     }
 
     public void Init(Transform parent)

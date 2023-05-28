@@ -10,8 +10,25 @@
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;
+  }
+}</component>
+  <component name="GithubPullRequestsUISettings">
+    <option name="selectedUrlAndAccountId">
+      <UrlAndAccount>
+        <option name="accountId" value="bb71cfb0-3613-457d-a1c6-4d12ee00441b" />
+        <option name="url" value="https://github.com/yongha719/GraduationProject.git" />
+      </UrlAndAccount>
+    </option>
+  </component>
   <component name="HighlightingSettingsPerFile">
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/ILViewer/5a41d6b7189842eca409fd0b1c3e3dcf17bf78/c0/94286ab1/020009B7pdb49.il" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/93a8f82184b4439ca5abff025375fe32564da0/7b/d7e2ad4f/Task.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/93a8f82184b4439ca5abff025375fe32564da0/91/8636aa2c/TaskCompletionSource`1.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/93a8f82184b4439ca5abff025375fe32564da0/a4/0862802d/Task`1.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/93a8f82184b4439ca5abff025375fe32564da0/b2/19f8b0f6/Dictionary`2.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/d44b17e136d09081da1e8fd0e8c83fde60e11818b9f2442d7ed8cb733fae895e/System.Collections.Generic.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Manager/ResourceManager.cs" root0="FORCE_HIGHLIGHTING" />
   </component>
@@ -54,7 +71,7 @@
       <method v="2" />
     </configuration>
     <configuration name="독립실행형 플레이어" type="RunUnityExe" factoryName="Unity Executable">
-      <option name="EXE_PATH" value="$PROJECT_DIR$/../../Build/졸작/2023_05_22/GraduationProject.exe" />
+      <option name="EXE_PATH" value="$PROJECT_DIR$/../../Build/졸작/2023_05_27/GraduationProject.exe" />
       <option name="PROGRAM_PARAMETERS" value="" />
       <option name="WORKING_DIRECTORY" value="E:\Build\졸작\2023_05_21" />
       <option name="PASS_PARENT_ENVS" value="1" />
@@ -120,6 +137,10 @@
       <workItem from="1684681462737" duration="1434000" />
       <workItem from="1684757951093" duration="5641000" />
       <workItem from="1684935045881" duration="4124000" />
+      <workItem from="1685113384113" duration="3552000" />
+      <workItem from="1685171613695" duration="2521000" />
+      <workItem from="1685184845801" duration="4695000" />
+      <workItem from="1685267812617" duration="9328000" />
     </task>
     <servers />
   </component>
@@ -136,13 +157,13 @@
       <breakpoints>
         <line-breakpoint enabled="true" type="DotNet Breakpoints">
           <url>file://$PROJECT_DIR$/Assets/Scripts/Card/Ingame/UnitCard.cs</url>
-          <line>66</line>
+          <line>68</line>
           <properties documentPath="E:\GitHub\GraduationProject\Assets\Scripts\Card\Ingame\UnitCard.cs" initialLine="59" containingFunctionPresentation="메서드 'Attack'">
             <startOffsets>
-              <option value="1054" />
+              <option value="1108" />
             </startOffsets>
             <endOffsets>
-              <option value="1068" />
+              <option value="1122" />
             </endOffsets>
           </properties>
           <option name="timeStamp" value="1" />

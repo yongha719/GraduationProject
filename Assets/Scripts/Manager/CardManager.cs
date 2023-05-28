@@ -2,6 +2,7 @@ using Photon.Pun;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using JetBrains.Annotations;
 using UnityEngine;
 using UnityEngine.Serialization;
 
@@ -11,6 +12,7 @@ public class CardManager : SingletonPunCallbacks<CardManager>, IPunObservable
     public List<UnitCard> PlayerUnits = new(10);
     public List<UnitCard> EnemyUnits = new(10);
 
+    public Action CardDraw;
     
     // GameObject로 가져올 수 있게 커스텀해서 안 쓸듯
     // 일단 남겨둠
@@ -42,6 +44,11 @@ public class CardManager : SingletonPunCallbacks<CardManager>, IPunObservable
     public GameObject GetRandomCardGameObject()
     {
         return myDeckGameObjects[UnityEngine.Random.Range(0, myDeckGameObjects.Count)];
+    }
+    
+    public string GetRandomCardName()
+    {
+        return myDeckGameObjects[UnityEngine.Random.Range(0, myDeckGameObjects.Count)].name;
     }
 
     /// <summary>

@@ -924,7 +924,9 @@ namespace Photon.Pun
 
         public GameObject MyInstantiate(GameObject prefab, Vector3 position, Quaternion rotation)
         {
-            bool cached = this.ResourceCache.TryGetValue(prefab.name, out prefab);
+            GameObject obj = prefab;
+            
+            bool cached = this.ResourceCache.TryGetValue(prefab.name, out obj);
             if (!cached)
             {                
                 if (prefab == null)

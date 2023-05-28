@@ -30,6 +30,8 @@ public class UnitCard : Card, IPunObservable
                     this.RemovePlayerUnit();
             }
 
+            hpText.text = hp.ToString();
+            
             hp = value;
         }
     }

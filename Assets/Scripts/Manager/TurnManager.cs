@@ -54,13 +54,7 @@ public class TurnManager : SingletonPunCallbacks<TurnManager>, IPunObservable
     {
         playerDeck = PhotonManager.GetPhotonViewByType(PhotonViewType.PlayerDeck).GetComponent<CardDeckLayout>();
 
-        turnChangeButton.onClick.AddListener(() =>
-        {
-            if (MyTurn)
-            {
-                TurnChange();
-            }
-        });
+        turnChangeButton.onClick.AddListener(TurnChange);
     }
 
     public void PlayerCardDraw()
@@ -122,7 +116,7 @@ public class TurnManager : SingletonPunCallbacks<TurnManager>, IPunObservable
     public void TurnBegin()
     {
         if (MyTurn)
-            playerDeck.CardDraw();
+            CardManager.Instance.CardDraw();
         else
             OnEnemySpawnCallBack.CardSpawnEvent();
     }
