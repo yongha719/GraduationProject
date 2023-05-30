@@ -46,9 +46,9 @@ public class PhotonManager : SingletonPunCallbacks<PhotonManager>
     public static PhotonView GetFieldPhotonView(bool isMine)
     {
         if (isMine)
-            return viewTypePhotonViews[PhotonViewType.PlayerField];
+            return GetPhotonViewByType(PhotonViewType.PlayerField);
         else
-            return viewTypePhotonViews[PhotonViewType.EnemyField];
+            return GetPhotonViewByType(PhotonViewType.EnemyField);
     }
 
     protected override void Awake()

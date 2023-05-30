@@ -23,7 +23,7 @@ public abstract class Card : MonoBehaviourPun
 
     [SerializeField]
     protected CardState cardState = CardState.Deck;
-    public virtual CardState CardState { get; set; }
+    public virtual CardState CardState { get => cardState; set => cardState = value; }
 
     /// <summary> 드래그 가능한 상태인지 체크 </summary>
     protected bool CanDrag => cardDragAndDrop.CanDrag;
@@ -46,9 +46,10 @@ public abstract class Card : MonoBehaviourPun
     {
         // 카드 오브젝트의 이름은 카드의 등급으로 되어있기 때문에 이름을 카드 등급만 남게해줌
         name = name.Replace("(Clone)", "");
-        
+
         // 오브젝트의 이름이 카드의 등급이고 딕셔너리의 키 값이 카드의 등급임 
-        CardData = GameManager.Instance.GetCardData(name);
+        print(name);
+        CardManager.Instance.TryGetCardData(name, ref CardData);
 
         rect = transform as RectTransform;
         lineRenderer = GetComponent<LineRenderer>();
@@ -76,23 +77,40 @@ public abstract class Card : MonoBehaviourPun
 
     private void OnMouseEnter()
     {
+        print(nameof(OnMouseEnter));
+
         if (CanDrag == false) return;
 
         // 카드가 덱에 있을 때 카드에 마우스 올리면
         if (cardState == CardState.Deck)
         {
             // TODO 카드커지게 하기
+            cardState = CardState.ExpansionDeck;
             return;
         }
     }
 
-    protected void OnEndDrag()
+    private void OnMouseExit()
     {
-        Attack();
+        print(nameof(OnMouseExit));
+
+        if (CanDrag == false) return;
+
+        if (cardState == CardState.ExpansionDeck)
+        {
+            cardState = CardState.Deck;
+        }
     }
 
-    protected void OnDrop()
+    protected virtual void OnEndDrag()
     {
+        // Attack();
+    }
+
+    protected virtual void OnDrop()
+    {
+        Attack();
+
         if (CanvasUtility.IsDropMyField())
             MoveCardFromDeckToField();
     }

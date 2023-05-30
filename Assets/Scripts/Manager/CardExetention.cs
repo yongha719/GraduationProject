@@ -11,7 +11,10 @@ public static class CardExetention
     private static List<UnitCard> EnemyUnits;
 
     // Awake 다음에 호출됨
-    //[RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
+    // 대신 싱글톤 개체를 쓸 땐
+    // 싱글턴 개체의 Script Excution Order를
+    // Defalut Time 이전으로 바꿔줘야 함
+    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
     public static void Init()
     {
         PlayerUnits = CardManager.Instance.PlayerUnits;

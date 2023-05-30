@@ -1,5 +1,7 @@
 using System;
 using System.ComponentModel;
+using System.Drawing.Printing;
+using System.Linq;
 using Unity.VisualScripting;
 using UnityEngine;
 using WebSocketSharp;
@@ -33,7 +35,7 @@ public enum CardAttributeType
 
 
 [Serializable]
-public class CardData
+public struct CardData
 {
     [Tooltip("이름"), SerializeField]
     private string name;
@@ -42,28 +44,47 @@ public class CardData
 
     [Tooltip("공격력"), SerializeField]
     private int power;
-    public int Power => power;
+    public int Power
+    {
+        get => power;
+        set => power = value;
+    }
 
 
     [Tooltip("체력"), SerializeField]
     private int hp;
-    public int Hp => hp;
+    public int Hp
+    {
+        get => hp;
+        set => hp = value;
+    }
 
 
     [Tooltip("코스트"), SerializeField]
     private int cost;
-    public int Cost => cost;
+    public int Cost
+    {
+        get => cost;
+        set => cost = value;
+    }
 
 
     [Tooltip("치명타 확률"), SerializeField]
-    private int criticalPercentage = -1;
-    public int CriticalPercentage => criticalPercentage;
+    private int criticalPercentage;
+    public int CriticalPercentage
+    {
+        get => criticalPercentage;
+        set => criticalPercentage = value;
+    }
 
 
     [Tooltip("치명타 공격력"), SerializeField]
-    private int criticalPower = 0;
-    public int CriticalPower => criticalPower;
-
+    private int criticalPower;
+    public int CriticalPower
+    {
+        get => criticalPower;
+        set => criticalPower = value;
+    }
 
     [Tooltip("기본 공격 설명"), TextArea, SerializeField]
     private string basicAttackExplain;
@@ -72,7 +93,11 @@ public class CardData
 
     [Tooltip("특성"), SerializeField]
     private CardAttributeType cardAttributeType;
-    public CardAttributeType CardAttributeType => cardAttributeType;
+    public CardAttributeType CardAttributeType
+    {
+        get => cardAttributeType;
+        set => cardAttributeType = value;
+    }
 
 
     [Tooltip("특수 공격 설명"), TextArea, SerializeField]
@@ -80,7 +105,7 @@ public class CardData
     public string SpecialAttackExplain => specialAttackExplain;
 
 
-    [Tooltip("등급"), TextArea, SerializeField]
+    [Tooltip("등급"), SerializeField]
     private string cardRating;
     public string CardRating => cardRating;
 
@@ -100,16 +125,30 @@ public class CardData
 
     public CardData(CardData data)
     {
-        for (int i = 0; i < (int)CardDataIndex.End; i++)
-        {
-            this[i] = data[i];
-        }
+        name = data.name;
+        power = data.power;
+        hp = data.hp;
+        cost = data.cost;
+        criticalPercentage = data.criticalPercentage;
+        criticalPower = data.criticalPower;
+        basicAttackExplain = data.basicAttackExplain;
+        cardAttributeType = data.cardAttributeType;
+        specialAttackExplain = data.specialAttackExplain;
+        cardRating = data.cardRating;
     }
 
     public CardData(string[] data)
     {
-        for (int i = 0; i < data.Length; i++)
-            this[i] = data[i];
+        name = data[0];
+        power = int.Parse(data[1]);
+        hp = int.Parse(data[2]);
+        cost = int.Parse(data[3]);
+        criticalPercentage = int.Parse(data[4]);
+        criticalPower = int.Parse(data[5]);
+        basicAttackExplain = data[6];
+        Enum.TryParse(data[7], out cardAttributeType);
+        specialAttackExplain = data[8];
+        cardRating = data[9].Replace("\r", "");
     }
 
     /// <summary> 혹시나 쓰지 않을까 싶어서 만들어놨음 </summary>
@@ -170,10 +209,5 @@ public class CardData
                     break;
             }
         }
-    }
-
-    public CardData Copy()
-    {
-        return new CardData(this);
     }
 }

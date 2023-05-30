@@ -68,6 +68,7 @@ public class UnitCard : Card, IPunObservable
     {
         if (CanAttack)
         {
+            print("Attack");
             for (int i = 0; i < lineRenderer.positionCount; i++)
             {
                 lineRenderer.SetPosition(i, Vector3.zero);
@@ -102,6 +103,7 @@ public class UnitCard : Card, IPunObservable
                 lineRenderer.positionCount = 0;
                 break;
             case CardState.ExpansionDeck:
+                rect.localScale = Vector3.one * 1.5f;
                 // 덱에 있는 카드를 눌렀을 때 커지는 모션
                 break;
             case CardState.Field:
@@ -127,7 +129,7 @@ public class UnitCard : Card, IPunObservable
     {
         // 이 카드가 적이고 필드에 도발 카드를 가지고 있는지 확인
         // 도발 카드가 없거나 이 카드가 도발 카드일 때 공격 가능
-        if (IsEnemy && CardManager.Instance.CanAttackWhenTaunt(this))
+        if (IsEnemy && CardManager.Instance.HasEnemyTauntCard(this))
             return true;
         else
             return false;

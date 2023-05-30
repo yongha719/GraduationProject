@@ -5,6 +5,7 @@ using System.Linq;
 using JetBrains.Annotations;
 using UnityEngine;
 using UnityEngine.Serialization;
+using AYellowpaper.SerializedCollections;
 
 public class CardManager : SingletonPunCallbacks<CardManager>, IPunObservable
 {
@@ -13,7 +14,7 @@ public class CardManager : SingletonPunCallbacks<CardManager>, IPunObservable
     public List<UnitCard> EnemyUnits = new(10);
 
     public Action CardDraw;
-    
+
     // GameObject로 가져올 수 있게 커스텀해서 안 쓸듯
     // 일단 남겨둠
     // 포톤은 오브젝트를 리소스 폴더에서 가져와서 오브젝트의 이름으로 가져오기 위해 string으로 함
@@ -30,34 +31,55 @@ public class CardManager : SingletonPunCallbacks<CardManager>, IPunObservable
         }
     }
 
-    [SerializeField] 
+    [Tooltip("카드 데이터들"), SerializedDictionary("Card Rating", "Card Data")]
+    public SerializedDictionary<string, CardData> CardDatas = new();
+
+    private const string INGAME_CARD_PATH = "Cards/Ingame Cards";
+
+    [SerializeField]
     private List<GameObject> myDeckGameObjects = new(20);
-    
-    
-    void Start()
+
+
+
+    async void Start()
     {
-        CardExetention.Init();
+        CardDatas = await ResourceManager.Instance.AsyncRequestCardData();
+
+        
+
+        myDeckGameObjects = Resources.LoadAll<GameObject>(INGAME_CARD_PATH).ToList();
     }
-    
-    
+
+    /// <summary>
+    /// 카드의 등급에 맞는 CardData를 반환<br></br>
+    /// 없을 경우 null반환
+    /// </summary>
+    /// <param name="name">카드의 등급을 인자로 받음</param>
+    public void TryGetCardData(string name, ref CardData cardData)
+    {
+        if (CardDatas.TryGetValue(name, out cardData) == false)
+            print("Card Name이 이상함");
+    }
+
     // 아직 프로토타입이기 때문에 확률은 똑같이 해둠
     public GameObject GetRandomCardGameObject()
     {
         return myDeckGameObjects[UnityEngine.Random.Range(0, myDeckGameObjects.Count)];
     }
-    
+
     public string GetRandomCardName()
     {
-        return myDeckGameObjects[UnityEngine.Random.Range(0, myDeckGameObjects.Count)].name;
+        return GetRandomCardGameObject().name;
     }
 
     /// <summary>
     /// 적이 도발 카드를 가지고 있는지 확인함 <br></br>
     /// </summary>
     /// 이 카드는 플레이어 클라이언트 기준으로 적 카드이기 때문에 적 카드 리스트에서 확인함
-    public bool CanAttackWhenTaunt(UnitCard card)
+    public bool HasEnemyTauntCard(UnitCard card)
     {
-        // 인자로 받은 카드가 Taunt 속성을 가지고 있으면 true 반환
+        // 인자로 받은 카드가 Taunt 속성을 가지고 있으면
+        // 공격할 수 있는 카드이니 true 반환
         if (card.CardData.CardAttributeType == CardAttributeType.Taunt)
             return true;
 
