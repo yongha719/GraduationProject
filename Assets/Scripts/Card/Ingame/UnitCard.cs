@@ -1,7 +1,5 @@
 using Photon.Pun;
 using System;
-using Unity.VisualScripting;
-using UnityEditor;
 using UnityEngine;
 
 
@@ -31,7 +29,7 @@ public class UnitCard : Card, IPunObservable
             }
 
             hpText.text = hp.ToString();
-            
+
             hp = value;
         }
     }
@@ -42,6 +40,8 @@ public class UnitCard : Card, IPunObservable
 
         set => photonView.RPC(nameof(SetCardStateRPC), RpcTarget.AllBuffered, value);
     }
+
+    private RaycastHit2D[] raycastHits;
 
     protected override void Awake()
     {
@@ -76,15 +76,15 @@ public class UnitCard : Card, IPunObservable
 
             Vector2 worldPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
 
-            var rayhits = Physics2D.RaycastAll(worldPosition, Vector2.zero);
+            Physics2D.RaycastNonAlloc(worldPosition, Vector2.zero, raycastHits);
 
-            foreach (RaycastHit2D hit in rayhits)
+            foreach (RaycastHit2D hit in raycastHits)
             {
-                if (hit.collider.TryGetComponent(out UnitCard enemyCard) && enemyCard.CanAttackThisCard())
-                {
-                    enemyCard.Hit(Damage: CardData.Damage);
-                    print("Hit");
-                }
+                if (hit.collider.TryGetComponent(out UnitCard enemyCard) == false ||
+                    enemyCard.CanAttackThisCard() == false)
+                    continue;
+                enemyCard.Hit(damage: CardData.Damage);
+                print("Hit");
             }
         }
     }
@@ -92,8 +92,6 @@ public class UnitCard : Card, IPunObservable
     [PunRPC]
     private void SetCardStateRPC(CardState value)
     {
-        print(value);
-
         cardState = value;
 
         switch (value)
@@ -113,15 +111,16 @@ public class UnitCard : Card, IPunObservable
         }
     }
 
-    public void Hit(int Damage)
+    public void Hit(int damage)
     {
-        Hp -= Damage;
+        Hp -= damage;
     }
 
 
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
     {
     }
+
 
     /// <summary> 이 카드를 공격할 수 있는지 확인 </summary>
     /// 이 메서드는 플레이어의 적 카드의 개체에서 호출됨
@@ -131,8 +130,8 @@ public class UnitCard : Card, IPunObservable
         // 도발 카드가 없거나 이 카드가 도발 카드일 때 공격 가능
         if (IsEnemy && CardManager.Instance.HasEnemyTauntCard(this))
             return true;
-        else
-            return false;
+
+        return false;
     }
 
     protected override void MoveCardFromDeckToField()

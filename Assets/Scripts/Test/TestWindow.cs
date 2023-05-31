@@ -24,14 +24,25 @@ public class TestWindow : EditorWindow
         GUILayout.Space(5);
 
         #region Card Draw
+        
         // Card Draw 버튼 만들어주고 창 크기에 맞춰 자동으로 확장되게 해줌
-        if (GUILayout.Button("Card Draw", GUILayout.Width(130), GUILayout.Height(40)))
+        if (GUILayout.Button("Player Card Draw", GUILayout.Width(130), GUILayout.Height(40)))
         {
             // 여기에 버튼을 눌렀을 때 액션을 넣어주면됨
-            Debug.Log("카드 소환");
+            Debug.Log("플레이어 카드 소환");
 
-            if (TurnManager.Instance != null)
-                TurnManager.Instance.PlayerCardDraw();
+            if (CardManager.Instance != null)
+                CardManager.Instance.CardDraw();
+        }
+        
+        // TODO : Enemy Card Draw
+        if (GUILayout.Button("Enemy Card Draw", GUILayout.Width(130), GUILayout.Height(40)))
+        {
+            // 여기에 버튼을 눌렀을 때 액션을 넣어주면됨
+            Debug.Log("적 카드 소환");
+
+            if (CardManager.Instance != null)
+                CardManager.Instance.EnemyCardDraw();
         }
         #endregion
 

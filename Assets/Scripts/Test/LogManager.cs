@@ -6,11 +6,9 @@ public class LogManager : MonoBehaviour
 {
     public static string Message;
 
-    [SerializeField]
-    private GameObject logContent;
+    [SerializeField] private GameObject logContent;
 
-    [SerializeField]
-    private RectTransform logListParent;
+    [SerializeField] private RectTransform logListParent;
 
     private WaitForEndOfFrame wait = new WaitForEndOfFrame();
 
@@ -28,7 +26,8 @@ public class LogManager : MonoBehaviour
     /// <param name="logType"> 로그 타입 (경고인지 에러인지 알려줌) </param>
     void LogHandler(string message, string stackTrace, LogType logType)
     {
-        StartCoroutine(ELog(message));
+        if (logType != LogType.Warning)
+            StartCoroutine(ELog(message));
     }
 
     // 그래픽 리빌드 루프가 진행 중일 때 실행이 돼 오류가 나서 루프가 끝난뒤 출력하려고 코루틴을 사용했음
@@ -41,5 +40,9 @@ public class LogManager : MonoBehaviour
 
         Instantiate(logContent, logListParent);
     }
-}
 
+    private void OnDestroy()
+    {
+        Application.logMessageReceived -= LogHandler;
+    }
+}

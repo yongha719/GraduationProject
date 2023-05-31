@@ -75,40 +75,15 @@ public abstract class Card : MonoBehaviourPun
         transform.localScale = Vector3.one;
     }
 
-    private void OnMouseEnter()
-    {
-        print(nameof(OnMouseEnter));
-
-        if (CanDrag == false) return;
-
-        // 카드가 덱에 있을 때 카드에 마우스 올리면
-        if (cardState == CardState.Deck)
-        {
-            // TODO 카드커지게 하기
-            cardState = CardState.ExpansionDeck;
-            return;
-        }
-    }
-
-    private void OnMouseExit()
-    {
-        print(nameof(OnMouseExit));
-
-        if (CanDrag == false) return;
-
-        if (cardState == CardState.ExpansionDeck)
-        {
-            cardState = CardState.Deck;
-        }
-    }
-
     protected virtual void OnEndDrag()
     {
-        // Attack();
+        Attack();
     }
 
     protected virtual void OnDrop()
     {
+        print("onDrop");
+        
         Attack();
 
         if (CanvasUtility.IsDropMyField())

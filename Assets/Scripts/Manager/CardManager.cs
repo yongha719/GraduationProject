@@ -14,6 +14,7 @@ public class CardManager : SingletonPunCallbacks<CardManager>, IPunObservable
     public List<UnitCard> EnemyUnits = new(10);
 
     public Action CardDraw;
+    public Action EnemyCardDraw;
 
     // GameObject로 가져올 수 있게 커스텀해서 안 쓸듯
     // 일단 남겨둠
@@ -44,8 +45,6 @@ public class CardManager : SingletonPunCallbacks<CardManager>, IPunObservable
     async void Start()
     {
         CardDatas = await ResourceManager.Instance.AsyncRequestCardData();
-
-        
 
         myDeckGameObjects = Resources.LoadAll<GameObject>(INGAME_CARD_PATH).ToList();
     }

@@ -29,7 +29,15 @@ public class CardDeckLayout : MonoBehaviourPunCallbacks, IPunObservable
         IsMine = photonView.ViewID == (int)PhotonViewType.PlayerDeck;
 
         if (IsMine)
+        {
+            print($"Player Deck : {name}");
             CardManager.Instance.CardDraw += () => CardDraw();
+        }
+        else
+        {
+            print($"Enemy Deck : {name}");
+            CardManager.Instance.EnemyCardDraw += () => CardDraw();
+        }
     }
 
     private void Update()
@@ -58,7 +66,8 @@ public class CardDeckLayout : MonoBehaviourPunCallbacks, IPunObservable
     /// <summary>
     /// 덱에서 필드로 낸 카드의 
     /// </summary>
-    /// RPC 호출이라 다른 개체에서는 viewId를 모르기 때문에 인자로 넘겨줘야함
+    /// RPC 호출이라 다른 개체에서는 어떤 개체인지 모르기 때문에
+    /// viewId를 모르기 때문에 인자로 넘겨줘야함
     [PunRPC]
     private void SetDeckParentRPC(int cardViewId)
     {
