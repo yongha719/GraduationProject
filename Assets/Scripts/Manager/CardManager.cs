@@ -19,17 +19,14 @@ public class CardManager : SingletonPunCallbacks<CardManager>, IPunObservable
     // GameObject로 가져올 수 있게 커스텀해서 안 쓸듯
     // 일단 남겨둠
     // 포톤은 오브젝트를 리소스 폴더에서 가져와서 오브젝트의 이름으로 가져오기 위해 string으로 함
-    private List<string> myDeckName = new List<string>();
+    private List<string> myDeckNames = new List<string>();
 
     /// <summary> - 내 덱 </summary>
-    public List<string> MyDeckName
+    public List<string> MyDeckNames
     {
-        get => myDeckName;
+        get => myDeckNames;
 
-        set
-        {
-            myDeckName = value;
-        }
+        set { myDeckNames = value; }
     }
 
     [Tooltip("카드 데이터들"), SerializedDictionary("Card Rating", "Card Data")]
@@ -37,9 +34,7 @@ public class CardManager : SingletonPunCallbacks<CardManager>, IPunObservable
 
     private const string INGAME_CARD_PATH = "Cards/Ingame Cards";
 
-    [SerializeField]
-    private List<GameObject> myDeckGameObjects = new(20);
-
+    [SerializeField] private List<GameObject> myDeckGameObjects = new(20);
 
 
     async void Start()
@@ -83,7 +78,8 @@ public class CardManager : SingletonPunCallbacks<CardManager>, IPunObservable
             return true;
 
         // 적 카드 중에 Taunt 속성이 있는지 확인
-        bool hasEnemyTauntCard = EnemyUnits.Exists(enemyCard => enemyCard.CardData.CardAttributeType == CardAttributeType.Taunt);
+        bool hasEnemyTauntCard =
+            EnemyUnits.Exists(enemyCard => enemyCard.CardData.CardAttributeType == CardAttributeType.Taunt);
 
         // 인자로 넘긴 카드가 Taunt 속성이 아니고, 적 카드 중에도 Taunt 속성이 없으면 true 반환
         if (card.CardData.CardAttributeType != CardAttributeType.Taunt && hasEnemyTauntCard == false)

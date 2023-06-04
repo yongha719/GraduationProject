@@ -13,25 +13,7 @@ public class UnitCard : Card, IPunObservable
     {
         get => hp;
 
-        set
-        {
-            if (value > CardData.Hp)
-                return;
-
-            if (value <= 0)
-            {
-                hp = 0;
-
-                if (IsEnemy)
-                    this.RemoveEnemyUnit();
-                else
-                    this.RemovePlayerUnit();
-            }
-
-            hpText.text = hp.ToString();
-
-            hp = value;
-        }
+        set => photonView.RPC(nameof(SetCardHpRPC), RpcTarget.AllBuffered, value);
     }
 
     public override CardState CardState
@@ -41,7 +23,7 @@ public class UnitCard : Card, IPunObservable
         set => photonView.RPC(nameof(SetCardStateRPC), RpcTarget.AllBuffered, value);
     }
 
-    private RaycastHit2D[] raycastHits;
+    private RaycastHit2D[] raycastHits = new RaycastHit2D[10];
 
     protected override void Awake()
     {
@@ -68,7 +50,6 @@ public class UnitCard : Card, IPunObservable
     {
         if (CanAttack)
         {
-            print("Attack");
             for (int i = 0; i < lineRenderer.positionCount; i++)
             {
                 lineRenderer.SetPosition(i, Vector3.zero);
@@ -80,13 +61,35 @@ public class UnitCard : Card, IPunObservable
 
             foreach (RaycastHit2D hit in raycastHits)
             {
-                if (hit.collider.TryGetComponent(out UnitCard enemyCard) == false ||
+                if (hit == null || hit.collider == null ||
+                    hit.collider.TryGetComponent(out UnitCard enemyCard) == false ||
                     enemyCard.CanAttackThisCard() == false)
                     continue;
+
                 enemyCard.Hit(damage: CardData.Damage);
-                print("Hit");
             }
         }
+    }
+
+    [PunRPC]
+    private void SetCardHpRPC(int value)
+    {
+        if (value > CardData.Hp)
+            return;
+
+        if (value <= 0)
+        {
+            hp = 0;
+
+            if (IsEnemy)
+                this.RemoveEnemyUnit();
+            else
+                this.RemovePlayerUnit();
+        }
+        
+        hp = value;
+
+        hpText.text = hp.ToString();
     }
 
     [PunRPC]

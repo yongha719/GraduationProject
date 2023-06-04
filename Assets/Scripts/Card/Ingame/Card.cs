@@ -18,12 +18,15 @@ public enum CardState
 /// <summary> 인게임 카드의 부모 클래스 </summary>
 public abstract class Card : MonoBehaviourPun
 {
-    [SerializeField]
-    protected bool IsEnemy;
+    [SerializeField] protected bool IsEnemy;
 
-    [SerializeField]
-    protected CardState cardState = CardState.Deck;
-    public virtual CardState CardState { get => cardState; set => cardState = value; }
+    [SerializeField] protected CardState cardState = CardState.Deck;
+
+    public virtual CardState CardState
+    {
+        get => cardState;
+        set => cardState = value;
+    }
 
     /// <summary> 드래그 가능한 상태인지 체크 </summary>
     protected bool CanDrag => cardDragAndDrop.CanDrag;
@@ -48,7 +51,6 @@ public abstract class Card : MonoBehaviourPun
         name = name.Replace("(Clone)", "");
 
         // 오브젝트의 이름이 카드의 등급이고 딕셔너리의 키 값이 카드의 등급임 
-        print(name);
         CardManager.Instance.TryGetCardData(name, ref CardData);
 
         rect = transform as RectTransform;
@@ -73,6 +75,10 @@ public abstract class Card : MonoBehaviourPun
     {
         transform.SetParent(parent);
         transform.localScale = Vector3.one;
+        
+        // PosZ가 0이 아니라서 콜라이더 크기가 이상해짐
+        // Vector2로 대입해줘서 0 만들어주기
+        rect.anchoredPosition3D = rect.anchoredPosition;
     }
 
     protected virtual void OnEndDrag()
@@ -82,8 +88,6 @@ public abstract class Card : MonoBehaviourPun
 
     protected virtual void OnDrop()
     {
-        print("onDrop");
-        
         Attack();
 
         if (CanvasUtility.IsDropMyField())
@@ -96,6 +100,12 @@ public abstract class Card : MonoBehaviourPun
     // 부모 클래스여서 뭔가 안되는 듯?
     // 자식 클래스로 옮기니까 잘됨
     protected abstract void MoveCardFromDeckToField();
+
+    public void Destroy()
+    {
+        if (photonView.IsMine)
+            PhotonNetwork.Destroy(gameObject);
+    }
 
     private void OnDestroy()
     {

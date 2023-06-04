@@ -9,9 +9,9 @@ public class CardDragAndDrop : MonoBehaviourPun, IBeginDragHandler, IDragHandler
     public event Action OnDrop;
 
     /// <summary> 드래그 가능한 상태인지 체크 </summary>
-    public bool CanDrag => isEnemy == false && cardState != CardState.Field && TurnManager.Instance.MyTurn;
+    public bool CanDrag => isEnemy == false && TurnManager.Instance.MyTurn;
 
-    private bool IsDragging;
+    private bool isDragging;
 
     private bool isEnemy;
 
@@ -46,10 +46,26 @@ public class CardDragAndDrop : MonoBehaviourPun, IBeginDragHandler, IDragHandler
     {
         print(nameof(OnMouseEnter));
 
-        // 카드가 덱에 있을 때 카드에 마우스 올리면
-        if (CanDrag && cardState == CardState.Deck && IsDragging == false)
+        switch (cardState)
         {
-            cardState = CardState.ExpansionDeck;
+            case CardState.Deck:
+                if (CanDrag && isDragging == false)
+                {
+                    cardState = CardState.ExpansionDeck;
+                }
+
+                break;
+            case CardState.ExpansionDeck:
+                break;
+            case CardState.Field:
+                if (CanDrag)
+                {
+                    print("Field");
+                }
+
+                break;
+            default:
+                throw new ArgumentOutOfRangeException();
         }
     }
 
@@ -57,7 +73,7 @@ public class CardDragAndDrop : MonoBehaviourPun, IBeginDragHandler, IDragHandler
     {
         print(nameof(OnMouseExit));
 
-        if (CanDrag && cardState == CardState.ExpansionDeck && IsDragging == false)
+        if (CanDrag && cardState == CardState.ExpansionDeck && isDragging == false)
         {
             cardState = CardState.Deck;
         }
@@ -65,8 +81,6 @@ public class CardDragAndDrop : MonoBehaviourPun, IBeginDragHandler, IDragHandler
 
     void IBeginDragHandler.OnBeginDrag(PointerEventData eventData)
     {
-        print("OnBeginDrag");
-        
         if (cardState == CardState.Field)
         {
             lineRenderer.SetPosition(0, (Vector3)CanvasUtility.GetMousePosToCanvasPos() + Vector3.back);
@@ -74,7 +88,7 @@ public class CardDragAndDrop : MonoBehaviourPun, IBeginDragHandler, IDragHandler
 
         if (CanDrag == false) return;
 
-        IsDragging = true;
+        isDragging = true;
 
         if (cardState == CardState.ExpansionDeck)
             cardState = CardState.Deck;
@@ -111,12 +125,9 @@ public class CardDragAndDrop : MonoBehaviourPun, IBeginDragHandler, IDragHandler
 
     void IEndDragHandler.OnEndDrag(PointerEventData eventData)
     {
-        print("OnEndDrag");
-        
-
         if (CanDrag == false) return;
 
-        IsDragging = false;
+        isDragging = false;
 
         // 다시 돌아가
         transform.localRotation = layoutRot;

@@ -2890,7 +2890,7 @@ namespace Photon.Pun
         /// - Instantiated and owned by this client.
         /// - Instantiated objects of players who left the room are controlled by the Master Client.
         /// - Room-owned game objects are controlled by the Master Client.
-        /// - GameObject can be destroyed while client is not in a room.
+        /// - GameObject can be destroyed while client is not in a room.                                                 
         /// </remarks>
         /// <returns>Nothing. Check error debug log for any issues.</returns>
         public static void Destroy(GameObject targetGo)
