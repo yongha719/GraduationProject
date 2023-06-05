@@ -42,6 +42,11 @@ public class CardManager : SingletonPunCallbacks<CardManager>, IPunObservable
         CardDatas = await ResourceManager.Instance.AsyncRequestCardData();
 
         myDeckGameObjects = Resources.LoadAll<GameObject>(INGAME_CARD_PATH).ToList();
+
+        foreach (var card in myDeckGameObjects)
+        {
+            PhotonNetwork.AddResource(card);
+        }
     }
 
     /// <summary>

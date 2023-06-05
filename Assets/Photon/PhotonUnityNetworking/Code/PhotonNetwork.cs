@@ -9,6 +9,8 @@
 // ----------------------------------------------------------------------------
 
 
+using AYellowpaper.SerializedCollections;
+
 namespace Photon.Pun
 {
     using System.Diagnostics;
@@ -2469,6 +2471,16 @@ namespace Photon.Pun
             }
         }
 
+        public static void AddResource(GameObject prefab)
+        {
+            prefabPool.AddResource(prefab);
+        }
+        
+        public static SerializedDictionary<string, GameObject> GetResources()
+        {
+            return prefabPool.GetResources();
+        } 
+        
         /// <summary>
         /// 유니티에 있는 Instantiate처럼 프리팹으로 생성할 수 있게 만들어봤음 
         /// </summary>

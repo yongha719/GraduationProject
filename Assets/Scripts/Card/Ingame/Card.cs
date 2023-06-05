@@ -34,14 +34,18 @@ public abstract class Card : MonoBehaviourPun
     /// <summary> 공격 가능한 상태인지 체크 </summary>
     public bool CanAttack => IsEnemy == false && CardState == CardState.Field && TurnManager.Instance.MyTurn;
 
-
+    [SerializeField] protected Sprite cardBackSprite;
+    
+    [Header("Texts")]
     [SerializeField] protected TextMeshProUGUI hpText;
     [SerializeField] protected TextMeshProUGUI powerText;
     [SerializeField] protected TextMeshProUGUI costText;
 
     protected RectTransform rect;
+    protected SpriteRenderer spriteRenderer;
     protected LineRenderer lineRenderer;
 
+    [Space(15f)]
     public CardData CardData;
     protected CardDragAndDrop cardDragAndDrop;
 
@@ -54,7 +58,6 @@ public abstract class Card : MonoBehaviourPun
         CardManager.Instance.TryGetCardData(name, ref CardData);
 
         rect = transform as RectTransform;
-        lineRenderer = GetComponent<LineRenderer>();
 
         cardDragAndDrop = GetComponent<CardDragAndDrop>();
     }

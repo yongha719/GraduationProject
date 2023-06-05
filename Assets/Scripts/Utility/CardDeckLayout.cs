@@ -1,8 +1,7 @@
 using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
-using System.Net.NetworkInformation;
-using Unity.VisualScripting;
+using AYellowpaper.SerializedCollections;
 using UnityEngine;
 
 
@@ -16,6 +15,8 @@ public class CardDeckLayout : MonoBehaviourPunCallbacks, IPunObservable
     private readonly Quaternion rightRotation = Quaternion.Euler(0, 0, -15f);
 
     private List<RectTransform> childs = new List<RectTransform>();
+
+    [SerializeField] private SerializedDictionary<string, GameObject> photonResources = new();
 
     [SerializeField] private bool IsMine;
 
@@ -51,11 +52,12 @@ public class CardDeckLayout : MonoBehaviourPunCallbacks, IPunObservable
     // 테스트 카드 소환
     public void CardDraw(bool isTest = false)
     {
-        var card = CardManager.Instance.GetRandomCardName();
+        var card = CardManager.Instance.GetRandomCardGameObject();
 
         PhotonView cardPhotonView = PhotonNetwork.Instantiate(CardPath, Vector2.zero, Quaternion.identity).GetPhotonView();
         // PhotonView cardPhotonView = PhotonNetwork.Instantiate(card, Vector2.zero, Quaternion.identity).GetPhotonView();
 
+        photonResources = PhotonNetwork.GetResources();
 
         if (isTest)
             SetDeckParentRPC(cardPhotonView.ViewID);

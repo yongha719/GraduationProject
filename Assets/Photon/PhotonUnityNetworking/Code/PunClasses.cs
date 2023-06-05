@@ -9,6 +9,8 @@
 // ----------------------------------------------------------------------------
 
 
+using AYellowpaper.SerializedCollections;
+
 #pragma warning disable 1587
 /// \defgroup publicApi Public API
 /// \brief Groups the most important classes that you need to understand early on.
@@ -57,18 +59,18 @@ namespace Photon.Pun
         {
             get
             {
-                #if UNITY_EDITOR
+#if UNITY_EDITOR
                 // In the editor we want to avoid caching this at design time, so changes in PV structure appear immediately.
                 if (!Application.isPlaying || this.pvCache == null)
                 {
                     this.pvCache = PhotonView.Get(this);
                 }
-                #else
+#else
                 if (this.pvCache == null)
                 {
                     this.pvCache = PhotonView.Get(this);
                 }
-                #endif
+#endif
                 return this.pvCache;
             }
         }
@@ -104,7 +106,8 @@ namespace Photon.Pun
     /// </remarks>
     /// \ingroup callbacks
     // the documentation for the interface methods becomes inherited when Doxygen builds it.
-    public class MonoBehaviourPunCallbacks : MonoBehaviourPun, IConnectionCallbacks , IMatchmakingCallbacks , IInRoomCallbacks, ILobbyCallbacks, IWebRpcCallback, IErrorInfoCallback
+    public class MonoBehaviourPunCallbacks : MonoBehaviourPun, IConnectionCallbacks, IMatchmakingCallbacks,
+        IInRoomCallbacks, ILobbyCallbacks, IWebRpcCallback, IErrorInfoCallback
     {
         public virtual void OnEnable()
         {
@@ -385,7 +388,7 @@ namespace Photon.Pun
         /// this won't be called!
         /// </remarks>
         /// <param name="debugMessage">Contains a debug message why authentication failed. This has to be fixed during development.</param>
-        public virtual void OnCustomAuthenticationFailed (string debugMessage)
+        public virtual void OnCustomAuthenticationFailed(string debugMessage)
         {
         }
 
@@ -428,8 +431,10 @@ namespace Photon.Pun
     public struct PhotonMessageInfo
     {
         private readonly int timeInt;
+
         /// <summary>The sender of a message / event. May be null.</summary>
         public readonly Player Sender;
+
         public readonly PhotonView photonView;
 
         public PhotonMessageInfo(Player player, int timestamp, PhotonView view)
@@ -444,7 +449,7 @@ namespace Photon.Pun
         {
             get
             {
-                uint u = (uint) this.timeInt;
+                uint u = (uint)this.timeInt;
                 double t = u;
                 return t / 1000.0d;
             }
@@ -470,7 +475,6 @@ namespace Photon.Pun
             return string.Format("[PhotonMessageInfo: Sender='{1}' Senttime={0}]", this.SentServerTime, this.Sender);
         }
     }
-
 
 
     /// <summary>Defines Photon event-codes as used by PUN.</summary>
@@ -550,8 +554,10 @@ namespace Photon.Pun
         {
             if (pos != newWriteData.Count)
             {
-                throw new Exception("SetWriteStream failed, because count does not match position value. pos: "+ pos + " newWriteData.Count:" + newWriteData.Count);
+                throw new Exception("SetWriteStream failed, because count does not match position value. pos: " + pos +
+                                    " newWriteData.Count:" + newWriteData.Count);
             }
+
             this.writeData = newWriteData;
             this.currentItem = pos;
             this.IsWriting = true;
@@ -639,7 +645,7 @@ namespace Photon.Pun
             {
                 if (this.readData.Length > this.currentItem)
                 {
-                    myBool = (bool) this.readData[this.currentItem];
+                    myBool = (bool)this.readData[this.currentItem];
                     this.currentItem++;
                 }
             }
@@ -653,7 +659,7 @@ namespace Photon.Pun
             }
             else
             {
-                if(readData.Length > currentItem)
+                if (readData.Length > currentItem)
                 {
                     list = (List<T>)readData[currentItem];
                     currentItem++;
@@ -690,7 +696,7 @@ namespace Photon.Pun
             {
                 if (this.readData.Length > this.currentItem)
                 {
-                    myInt = (int) this.readData[this.currentItem];
+                    myInt = (int)this.readData[this.currentItem];
                     this.currentItem++;
                 }
             }
@@ -709,7 +715,7 @@ namespace Photon.Pun
             {
                 if (this.readData.Length > this.currentItem)
                 {
-                    value = (string) this.readData[this.currentItem];
+                    value = (string)this.readData[this.currentItem];
                     this.currentItem++;
                 }
             }
@@ -728,7 +734,7 @@ namespace Photon.Pun
             {
                 if (this.readData.Length > this.currentItem)
                 {
-                    value = (char) this.readData[this.currentItem];
+                    value = (char)this.readData[this.currentItem];
                     this.currentItem++;
                 }
             }
@@ -747,7 +753,7 @@ namespace Photon.Pun
             {
                 if (this.readData.Length > this.currentItem)
                 {
-                    value = (short) this.readData[this.currentItem];
+                    value = (short)this.readData[this.currentItem];
                     this.currentItem++;
                 }
             }
@@ -766,7 +772,7 @@ namespace Photon.Pun
             {
                 if (this.readData.Length > this.currentItem)
                 {
-                    obj = (float) this.readData[this.currentItem];
+                    obj = (float)this.readData[this.currentItem];
                     this.currentItem++;
                 }
             }
@@ -785,7 +791,7 @@ namespace Photon.Pun
             {
                 if (this.readData.Length > this.currentItem)
                 {
-                    obj = (Player) this.readData[this.currentItem];
+                    obj = (Player)this.readData[this.currentItem];
                     this.currentItem++;
                 }
             }
@@ -804,7 +810,7 @@ namespace Photon.Pun
             {
                 if (this.readData.Length > this.currentItem)
                 {
-                    obj = (Vector3) this.readData[this.currentItem];
+                    obj = (Vector3)this.readData[this.currentItem];
                     this.currentItem++;
                 }
             }
@@ -823,7 +829,7 @@ namespace Photon.Pun
             {
                 if (this.readData.Length > this.currentItem)
                 {
-                    obj = (Vector2) this.readData[this.currentItem];
+                    obj = (Vector2)this.readData[this.currentItem];
                     this.currentItem++;
                 }
             }
@@ -842,7 +848,7 @@ namespace Photon.Pun
             {
                 if (this.readData.Length > this.currentItem)
                 {
-                    obj = (Quaternion) this.readData[this.currentItem];
+                    obj = (Quaternion)this.readData[this.currentItem];
                     this.currentItem++;
                 }
             }
@@ -867,13 +873,13 @@ namespace Photon.Pun
         }
 
 
-        #if UNITY_EDITOR
+#if UNITY_EDITOR
         /// <summary>In Editor, we can access the active scene's name.</summary>
         public static string EditorActiveSceneName
         {
             get { return SceneManager.GetActiveScene().name; }
         }
-        #endif
+#endif
     }
 
 
@@ -905,7 +911,8 @@ namespace Photon.Pun
                 res = Resources.Load<GameObject>(prefabId);
                 if (res == null)
                 {
-                    Debug.LogError("DefaultPool failed to load \"" + prefabId + "\". Make sure it's in a \"Resources\" folder. Or use a custom IPunPrefabPool.");
+                    Debug.LogError("DefaultPool failed to load \"" + prefabId +
+                                   "\". Make sure it's in a \"Resources\" folder. Or use a custom IPunPrefabPool.");
                 }
                 else
                 {
@@ -924,31 +931,36 @@ namespace Photon.Pun
 
         public GameObject MyInstantiate(GameObject prefab, Vector3 position, Quaternion rotation)
         {
-            GameObject obj = prefab;
-            
-            bool cached = this.ResourceCache.TryGetValue(prefab.name, out obj);
+            Debug.Log("Photon My Instantiate");
+
+            bool cached = this.ResourceCache.TryGetValue(prefab.name, out GameObject obj);
+
+            if (cached)
+                Debug.Log("Success Get Value!");
+
             if (!cached)
-            {                
-                if (prefab == null)
-                {
-                    Debug.LogError("야야 오브젝트 null이야");
-                }
-                else
-                {
-                    this.ResourceCache.Add(prefab.name, prefab);
-                }
+            {
+                Debug.LogError("야야 오브젝트 null이야");
             }
 
+            bool wasActive = obj.activeSelf;
+            if (wasActive) obj.SetActive(false);
 
-            bool wasActive = prefab.activeSelf;
-            if (wasActive) prefab.SetActive(false);
+            GameObject instance = GameObject.Instantiate(obj, position, rotation);
 
-            GameObject instance = GameObject.Instantiate(prefab, position, rotation);
+            if (wasActive) obj.SetActive(true);
 
-            if (wasActive) prefab.SetActive(true);
+            return obj;
+        }
 
+        public void AddResource(GameObject prefab)
+        {
+            ResourceCache.Add(prefab.name, prefab);
+        }
 
-            return prefab;
+        public SerializedDictionary<string, GameObject> GetResources()
+        {
+            return ResourceCache as SerializedDictionary<string, GameObject>;
         }
 
         /// <summary>Simply destroys a GameObject.</summary>
@@ -963,7 +975,8 @@ namespace Photon.Pun
     /// <summary>Small number of extension methods that make it easier for PUN to work cross-Unity-versions.</summary>
     public static class PunExtensions
     {
-        public static Dictionary<MethodInfo, ParameterInfo[]> ParametersOfMethods = new Dictionary<MethodInfo, ParameterInfo[]>();
+        public static Dictionary<MethodInfo, ParameterInfo[]> ParametersOfMethods =
+            new Dictionary<MethodInfo, ParameterInfo[]>();
 
         public static ParameterInfo[] GetCachedParemeters(this MethodInfo mo)
         {
@@ -1016,20 +1029,20 @@ namespace Photon.Pun
 
         public static bool CheckIsAssignableFrom(this Type to, Type from)
         {
-            #if !NETFX_CORE
+#if !NETFX_CORE
             return to.IsAssignableFrom(from);
-            #else
+#else
             return to.GetTypeInfo().IsAssignableFrom(from.GetTypeInfo());
-            #endif
+#endif
         }
 
         public static bool CheckIsInterface(this Type to)
         {
-            #if !NETFX_CORE
+#if !NETFX_CORE
             return to.IsInterface;
-            #else
+#else
             return to.GetTypeInfo().IsInterface;
-            #endif
+#endif
         }
     }
 }

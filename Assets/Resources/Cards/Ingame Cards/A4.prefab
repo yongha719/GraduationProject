@@ -427,7 +427,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ObservedComponentsFoldoutOpen: 1
   Group: 0
-  prefixField: -1
+  prefixField: 0
   Synchronization: 3
   OwnershipTransfer: 0
   observableSearch: 2
@@ -435,8 +435,8 @@ MonoBehaviour:
   - {fileID: 2779581622520894037}
   - {fileID: -815403951443178334}
   sceneViewId: 0
-  InstantiationId: 0
-  isRuntimeInstantiated: 0
+  InstantiationId: 2001
+  isRuntimeInstantiated: 1
 --- !u!114 &-815403951443178334
 MonoBehaviour:
   m_ObjectHideFlags: 0
