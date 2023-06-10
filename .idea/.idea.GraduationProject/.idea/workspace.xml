@@ -90,7 +90,7 @@
       <method v="2" />
     </configuration>
     <configuration name="독립실행형 플레이어" type="RunUnityExe" factoryName="Unity Executable">
-      <option name="EXE_PATH" value="$PROJECT_DIR$/../../Build/졸작/2023_06_07\GraduationProject.exe" />
+      <option name="EXE_PATH" value="$PROJECT_DIR$/../../Build/졸작/2023_06_10/GraduationProject.exe" />
       <option name="PROGRAM_PARAMETERS" value="" />
       <option name="WORKING_DIRECTORY" value="E:\Build\졸작\2023_05_21" />
       <option name="PASS_PARENT_ENVS" value="1" />
@@ -165,6 +165,8 @@
       <workItem from="1685866936477" duration="14947000" />
       <workItem from="1685964794314" duration="8028000" />
       <workItem from="1686136947915" duration="4179000" />
+      <workItem from="1686312692596" duration="3992000" />
+      <workItem from="1686376136378" duration="14416000" />
     </task>
     <servers />
   </component>
@@ -179,19 +181,6 @@
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
-        <line-breakpoint enabled="true" type="DotNet Breakpoints">
-          <url>file://$PROJECT_DIR$/Assets/Scripts/Card/Ingame/UnitCard.cs</url>
-          <line>50</line>
-          <properties documentPath="E:\GitHub\GraduationProject\Assets\Scripts\Card\Ingame\UnitCard.cs" initialLine="59" containingFunctionPresentation="메서드 'Attack'">
-            <startOffsets>
-              <option value="814" />
-            </startOffsets>
-            <endOffsets>
-              <option value="828" />
-            </endOffsets>
-          </properties>
-          <option name="timeStamp" value="1" />
-        </line-breakpoint>
         <line-breakpoint enabled="true" type="DotNet Breakpoints">
           <url>file://$PROJECT_DIR$/Assets/Scripts/Test/TestWindow.cs</url>
           <line>44</line>

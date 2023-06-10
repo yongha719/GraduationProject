@@ -20,7 +20,7 @@ public class ResourceManager : Singleton<ResourceManager>
     private const string ASSET_BUNDLE_PATH = "Bundle/card";
 
     private AssetBundle cardAssetBundle; 
-
+   
     
     public async Task<SerializedDictionary<string, CardData>> AsyncRequestCardData()
     {

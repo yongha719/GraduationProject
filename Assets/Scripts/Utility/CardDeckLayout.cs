@@ -3,10 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using AYellowpaper.SerializedCollections;
-using Unity.VisualScripting;
-using UnityEditor.Playables;
 using UnityEngine;
-using UnityEngine.Diagnostics;
 
 
 /// <summary>인게임에서 덱에 있는 카드의 레이아웃 </summary>
@@ -24,29 +21,19 @@ public class CardDeckLayout : MonoBehaviourPunCallbacks, IPunObservable
 
     [SerializeField] private bool IsMine;
 
-    [SerializeField, Tooltip("테스트 카드")] private GameObject Card;
-
     /// <summary> 아직 테스트 중이라 이런식으로 함 </summary>
     private string testCardPath => $"Cards/In game Cards/{CardManager.Instance.GetRandomCardName()}";
 
-    [SerializeField] private GameObject inGameCard;
-    
     private const string CardPath = "Cards/In game Cards/In Game Card";
-    
+
     private void Start()
     {
         IsMine = photonView.ViewID == (int)PhotonViewType.PlayerDeck;
-        
+
         if (IsMine)
-        {
-            print($"Player Deck : {name}");
             CardManager.Instance.CardDraw += () => CardDraw();
-        }
         else
-        {
-            print($"Enemy Deck : {name}");
             CardManager.Instance.EnemyCardDraw += () => CardDraw();
-        }
     }
 
     private void Update()
@@ -62,7 +49,8 @@ public class CardDeckLayout : MonoBehaviourPunCallbacks, IPunObservable
     {
         var card = CardManager.Instance.GetRandomCardGameObject();
 
-        PhotonView cardPhotonView = PhotonNetwork.Instantiate(testCardPath, Vector2.zero, Quaternion.identity).GetPhotonView();
+        PhotonView cardPhotonView =
+            PhotonNetwork.Instantiate(testCardPath, Vector2.zero, Quaternion.identity).GetPhotonView();
         // PhotonView cardPhotonView = PhotonNetwork.Instantiate(card, Vector2.zero, Quaternion.identity).GetPhotonView();
 
         photonResources = PhotonNetwork.GetResources();
@@ -83,12 +71,14 @@ public class CardDeckLayout : MonoBehaviourPunCallbacks, IPunObservable
     {
         PhotonView cardPhotonView = PhotonManager.TryGetPhotonView(cardViewId);
 
-        PhotonView parentPhotonView = 
-            PhotonManager.GetPhotonViewByType(cardPhotonView.IsMine ? PhotonViewType.PlayerDeck : PhotonViewType.EnemyDeck);
+        PhotonView parentPhotonView =
+            PhotonManager.GetPhotonViewByType(cardPhotonView.IsMine
+                ? PhotonViewType.PlayerDeck
+                : PhotonViewType.EnemyDeck);
 
         cardPhotonView.GetComponent<Card>().Init(parentPhotonView.gameObject.transform);
     }
-    
+
     private void OnTransformChildrenChanged()
     {
         float[] lerpValue;

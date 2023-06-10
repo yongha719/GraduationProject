@@ -32,7 +32,7 @@ public class CardManager : SingletonPunCallbacks<CardManager>, IPunObservable
     [Tooltip("카드 데이터들"), SerializedDictionary("Card Rating", "Card Data")]
     public SerializedDictionary<string, CardData> CardDatas = new();
 
-    private const string INGAME_CARD_PATH = "Cards/Ingame Cards";
+    private const string INGAME_CARD_PATH = "Cards/In game Cards";
 
     [SerializeField] private List<GameObject> myDeckGameObjects = new(20);
 
@@ -63,6 +63,8 @@ public class CardManager : SingletonPunCallbacks<CardManager>, IPunObservable
     // 아직 프로토타입이기 때문에 확률은 똑같이 해둠
     public GameObject GetRandomCardGameObject()
     {
+        print(myDeckGameObjects.Count);
+        
         return myDeckGameObjects[UnityEngine.Random.Range(0, myDeckGameObjects.Count)];
     }
 

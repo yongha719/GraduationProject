@@ -86,10 +86,13 @@ public struct CardData
         set => criticalPower = value;
     }
 
+    [Space]
+    
     [Tooltip("기본 공격 설명"), TextArea, SerializeField]
     private string basicAttackExplain;
     public string BasicAttackExplain => basicAttackExplain;
 
+    [Space]
 
     [Tooltip("특성"), SerializeField]
     private CardAttributeType cardAttributeType;
@@ -99,6 +102,7 @@ public struct CardData
         set => cardAttributeType = value;
     }
 
+    [Space]
 
     [Tooltip("특수 공격 설명"), TextArea, SerializeField]
     private string specialAttackExplain;

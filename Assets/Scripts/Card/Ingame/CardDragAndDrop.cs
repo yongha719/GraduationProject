@@ -22,7 +22,7 @@ public class CardDragAndDrop : MonoBehaviourPun, IBeginDragHandler, IDragHandler
     }
 
     private Vector2 originPos;
-    [Tooltip("덱 레이아웃이 회전값")] private Quaternion layoutRot;
+    [Tooltip("덱 레이아웃이 회전값")] public Quaternion layoutRot;
 
     [Tooltip("클릭했을때 마우스 포인터와 카드 중앙에서의 거리")]
     private Vector2 mousePosDistance;
@@ -44,8 +44,6 @@ public class CardDragAndDrop : MonoBehaviourPun, IBeginDragHandler, IDragHandler
 
     private void OnMouseEnter()
     {
-        print(nameof(OnMouseEnter));
-
         switch (cardState)
         {
             case CardState.Deck:
@@ -60,7 +58,6 @@ public class CardDragAndDrop : MonoBehaviourPun, IBeginDragHandler, IDragHandler
             case CardState.Field:
                 if (CanDrag)
                 {
-                    print("Field");
                 }
 
                 break;
@@ -71,8 +68,6 @@ public class CardDragAndDrop : MonoBehaviourPun, IBeginDragHandler, IDragHandler
 
     private void OnMouseExit()
     {
-        print(nameof(OnMouseExit));
-
         if (CanDrag && cardState == CardState.ExpansionDeck && isDragging == false)
         {
             cardState = CardState.Deck;
@@ -83,7 +78,7 @@ public class CardDragAndDrop : MonoBehaviourPun, IBeginDragHandler, IDragHandler
     {
         if (cardState == CardState.Field)
         {
-            lineRenderer.SetPosition(0, (Vector3)CanvasUtility.GetMousePosToCanvasPos() + Vector3.back);
+            // lineRenderer.SetPosition(0, (Vector3)CanvasUtility.GetMousePosToCanvasPos() + Vector3.back);
         }
 
         if (CanDrag == false) return;
@@ -109,7 +104,7 @@ public class CardDragAndDrop : MonoBehaviourPun, IBeginDragHandler, IDragHandler
     {
         if (cardState == CardState.Field)
         {
-            lineRenderer.SetPosition(1, (Vector3)CanvasUtility.GetMousePosToCanvasPos() + Vector3.back);
+            // lineRenderer.SetPosition(1, (Vector3)CanvasUtility.GetMousePosToCanvasPos() + Vector3.back);
         }
 
         if (CanDrag == false) return;
@@ -129,6 +124,7 @@ public class CardDragAndDrop : MonoBehaviourPun, IBeginDragHandler, IDragHandler
 
         isDragging = false;
 
+        if(cardState == CardState.Field)
         // 다시 돌아가
         transform.localRotation = layoutRot;
         rectTransform.anchoredPosition = originPos;

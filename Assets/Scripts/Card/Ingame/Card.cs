@@ -4,6 +4,8 @@ using UnityEngine.EventSystems;
 using System;
 using TMPro;
 using Unity.VisualScripting;
+using UnityEngine.Serialization;
+using UnityEngine.UI;
 
 [Serializable]
 public enum CardState
@@ -34,19 +36,36 @@ public abstract class Card : MonoBehaviourPun
     /// <summary> 공격 가능한 상태인지 체크 </summary>
     public bool CanAttack => IsEnemy == false && CardState == CardState.Field && TurnManager.Instance.MyTurn;
 
+    [Space(15f)] public CardData CardData;
+
+    [Space(15f), Header("Sprites")] [SerializeField]
+    protected Sprite originalCardSprite;
+
     [SerializeField] protected Sprite cardBackSprite;
-    
-    [Header("Texts")]
-    [SerializeField] protected TextMeshProUGUI hpText;
-    [SerializeField] protected TextMeshProUGUI powerText;
-    [SerializeField] protected TextMeshProUGUI costText;
+    [SerializeField] protected Sprite fieldCardSprite;
+
+    [Space(15f), Header("Stats")] [SerializeField]
+    protected GameObject deckStat;
+
+    [SerializeField] protected GameObject fieldStat;
+
+    [Space(15f), Header("Deck Stat Texts")] [SerializeField]
+    protected TextMeshProUGUI deckHpText;
+
+    [SerializeField] protected TextMeshProUGUI deckPowerText;
+    [SerializeField] protected TextMeshProUGUI deckCostText;
+
+
+    [Space(15f), Header("Field Stat Texts")] [SerializeField]
+    protected TextMeshProUGUI fieldHpText;
+
+    [SerializeField] protected TextMeshProUGUI fieldPowerText;
+
 
     protected RectTransform rect;
-    protected SpriteRenderer spriteRenderer;
+    protected Image cardImageComponent;
     protected LineRenderer lineRenderer;
 
-    [Space(15f)]
-    public CardData CardData;
     protected CardDragAndDrop cardDragAndDrop;
 
     protected virtual void Awake()
@@ -59,6 +78,8 @@ public abstract class Card : MonoBehaviourPun
 
         rect = transform as RectTransform;
 
+        cardImageComponent = GetComponent<Image>();
+
         cardDragAndDrop = GetComponent<CardDragAndDrop>();
     }
 
@@ -66,19 +87,31 @@ public abstract class Card : MonoBehaviourPun
     {
         IsEnemy = !photonView.IsMine;
 
+        originalCardSprite = cardImageComponent.sprite;
+
+        if (IsEnemy)
+        {
+            cardImageComponent.sprite = cardBackSprite;
+
+            deckStat.SetActive(false);
+        }
+
         cardDragAndDrop.OnEndDrag += OnEndDrag;
         cardDragAndDrop.OnDrop += OnDrop;
 
-        hpText.text = CardData.Hp.ToString();
-        powerText.text = CardData.Power.ToString();
-        costText.text = CardData.Cost.ToString();
+        deckHpText.text = CardData.Hp.ToString();
+        deckPowerText.text = CardData.Power.ToString();
+        deckCostText.text = CardData.Cost.ToString();
+
+        fieldHpText.text = deckHpText.text;
+        fieldPowerText.text = deckPowerText.text;
     }
 
     public void Init(Transform parent)
     {
         transform.SetParent(parent);
         transform.localScale = Vector3.one;
-        
+
         // PosZ가 0이 아니라서 콜라이더 크기가 이상해짐
         // Vector2로 대입해줘서 0 만들어주기
         rect.anchoredPosition3D = rect.anchoredPosition;

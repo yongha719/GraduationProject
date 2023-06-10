@@ -1,5 +1,6 @@
 using Photon.Pun;
 using System;
+using Unity.VisualScripting;
 using UnityEngine;
 
 
@@ -46,14 +47,70 @@ public class UnitCard : Card, IPunObservable
         }
     }
 
+    [PunRPC]
+    private void SetCardHpRPC(int value)
+    {
+        if (value > CardData.Hp)
+            return;
+
+        if (value <= 0)
+        {
+            hp = 0;
+
+            if (IsEnemy)
+                this.RemoveEnemyUnit();
+            else
+                this.RemovePlayerUnit();
+        }
+
+        hp = value;
+
+        fieldHpText.text = hp.ToString();
+    }
+
+    [PunRPC]
+    private void SetCardStateRPC(CardState value)
+    {
+        cardState = value;
+
+        switch (value)
+        {
+            case CardState.Deck:
+                rect.localScale = Vector3.one;
+                // lineRenderer.positionCount = 0;
+                if (IsEnemy)
+                    cardImageComponent.sprite = cardBackSprite;
+                break;
+            case CardState.ExpansionDeck:
+                rect.localScale = Vector3.one * 1.5f;
+                // 덱에 있는 카드를 눌렀을 때 커지는 모션
+                break;
+            case CardState.Field:
+                cardImageComponent.sprite = fieldCardSprite;
+                
+                deckStat.SetActive(false);
+                fieldStat.SetActive(true);
+                
+                rect.localScale = Vector3.one * 0.6f;
+
+                if (IsEnemy)
+                {
+                    rect.Rotate(0, 0, 180);
+                }
+                // lineRenderer.positionCount = 2;
+                break;
+        }
+    }
+
+    
     protected override void Attack()
     {
         if (CanAttack)
         {
-            for (int i = 0; i < lineRenderer.positionCount; i++)
-            {
-                lineRenderer.SetPosition(i, Vector3.zero);
-            }
+            // for (int i = 0; i < lineRenderer.positionCount; i++)
+            // {
+            //     lineRenderer.SetPosition(i, Vector3.zero);
+            // }
 
             Vector2 worldPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
 
@@ -70,50 +127,7 @@ public class UnitCard : Card, IPunObservable
             }
         }
     }
-
-    [PunRPC]
-    private void SetCardHpRPC(int value)
-    {
-        if (value > CardData.Hp)
-            return;
-
-        if (value <= 0)
-        {
-            hp = 0;
-
-            if (IsEnemy)
-                this.RemoveEnemyUnit();
-            else
-                this.RemovePlayerUnit();
-        }
-        
-        hp = value;
-
-        hpText.text = hp.ToString();
-    }
-
-    [PunRPC]
-    private void SetCardStateRPC(CardState value)
-    {
-        cardState = value;
-
-        switch (value)
-        {
-            case CardState.Deck:
-                rect.localScale = Vector3.one;
-                lineRenderer.positionCount = 0;
-                break;
-            case CardState.ExpansionDeck:
-                rect.localScale = Vector3.one * 1.5f;
-                // 덱에 있는 카드를 눌렀을 때 커지는 모션
-                break;
-            case CardState.Field:
-                rect.localScale = Vector3.one * 0.6f;
-                lineRenderer.positionCount = 2;
-                break;
-        }
-    }
-
+    
     public void Hit(int damage)
     {
         Hp -= damage;
