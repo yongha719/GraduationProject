@@ -21,6 +21,7 @@ public class ResourceManager : Singleton<ResourceManager>
 
     private AssetBundle cardAssetBundle; 
    
+    private SerializedDictionary<string, (Sprite, Sprite)> cardSprites = new();
     
     public async Task<SerializedDictionary<string, CardData>> AsyncRequestCardData()
     {

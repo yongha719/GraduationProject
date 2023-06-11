@@ -1,6 +1,5 @@
 using Photon.Pun;
 using System;
-using Unity.VisualScripting;
 using UnityEngine;
 
 
@@ -82,52 +81,52 @@ public class UnitCard : Card, IPunObservable
                     cardImageComponent.sprite = cardBackSprite;
                 break;
             case CardState.ExpansionDeck:
-                rect.localScale = Vector3.one * 1.5f;
+                if (IsEnemy == false)
+                    rect.localScale = Vector3.one * 1.5f;
                 // 덱에 있는 카드를 눌렀을 때 커지는 모션
                 break;
             case CardState.Field:
                 cardImageComponent.sprite = fieldCardSprite;
-                
+
                 deckStat.SetActive(false);
                 fieldStat.SetActive(true);
-                
+
                 rect.localScale = Vector3.one * 0.6f;
 
                 if (IsEnemy)
-                {
                     rect.Rotate(0, 0, 180);
-                }
-                // lineRenderer.positionCount = 2;
                 break;
         }
     }
 
-    
+
     protected override void Attack()
     {
-        if (CanAttack)
+        if (CanAttack == false) return;
+        
+        
+        Vector2 worldPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+
+        Physics2D.RaycastNonAlloc(worldPosition, Vector2.zero, raycastHits);
+
+        foreach (var hit in raycastHits)
         {
-            // for (int i = 0; i < lineRenderer.positionCount; i++)
-            // {
-            //     lineRenderer.SetPosition(i, Vector3.zero);
-            // }
+            if (hit == null || hit.collider == null ||
+                hit.collider.TryGetComponent(out UnitCard enemyCard) == false ||
+                enemyCard.CanAttackThisCard() == false)
+                continue;
 
-            Vector2 worldPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-
-            Physics2D.RaycastNonAlloc(worldPosition, Vector2.zero, raycastHits);
-
-            foreach (RaycastHit2D hit in raycastHits)
-            {
-                if (hit == null || hit.collider == null ||
-                    hit.collider.TryGetComponent(out UnitCard enemyCard) == false ||
-                    enemyCard.CanAttackThisCard() == false)
-                    continue;
-
-                enemyCard.Hit(damage: CardData.Damage);
-            }
+            // 적을 공격하면 적의 공격력만큼 나도 데미지 입음
+            enemyCard.Hit(damage: CardData.Damage, Hit);
         }
     }
-    
+
+    public void Hit(int damage, Action<int> hitAction)
+    {
+        hitAction(CardData.Damage);
+        Hp -= damage;
+    }
+
     public void Hit(int damage)
     {
         Hp -= damage;

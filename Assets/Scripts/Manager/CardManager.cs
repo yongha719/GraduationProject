@@ -60,19 +60,31 @@ public class CardManager : SingletonPunCallbacks<CardManager>, IPunObservable
             print("Card Name이 이상함");
     }
 
+    [Obsolete("Use GetRandomCardGameObjectByName Method")]
     // 아직 프로토타입이기 때문에 확률은 똑같이 해둠
-    public GameObject GetRandomCardGameObject()
+    public GameObject GetRandomCardGameObjectByObject()
     {
         print(myDeckGameObjects.Count);
-        
+
         return myDeckGameObjects[UnityEngine.Random.Range(0, myDeckGameObjects.Count)];
+    }
+
+    public string GetRandomCardGameObjectByObjectName()
+    {
+        return GetRandomCardGameObjectByObject().name;
     }
 
     public string GetRandomCardName()
     {
-        return GetRandomCardGameObject().name;
+        int randomIndex = UnityEngine.Random.Range(0, MyDeckNames.Count);
+        string cardName = MyDeckNames[randomIndex];
+        
+        MyDeckNames.RemoveAt(randomIndex);
+        
+        return cardName;
     }
 
+    
     /// <summary>
     /// 적이 도발 카드를 가지고 있는지 확인함 <br></br>
     /// </summary>
