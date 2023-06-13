@@ -32,16 +32,7 @@ public class TurnManager : SingletonPunCallbacks<TurnManager>, IPunObservable
 
     public bool MyTurn => TurnState == TurnState.PlayerTurn;
 
-    private Action<UnitCard> onEnemySpawnCallBack;
-    public Action<UnitCard> OnEnemySpawnCallBack
-    {
-        get => onEnemySpawnCallBack;
-
-        set
-        {
-            onEnemySpawnCallBack = value;
-        }
-    }
+    public event Action<UnitCard> OnEnemySpawnCallBack;
 
 
     [SerializeField]
@@ -123,13 +114,6 @@ public class TurnManager : SingletonPunCallbacks<TurnManager>, IPunObservable
 
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
     {
-        if (stream.IsWriting)
-        {
-            stream.SendNext(MyTurn ? TurnState.EnemyTurn : TurnState.PlayerTurn);
-        }
-        else
-        {
-            TurnState = (TurnState)stream.ReceiveNext();
-        }
+ 
     }
 }

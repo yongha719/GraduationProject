@@ -1,4 +1,6 @@
 
+using AYellowpaper.SerializedCollections;
+
 namespace Photon.Pun
 {
     using UnityEngine;
@@ -132,6 +134,10 @@ namespace Photon.Pun
         /// Resources.Load말고 GameObject로 스폰하고 싶어서 만들었음
         /// </summary>
         GameObject MyInstantiate(GameObject prefab, Vector3 position, Quaternion rotation);
+
+        void AddResource(GameObject prefab);
+
+        SerializedDictionary<string, GameObject> GetResources();
 
         /// <summary>
         /// Called to destroy (or just return) the instance of a prefab. It's disabled and the pool may reset and cache it for later use in Instantiate.

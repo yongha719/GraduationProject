@@ -14,40 +14,39 @@ public class CardManager : SingletonPunCallbacks<CardManager>, IPunObservable
     public List<UnitCard> EnemyUnits = new(10);
 
     public Action CardDraw;
+    public Action EnemyCardDraw;
 
     // GameObject로 가져올 수 있게 커스텀해서 안 쓸듯
     // 일단 남겨둠
     // 포톤은 오브젝트를 리소스 폴더에서 가져와서 오브젝트의 이름으로 가져오기 위해 string으로 함
-    private List<string> myDeckName = new List<string>();
+    private List<string> myDeckNames = new List<string>();
 
     /// <summary> - 내 덱 </summary>
-    public List<string> MyDeckName
+    public List<string> MyDeckNames
     {
-        get => myDeckName;
+        get => myDeckNames;
 
-        set
-        {
-            myDeckName = value;
-        }
+        set { myDeckNames = value; }
     }
 
     [Tooltip("카드 데이터들"), SerializedDictionary("Card Rating", "Card Data")]
     public SerializedDictionary<string, CardData> CardDatas = new();
 
-    private const string INGAME_CARD_PATH = "Cards/Ingame Cards";
+    private const string INGAME_CARD_PATH = "Cards/In game Cards";
 
-    [SerializeField]
-    private List<GameObject> myDeckGameObjects = new(20);
-
+    [SerializeField] private List<GameObject> myDeckGameObjects = new(20);
 
 
     async void Start()
     {
         CardDatas = await ResourceManager.Instance.AsyncRequestCardData();
 
-        
-
         myDeckGameObjects = Resources.LoadAll<GameObject>(INGAME_CARD_PATH).ToList();
+
+        foreach (var card in myDeckGameObjects)
+        {
+            PhotonNetwork.AddResource(card);
+        }
     }
 
     /// <summary>
@@ -61,17 +60,31 @@ public class CardManager : SingletonPunCallbacks<CardManager>, IPunObservable
             print("Card Name이 이상함");
     }
 
+    [Obsolete("Use GetRandomCardGameObjectByName Method")]
     // 아직 프로토타입이기 때문에 확률은 똑같이 해둠
-    public GameObject GetRandomCardGameObject()
+    public GameObject GetRandomCardGameObjectByObject()
     {
+        print(myDeckGameObjects.Count);
+
         return myDeckGameObjects[UnityEngine.Random.Range(0, myDeckGameObjects.Count)];
+    }
+
+    public string GetRandomCardGameObjectByObjectName()
+    {
+        return GetRandomCardGameObjectByObject().name;
     }
 
     public string GetRandomCardName()
     {
-        return GetRandomCardGameObject().name;
+        int randomIndex = UnityEngine.Random.Range(0, MyDeckNames.Count);
+        string cardName = MyDeckNames[randomIndex];
+        
+        MyDeckNames.RemoveAt(randomIndex);
+        
+        return cardName;
     }
 
+    
     /// <summary>
     /// 적이 도발 카드를 가지고 있는지 확인함 <br></br>
     /// </summary>
@@ -84,7 +97,8 @@ public class CardManager : SingletonPunCallbacks<CardManager>, IPunObservable
             return true;
 
         // 적 카드 중에 Taunt 속성이 있는지 확인
-        bool hasEnemyTauntCard = EnemyUnits.Exists(enemyCard => enemyCard.CardData.CardAttributeType == CardAttributeType.Taunt);
+        bool hasEnemyTauntCard =
+            EnemyUnits.Exists(enemyCard => enemyCard.CardData.CardAttributeType == CardAttributeType.Taunt);
 
         // 인자로 넘긴 카드가 Taunt 속성이 아니고, 적 카드 중에도 Taunt 속성이 없으면 true 반환
         if (card.CardData.CardAttributeType != CardAttributeType.Taunt && hasEnemyTauntCard == false)

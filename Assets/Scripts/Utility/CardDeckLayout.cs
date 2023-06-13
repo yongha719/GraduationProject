@@ -1,8 +1,8 @@
 using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
-using System.Net.NetworkInformation;
-using Unity.VisualScripting;
+using System.Linq;
+using AYellowpaper.SerializedCollections;
 using UnityEngine;
 
 
@@ -17,12 +17,14 @@ public class CardDeckLayout : MonoBehaviourPunCallbacks, IPunObservable
 
     private List<RectTransform> childs = new List<RectTransform>();
 
+    [SerializeField] private SerializedDictionary<string, GameObject> photonResources = new();
+
     [SerializeField] private bool IsMine;
 
-    [SerializeField, Tooltip("테스트 카드")] private GameObject Card;
-
     /// <summary> 아직 테스트 중이라 이런식으로 함 </summary>
-    private string CardPath => $"Cards/Ingame Cards/{CardManager.Instance.GetRandomCardName()}";
+    private string testCardPath => $"Cards/In game Cards/{CardManager.Instance.GetRandomCardName()}";
+
+    private const string CardPath = "Cards/In game Cards/In Game Card";
 
     private void Start()
     {
@@ -30,6 +32,8 @@ public class CardDeckLayout : MonoBehaviourPunCallbacks, IPunObservable
 
         if (IsMine)
             CardManager.Instance.CardDraw += () => CardDraw();
+        else
+            CardManager.Instance.EnemyCardDraw += () => CardDraw();
     }
 
     private void Update()
@@ -43,11 +47,13 @@ public class CardDeckLayout : MonoBehaviourPunCallbacks, IPunObservable
     // 테스트 카드 소환
     public void CardDraw(bool isTest = false)
     {
-        var card = CardManager.Instance.GetRandomCardName();
+        var card = CardManager.Instance.GetRandomCardGameObjectByObject();
 
-        PhotonView cardPhotonView = PhotonNetwork.Instantiate(CardPath, Vector2.zero, Quaternion.identity).GetPhotonView();
+        PhotonView cardPhotonView =
+            PhotonNetwork.Instantiate(testCardPath, Vector2.zero, Quaternion.identity).GetPhotonView();
         // PhotonView cardPhotonView = PhotonNetwork.Instantiate(card, Vector2.zero, Quaternion.identity).GetPhotonView();
 
+        photonResources = PhotonNetwork.GetResources();
 
         if (isTest)
             SetDeckParentRPC(cardPhotonView.ViewID);
@@ -58,18 +64,21 @@ public class CardDeckLayout : MonoBehaviourPunCallbacks, IPunObservable
     /// <summary>
     /// 덱에서 필드로 낸 카드의 
     /// </summary>
-    /// RPC 호출이라 다른 개체에서는 viewId를 모르기 때문에 인자로 넘겨줘야함
+    /// RPC 호출이라 다른 개체에서는 어떤 개체인지 모르기 때문에
+    /// viewId를 모르기 때문에 인자로 넘겨줘야함
     [PunRPC]
     private void SetDeckParentRPC(int cardViewId)
     {
         PhotonView cardPhotonView = PhotonManager.TryGetPhotonView(cardViewId);
 
-        PhotonView parentPhotonView = 
-            PhotonManager.GetPhotonViewByType(cardPhotonView.IsMine ? PhotonViewType.PlayerDeck : PhotonViewType.EnemyDeck);
+        PhotonView parentPhotonView =
+            PhotonManager.GetPhotonViewByType(cardPhotonView.IsMine
+                ? PhotonViewType.PlayerDeck
+                : PhotonViewType.EnemyDeck);
 
         cardPhotonView.GetComponent<Card>().Init(parentPhotonView.gameObject.transform);
     }
-    
+
     private void OnTransformChildrenChanged()
     {
         float[] lerpValue;

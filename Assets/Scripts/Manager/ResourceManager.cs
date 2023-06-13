@@ -19,12 +19,10 @@ public class ResourceManager : Singleton<ResourceManager>
     [Tooltip("에셋 번들 받아올 파일 경로")]
     private const string ASSET_BUNDLE_PATH = "Bundle/card";
 
-    private AssetBundle cardAssetBundle;
+    private AssetBundle cardAssetBundle; 
+   
+    private SerializedDictionary<string, (Sprite, Sprite)> cardSprites = new();
     
-    private void Start()
-    {
-    }
-
     public async Task<SerializedDictionary<string, CardData>> AsyncRequestCardData()
     {
         var request = UnityWebRequest.Get(CARD_DATA_URL);
@@ -65,7 +63,7 @@ public class ResourceManager : Singleton<ResourceManager>
         return datas;
     }
 
-    void LoadAssetBundle()
+    void LoadCardAssetBundle()
     {
         // 에셋 번들을 불러옴
         // LoadFromFile은 번들 파일의 경로를 가져옴

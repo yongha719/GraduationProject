@@ -9,6 +9,8 @@
 // ----------------------------------------------------------------------------
 
 
+using AYellowpaper.SerializedCollections;
+
 namespace Photon.Pun
 {
     using System.Diagnostics;
@@ -2469,6 +2471,16 @@ namespace Photon.Pun
             }
         }
 
+        public static void AddResource(GameObject prefab)
+        {
+            prefabPool.AddResource(prefab);
+        }
+        
+        public static SerializedDictionary<string, GameObject> GetResources()
+        {
+            return prefabPool.GetResources();
+        } 
+        
         /// <summary>
         /// 유니티에 있는 Instantiate처럼 프리팹으로 생성할 수 있게 만들어봤음 
         /// </summary>
@@ -2890,7 +2902,7 @@ namespace Photon.Pun
         /// - Instantiated and owned by this client.
         /// - Instantiated objects of players who left the room are controlled by the Master Client.
         /// - Room-owned game objects are controlled by the Master Client.
-        /// - GameObject can be destroyed while client is not in a room.
+        /// - GameObject can be destroyed while client is not in a room.                                                 
         /// </remarks>
         /// <returns>Nothing. Check error debug log for any issues.</returns>
         public static void Destroy(GameObject targetGo)

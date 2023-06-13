@@ -1,7 +1,8 @@
 {
     "name": "PhotonUnityNetworking",
     "references": [
-        "PhotonRealtime"
+        "PhotonRealtime",
+        "AYellowpaper.SerializedCollections"
     ],
     "optionalUnityReferences": [],
     "includePlatforms": [],

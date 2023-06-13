@@ -4,6 +4,8 @@ using UnityEngine.EventSystems;
 using System;
 using TMPro;
 using Unity.VisualScripting;
+using UnityEngine.Serialization;
+using UnityEngine.UI;
 
 [Serializable]
 public enum CardState
@@ -18,12 +20,15 @@ public enum CardState
 /// <summary> 인게임 카드의 부모 클래스 </summary>
 public abstract class Card : MonoBehaviourPun
 {
-    [SerializeField]
-    protected bool IsEnemy;
+    [SerializeField] protected bool IsEnemy;
 
-    [SerializeField]
-    protected CardState cardState = CardState.Deck;
-    public virtual CardState CardState { get => cardState; set => cardState = value; }
+    [SerializeField] protected CardState cardState = CardState.Deck;
+
+    public virtual CardState CardState
+    {
+        get => cardState;
+        set => cardState = value;
+    }
 
     /// <summary> 드래그 가능한 상태인지 체크 </summary>
     protected bool CanDrag => cardDragAndDrop.CanDrag;
@@ -31,15 +36,36 @@ public abstract class Card : MonoBehaviourPun
     /// <summary> 공격 가능한 상태인지 체크 </summary>
     public bool CanAttack => IsEnemy == false && CardState == CardState.Field && TurnManager.Instance.MyTurn;
 
+    [Space(15f)] public CardData CardData;
 
-    [SerializeField] protected TextMeshProUGUI hpText;
-    [SerializeField] protected TextMeshProUGUI powerText;
-    [SerializeField] protected TextMeshProUGUI costText;
+    [Space(15f), Header("Sprites")] [SerializeField]
+    protected Sprite originalCardSprite;
+
+    [SerializeField] protected Sprite cardBackSprite;
+    [SerializeField] protected Sprite fieldCardSprite;
+
+    [Space(15f), Header("Stats")] [SerializeField]
+    protected GameObject deckStat;
+
+    [SerializeField] protected GameObject fieldStat;
+
+    [Space(15f), Header("Deck Stat Texts")] [SerializeField]
+    protected TextMeshProUGUI deckHpText;
+
+    [SerializeField] protected TextMeshProUGUI deckPowerText;
+    [SerializeField] protected TextMeshProUGUI deckCostText;
+
+
+    [Space(15f), Header("Field Stat Texts")] [SerializeField]
+    protected TextMeshProUGUI fieldHpText;
+
+    [SerializeField] protected TextMeshProUGUI fieldPowerText;
+
 
     protected RectTransform rect;
+    protected Image cardImageComponent;
     protected LineRenderer lineRenderer;
 
-    public CardData CardData;
     protected CardDragAndDrop cardDragAndDrop;
 
     protected virtual void Awake()
@@ -48,11 +74,11 @@ public abstract class Card : MonoBehaviourPun
         name = name.Replace("(Clone)", "");
 
         // 오브젝트의 이름이 카드의 등급이고 딕셔너리의 키 값이 카드의 등급임 
-        print(name);
         CardManager.Instance.TryGetCardData(name, ref CardData);
 
         rect = transform as RectTransform;
-        lineRenderer = GetComponent<LineRenderer>();
+
+        cardImageComponent = GetComponent<Image>();
 
         cardDragAndDrop = GetComponent<CardDragAndDrop>();
     }
@@ -61,50 +87,39 @@ public abstract class Card : MonoBehaviourPun
     {
         IsEnemy = !photonView.IsMine;
 
+        originalCardSprite = cardImageComponent.sprite;
+
+        if (IsEnemy)
+        {
+            cardImageComponent.sprite = cardBackSprite;
+
+            deckStat.SetActive(false);
+        }
+
         cardDragAndDrop.OnEndDrag += OnEndDrag;
         cardDragAndDrop.OnDrop += OnDrop;
 
-        hpText.text = CardData.Hp.ToString();
-        powerText.text = CardData.Power.ToString();
-        costText.text = CardData.Cost.ToString();
+        deckHpText.text = CardData.Hp.ToString();
+        deckPowerText.text = CardData.Power.ToString();
+        deckCostText.text = CardData.Cost.ToString();
+
+        fieldHpText.text = deckHpText.text;
+        fieldPowerText.text = deckPowerText.text;
     }
 
     public void Init(Transform parent)
     {
         transform.SetParent(parent);
         transform.localScale = Vector3.one;
-    }
 
-    private void OnMouseEnter()
-    {
-        print(nameof(OnMouseEnter));
-
-        if (CanDrag == false) return;
-
-        // 카드가 덱에 있을 때 카드에 마우스 올리면
-        if (cardState == CardState.Deck)
-        {
-            // TODO 카드커지게 하기
-            cardState = CardState.ExpansionDeck;
-            return;
-        }
-    }
-
-    private void OnMouseExit()
-    {
-        print(nameof(OnMouseExit));
-
-        if (CanDrag == false) return;
-
-        if (cardState == CardState.ExpansionDeck)
-        {
-            cardState = CardState.Deck;
-        }
+        // PosZ가 0이 아니라서 콜라이더 크기가 이상해짐
+        // Vector2로 대입해줘서 0 만들어주기
+        rect.anchoredPosition3D = rect.anchoredPosition;
     }
 
     protected virtual void OnEndDrag()
     {
-        // Attack();
+        Attack();
     }
 
     protected virtual void OnDrop()
@@ -121,6 +136,12 @@ public abstract class Card : MonoBehaviourPun
     // 부모 클래스여서 뭔가 안되는 듯?
     // 자식 클래스로 옮기니까 잘됨
     protected abstract void MoveCardFromDeckToField();
+
+    public void Destroy()
+    {
+        if (photonView.IsMine)
+            PhotonNetwork.Destroy(gameObject);
+    }
 
     private void OnDestroy()
     {

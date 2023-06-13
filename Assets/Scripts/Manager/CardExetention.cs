@@ -53,7 +53,7 @@ public static class CardExetention
         if (index >= 0)
         {
             PlayerUnits.RemoveAt(index);
-            PhotonNetwork.Destroy(card.gameObject);
+            card.Destroy();
         }
     }
 
@@ -64,7 +64,7 @@ public static class CardExetention
         if (index >= 0)
         {
             EnemyUnits.RemoveAt(index);
-            PhotonNetwork.Destroy(card.gameObject);
+            card.Destroy();
         }
     }
 

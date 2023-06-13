@@ -9,14 +9,21 @@ public class CardDragAndDrop : MonoBehaviourPun, IBeginDragHandler, IDragHandler
     public event Action OnDrop;
 
     /// <summary> 드래그 가능한 상태인지 체크 </summary>
-    public bool CanDrag => isEnemy == false && cardState == CardState.Deck && TurnManager.Instance.MyTurn;
+    public bool CanDrag => isEnemy == false && TurnManager.Instance.MyTurn;
+
+    private bool isDragging;
 
     private bool isEnemy;
-    private CardState cardState => card.CardState;
+
+    private CardState cardState
+    {
+        get => card.CardState;
+        set => card.CardState = value;
+    }
 
     private Vector2 originPos;
-    [Tooltip("덱 레이아웃이 회전값")]
-    private Quaternion layoutRot;
+    [Tooltip("덱 레이아웃이 회전값")] public Quaternion layoutRot;
+
     [Tooltip("클릭했을때 마우스 포인터와 카드 중앙에서의 거리")]
     private Vector2 mousePosDistance;
 
@@ -35,14 +42,51 @@ public class CardDragAndDrop : MonoBehaviourPun, IBeginDragHandler, IDragHandler
         card = GetComponent<Card>();
     }
 
+    private void OnMouseEnter()
+    {
+        switch (cardState)
+        {
+            case CardState.Deck:
+                if (CanDrag && isDragging == false)
+                {
+                    cardState = CardState.ExpansionDeck;
+                }
+
+                break;
+            case CardState.ExpansionDeck:
+                break;
+            case CardState.Field:
+                if (CanDrag)
+                {
+                }
+
+                break;
+            default:
+                throw new ArgumentOutOfRangeException();
+        }
+    }
+
+    private void OnMouseExit()
+    {
+        if (CanDrag && cardState == CardState.ExpansionDeck && isDragging == false)
+        {
+            cardState = CardState.Deck;
+        }
+    }
+
     void IBeginDragHandler.OnBeginDrag(PointerEventData eventData)
     {
         if (cardState == CardState.Field)
         {
-            lineRenderer.SetPosition(0, (Vector3)CanvasUtility.GetMousePosToCanvasPos() + Vector3.back);
+            // lineRenderer.SetPosition(0, (Vector3)CanvasUtility.GetMousePosToCanvasPos() + Vector3.back);
         }
 
         if (CanDrag == false) return;
+
+        isDragging = true;
+
+        if (cardState == CardState.ExpansionDeck)
+            cardState = CardState.Deck;
 
         // 왼쪽 버튼으로 드래그 시작했을때 원래 포지션 저장과 마우스 포인터와 거리도 저장
         if (eventData.button == PointerEventData.InputButton.Left)
@@ -60,7 +104,7 @@ public class CardDragAndDrop : MonoBehaviourPun, IBeginDragHandler, IDragHandler
     {
         if (cardState == CardState.Field)
         {
-            lineRenderer.SetPosition(1, (Vector3)CanvasUtility.GetMousePosToCanvasPos() + Vector3.back);
+            // lineRenderer.SetPosition(1, (Vector3)CanvasUtility.GetMousePosToCanvasPos() + Vector3.back);
         }
 
         if (CanDrag == false) return;
@@ -76,18 +120,11 @@ public class CardDragAndDrop : MonoBehaviourPun, IBeginDragHandler, IDragHandler
 
     void IEndDragHandler.OnEndDrag(PointerEventData eventData)
     {
-        OnEndDrag();
-
-        if (card.CanAttack)
-        {
-            lineRenderer.positionCount = 2;
-
-            return;
-        }
-
         if (CanDrag == false) return;
 
+        isDragging = false;
 
+        if(cardState == CardState.Field)
         // 다시 돌아가
         transform.localRotation = layoutRot;
         rectTransform.anchoredPosition = originPos;
