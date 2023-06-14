@@ -42,13 +42,20 @@ public class CardManager : SingletonPunCallbacks<CardManager>, IPunObservable
         CardDatas = await ResourceManager.Instance.AsyncRequestCardData();
 
         myDeckGameObjects = Resources.LoadAll<GameObject>(INGAME_CARD_PATH).ToList();
+        
+        photonView.RPC(nameof(PhotonAddCardResource), RpcTarget.AllBuffered);
+    }
 
+    [PunRPC]
+    private void PhotonAddCardResource()
+    {
         foreach (var card in myDeckGameObjects)
         {
             PhotonNetwork.AddResource(card);
         }
     }
-
+    
+    
     /// <summary>
     /// 카드의 등급에 맞는 CardData를 반환<br></br>
     /// 없을 경우 null반환
@@ -57,7 +64,7 @@ public class CardManager : SingletonPunCallbacks<CardManager>, IPunObservable
     public void TryGetCardData(string name, ref CardData cardData)
     {
         if (CardDatas.TryGetValue(name, out cardData) == false)
-            print("Card Name이 이상함");
+            print($"카드 등급이 없음 \n 카드 등급 : {name}");
     }
 
     [Obsolete("Use GetRandomCardGameObjectByName Method")]
@@ -74,6 +81,11 @@ public class CardManager : SingletonPunCallbacks<CardManager>, IPunObservable
         return GetRandomCardGameObjectByObject().name;
     }
 
+    /// <summary>
+    /// 카드 이름을 카드 등급으로 하고
+    /// 카드 등급으로 모든걸 가져옴
+    /// </summary>
+    /// <returns></returns>
     public string GetRandomCardName()
     {
         int randomIndex = UnityEngine.Random.Range(0, MyDeckNames.Count);
