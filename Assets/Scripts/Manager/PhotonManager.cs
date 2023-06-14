@@ -69,7 +69,7 @@ public class PhotonManager : SingletonPunCallbacks<PhotonManager>
     {
     }
 
-    public static PhotonView TryGetPhotonView(int viewId)
+    public static PhotonView GetPhotonView(int viewId)
     {
         if (viewIdPhotonViews.TryGetValue(viewId, out PhotonView view) == false)
         {

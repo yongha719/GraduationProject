@@ -1,6 +1,3 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
 using AYellowpaper.SerializedCollections;
@@ -9,20 +6,28 @@ using UnityEngine.Networking;
 
 public class ResourceManager : Singleton<ResourceManager>
 {
-
-    [Tooltip("카드 데이터 받아올 스프레드시트 링크")]
-    private const string CARD_DATA_URL = "https://docs.google.com/spreadsheets/d/1uZHW4YokPwbg9gl0dDWcIjlWeieUlkiMwRk_PvQCPWU/export?format=tsv&range=A3:j16";
+    [Tooltip("카드 데이터 받아올 스프레드시트 링크")] private const string CARD_DATA_URL =
+        "https://docs.google.com/spreadsheets/d/1uZHW4YokPwbg9gl0dDWcIjlWeieUlkiMwRk_PvQCPWU/export?format=tsv&range=A3:j16";
 
     private SerializedDictionary<string, CardData> cardDatas = new();
-    
-    
-    [Tooltip("에셋 번들 받아올 파일 경로")]
-    private const string ASSET_BUNDLE_PATH = "Bundle/card";
 
-    private AssetBundle cardAssetBundle; 
-   
-    private SerializedDictionary<string, (Sprite, Sprite)> cardSprites = new();
-    
+
+    [Tooltip("에셋 번들 받아올 파일 경로")] private const string ASSET_BUNDLE_PATH = "Bundle/card";
+
+    private AssetBundle cardAssetBundle;
+
+    private const string CARD_DECK_SPRITES = "Assets/Resources/Cards/Sprite/Deck";
+    private const string CARD_FIELD_SPRITES = "Assets/Resources/Cards/Sprite/Field";
+
+    private SerializedDictionary<string, (Texture2D, Texture2D)> cardSprites = new();
+
+    private void Start()
+    {
+        LoadCardSprites();
+        
+        print("Resource Start");
+    }
+
     public async Task<SerializedDictionary<string, CardData>> AsyncRequestCardData()
     {
         var request = UnityWebRequest.Get(CARD_DATA_URL);
@@ -32,15 +37,12 @@ public class ResourceManager : Singleton<ResourceManager>
         TaskCompletionSource<bool> tcs = new TaskCompletionSource<bool>();
 
         var asyncOp = request.SendWebRequest();
-        
+
         // 받아왔을 때 실행할 이벤트
-        asyncOp.completed += operation =>
-        {
-            tcs.SetResult(request.result == UnityWebRequest.Result.Success);
-        };
+        asyncOp.completed += operation => { tcs.SetResult(request.result == UnityWebRequest.Result.Success); };
 
         // 비동기 작업이 완료될때 까지 대기
-        await Task.Run(() => tcs.Task); 
+        await Task.Run(() => tcs.Task);
         // 여기서 다음 코드 실행
 
         return ParsingCardData(request.downloadHandler.text);
@@ -63,6 +65,24 @@ public class ResourceManager : Singleton<ResourceManager>
         return datas;
     }
 
+    private void LoadCardSprites()
+    {
+        var deckSprite = Resources.LoadAll<Texture2D>(CARD_DECK_SPRITES);
+        var fieldSprite = Resources.LoadAll<Texture2D>(CARD_FIELD_SPRITES);
+
+        print(deckSprite.Length);
+        
+        for (int i = 0; i < deckSprite.Length; i++)
+        {
+            var cardRating = deckSprite[i].name.Split('_')[0];
+            
+            print(deckSprite[i].name.Split('_')[0]);
+            print(fieldSprite[i].name.Split('_')[0]);
+            
+            cardSprites.Add(cardRating, (deckSprite[i], fieldSprite[i]));
+        }
+    }
+
     void LoadCardAssetBundle()
     {
         // 에셋 번들을 불러옴
@@ -76,5 +96,4 @@ public class ResourceManager : Singleton<ResourceManager>
             Debug.Log("Failed to load AssetBundle!");
         }
     }
-
 }
