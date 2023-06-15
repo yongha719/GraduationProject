@@ -1,9 +1,12 @@
 using Photon.Pun;
+using System;
 using UnityEngine;
+using static UnityEditor.ShaderGraph.Internal.KeywordDependentCollection;
 
-public class Singleton<T> : MonoBehaviour where T : Singleton<T>
+public class Singleton<T> : MonoBehaviour where T : MonoBehaviour
 {
     private static T instance;
+
     public static T Instance
     {
         get
@@ -11,6 +14,15 @@ public class Singleton<T> : MonoBehaviour where T : Singleton<T>
             if (instance == null)
             {
                 instance = FindObjectOfType(typeof(T)) as T;
+
+                if (instance == null)
+                {
+                    var singletonObject = new GameObject();
+                    instance = singletonObject.AddComponent<T>();
+                    singletonObject.name = typeof(T).ToString();
+
+                    Debug.Assert(false, $"Singleton is Null");
+                }
             }
 
             return instance;
@@ -20,18 +32,25 @@ public class Singleton<T> : MonoBehaviour where T : Singleton<T>
 
     protected virtual void Awake()
     {
-        instance = (T)this;
+        if (instance == null)
+            instance = GetComponent<T>();
+        else
+        {
+            Destroy(this);
+        }
     }
 
     protected virtual void OnDestroy()
     {
-        instance = null;
+        if (instance == this)
+            instance = null;
     }
 }
 
 public class SingletonPunCallbacks<T> : MonoBehaviourPunCallbacks where T : SingletonPunCallbacks<T>
 {
     private static T instance;
+
     public static T Instance
     {
         get
@@ -56,4 +75,3 @@ public class SingletonPunCallbacks<T> : MonoBehaviourPunCallbacks where T : Sing
         instance = null;
     }
 }
-

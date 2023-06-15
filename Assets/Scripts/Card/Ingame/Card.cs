@@ -38,27 +38,29 @@ public abstract class Card : MonoBehaviourPun
 
     [Space(15f)] public CardData CardData;
 
-    [Space(15f), Header("Sprites")] [SerializeField]
-    protected Sprite originalCardSprite;
+    [Space(15f), Header("Sprites")]
 
     [SerializeField] protected Sprite cardBackSprite;
+    [SerializeField] protected Sprite deckCardSprite;
     [SerializeField] protected Sprite fieldCardSprite;
 
-    [Space(15f), Header("Stats")] [SerializeField]
-    protected GameObject deckStat;
+    [Space(15f), Header("Stats")]
+
+    [SerializeField] protected GameObject deckStat;
 
     [SerializeField] protected GameObject fieldStat;
 
-    [Space(15f), Header("Deck Stat Texts")] [SerializeField]
-    protected TextMeshProUGUI deckHpText;
+    [Space(15f), Header("Deck Stat Texts")]
+
+    [SerializeField] protected TextMeshProUGUI deckHpText;
 
     [SerializeField] protected TextMeshProUGUI deckPowerText;
     [SerializeField] protected TextMeshProUGUI deckCostText;
 
 
-    [Space(15f), Header("Field Stat Texts")] [SerializeField]
-    protected TextMeshProUGUI fieldHpText;
+    [Space(15f), Header("Field Stat Texts")]
 
+    [SerializeField] protected TextMeshProUGUI fieldHpText;
     [SerializeField] protected TextMeshProUGUI fieldPowerText;
 
 
@@ -70,12 +72,6 @@ public abstract class Card : MonoBehaviourPun
 
     protected virtual void Awake()
     {
-        // 카드 오브젝트의 이름은 카드의 등급으로 되어있기 때문에 이름을 카드 등급만 남게해줌
-        name = name.Replace("(Clone)", "");
-
-        // 오브젝트의 이름이 카드의 등급이고 딕셔너리의 키 값이 카드의 등급임 
-        CardManager.Instance.TryGetCardData(name, ref CardData);
-
         rect = transform as RectTransform;
 
         cardImageComponent = GetComponent<Image>();
@@ -87,13 +83,20 @@ public abstract class Card : MonoBehaviourPun
     {
         IsEnemy = !photonView.IsMine;
 
-        originalCardSprite = cardImageComponent.sprite;
+        var sprites = ResourceManager.Instance.GetCardSprites(name);
+
+        deckCardSprite = sprites.Item1;
+        fieldCardSprite = sprites.Item2;
 
         if (IsEnemy)
         {
             cardImageComponent.sprite = cardBackSprite;
 
             deckStat.SetActive(false);
+        }
+        else
+        {
+            cardImageComponent.sprite = deckCardSprite;
         }
 
         cardDragAndDrop.OnEndDrag += OnEndDrag;
@@ -107,7 +110,7 @@ public abstract class Card : MonoBehaviourPun
         fieldPowerText.text = deckPowerText.text;
     }
 
-    public void Init(Transform parent)
+    public void Init(Transform parent, string name)
     {
         transform.SetParent(parent);
         transform.localScale = Vector3.one;
@@ -115,6 +118,10 @@ public abstract class Card : MonoBehaviourPun
         // PosZ가 0이 아니라서 콜라이더 크기가 이상해짐
         // Vector2로 대입해줘서 0 만들어주기
         rect.anchoredPosition3D = rect.anchoredPosition;
+
+        gameObject.name = name;
+        // 오브젝트의 이름이 카드의 등급이고 딕셔너리의 키 값이 카드의 등급임 
+        CardManager.Instance.TryGetCardData(name, ref CardData);
     }
 
     protected virtual void OnEndDrag()

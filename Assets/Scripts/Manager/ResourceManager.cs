@@ -6,7 +6,8 @@ using UnityEngine.Networking;
 
 public class ResourceManager : Singleton<ResourceManager>
 {
-    [Tooltip("카드 데이터 받아올 스프레드시트 링크")] private const string CARD_DATA_URL =
+    [Tooltip("카드 데이터 받아올 스프레드시트 링크")]
+    private const string CARD_DATA_URL =
         "https://docs.google.com/spreadsheets/d/1uZHW4YokPwbg9gl0dDWcIjlWeieUlkiMwRk_PvQCPWU/export?format=tsv&range=A3:j16";
 
     private SerializedDictionary<string, CardData> cardDatas = new();
@@ -16,16 +17,14 @@ public class ResourceManager : Singleton<ResourceManager>
 
     private AssetBundle cardAssetBundle;
 
-    private const string CARD_DECK_SPRITES = "Assets/Resources/Cards/Sprite/Deck";
-    private const string CARD_FIELD_SPRITES = "Assets/Resources/Cards/Sprite/Field";
+    private const string CARD_DECK_SPRITES = "Cards/Sprite/Deck";
+    private const string CARD_FIELD_SPRITES = "Cards/Sprite/Field";
 
     private SerializedDictionary<string, (Texture2D, Texture2D)> cardSprites = new();
 
-    private void Start()
+    protected override void Awake()
     {
         LoadCardSprites();
-        
-        print("Resource Start");
     }
 
     public async Task<SerializedDictionary<string, CardData>> AsyncRequestCardData()
@@ -71,16 +70,38 @@ public class ResourceManager : Singleton<ResourceManager>
         var fieldSprite = Resources.LoadAll<Texture2D>(CARD_FIELD_SPRITES);
 
         print(deckSprite.Length);
-        
+
         for (int i = 0; i < deckSprite.Length; i++)
         {
             var cardRating = deckSprite[i].name.Split('_')[0];
-            
-            print(deckSprite[i].name.Split('_')[0]);
-            print(fieldSprite[i].name.Split('_')[0]);
-            
+
             cardSprites.Add(cardRating, (deckSprite[i], fieldSprite[i]));
         }
+    }
+
+    /// <summary>
+    /// Card의 Deck Sprite와 Field Sprite를 반환
+    /// </summary>
+    /// <param name="cardName"></param>
+    /// <returns></returns>
+    public (Sprite, Sprite) GetCardSprites(string cardName)
+    {
+        (Texture2D, Texture2D) sprites = (null, null);
+
+        if (cardSprites.TryGetValue(cardName, out sprites) == false)
+        {
+            print($"Method : {nameof(GetCardSprites)}\n cardName({cardName})이 이상함");
+
+            return (null, null);
+        }
+        
+        Rect rect = new Rect(0, 0, sprites.Item1.width, sprites.Item1.height);
+        Sprite deck = Sprite.Create(sprites.Item1, rect, new Vector2(0.5f, 0.5f));
+
+        rect = new Rect(0, 0, sprites.Item2.width, sprites.Item2.height);
+        Sprite field = Sprite.Create(sprites.Item2, rect, new Vector2(0.5f, 0.5f));
+
+        return (deck, field);
     }
 
     void LoadCardAssetBundle()

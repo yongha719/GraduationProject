@@ -5,9 +5,9 @@ using UnityEngine;
 
 /// <summary> 인게임 유닛 카드 </summary>
 [Serializable]
-public class UnitCard : Card, IPunObservable
+public class UnitCard : Card
 {
-    private int hp;
+    private int hp = 1;
 
     public int Hp
     {
@@ -29,7 +29,7 @@ public class UnitCard : Card, IPunObservable
     {
         base.Awake();
 
-        Hp = CardData.Hp;
+        hp = CardData.Hp;
     }
 
     protected override void Start()
@@ -82,7 +82,10 @@ public class UnitCard : Card, IPunObservable
                 break;
             case CardState.ExpansionDeck:
                 if (IsEnemy == false)
+                {
                     rect.localScale = Vector3.one * 1.5f;
+
+                }
                 // 덱에 있는 카드를 눌렀을 때 커지는 모션
                 break;
             case CardState.Field:
@@ -130,11 +133,6 @@ public class UnitCard : Card, IPunObservable
     public void Hit(int damage)
     {
         Hp -= damage;
-    }
-
-
-    public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
-    {
     }
 
 

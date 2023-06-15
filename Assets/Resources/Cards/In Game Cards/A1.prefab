@@ -552,9 +552,9 @@ MonoBehaviour:
     cardAttributeType: 0
     specialAttackExplain: 
     cardRating: 
-  originalCardSprite: {fileID: 0}
   cardBackSprite: {fileID: 21300000, guid: d388c52741e50554c8e35c3295e25dd3, type: 3}
-  fieldCardSprite: {fileID: 21300000, guid: 0f510bddb5f1c194fab6536f0068b03b, type: 3}
+  deckCardSprite: {fileID: 0}
+  fieldCardSprite: {fileID: 0}
   deckStat: {fileID: 7165733426589134839}
   fieldStat: {fileID: 1170477914804162316}
   deckHpText: {fileID: 4482050937356610923}

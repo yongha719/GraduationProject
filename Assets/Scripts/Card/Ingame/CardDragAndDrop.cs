@@ -50,6 +50,8 @@ public class CardDragAndDrop : MonoBehaviourPun, IBeginDragHandler, IDragHandler
                 if (CanDrag && isDragging == false)
                 {
                     cardState = CardState.ExpansionDeck;
+                    layoutRot = rectTransform.localRotation;
+                    rectTransform.localRotation = Quaternion.identity;
                 }
 
                 break;
@@ -61,8 +63,6 @@ public class CardDragAndDrop : MonoBehaviourPun, IBeginDragHandler, IDragHandler
                 }
 
                 break;
-            default:
-                throw new ArgumentOutOfRangeException();
         }
     }
 
@@ -71,6 +71,7 @@ public class CardDragAndDrop : MonoBehaviourPun, IBeginDragHandler, IDragHandler
         if (CanDrag && cardState == CardState.ExpansionDeck && isDragging == false)
         {
             cardState = CardState.Deck;
+            rectTransform.localRotation = layoutRot;
         }
     }
 

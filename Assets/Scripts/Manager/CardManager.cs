@@ -16,10 +16,15 @@ public class CardManager : SingletonPunCallbacks<CardManager>, IPunObservable
     public Action CardDraw;
     public Action EnemyCardDraw;
 
+    [Tooltip("카드 데이터들"), SerializedDictionary("Card Rating", "Card Data")]
+    public SerializedDictionary<string, CardData> CardDatas = new();
+
+    private const string INGAME_CARD_PATH = "Cards/In game Cards";
+
     // GameObject로 가져올 수 있게 커스텀해서 안 쓸듯
     // 일단 남겨둠
     // 포톤은 오브젝트를 리소스 폴더에서 가져와서 오브젝트의 이름으로 가져오기 위해 string으로 함
-    private List<string> myDeckNames = new List<string>();
+    [SerializeField] private List<string> myDeckNames = new List<string>();
 
     /// <summary> - 내 덱 </summary>
     public List<string> MyDeckNames
@@ -28,11 +33,6 @@ public class CardManager : SingletonPunCallbacks<CardManager>, IPunObservable
 
         set { myDeckNames = value; }
     }
-
-    [Tooltip("카드 데이터들"), SerializedDictionary("Card Rating", "Card Data")]
-    public SerializedDictionary<string, CardData> CardDatas = new();
-
-    private const string INGAME_CARD_PATH = "Cards/In game Cards";
 
     [SerializeField] private List<GameObject> myDeckGameObjects = new(20);
 
@@ -67,23 +67,8 @@ public class CardManager : SingletonPunCallbacks<CardManager>, IPunObservable
             print($"카드 등급이 없음 \n 카드 등급 : {name}");
     }
 
-    [Obsolete("Use GetRandomCardGameObjectByName Method")]
-    // 아직 프로토타입이기 때문에 확률은 똑같이 해둠
-    public GameObject GetRandomCardGameObjectByObject()
-    {
-        print(myDeckGameObjects.Count);
-
-        return myDeckGameObjects[UnityEngine.Random.Range(0, myDeckGameObjects.Count)];
-    }
-
-    public string GetRandomCardGameObjectByObjectName()
-    {
-        return GetRandomCardGameObjectByObject().name;
-    }
-
     /// <summary>
-    /// 카드 이름을 카드 등급으로 하고
-    /// 카드 등급으로 모든걸 가져옴
+    /// 카드 등급을 카드 이름으로 하고
     /// </summary>
     /// <returns></returns>
     public string GetRandomCardName()

@@ -18,14 +18,12 @@ public class CardDeckLayout : MonoBehaviourPunCallbacks, IPunObservable
 
     [SerializeField] private bool IsMine;
 
-    /// <summary> 아직 테스트 중이라 이런식으로 함 </summary>
-    private string testCardPath => $"Cards/In game Cards/{CardManager.Instance.GetRandomCardGameObjectByObjectName()}";
-    
+
     /// <summary> 인게임 카드 경로 </summary>
     /// 포톤에서 Resource.Load를 사용하기 때문에
     /// 이런식으로 경로를 정의함
     private string CardPath => "Cards/In Game Card";
-    
+
     private void Start()
     {
         IsMine = photonView.ViewID == (int)PhotonViewType.PlayerDeck;
@@ -47,17 +45,18 @@ public class CardDeckLayout : MonoBehaviourPunCallbacks, IPunObservable
     // 테스트 카드 소환
     public void CardDraw(bool isTest = false)
     {
-        PhotonView cardPhotonView =
-            PhotonNetwork.Instantiate(testCardPath, Vector2.zero, Quaternion.identity).GetPhotonView();
+        var cardObj = PhotonNetwork.Instantiate(CardPath, Vector2.zero, Quaternion.identity);
+
+        PhotonView cardPhotonView = cardObj.GetPhotonView();
 
         photonResources = PhotonNetwork.GetResources();
 
-        string cardName = "CardManager.Instance.GetRandomCardName()";
+        string cardName = CardManager.Instance.GetRandomCardName();
 
         if (isTest)
             SetCardAndParentRPC(cardPhotonView.ViewID, cardName);
         else
-            photonView.RPC(nameof(SetCardAndParentRPC), RpcTarget.AllBuffered, 
+            photonView.RPC(nameof(SetCardAndParentRPC), RpcTarget.AllBuffered,
                 cardPhotonView.ViewID, cardName);
     }
 
@@ -77,8 +76,8 @@ public class CardDeckLayout : MonoBehaviourPunCallbacks, IPunObservable
                 ? PhotonViewType.PlayerDeck
                 : PhotonViewType.EnemyDeck);
 
-        // cardPhotonView.gameObject.name = cardName;
-        cardPhotonView.GetComponent<Card>().Init(parentPhotonView.gameObject.transform);
+        cardPhotonView.gameObject.name = cardName;
+        cardPhotonView.GetComponent<Card>().Init(parentPhotonView.gameObject.transform, cardName);
     }
 
     private void OnTransformChildrenChanged()
@@ -98,9 +97,9 @@ public class CardDeckLayout : MonoBehaviourPunCallbacks, IPunObservable
                 break;
             default:
                 lerpValue = new float[transform.childCount];
-                
+
                 float interval = 1f / (transform.childCount - 1);
-                
+
                 for (int i = 0; i < transform.childCount; i++)
                     lerpValue[i] = interval * i;
                 break;
