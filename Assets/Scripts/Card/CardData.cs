@@ -24,7 +24,7 @@ public enum CardDataIndex
 }
 
 [Serializable]
-public enum CardAttributeType
+public enum CardSpecialAbilityType
 {
     None,
     Taunt,                      // 도발
@@ -95,11 +95,11 @@ public struct CardData
     [Space]
 
     [Tooltip("특성"), SerializeField]
-    private CardAttributeType cardAttributeType;
-    public CardAttributeType CardAttributeType
+    private CardSpecialAbilityType cardSpecialAbilityType;
+    public CardSpecialAbilityType CardSpecialAbilityType
     {
-        get => cardAttributeType;
-        set => cardAttributeType = value;
+        get => cardSpecialAbilityType;
+        set => cardSpecialAbilityType = value;
     }
 
     [Space]
@@ -136,7 +136,7 @@ public struct CardData
         criticalPercentage = data.criticalPercentage;
         criticalPower = data.criticalPower;
         basicAttackExplain = data.basicAttackExplain;
-        cardAttributeType = data.cardAttributeType;
+        cardSpecialAbilityType = data.cardSpecialAbilityType;
         specialAttackExplain = data.specialAttackExplain;
         cardRating = data.cardRating;
     }
@@ -150,7 +150,7 @@ public struct CardData
         criticalPercentage = int.Parse(data[4]);
         criticalPower = int.Parse(data[5]);
         basicAttackExplain = data[6];
-        Enum.TryParse(data[7], out cardAttributeType);
+        Enum.TryParse(data[7], out cardSpecialAbilityType);
         specialAttackExplain = data[8];
         cardRating = data[9].Replace("\r", "");
     }
@@ -167,7 +167,7 @@ public struct CardData
             4 => criticalPercentage.ToString(),
             5 => criticalPower.ToString(),
             6 => basicAttackExplain,
-            7 => CardAttributeType.ToString(),
+            7 => CardSpecialAbilityType.ToString(),
             8 => SpecialAttackExplain,
             9 => CardRating.ToString(),
             10 => Damage.ToString(),
@@ -201,7 +201,7 @@ public struct CardData
                     break;
                 case 7:
                     if (value.IsNullOrEmpty() == false)
-                        cardAttributeType = (CardAttributeType)Enum.Parse(typeof(CardAttributeType), value);
+                        cardSpecialAbilityType = (CardSpecialAbilityType)Enum.Parse(typeof(CardSpecialAbilityType), value);
                     break;
                 case 8:
                     specialAttackExplain = value;

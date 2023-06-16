@@ -17,8 +17,8 @@ public class CardDragAndDrop : MonoBehaviourPun, IBeginDragHandler, IDragHandler
 
     private CardState cardState
     {
-        get => card.CardState;
-        set => card.CardState = value;
+        get => _card.CardState;
+        set => _card.CardState = value;
     }
 
     private Vector2 originPos;
@@ -30,7 +30,7 @@ public class CardDragAndDrop : MonoBehaviourPun, IBeginDragHandler, IDragHandler
     private LineRenderer lineRenderer;
     private RectTransform rectTransform;
 
-    private Card card;
+    private Card _card;
 
     private void Start()
     {
@@ -39,7 +39,7 @@ public class CardDragAndDrop : MonoBehaviourPun, IBeginDragHandler, IDragHandler
         rectTransform = transform as RectTransform;
         lineRenderer = GetComponent<LineRenderer>();
 
-        card = GetComponent<Card>();
+        _card = GetComponent<Card>();
     }
 
     private void OnMouseEnter()

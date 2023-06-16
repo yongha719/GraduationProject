@@ -84,7 +84,7 @@ public class ResourceManager : Singleton<ResourceManager>
     /// </summary>
     /// <param name="cardName"></param>
     /// <returns></returns>
-    public (Sprite, Sprite) GetCardSprites(string cardName)
+    public (Sprite deck, Sprite field) GetCardSprites(string cardName)
     {
         (Texture2D, Texture2D) sprites = (null, null);
 

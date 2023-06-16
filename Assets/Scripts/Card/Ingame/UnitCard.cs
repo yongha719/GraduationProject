@@ -3,7 +3,7 @@ using System;
 using UnityEngine;
 
 
-/// <summary> 인게임 유닛 카드 </summary>
+/// <summary> 인게임 유닛 카드의 정보파트 </summary>
 [Serializable]
 public class UnitCard : Card
 {
@@ -23,6 +23,8 @@ public class UnitCard : Card
         set => photonView.RPC(nameof(SetCardStateRPC), RpcTarget.AllBuffered, value);
     }
 
+    public int Damage => CardData.Damage;
+
     private RaycastHit2D[] raycastHits = new RaycastHit2D[10];
 
     protected override void Awake()
@@ -36,14 +38,7 @@ public class UnitCard : Card
     {
         base.Start();
 
-        if (IsEnemy)
-        {
-            CardManager.Instance.EnemyUnits.Add(this);
-        }
-        else
-        {
-            CardManager.Instance.PlayerUnits.Add(this);
-        }
+        CardManager.Instance.AddUnitCard(this, IsEnemy);
     }
 
     [PunRPC]
@@ -106,8 +101,8 @@ public class UnitCard : Card
     protected override void Attack()
     {
         if (CanAttack == false) return;
-        
-        
+
+
         Vector2 worldPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
 
         Physics2D.RaycastNonAlloc(worldPosition, Vector2.zero, raycastHits);
@@ -120,13 +115,18 @@ public class UnitCard : Card
                 continue;
 
             // 적을 공격하면 적의 공격력만큼 나도 데미지 입음
-            enemyCard.Hit(damage: CardData.Damage, Hit);
+            enemyCard.Hit(Damage, Hit);
         }
     }
 
+    public void Hit(UnitCard unitCard)
+    {
+        Hit(unitCard.Damage, unitCard.Hit);
+    }
+    
     public void Hit(int damage, Action<int> hitAction)
     {
-        hitAction(CardData.Damage);
+        hitAction(Damage);
         Hp -= damage;
     }
 

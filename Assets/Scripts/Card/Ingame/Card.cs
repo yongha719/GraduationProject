@@ -47,13 +47,11 @@ public abstract class Card : MonoBehaviourPun
     [Space(15f), Header("Stats")]
 
     [SerializeField] protected GameObject deckStat;
-
     [SerializeField] protected GameObject fieldStat;
 
     [Space(15f), Header("Deck Stat Texts")]
 
     [SerializeField] protected TextMeshProUGUI deckHpText;
-
     [SerializeField] protected TextMeshProUGUI deckPowerText;
     [SerializeField] protected TextMeshProUGUI deckCostText;
 
@@ -66,7 +64,6 @@ public abstract class Card : MonoBehaviourPun
 
     protected RectTransform rect;
     protected Image cardImageComponent;
-    protected LineRenderer lineRenderer;
 
     protected CardDragAndDrop cardDragAndDrop;
 

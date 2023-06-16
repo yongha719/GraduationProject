@@ -18,7 +18,7 @@ public static class CardExetention
     public static void Init()
     {
         PlayerUnits = CardManager.Instance.PlayerUnits;
-        EnemyUnits = CardManager.Instance.EnemyUnits;
+        EnemyUnits = CardManager.Instance.EnemyUnitCardInfos;
     }
 
     /// <summary> 플레이어의 카드 리스트에 추가 </summary>

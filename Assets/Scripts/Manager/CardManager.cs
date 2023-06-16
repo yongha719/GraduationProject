@@ -11,7 +11,7 @@ public class CardManager : SingletonPunCallbacks<CardManager>, IPunObservable
 {
     // 필드에 낼 수 있는 카드가 최대 10이기 때문에 Capacity를 10으로 정해줌
     public List<UnitCard> PlayerUnits = new(10);
-    public List<UnitCard> EnemyUnits = new(10);
+    [FormerlySerializedAs("EnemyUnits")] public List<UnitCard> EnemyUnitCardInfos = new(10);
 
     public Action CardDraw;
     public Action EnemyCardDraw;
@@ -90,21 +90,28 @@ public class CardManager : SingletonPunCallbacks<CardManager>, IPunObservable
     {
         // 인자로 받은 카드가 Taunt 속성을 가지고 있으면
         // 공격할 수 있는 카드이니 true 반환
-        if (card.CardData.CardAttributeType == CardAttributeType.Taunt)
+        if (card.CardData.CardSpecialAbilityType == CardSpecialAbilityType.Taunt)
             return true;
 
         // 적 카드 중에 Taunt 속성이 있는지 확인
         bool hasEnemyTauntCard =
-            EnemyUnits.Exists(enemyCard => enemyCard.CardData.CardAttributeType == CardAttributeType.Taunt);
+            EnemyUnitCardInfos.Exists(enemyCard => enemyCard.CardData.CardSpecialAbilityType == CardSpecialAbilityType.Taunt);
 
         // 인자로 넘긴 카드가 Taunt 속성이 아니고, 적 카드 중에도 Taunt 속성이 없으면 true 반환
-        if (card.CardData.CardAttributeType != CardAttributeType.Taunt && hasEnemyTauntCard == false)
+        if (card.CardData.CardSpecialAbilityType != CardSpecialAbilityType.Taunt && hasEnemyTauntCard == false)
             return true;
 
         // 인자로 넘긴 카드가 Taunt 속성이 아니고, 적 카드 중에 Taunt 속성이 있으면 false 반환
         return false;
     }
 
+    public void AddUnitCard(UnitCard card, bool isEnemy)
+    {
+        if (isEnemy)
+            EnemyUnitCardInfos.Add(card);
+        else
+            PlayerUnits.Add(card);
+    }
 
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
     {
