@@ -17,8 +17,8 @@ public class CardDragAndDrop : MonoBehaviourPun, IBeginDragHandler, IDragHandler
 
     private CardState cardState
     {
-        get => _card.CardState;
-        set => _card.CardState = value;
+        get => card.CardState;
+        set => card.CardState = value;
     }
 
     private Vector2 originPos;
@@ -27,21 +27,22 @@ public class CardDragAndDrop : MonoBehaviourPun, IBeginDragHandler, IDragHandler
     [Tooltip("클릭했을때 마우스 포인터와 카드 중앙에서의 거리")]
     private Vector2 mousePosDistance;
 
-    private LineRenderer lineRenderer;
     private RectTransform rectTransform;
 
-    private Card _card;
+    private Card card;
 
     private void Start()
     {
         isEnemy = !photonView.IsMine;
 
         rectTransform = transform as RectTransform;
-        lineRenderer = GetComponent<LineRenderer>();
-
-        _card = GetComponent<Card>();
     }
 
+    public void Init()
+    {
+        card = GetComponent<Card>();
+    }
+    
     private void OnMouseEnter()
     {
         switch (cardState)

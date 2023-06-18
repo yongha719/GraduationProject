@@ -1,7 +1,9 @@
+using System;
 using Photon.Pun;
 using System.Collections.Generic;
 using System.Linq;
 using AYellowpaper.SerializedCollections;
+using Unity.VisualScripting;
 using UnityEngine;
 
 
@@ -77,7 +79,13 @@ public class CardDeckLayout : MonoBehaviourPunCallbacks, IPunObservable
                 : PhotonViewType.EnemyDeck);
 
         cardPhotonView.gameObject.name = cardName;
-        cardPhotonView.GetComponent<Card>().Init(parentPhotonView.gameObject.transform, cardName);
+        
+        print(cardName);
+        var cardType = cardPhotonView.gameObject.AddComponent(Type.GetType($"{cardName}Unit"));
+        
+        print($"Card Type : {cardType}");
+        if(cardType is Card card)
+            card.Init(parentPhotonView.gameObject.transform, cardName);
     }
 
     private void OnTransformChildrenChanged()

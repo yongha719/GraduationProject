@@ -16,6 +16,8 @@ public class UnitCard : Card
         set => photonView.RPC(nameof(SetCardHpRPC), RpcTarget.AllBuffered, value);
     }
 
+    public event Action<int> OnSetHpChange = i => { };
+
     public override CardState CardState
     {
         get => cardState;
@@ -23,9 +25,13 @@ public class UnitCard : Card
         set => photonView.RPC(nameof(SetCardStateRPC), RpcTarget.AllBuffered, value);
     }
 
+    public bool HasSpecialAbility => CardData.CardSpecialAbilityType != CardSpecialAbilityType.None;
+
     public int Damage => CardData.Damage;
 
     private RaycastHit2D[] raycastHits = new RaycastHit2D[10];
+
+    protected IUnitCardAction unitCardAction;
 
     protected override void Awake()
     {
@@ -42,7 +48,7 @@ public class UnitCard : Card
     }
 
     [PunRPC]
-    private void SetCardHpRPC(int value)
+    protected void SetCardHpRPC(int value)
     {
         if (value > CardData.Hp)
             return;
@@ -51,19 +57,16 @@ public class UnitCard : Card
         {
             hp = 0;
 
-            if (IsEnemy)
-                this.RemoveEnemyUnit();
-            else
-                this.RemovePlayerUnit();
+            CardManager.Instance.RemoveUnitCard(this, IsEnemy);
         }
 
         hp = value;
 
-        fieldHpText.text = hp.ToString();
+        OnSetHpChange(hp);
     }
 
     [PunRPC]
-    private void SetCardStateRPC(CardState value)
+    protected void SetCardStateRPC(CardState value)
     {
         cardState = value;
 
@@ -71,23 +74,17 @@ public class UnitCard : Card
         {
             case CardState.Deck:
                 rect.localScale = Vector3.one;
-                // lineRenderer.positionCount = 0;
-                if (IsEnemy)
-                    cardImageComponent.sprite = cardBackSprite;
                 break;
             case CardState.ExpansionDeck:
                 if (IsEnemy == false)
                 {
                     rect.localScale = Vector3.one * 1.5f;
-
                 }
+
                 // 덱에 있는 카드를 눌렀을 때 커지는 모션
                 break;
             case CardState.Field:
-                cardImageComponent.sprite = fieldCardSprite;
-
-                deckStat.SetActive(false);
-                fieldStat.SetActive(true);
+                cardInfo.OnFieldStateChange();
 
                 rect.localScale = Vector3.one * 0.6f;
 
@@ -97,11 +94,9 @@ public class UnitCard : Card
         }
     }
 
-
     protected override void Attack()
     {
         if (CanAttack == false) return;
-
 
         Vector2 worldPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
 
@@ -115,7 +110,7 @@ public class UnitCard : Card
                 continue;
 
             // 적을 공격하면 적의 공격력만큼 나도 데미지 입음
-            enemyCard.Hit(Damage, Hit);
+            unitCardAction.BasicAttack(enemyCard);
         }
     }
 
@@ -123,7 +118,7 @@ public class UnitCard : Card
     {
         Hit(unitCard.Damage, unitCard.Hit);
     }
-    
+
     public void Hit(int damage, Action<int> hitAction)
     {
         hitAction(Damage);
@@ -157,7 +152,7 @@ public class UnitCard : Card
     }
 
     [PunRPC]
-    private void MoveCardFromDeckToFieldRPC()
+    protected void MoveCardFromDeckToFieldRPC()
     {
         PhotonView parentView = PhotonManager.GetFieldPhotonView(photonView.IsMine);
         CardState = CardState.Field;

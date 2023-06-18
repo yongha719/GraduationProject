@@ -113,6 +113,16 @@ public class CardManager : SingletonPunCallbacks<CardManager>, IPunObservable
             PlayerUnits.Add(card);
     }
 
+    public void RemoveUnitCard(UnitCard card, bool isEnemy)
+    {
+        if (isEnemy)
+            EnemyUnitCardInfos.Remove(card);
+        else
+            PlayerUnits.Remove(card);
+        
+        card.Destroy();
+    }
+
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
     {
         // 내가 보낼 때는 플레이어 카드를 보내고

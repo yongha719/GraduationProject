@@ -16,9 +16,8 @@ public enum CardState
 }
 
 [Serializable]
-[RequireComponent(typeof(CardDragAndDrop))]
 /// <summary> 인게임 카드의 부모 클래스 </summary>
-public abstract class Card : MonoBehaviourPun
+public abstract class Card : MonoBehaviourPun, IPunObservable
 {
     [SerializeField] protected bool IsEnemy;
 
@@ -35,36 +34,18 @@ public abstract class Card : MonoBehaviourPun
 
     /// <summary> 공격 가능한 상태인지 체크 </summary>
     public bool CanAttack => IsEnemy == false && CardState == CardState.Field && TurnManager.Instance.MyTurn;
+    
+    public CardData CardData
+    {
+        get => cardInfo.CardData;
 
-    [Space(15f)] public CardData CardData;
-
-    [Space(15f), Header("Sprites")]
-
-    [SerializeField] protected Sprite cardBackSprite;
-    [SerializeField] protected Sprite deckCardSprite;
-    [SerializeField] protected Sprite fieldCardSprite;
-
-    [Space(15f), Header("Stats")]
-
-    [SerializeField] protected GameObject deckStat;
-    [SerializeField] protected GameObject fieldStat;
-
-    [Space(15f), Header("Deck Stat Texts")]
-
-    [SerializeField] protected TextMeshProUGUI deckHpText;
-    [SerializeField] protected TextMeshProUGUI deckPowerText;
-    [SerializeField] protected TextMeshProUGUI deckCostText;
-
-
-    [Space(15f), Header("Field Stat Texts")]
-
-    [SerializeField] protected TextMeshProUGUI fieldHpText;
-    [SerializeField] protected TextMeshProUGUI fieldPowerText;
-
-
+        set => cardInfo.CardData = value;
+    }
+    
     protected RectTransform rect;
     protected Image cardImageComponent;
 
+    protected CardInfo cardInfo;
     protected CardDragAndDrop cardDragAndDrop;
 
     protected virtual void Awake()
@@ -74,37 +55,20 @@ public abstract class Card : MonoBehaviourPun
         cardImageComponent = GetComponent<Image>();
 
         cardDragAndDrop = GetComponent<CardDragAndDrop>();
+        cardInfo = GetComponent<CardInfo>();
+        
+        cardDragAndDrop.Init();
+        photonView.ObservedComponents.Add(this);
     }
 
     protected virtual void Start()
     {
         IsEnemy = !photonView.IsMine;
 
-        var sprites = ResourceManager.Instance.GetCardSprites(name);
-
-        deckCardSprite = sprites.Item1;
-        fieldCardSprite = sprites.Item2;
-
-        if (IsEnemy)
-        {
-            cardImageComponent.sprite = cardBackSprite;
-
-            deckStat.SetActive(false);
-        }
-        else
-        {
-            cardImageComponent.sprite = deckCardSprite;
-        }
-
         cardDragAndDrop.OnEndDrag += OnEndDrag;
         cardDragAndDrop.OnDrop += OnDrop;
-
-        deckHpText.text = CardData.Hp.ToString();
-        deckPowerText.text = CardData.Power.ToString();
-        deckCostText.text = CardData.Cost.ToString();
-
-        fieldHpText.text = deckHpText.text;
-        fieldPowerText.text = deckPowerText.text;
+        
+        
     }
 
     public void Init(Transform parent, string name)
@@ -116,9 +80,7 @@ public abstract class Card : MonoBehaviourPun
         // Vector2로 대입해줘서 0 만들어주기
         rect.anchoredPosition3D = rect.anchoredPosition;
 
-        gameObject.name = name;
-        // 오브젝트의 이름이 카드의 등급이고 딕셔너리의 키 값이 카드의 등급임 
-        CardManager.Instance.TryGetCardData(name, ref CardData);
+        cardInfo.SetName(name);
     }
 
     protected virtual void OnEndDrag()
@@ -150,5 +112,10 @@ public abstract class Card : MonoBehaviourPun
     private void OnDestroy()
     {
         PhotonManager.PhotonViewRemove(photonView.ViewID);
+    }
+
+    public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
+    {
+        
     }
 }

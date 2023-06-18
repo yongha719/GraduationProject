@@ -895,13 +895,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   PlayerUnits: []
-  EnemyUnits: []
+  EnemyUnitCardInfos: []
   CardDatas:
     _serializedList: []
   myDeckNames:
   - A1
-  - A2
-  - B4
+  - A1
+  - A1
   myDeckGameObjects:
   - {fileID: 6383597969553335793, guid: 361d6ee4f4fb97346ba6473cc8655f66, type: 3}
   - {fileID: 6383597969553335793, guid: abd3c70a08e707241a20d7c53345ebc6, type: 3}

@@ -551,12 +551,11 @@ GameObject:
   - component: {fileID: 6383597969553335794}
   - component: {fileID: 6383597969553335796}
   - component: {fileID: 6383597969553335795}
-  - component: {fileID: 2779581622520894037}
   - component: {fileID: 584926971}
-  - component: {fileID: -5134281744068676921}
-  - component: {fileID: -815403951443178334}
-  - component: {fileID: 130208789565527026}
+  - component: {fileID: 538943641492351378}
   - component: {fileID: 3794628939791515619}
+  - component: {fileID: 9101778247568541867}
+  - component: {fileID: -815403951443178334}
   m_Layer: 6
   m_Name: In Game Card
   m_TagString: Untagged
@@ -624,41 +623,6 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &2779581622520894037
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6383597969553335793}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ff66b517c2ace044e840477961a53206, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  IsEnemy: 0
-  cardState: 0
-  CardData:
-    name: 
-    power: 0
-    hp: 0
-    cost: 0
-    criticalPercentage: 0
-    criticalPower: 0
-    basicAttackExplain: 
-    cardAttributeType: 0
-    specialAttackExplain: 
-    cardRating: 
-  cardBackSprite: {fileID: 21300000, guid: d388c52741e50554c8e35c3295e25dd3, type: 3}
-  deckCardSprite: {fileID: 0}
-  fieldCardSprite: {fileID: 0}
-  deckStat: {fileID: 7817768828661927582}
-  fieldStat: {fileID: 7118958901658495072}
-  deckHpText: {fileID: 1117926102176492004}
-  deckPowerText: {fileID: 3805111178429537004}
-  deckCostText: {fileID: 6384366756571159096}
-  fieldHpText: {fileID: 9198955196201982612}
-  fieldPowerText: {fileID: 265265082953720975}
 --- !u!61 &584926971
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -685,7 +649,53 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 305.9, y: 465.5}
   m_EdgeRadius: 0
---- !u!114 &-5134281744068676921
+--- !u!114 &538943641492351378
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6383597969553335793}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 21392e5814ec2b84da2428450d91d684, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CardData:
+    name: 
+    power: 0
+    hp: 0
+    cost: 0
+    criticalPercentage: 0
+    criticalPower: 0
+    basicAttackExplain: 
+    cardSpecialAbilityType: 0
+    specialAttackExplain: 
+    cardRating: 
+  cardBackSprite: {fileID: 21300000, guid: d388c52741e50554c8e35c3295e25dd3, type: 3}
+  deckCardSprite: {fileID: 0}
+  fieldCardSprite: {fileID: 0}
+  deckStat: {fileID: 7817768828661927582}
+  fieldStat: {fileID: 7118958901658495072}
+  deckHpText: {fileID: 1117926102176492004}
+  deckPowerText: {fileID: 3805111178429537004}
+  deckCostText: {fileID: 6384366756571159096}
+  fieldHpText: {fileID: 9198955196201982612}
+  fieldPowerText: {fileID: 265265082953720975}
+--- !u!114 &3794628939791515619
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6383597969553335793}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e822603cb775f8547baf34d6d58d4911, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  layoutRot: {x: 0, y: 0, z: 0, w: 0}
+--- !u!114 &9101778247568541867
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -699,16 +709,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ObservedComponentsFoldoutOpen: 1
   Group: 0
-  prefixField: 0
-  Synchronization: 3
+  prefixField: -1
+  Synchronization: 1
   OwnershipTransfer: 0
   observableSearch: 2
   ObservedComponents:
-  - {fileID: 2779581622520894037}
   - {fileID: -815403951443178334}
   sceneViewId: 0
-  InstantiationId: 2001
-  isRuntimeInstantiated: 1
+  InstantiationId: 0
+  isRuntimeInstantiated: 0
 --- !u!114 &-815403951443178334
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -725,125 +734,6 @@ MonoBehaviour:
   m_SynchronizeRotation: 1
   m_SynchronizeScale: 0
   m_UseLocal: 1
---- !u!120 &130208789565527026
-LineRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6383597969553335793}
-  m_Enabled: 0
-  m_CastShadows: 1
-  m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
-  m_StaticShadowCaster: 0
-  m_MotionVectors: 0
-  m_LightProbeUsage: 0
-  m_ReflectionProbeUsage: 0
-  m_RayTracingMode: 0
-  m_RayTraceProcedural: 0
-  m_RenderingLayerMask: 1
-  m_RendererPriority: 0
-  m_Materials:
-  - {fileID: 2100000, guid: 7d40d9fc7581a504daec55b0e356a819, type: 2}
-  m_StaticBatchInfo:
-    firstSubMesh: 0
-    subMeshCount: 0
-  m_StaticBatchRoot: {fileID: 0}
-  m_ProbeAnchor: {fileID: 0}
-  m_LightProbeVolumeOverride: {fileID: 0}
-  m_ScaleInLightmap: 1
-  m_ReceiveGI: 1
-  m_PreserveUVs: 0
-  m_IgnoreNormalsForChartDetection: 0
-  m_ImportantGI: 0
-  m_StitchLightmapSeams: 1
-  m_SelectedEditorRenderState: 3
-  m_MinimumChartSize: 4
-  m_AutoUVMaxDistance: 0.5
-  m_AutoUVMaxAngle: 89
-  m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: 3
-  m_Positions: []
-  m_Parameters:
-    serializedVersion: 3
-    widthMultiplier: 0.5
-    widthCurve:
-      serializedVersion: 2
-      m_Curve:
-      - serializedVersion: 3
-        time: 0.07174337
-        value: 0.6338042
-        inSlope: 0.09602835
-        outSlope: 0.09602835
-        tangentMode: 0
-        weightedMode: 0
-        inWeight: 0.33333334
-        outWeight: 0.28571364
-      - serializedVersion: 3
-        time: 0.8730657
-        value: 0.09859154
-        inSlope: 0.37382498
-        outSlope: 0.37382498
-        tangentMode: 0
-        weightedMode: 0
-        inWeight: 0.545315
-        outWeight: 0
-      m_PreInfinity: 2
-      m_PostInfinity: 2
-      m_RotationOrder: 4
-    colorGradient:
-      serializedVersion: 2
-      key0: {r: 0, g: 0, b: 0, a: 1}
-      key1: {r: 1, g: 0, b: 0, a: 1}
-      key2: {r: 0, g: 0, b: 0, a: 0}
-      key3: {r: 0, g: 0, b: 0, a: 0}
-      key4: {r: 0, g: 0, b: 0, a: 0}
-      key5: {r: 0, g: 0, b: 0, a: 0}
-      key6: {r: 0, g: 0, b: 0, a: 0}
-      key7: {r: 0, g: 0, b: 0, a: 0}
-      ctime0: 0
-      ctime1: 65535
-      ctime2: 0
-      ctime3: 0
-      ctime4: 0
-      ctime5: 0
-      ctime6: 0
-      ctime7: 0
-      atime0: 0
-      atime1: 65535
-      atime2: 0
-      atime3: 0
-      atime4: 0
-      atime5: 0
-      atime6: 0
-      atime7: 0
-      m_Mode: 0
-      m_NumColorKeys: 2
-      m_NumAlphaKeys: 2
-    numCornerVertices: 10
-    numCapVertices: 10
-    alignment: 0
-    textureMode: 0
-    shadowBias: 0.5
-    generateLightingData: 1
-  m_UseWorldSpace: 0
-  m_Loop: 0
---- !u!114 &3794628939791515619
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6383597969553335793}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e822603cb775f8547baf34d6d58d4911, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  layoutRot: {x: 0, y: 0, z: 0, w: 0}
 --- !u!1 &7118958901658495072
 GameObject:
   m_ObjectHideFlags: 0

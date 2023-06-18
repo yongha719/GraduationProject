@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Photon.Pun;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class CardInfo : MonoBehaviourPun
 {
@@ -30,13 +31,44 @@ public class CardInfo : MonoBehaviourPun
 
     [SerializeField] protected TextMeshProUGUI fieldHpText;
     [SerializeField] protected TextMeshProUGUI fieldPowerText;
+    
+    
+    private bool IsEnemy;
+    
+    private Image cardImageComponent;
 
+    private Card card;
+    
+    
     private void Start()
     {
+        IsEnemy = !photonView.IsMine;
+
+        cardImageComponent = GetComponent<Image>();
+        
+        card = GetComponent<Card>();
+
+        #region Init Sprite
+        
         var sprites = ResourceManager.Instance.GetCardSprites(name);
 
-        deckCardSprite = sprites.Item1;
-        fieldCardSprite = sprites.Item2;
+        deckCardSprite = sprites.deck;
+        fieldCardSprite = sprites.field;
+        
+        if (IsEnemy)
+        {
+            cardImageComponent.sprite = cardBackSprite;
+
+            deckStat.SetActive(false);
+        }
+        else
+        {
+            cardImageComponent.sprite = deckCardSprite;
+        }
+        
+        #endregion
+
+        #region Init Texts
         
         deckHpText.text = CardData.Hp.ToString();
         deckPowerText.text = CardData.Power.ToString();
@@ -44,6 +76,11 @@ public class CardInfo : MonoBehaviourPun
 
         fieldHpText.text = deckHpText.text;
         fieldPowerText.text = deckPowerText.text;
+        
+        #endregion
+
+        if(card is UnitCard unitCard)
+            unitCard.OnSetHpChange += (hp) => fieldHpText.text = hp.ToString();
     }
 
     public void SetName(string name)
@@ -51,5 +88,13 @@ public class CardInfo : MonoBehaviourPun
         gameObject.name = name;
         // 오브젝트의 이름이 카드의 등급이고 딕셔너리의 키 값이 카드의 등급임 
         CardManager.Instance.TryGetCardData(name, ref CardData);
+    }
+
+    public void OnFieldStateChange()
+    {
+        cardImageComponent.sprite = fieldCardSprite;
+
+        deckStat.SetActive(false);
+        fieldStat.SetActive(true);
     }
 }
