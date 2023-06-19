@@ -2,7 +2,6 @@ using Photon.Pun;
 using System;
 using UnityEngine;
 
-
 /// <summary> 인게임 유닛 카드의 정보파트 </summary>
 [Serializable]
 public class UnitCard : Card
@@ -22,7 +21,13 @@ public class UnitCard : Card
     {
         get => cardState;
 
-        set => photonView.RPC(nameof(SetCardStateRPC), RpcTarget.AllBuffered, value);
+        set
+        {
+            photonView.RPC(nameof(SetCardStateRPC), RpcTarget.AllBuffered, value);
+
+            if (cardState == CardState.Field)
+                CardManager.Instance.AddUnitCard(this, IsEnemy);
+        }
     }
 
     public bool HasSpecialAbility => CardData.CardSpecialAbilityType != CardSpecialAbilityType.None;
@@ -44,7 +49,6 @@ public class UnitCard : Card
     {
         base.Start();
 
-        CardManager.Instance.AddUnitCard(this, IsEnemy);
     }
 
     [PunRPC]
@@ -90,6 +94,8 @@ public class UnitCard : Card
 
                 if (IsEnemy)
                     rect.Rotate(0, 0, 180);
+
+
                 break;
         }
     }
@@ -104,12 +110,11 @@ public class UnitCard : Card
 
         foreach (var hit in raycastHits)
         {
-            if (hit == null || hit.collider == null ||
+            if (hit.collider == null ||
                 hit.collider.TryGetComponent(out UnitCard enemyCard) == false ||
                 enemyCard.CanAttackThisCard() == false)
                 continue;
 
-            // 적을 공격하면 적의 공격력만큼 나도 데미지 입음
             unitCardAction.BasicAttack(enemyCard);
         }
     }
@@ -162,4 +167,5 @@ public class UnitCard : Card
         if (IsEnemy)
             transform.rotation = Quaternion.Euler(0, 0, 180);
     }
+
 }

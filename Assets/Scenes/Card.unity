@@ -894,11 +894,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c7c0ba11b64ec354fa922b5c21e3cc6d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  PlayerUnits: []
+  PlayerUnitsCardInfos: []
   EnemyUnitCardInfos: []
   CardDatas:
     _serializedList: []
   myDeckNames:
+  - A1
+  - A1
   - A1
   - A1
   - A1

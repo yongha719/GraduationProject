@@ -5,16 +5,17 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
+
 public class CardInfo : MonoBehaviourPun
 {
     public CardData CardData;
-    
+
     [Space(15f), Header("Sprites")]
 
     [SerializeField] protected Sprite cardBackSprite;
     [SerializeField] protected Sprite deckCardSprite;
     [SerializeField] protected Sprite fieldCardSprite;
-    
+
     [Space(15f), Header("Stats")]
 
     [SerializeField] protected GameObject deckStat;
@@ -31,30 +32,30 @@ public class CardInfo : MonoBehaviourPun
 
     [SerializeField] protected TextMeshProUGUI fieldHpText;
     [SerializeField] protected TextMeshProUGUI fieldPowerText;
-    
-    
+
+
     private bool IsEnemy;
-    
+
     private Image cardImageComponent;
 
     private Card card;
-    
-    
+
+
     private void Start()
     {
         IsEnemy = !photonView.IsMine;
 
         cardImageComponent = GetComponent<Image>();
-        
+
         card = GetComponent<Card>();
 
         #region Init Sprite
-        
+
         var sprites = ResourceManager.Instance.GetCardSprites(name);
 
         deckCardSprite = sprites.deck;
         fieldCardSprite = sprites.field;
-        
+
         if (IsEnemy)
         {
             cardImageComponent.sprite = cardBackSprite;
@@ -65,21 +66,21 @@ public class CardInfo : MonoBehaviourPun
         {
             cardImageComponent.sprite = deckCardSprite;
         }
-        
+
         #endregion
 
         #region Init Texts
-        
+
         deckHpText.text = CardData.Hp.ToString();
         deckPowerText.text = CardData.Power.ToString();
         deckCostText.text = CardData.Cost.ToString();
 
         fieldHpText.text = deckHpText.text;
         fieldPowerText.text = deckPowerText.text;
-        
+
         #endregion
 
-        if(card is UnitCard unitCard)
+        if (card is UnitCard unitCard)
             unitCard.OnSetHpChange += (hp) => fieldHpText.text = hp.ToString();
     }
 

@@ -2,16 +2,16 @@ using Photon.Pun;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using JetBrains.Annotations;
 using UnityEngine;
 using UnityEngine.Serialization;
 using AYellowpaper.SerializedCollections;
 
+
 public class CardManager : SingletonPunCallbacks<CardManager>, IPunObservable
 {
     // 필드에 낼 수 있는 카드가 최대 10이기 때문에 Capacity를 10으로 정해줌
-    public List<UnitCard> PlayerUnits = new(10);
-    [FormerlySerializedAs("EnemyUnits")] public List<UnitCard> EnemyUnitCardInfos = new(10);
+    public List<UnitCard> PlayerUnitsCard = new(10);
+    [FormerlySerializedAs("EnemyUnits")] public List<UnitCard> EnemyUnitCard = new(10);
 
     public Action CardDraw;
     public Action EnemyCardDraw;
@@ -42,7 +42,7 @@ public class CardManager : SingletonPunCallbacks<CardManager>, IPunObservable
         CardDatas = await ResourceManager.Instance.AsyncRequestCardData();
 
         myDeckGameObjects = Resources.LoadAll<GameObject>(INGAME_CARD_PATH).ToList();
-        
+
         photonView.RPC(nameof(PhotonAddCardResource), RpcTarget.AllBuffered);
     }
 
@@ -54,8 +54,8 @@ public class CardManager : SingletonPunCallbacks<CardManager>, IPunObservable
             PhotonNetwork.AddResource(card);
         }
     }
-    
-    
+
+
     /// <summary>
     /// 카드의 등급에 맞는 CardData를 반환<br></br>
     /// 없을 경우 null반환
@@ -75,13 +75,13 @@ public class CardManager : SingletonPunCallbacks<CardManager>, IPunObservable
     {
         int randomIndex = UnityEngine.Random.Range(0, MyDeckNames.Count);
         string cardName = MyDeckNames[randomIndex];
-        
+
         MyDeckNames.RemoveAt(randomIndex);
-        
+
         return cardName;
     }
 
-    
+
     /// <summary>
     /// 적이 도발 카드를 가지고 있는지 확인함 <br></br>
     /// </summary>
@@ -95,7 +95,7 @@ public class CardManager : SingletonPunCallbacks<CardManager>, IPunObservable
 
         // 적 카드 중에 Taunt 속성이 있는지 확인
         bool hasEnemyTauntCard =
-            EnemyUnitCardInfos.Exists(enemyCard => enemyCard.CardData.CardSpecialAbilityType == CardSpecialAbilityType.Taunt);
+            EnemyUnitCard.Exists(enemyCard => enemyCard.CardData.CardSpecialAbilityType == CardSpecialAbilityType.Taunt);
 
         // 인자로 넘긴 카드가 Taunt 속성이 아니고, 적 카드 중에도 Taunt 속성이 없으면 true 반환
         if (card.CardData.CardSpecialAbilityType != CardSpecialAbilityType.Taunt && hasEnemyTauntCard == false)
@@ -108,18 +108,18 @@ public class CardManager : SingletonPunCallbacks<CardManager>, IPunObservable
     public void AddUnitCard(UnitCard card, bool isEnemy)
     {
         if (isEnemy)
-            EnemyUnitCardInfos.Add(card);
+            EnemyUnitCard.Add(card);
         else
-            PlayerUnits.Add(card);
+            PlayerUnitsCard.Add(card);
     }
 
     public void RemoveUnitCard(UnitCard card, bool isEnemy)
     {
         if (isEnemy)
-            EnemyUnitCardInfos.Remove(card);
+            EnemyUnitCard.Remove(card);
         else
-            PlayerUnits.Remove(card);
-        
+            PlayerUnitsCard.Remove(card);
+
         card.Destroy();
     }
 

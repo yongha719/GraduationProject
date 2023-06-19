@@ -1,10 +1,6 @@
 using Photon.Pun;
 using UnityEngine;
-using UnityEngine.EventSystems;
 using System;
-using TMPro;
-using Unity.VisualScripting;
-using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 [Serializable]
@@ -34,14 +30,14 @@ public abstract class Card : MonoBehaviourPun, IPunObservable
 
     /// <summary> 공격 가능한 상태인지 체크 </summary>
     public bool CanAttack => IsEnemy == false && CardState == CardState.Field && TurnManager.Instance.MyTurn;
-    
+
     public CardData CardData
     {
         get => cardInfo.CardData;
 
         set => cardInfo.CardData = value;
     }
-    
+
     protected RectTransform rect;
     protected Image cardImageComponent;
 
@@ -56,7 +52,7 @@ public abstract class Card : MonoBehaviourPun, IPunObservable
 
         cardDragAndDrop = GetComponent<CardDragAndDrop>();
         cardInfo = GetComponent<CardInfo>();
-        
+
         cardDragAndDrop.Init();
         photonView.ObservedComponents.Add(this);
     }
@@ -67,8 +63,8 @@ public abstract class Card : MonoBehaviourPun, IPunObservable
 
         cardDragAndDrop.OnEndDrag += OnEndDrag;
         cardDragAndDrop.OnDrop += OnDrop;
-        
-        
+
+
     }
 
     public void Init(Transform parent, string name)
@@ -116,6 +112,6 @@ public abstract class Card : MonoBehaviourPun, IPunObservable
 
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
     {
-        
+
     }
 }

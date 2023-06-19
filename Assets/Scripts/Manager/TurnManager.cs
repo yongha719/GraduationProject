@@ -5,6 +5,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
+
 public enum TurnState
 {
     PlayerTurn,
@@ -114,6 +115,7 @@ public class TurnManager : SingletonPunCallbacks<TurnManager>, IPunObservable
 
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
     {
- 
+
     }
 }
+

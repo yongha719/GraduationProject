@@ -17,8 +17,8 @@ public static class CardExetention
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
     public static void Init()
     {
-        PlayerUnits = CardManager.Instance.PlayerUnits;
-        EnemyUnits = CardManager.Instance.EnemyUnitCardInfos;
+        PlayerUnits = CardManager.Instance.PlayerUnitsCard;
+        EnemyUnits = CardManager.Instance.EnemyUnitCard;
     }
 
     /// <summary> 플레이어의 카드 리스트에 추가 </summary>
@@ -32,7 +32,7 @@ public static class CardExetention
     {
         EnemyUnits.Add(card);
     }
-        
+
     /// <summary> 플레이어의 카드 리스트를 반환 </summary>
     public static List<UnitCard> GetPlayerUnitCards(this UnitCard card)
     {
@@ -44,7 +44,7 @@ public static class CardExetention
     {
         return EnemyUnits;
     }
-    
+
     /// <summary> 플레이어의 카드 리스트에서 인자로 넘긴 카드를 제거 </summary>
     public static void RemovePlayerUnit(this UnitCard card)
     {
@@ -74,3 +74,4 @@ public static class CardExetention
         action?.Invoke(EnemyUnits.Last());
     }
 }
+
