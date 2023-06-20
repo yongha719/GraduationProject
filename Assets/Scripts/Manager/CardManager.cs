@@ -65,6 +65,8 @@ public class CardManager : SingletonPunCallbacks<CardManager>, IPunObservable
     {
         if (CardDatas.TryGetValue(name, out cardData) == false)
             print($"카드 등급이 없음 \n 카드 등급 : {name}");
+
+        cardData = cardData.Copy();
     }
 
     /// <summary>

@@ -54,7 +54,7 @@ public abstract class Card : MonoBehaviourPun, IPunObservable
         cardInfo = GetComponent<CardInfo>();
 
         cardDragAndDrop.Init();
-        photonView.ObservedComponents.Add(this);
+        //photonView.ObservedComponents.Add(this);
     }
 
     protected virtual void Start()
@@ -63,8 +63,6 @@ public abstract class Card : MonoBehaviourPun, IPunObservable
 
         cardDragAndDrop.OnEndDrag += OnEndDrag;
         cardDragAndDrop.OnDrop += OnDrop;
-
-
     }
 
     public void Init(Transform parent, string name)
@@ -76,7 +74,7 @@ public abstract class Card : MonoBehaviourPun, IPunObservable
         // Vector2로 대입해줘서 0 만들어주기
         rect.anchoredPosition3D = rect.anchoredPosition;
 
-        cardInfo.SetName(name);
+        cardInfo.Init(name);
     }
 
     protected virtual void OnEndDrag()

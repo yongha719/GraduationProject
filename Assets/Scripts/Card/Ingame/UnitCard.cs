@@ -40,15 +40,14 @@ public class UnitCard : Card
 
     protected override void Awake()
     {
-        base.Awake();
-
-        hp = CardData.Hp;
+        base.Awake();        
     }
 
     protected override void Start()
     {
         base.Start();
 
+        hp = CardData.Hp;
     }
 
     [PunRPC]
@@ -63,6 +62,8 @@ public class UnitCard : Card
 
             CardManager.Instance.RemoveUnitCard(this, IsEnemy);
         }
+
+        print($"{name} hp : {value}");
 
         hp = value;
 
@@ -126,12 +127,16 @@ public class UnitCard : Card
 
     public void Hit(int damage, Action<int> hitAction)
     {
+        print($"hp : {hp}\n damage : {damage}");
+        
         hitAction(Damage);
         Hp -= damage;
     }
 
     public void Hit(int damage)
     {
+        print($"hp : {hp}\n damage : {damage}");
+        
         Hp -= damage;
     }
 

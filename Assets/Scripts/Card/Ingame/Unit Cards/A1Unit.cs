@@ -20,39 +20,38 @@ public class A1Unit : UnitCard, IUnitCardAction
 
 
         var enemyList = CardManager.Instance.EnemyUnitCard;
-
         var index = enemyList.IndexOf(card);
-        UnitCard leftcard = null;
-        UnitCard rightcard = null;
 
-        if (index > 0)
-            leftcard = enemyList[index - 1];
-
-        if (enemyList.Count - 1 > index)
-            rightcard = enemyList[index + 1];
-
-        print(enemyList.Count);
-
-        if (enemyList.Count == 1)
+        if (enemyList.Count != 1)
         {
-            card.Hit(1, Hit);
+            UnitCard leftcard = null;
+            UnitCard rightcard = null;
 
-            return;
+            if (index > 0)
+                leftcard = enemyList[index - 1];
+
+            if (enemyList.Count - 1 > index)
+                rightcard = enemyList[index + 1];
+
+            print(enemyList.Count);
+
+
+            print($"card index is {index}");
+
+            if (leftcard != null)
+            {
+                print("left Card");
+                leftcard.Hit(Damage);
+            }
+
+            if (rightcard != null)
+            {
+                print("right card");
+                rightcard.Hit(Damage);
+            }
         }
 
-        print($"card index is {index}");
-
-        if (leftcard != null)
-        {
-            print("left Card");
-            leftcard.Hit(1);
-        }
-
-        if (rightcard != null)
-        {
-            print("right card");
-            rightcard.Hit(1);
-        }
+        card.Hit(Damage, Hit);
     }
 
     public void SpecialAbility()

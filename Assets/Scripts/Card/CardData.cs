@@ -35,7 +35,7 @@ public enum CardSpecialAbilityType
 
 
 [Serializable]
-public struct CardData
+public class CardData
 {
     [Tooltip("이름"), SerializeField]
     private string name;
@@ -52,7 +52,7 @@ public struct CardData
 
 
     [Tooltip("체력"), SerializeField]
-    private int hp;
+    private int hp = -1;
     public int Hp
     {
         get => hp;
@@ -213,5 +213,10 @@ public struct CardData
                     break;
             }
         }
+    }
+
+    public CardData Copy()
+    {
+        return new CardData(this);
     }
 }

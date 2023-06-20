@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using Photon.Pun;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -40,16 +41,41 @@ public class CardInfo : MonoBehaviourPun
 
     private Card card;
 
+    private void Awake()
+    {
+        cardImageComponent = GetComponent<Image>();
+
+        card = GetComponent<Card>();
+    }
 
     private void Start()
     {
         IsEnemy = !photonView.IsMine;
 
-        cardImageComponent = GetComponent<Image>();
+        #region Init Texts
 
-        card = GetComponent<Card>();
+        deckHpText.text = CardData.Hp.ToString();
+        deckPowerText.text = CardData.Power.ToString();
+        deckCostText.text = CardData.Cost.ToString();
 
-        #region Init Sprite
+        fieldHpText.text = deckHpText.text;
+        fieldPowerText.text = deckPowerText.text;
+
+        #endregion
+
+        // 카드가 유닛카드와 마법카드가 있어서 이렇게 했음
+        if (card is UnitCard unitCard)
+            unitCard.OnSetHpChange += (hp) => fieldHpText.text = hp.ToString();
+    }
+
+    public void Init(string name)
+    {
+        print($"Card Info : {name}==");
+
+        // 오브젝트의 이름이 카드의 등급이고 딕셔너리의 키 값이 카드의 등급임 
+        CardManager.Instance.TryGetCardData(name, ref CardData);
+        
+        gameObject.name = name + (IsEnemy ? "_Enemy" : "_Player");
 
         var sprites = ResourceManager.Instance.GetCardSprites(name);
 
@@ -66,29 +92,6 @@ public class CardInfo : MonoBehaviourPun
         {
             cardImageComponent.sprite = deckCardSprite;
         }
-
-        #endregion
-
-        #region Init Texts
-
-        deckHpText.text = CardData.Hp.ToString();
-        deckPowerText.text = CardData.Power.ToString();
-        deckCostText.text = CardData.Cost.ToString();
-
-        fieldHpText.text = deckHpText.text;
-        fieldPowerText.text = deckPowerText.text;
-
-        #endregion
-
-        if (card is UnitCard unitCard)
-            unitCard.OnSetHpChange += (hp) => fieldHpText.text = hp.ToString();
-    }
-
-    public void SetName(string name)
-    {
-        gameObject.name = name;
-        // 오브젝트의 이름이 카드의 등급이고 딕셔너리의 키 값이 카드의 등급임 
-        CardManager.Instance.TryGetCardData(name, ref CardData);
     }
 
     public void OnFieldStateChange()

@@ -17,10 +17,10 @@ public class ResourceManager : Singleton<ResourceManager>
 
     private AssetBundle cardAssetBundle;
 
-    private const string CARD_DECK_SPRITES = "Cards/Sprite/Deck";
-    private const string CARD_FIELD_SPRITES = "Cards/Sprite/Field";
+    private const string CARD_DECK_TEXTURES = "Cards/Sprite/Deck";
+    private const string CARD_FIELD_TEXTURES = "Cards/Sprite/Field";
 
-    private SerializedDictionary<string, (Texture2D, Texture2D)> cardSprites = new();
+    private SerializedDictionary<string, (Texture2D deck, Texture2D field)> cardTextures = new();
 
     protected override void Awake()
     {
@@ -29,6 +29,11 @@ public class ResourceManager : Singleton<ResourceManager>
 
     public async Task<SerializedDictionary<string, CardData>> AsyncRequestCardData()
     {
+        if(Application.internetReachability == NetworkReachability.NotReachable)
+        {
+            print("인터넷 연결안됨");
+        }
+
         var request = UnityWebRequest.Get(CARD_DATA_URL);
 
         // 비동기 작업의 완료를 나타내는 개체임
@@ -66,16 +71,17 @@ public class ResourceManager : Singleton<ResourceManager>
 
     private void LoadCardSprites()
     {
-        var deckSprite = Resources.LoadAll<Texture2D>(CARD_DECK_SPRITES);
-        var fieldSprite = Resources.LoadAll<Texture2D>(CARD_FIELD_SPRITES);
+        var deckTextures = Resources.LoadAll<Texture2D>(CARD_DECK_TEXTURES);
+        var fieldTextures = Resources.LoadAll<Texture2D>(CARD_FIELD_TEXTURES);
 
-        print(deckSprite.Length);
+        print(deckTextures.Length);
 
-        for (int i = 0; i < deckSprite.Length; i++)
+        for (int i = 0; i < deckTextures.Length; i++)
         {
-            var cardRating = deckSprite[i].name.Split('_')[0];
+            var cardRating = deckTextures[i].name.Split('_')[0];
 
-            cardSprites.Add(cardRating, (deckSprite[i], fieldSprite[i]));
+            print(cardRating);
+            cardTextures.Add(cardRating, (deckTextures[i], fieldTextures[i]));
         }
     }
 
@@ -86,20 +92,22 @@ public class ResourceManager : Singleton<ResourceManager>
     /// <returns></returns>
     public (Sprite deck, Sprite field) GetCardSprites(string cardName)
     {
-        (Texture2D, Texture2D) sprites = (null, null);
+        print($"{nameof(GetCardSprites)}\n Card nName : {cardName}");
 
-        if (cardSprites.TryGetValue(cardName, out sprites) == false)
+        (Texture2D deckTexture, Texture2D fieldTexture) textures = (null, null);
+
+        if (cardTextures.TryGetValue(cardName, out textures) == false)
         {
             print($"Method : {nameof(GetCardSprites)}\n cardName({cardName})이 이상함");
 
             return (null, null);
         }
         
-        Rect rect = new Rect(0, 0, sprites.Item1.width, sprites.Item1.height);
-        Sprite deck = Sprite.Create(sprites.Item1, rect, new Vector2(0.5f, 0.5f));
+        Rect rect = new Rect(0, 0, textures.deckTexture.width, textures.deckTexture.height);
+        Sprite deck = Sprite.Create(textures.deckTexture, rect, new Vector2(0.5f, 0.5f));
 
-        rect = new Rect(0, 0, sprites.Item2.width, sprites.Item2.height);
-        Sprite field = Sprite.Create(sprites.Item2, rect, new Vector2(0.5f, 0.5f));
+        rect = new Rect(0, 0, textures.fieldTexture.width, textures.fieldTexture.height);
+        Sprite field = Sprite.Create(textures.fieldTexture, rect, new Vector2(0.5f, 0.5f));
 
         return (deck, field);
     }
