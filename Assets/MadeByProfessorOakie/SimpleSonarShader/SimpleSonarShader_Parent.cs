@@ -1,4 +1,4 @@
-﻿// SimpleSonarShader scripts and shaders were written by Drew Okenfuss.
+// SimpleSonarShader scripts and shaders were written by Drew Okenfuss.
 
 using System.Collections;
 using System.Collections.Generic;
