@@ -20,7 +20,7 @@ public class ResourceManager : Singleton<ResourceManager>
     private const string CARD_DECK_TEXTURES = "Cards/Sprite/Deck";
     private const string CARD_FIELD_TEXTURES = "Cards/Sprite/Field";
 
-    private SerializedDictionary<string, (Texture2D deck, Texture2D field)> cardTextures = new();
+    private static SerializedDictionary<string, (Texture2D deck, Texture2D field)> cardTextures = new();
 
     protected override void Awake()
     {
@@ -90,7 +90,7 @@ public class ResourceManager : Singleton<ResourceManager>
     /// </summary>
     /// <param name="cardName"></param>
     /// <returns></returns>
-    public (Sprite deck, Sprite field) GetCardSprites(string cardName)
+    public static (Sprite deck, Sprite field) GetCardSprites(string cardName)
     {
         print($"{nameof(GetCardSprites)}\n Card nName : {cardName}");
 

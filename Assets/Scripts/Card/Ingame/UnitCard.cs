@@ -4,7 +4,7 @@ using UnityEngine;
 
 /// <summary> 인게임 유닛 카드의 정보파트 </summary>
 [Serializable]
-public class UnitCard : Card
+public class UnitCard : Card, IUnitCardSubject
 {
     private int hp = 1;
 
@@ -36,11 +36,9 @@ public class UnitCard : Card
 
     private RaycastHit2D[] raycastHits = new RaycastHit2D[10];
 
-    protected IUnitCardAction unitCardAction;
-
     protected override void Awake()
     {
-        base.Awake();        
+        base.Awake();
     }
 
     protected override void Start()
@@ -95,8 +93,6 @@ public class UnitCard : Card
 
                 if (IsEnemy)
                     rect.Rotate(0, 0, 180);
-
-
                 break;
         }
     }
@@ -111,24 +107,29 @@ public class UnitCard : Card
 
         foreach (var hit in raycastHits)
         {
-            if (hit.collider == null ||
+            if (hit.collider is null ||
                 hit.collider.TryGetComponent(out UnitCard enemyCard) == false ||
                 enemyCard.CanAttackThisCard() == false)
                 continue;
 
-            unitCardAction.BasicAttack(enemyCard);
+            BasicAttack(enemyCard);
         }
     }
 
-    public void Hit(UnitCard unitCard)
+    protected virtual void BasicAttack(UnitCard card)
     {
-        Hit(unitCard.Damage, unitCard.Hit);
+        card.Hit(Damage, Hit);
+    }
+
+    protected virtual void SpecialAbility()
+    {
+        if (HasSpecialAbility == false) return;
     }
 
     public void Hit(int damage, Action<int> hitAction)
     {
         print($"hp : {hp}\n damage : {damage}");
-        
+
         hitAction(Damage);
         Hp -= damage;
     }
@@ -136,7 +137,7 @@ public class UnitCard : Card
     public void Hit(int damage)
     {
         print($"hp : {hp}\n damage : {damage}");
-        
+
         Hp -= damage;
     }
 
@@ -147,10 +148,7 @@ public class UnitCard : Card
     {
         // 이 카드가 적이고 필드에 도발 카드를 가지고 있는지 확인
         // 도발 카드가 없거나 이 카드가 도발 카드일 때 공격 가능
-        if (IsEnemy && CardManager.Instance.HasEnemyTauntCard(this))
-            return true;
-
-        return false;
+        return (IsEnemy && CardManager.Instance.HasEnemyTauntCard(this));
     }
 
     protected override void MoveCardFromDeckToField()
@@ -167,10 +165,14 @@ public class UnitCard : Card
         PhotonView parentView = PhotonManager.GetFieldPhotonView(photonView.IsMine);
         CardState = CardState.Field;
 
-        rect.SetParent(parentView.gameObject.transform);
+        rect.SetParent(parentView.transform);
 
         if (IsEnemy)
             transform.rotation = Quaternion.Euler(0, 0, 180);
     }
 
+    public void HealCard(int healAmount)
+    {
+        Hp += healAmount;
+    }
 }

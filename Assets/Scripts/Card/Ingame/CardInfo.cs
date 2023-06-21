@@ -74,24 +74,17 @@ public class CardInfo : MonoBehaviourPun
 
         // 오브젝트의 이름이 카드의 등급이고 딕셔너리의 키 값이 카드의 등급임 
         CardManager.Instance.TryGetCardData(name, ref CardData);
-        
+
         gameObject.name = name + (IsEnemy ? "_Enemy" : "_Player");
 
-        var sprites = ResourceManager.Instance.GetCardSprites(name);
+        var sprites = ResourceManager.GetCardSprites(name);
 
         deckCardSprite = sprites.deck;
         fieldCardSprite = sprites.field;
 
-        if (IsEnemy)
-        {
-            cardImageComponent.sprite = cardBackSprite;
+        cardImageComponent.sprite = IsEnemy ? cardBackSprite : deckCardSprite;
 
-            deckStat.SetActive(false);
-        }
-        else
-        {
-            cardImageComponent.sprite = deckCardSprite;
-        }
+        deckStat.SetActive(!IsEnemy);
     }
 
     public void OnFieldStateChange()

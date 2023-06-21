@@ -10,21 +10,19 @@ using AYellowpaper.SerializedCollections;
 public class CardManager : SingletonPunCallbacks<CardManager>, IPunObservable
 {
     // 필드에 낼 수 있는 카드가 최대 10이기 때문에 Capacity를 10으로 정해줌
-    public List<UnitCard> PlayerUnitsCard = new(10);
-    [FormerlySerializedAs("EnemyUnits")] public List<UnitCard> EnemyUnitCard = new(10);
+    public List<UnitCard> PlayerUnitCards = new(10);
+    public List<UnitCard> EnemyUnitCards = new(10);
 
     public Action CardDraw;
     public Action EnemyCardDraw;
 
     [Tooltip("카드 데이터들"), SerializedDictionary("Card Rating", "Card Data")]
-    public SerializedDictionary<string, CardData> CardDatas = new();
+    public SerializedDictionary<string, CardData> CardDatas = new(15);
 
     private const string INGAME_CARD_PATH = "Cards/In game Cards";
 
-    // GameObject로 가져올 수 있게 커스텀해서 안 쓸듯
-    // 일단 남겨둠
     // 포톤은 오브젝트를 리소스 폴더에서 가져와서 오브젝트의 이름으로 가져오기 위해 string으로 함
-    [SerializeField] private List<string> myDeckNames = new List<string>();
+    [SerializeField] private List<string> myDeckNames = new(20);
 
     /// <summary> - 내 덱 </summary>
     public List<string> MyDeckNames
@@ -34,25 +32,9 @@ public class CardManager : SingletonPunCallbacks<CardManager>, IPunObservable
         set { myDeckNames = value; }
     }
 
-    [SerializeField] private List<GameObject> myDeckGameObjects = new(20);
-
-
     async void Start()
     {
         CardDatas = await ResourceManager.Instance.AsyncRequestCardData();
-
-        myDeckGameObjects = Resources.LoadAll<GameObject>(INGAME_CARD_PATH).ToList();
-
-        photonView.RPC(nameof(PhotonAddCardResource), RpcTarget.AllBuffered);
-    }
-
-    [PunRPC]
-    private void PhotonAddCardResource()
-    {
-        foreach (var card in myDeckGameObjects)
-        {
-            PhotonNetwork.AddResource(card);
-        }
     }
 
 
@@ -83,7 +65,6 @@ public class CardManager : SingletonPunCallbacks<CardManager>, IPunObservable
         return cardName;
     }
 
-
     /// <summary>
     /// 적이 도발 카드를 가지고 있는지 확인함 <br></br>
     /// </summary>
@@ -97,7 +78,7 @@ public class CardManager : SingletonPunCallbacks<CardManager>, IPunObservable
 
         // 적 카드 중에 Taunt 속성이 있는지 확인
         bool hasEnemyTauntCard =
-            EnemyUnitCard.Exists(enemyCard => enemyCard.CardData.CardSpecialAbilityType == CardSpecialAbilityType.Taunt);
+            EnemyUnitCards.Exists(enemyCard => enemyCard.CardData.CardSpecialAbilityType == CardSpecialAbilityType.Taunt);
 
         // 인자로 넘긴 카드가 Taunt 속성이 아니고, 적 카드 중에도 Taunt 속성이 없으면 true 반환
         if (card.CardData.CardSpecialAbilityType != CardSpecialAbilityType.Taunt && hasEnemyTauntCard == false)
@@ -110,17 +91,17 @@ public class CardManager : SingletonPunCallbacks<CardManager>, IPunObservable
     public void AddUnitCard(UnitCard card, bool isEnemy)
     {
         if (isEnemy)
-            EnemyUnitCard.Add(card);
+            EnemyUnitCards.Add(card);
         else
-            PlayerUnitsCard.Add(card);
+            PlayerUnitCards.Add(card);
     }
 
     public void RemoveUnitCard(UnitCard card, bool isEnemy)
     {
         if (isEnemy)
-            EnemyUnitCard.Remove(card);
+            EnemyUnitCards.Remove(card);
         else
-            PlayerUnitsCard.Remove(card);
+            PlayerUnitCards.Remove(card);
 
         card.Destroy();
     }

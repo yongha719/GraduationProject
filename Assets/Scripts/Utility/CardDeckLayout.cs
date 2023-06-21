@@ -8,7 +8,7 @@ using UnityEngine;
 
 
 /// <summary>인게임에서 덱에 있는 카드의 레이아웃 </summary>
-[AddComponentMenu("MyComponent/CardLayout", int.MinValue)]
+[AddComponentMenu("MyComponent/Card Deck Layout", int.MinValue)]
 public class CardDeckLayout : MonoBehaviourPunCallbacks, IPunObservable
 {
     private readonly Vector3 leftPosition = new Vector3(-200, -30, 0);

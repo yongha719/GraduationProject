@@ -17,8 +17,8 @@ public static class CardExetention
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
     public static void Init()
     {
-        PlayerUnits = CardManager.Instance.PlayerUnitsCard;
-        EnemyUnits = CardManager.Instance.EnemyUnitCard;
+        PlayerUnits = CardManager.Instance.PlayerUnitCards;
+        EnemyUnits = CardManager.Instance.EnemyUnitCards;
     }
 
     /// <summary> 플레이어의 카드 리스트에 추가 </summary>
