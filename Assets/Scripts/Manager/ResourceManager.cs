@@ -13,10 +13,6 @@ public class ResourceManager : Singleton<ResourceManager>
     private SerializedDictionary<string, CardData> cardDatas = new();
 
 
-    [Tooltip("에셋 번들 받아올 파일 경로")] private const string ASSET_BUNDLE_PATH = "Bundle/card";
-
-    private AssetBundle cardAssetBundle;
-
     private const string CARD_DECK_TEXTURES = "Cards/Sprite/Deck";
     private const string CARD_FIELD_TEXTURES = "Cards/Sprite/Field";
 
@@ -27,18 +23,31 @@ public class ResourceManager : Singleton<ResourceManager>
         LoadCardSprites();
     }
 
+    private void LoadCardSprites()
+    {
+        var deckTextures = Resources.LoadAll<Texture2D>(CARD_DECK_TEXTURES);
+        var fieldTextures = Resources.LoadAll<Texture2D>(CARD_FIELD_TEXTURES);
+
+        for (int i = 0; i < deckTextures.Length; i++)
+        {
+            var cardRating = deckTextures[i].name.Split('_')[0];
+
+            cardTextures.Add(cardRating, (deckTextures[i], fieldTextures[i]));
+        }
+    }
+
     public async Task<SerializedDictionary<string, CardData>> AsyncRequestCardData()
     {
-        if(Application.internetReachability == NetworkReachability.NotReachable)
+        if (Application.internetReachability == NetworkReachability.NotReachable)
         {
-            print("인터넷 연결안됨");
+            Debug.Assert(false, "인터넷 연결안됨");
         }
 
         var request = UnityWebRequest.Get(CARD_DATA_URL);
 
         // 비동기 작업의 완료를 나타내는 개체임
         // bool 반환값을 가지는 개체 생성
-        TaskCompletionSource<bool> tcs = new TaskCompletionSource<bool>();
+        var tcs = new TaskCompletionSource<bool>();
 
         var asyncOp = request.SendWebRequest();
 
@@ -69,22 +78,6 @@ public class ResourceManager : Singleton<ResourceManager>
         return datas;
     }
 
-    private void LoadCardSprites()
-    {
-        var deckTextures = Resources.LoadAll<Texture2D>(CARD_DECK_TEXTURES);
-        var fieldTextures = Resources.LoadAll<Texture2D>(CARD_FIELD_TEXTURES);
-
-        print(deckTextures.Length);
-
-        for (int i = 0; i < deckTextures.Length; i++)
-        {
-            var cardRating = deckTextures[i].name.Split('_')[0];
-
-            print(cardRating);
-            cardTextures.Add(cardRating, (deckTextures[i], fieldTextures[i]));
-        }
-    }
-
     /// <summary>
     /// Card의 Deck Sprite와 Field Sprite를 반환
     /// </summary>
@@ -92,17 +85,15 @@ public class ResourceManager : Singleton<ResourceManager>
     /// <returns></returns>
     public static (Sprite deck, Sprite field) GetCardSprites(string cardName)
     {
-        print($"{nameof(GetCardSprites)}\n Card nName : {cardName}");
-
         (Texture2D deckTexture, Texture2D fieldTexture) textures = (null, null);
 
         if (cardTextures.TryGetValue(cardName, out textures) == false)
         {
-            print($"Method : {nameof(GetCardSprites)}\n cardName({cardName})이 이상함");
+            Debug.Assert(false, $"Method : {nameof(GetCardSprites)}\n cardName({cardName})이 이상함");
 
             return (null, null);
         }
-        
+
         Rect rect = new Rect(0, 0, textures.deckTexture.width, textures.deckTexture.height);
         Sprite deck = Sprite.Create(textures.deckTexture, rect, new Vector2(0.5f, 0.5f));
 
@@ -110,19 +101,5 @@ public class ResourceManager : Singleton<ResourceManager>
         Sprite field = Sprite.Create(textures.fieldTexture, rect, new Vector2(0.5f, 0.5f));
 
         return (deck, field);
-    }
-
-    void LoadCardAssetBundle()
-    {
-        // 에셋 번들을 불러옴
-        // LoadFromFile은 번들 파일의 경로를 가져옴
-        // Assets/ + PATH 로 경로 설정
-        cardAssetBundle = AssetBundle.LoadFromFile(Path.Combine(Application.dataPath, ASSET_BUNDLE_PATH));
-
-        // 불러온 에셋 번들이 없을 때
-        if (cardAssetBundle == null)
-        {
-            Debug.Log("Failed to load AssetBundle!");
-        }
     }
 }

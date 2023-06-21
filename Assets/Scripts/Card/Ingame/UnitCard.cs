@@ -36,16 +36,13 @@ public class UnitCard : Card, IUnitCardSubject
 
     private RaycastHit2D[] raycastHits = new RaycastHit2D[10];
 
-    protected override void Awake()
-    {
-        base.Awake();
-    }
-
     protected override void Start()
     {
         base.Start();
 
         hp = CardData.Hp;
+        
+        
     }
 
     [PunRPC]
@@ -60,8 +57,6 @@ public class UnitCard : Card, IUnitCardSubject
 
             CardManager.Instance.RemoveUnitCard(this, IsEnemy);
         }
-
-        print($"{name} hp : {value}");
 
         hp = value;
 
@@ -126,29 +121,29 @@ public class UnitCard : Card, IUnitCardSubject
         if (HasSpecialAbility == false) return;
     }
 
+    public void Hit(int damage)
+    {
+        Hp -= damage;
+    }
+    
     public void Hit(int damage, Action<int> hitAction)
     {
-        print($"hp : {hp}\n damage : {damage}");
-
         hitAction(Damage);
         Hp -= damage;
     }
-
-    public void Hit(int damage)
-    {
-        print($"hp : {hp}\n damage : {damage}");
-
-        Hp -= damage;
-    }
-
 
     /// <summary> 이 카드를 공격할 수 있는지 확인 </summary>
     /// 이 메서드는 플레이어의 적 카드의 개체에서 호출됨
     public bool CanAttackThisCard()
     {
+        if (IsEnemy == false) return false;
+
         // 이 카드가 적이고 필드에 도발 카드를 가지고 있는지 확인
         // 도발 카드가 없거나 이 카드가 도발 카드일 때 공격 가능
-        return (IsEnemy && CardManager.Instance.HasEnemyTauntCard(this));
+        if (CardManager.Instance.HasEnemyTauntCard)
+            return CardData.CardSpecialAbilityType == CardSpecialAbilityType.Taunt;
+
+        return true;
     }
 
     protected override void MoveCardFromDeckToField()
@@ -162,7 +157,7 @@ public class UnitCard : Card, IUnitCardSubject
     [PunRPC]
     protected void MoveCardFromDeckToFieldRPC()
     {
-        PhotonView parentView = PhotonManager.GetFieldPhotonView(photonView.IsMine);
+        var parentView = PhotonManager.GetFieldPhotonView(photonView.IsMine);
         CardState = CardState.Field;
 
         rect.SetParent(parentView.transform);

@@ -109,8 +109,8 @@ public class TurnManager : SingletonPunCallbacks<TurnManager>, IPunObservable
     {
         if (MyTurn)
             CardManager.Instance.CardDraw();
-        else
-            OnEnemySpawnCallBack.CardSpawnEvent();
+        // else
+        //     OnEnemySpawnCallBack.CardSpawnEvent();
     }
 
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
