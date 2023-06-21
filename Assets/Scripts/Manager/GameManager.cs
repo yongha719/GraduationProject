@@ -13,10 +13,6 @@ public class GameManager : SingletonPunCallbacks<GameManager>, IPunObservable
     [Tooltip("플레이어 무적")]
     public bool IsPlayerInvincibility;
 
-    [SerializeField]
-    [Tooltip("카드 오브젝트들"), SerializedDictionary("Card Rating", "Card Prefab")]
-    private SerializedDictionary<string, GameObject> CardPrefabs = new();
-
     protected override void Awake()
     {
         base.Awake();

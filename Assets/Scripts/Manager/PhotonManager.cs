@@ -118,15 +118,11 @@ public class PhotonManager : SingletonPunCallbacks<PhotonManager>
     /// <summary> 방에 다른 플레이어가 들어왔을 때 </summary>
     public override void OnPlayerEnteredRoom(Player newPlayer)
     {
-        print(newPlayer.ToString());
-
         TurnManager.Instance.FirstTurn();
     }
 
     public override void OnRoomListUpdate(List<RoomInfo> roomList)
     {
-        print(nameof(OnRoomListUpdate));
-
         foreach (RoomInfo roominfo in roomList)
         {
             if (roominfo.RemovedFromList)

@@ -70,8 +70,6 @@ public class CardInfo : MonoBehaviourPun
 
     public void Init(string name)
     {
-        print($"Card Info : {name}==");
-
         // 오브젝트의 이름이 카드의 등급이고 딕셔너리의 키 값이 카드의 등급임 
         CardManager.Instance.TryGetCardData(name, ref CardData);
 

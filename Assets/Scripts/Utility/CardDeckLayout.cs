@@ -80,10 +80,8 @@ public class CardDeckLayout : MonoBehaviourPunCallbacks, IPunObservable
 
         cardPhotonView.gameObject.name = cardName;
 
-        print(cardName);
         var cardType = cardPhotonView.gameObject.AddComponent(Type.GetType($"{cardName}Unit"));
 
-        print($"Card Type : {cardType}");
         if (cardType is Card card)
             card.Init(parentPhotonView.gameObject.transform, cardName);
     }

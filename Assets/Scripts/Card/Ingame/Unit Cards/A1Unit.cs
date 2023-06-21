@@ -9,8 +9,6 @@ public class A1Unit : UnitCard
 {
     protected override void BasicAttack(UnitCard card)
     {
-        print($"{nameof(A1Unit)} : Attack");
-
         var enemyList = CardManager.Instance.EnemyUnitCards;
 
         var index = enemyList.IndexOf(card);
@@ -18,10 +16,10 @@ public class A1Unit : UnitCard
         if (enemyList.Count != 1)
         {
             if (index > 0)
-                enemyList[index - 1].Hit(Damage);
+                enemyList[index - 1].Hit(1);
 
             if (enemyList.Count - 1 > index)
-                enemyList[index + 1].Hit(Damage);
+                enemyList[index + 1].Hit(1);
         }
 
         base.BasicAttack(card);
