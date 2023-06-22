@@ -7,11 +7,11 @@ using UnityEngine;
 
 public class A1Unit : UnitCard
 {
-    protected override void BasicAttack(UnitCard card)
+    protected override void BasicAttack(UnitCard enemyCard)
     {
         var enemyList = CardManager.Instance.EnemyUnitCards;
 
-        var index = enemyList.IndexOf(card);
+        var index = enemyList.IndexOf(enemyCard);
 
         if (enemyList.Count != 1)
         {
@@ -22,6 +22,6 @@ public class A1Unit : UnitCard
                 enemyList[index + 1].Hit(1);
         }
 
-        base.BasicAttack(card);
+        base.BasicAttack(enemyCard);
     }
 }

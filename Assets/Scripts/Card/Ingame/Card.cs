@@ -15,7 +15,7 @@ public enum CardState
 /// <summary> 인게임 카드의 부모 클래스 </summary>
 public abstract class Card : MonoBehaviourPun, IPunObservable
 {
-    [SerializeField] protected bool IsEnemy;
+    public bool IsEnemy;
 
     [SerializeField] protected CardState cardState = CardState.Deck;
 
@@ -29,7 +29,7 @@ public abstract class Card : MonoBehaviourPun, IPunObservable
     protected bool CanDrag => cardDragAndDrop.CanDrag;
 
     /// <summary> 공격 가능한 상태인지 체크 </summary>
-    public bool CanAttack => IsEnemy == false && CardState == CardState.Field && TurnManager.Instance.MyTurn;
+    public virtual bool CanAttack => IsEnemy == false && CardState == CardState.Field && TurnManager.Instance.MyTurn;
 
     public CardData CardData
     {
@@ -92,10 +92,7 @@ public abstract class Card : MonoBehaviourPun, IPunObservable
 
     protected abstract void Attack();
 
-    // 원래 여기서 RPC로 호출하려고 했는데
-    // 부모 클래스여서 뭔가 안되는 듯?
-    // 자식 클래스로 옮기니까 잘됨
-    protected abstract void MoveCardFromDeckToField();
+    protected virtual void MoveCardFromDeckToField() { }
 
     public void Destroy()
     {

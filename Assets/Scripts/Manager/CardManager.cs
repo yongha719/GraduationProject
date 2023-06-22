@@ -32,7 +32,7 @@ public class CardManager : SingletonPunCallbacks<CardManager>, IPunObservable
     }
 
     public bool HasEnemyTauntCard => tauntCardCount != 0;
-    
+
     [Tooltip("도발 카드 갯수")]
     private uint tauntCardCount = 0;
 
@@ -58,7 +58,6 @@ public class CardManager : SingletonPunCallbacks<CardManager>, IPunObservable
     /// <summary>
     /// 카드 등급을 카드 이름으로 하고
     /// </summary>
-    /// <returns></returns>
     public string GetRandomCardName()
     {
         int randomIndex = Random.Range(0, MyDeckNames.Count);
@@ -69,66 +68,54 @@ public class CardManager : SingletonPunCallbacks<CardManager>, IPunObservable
         return cardName;
     }
 
-    public void AddUnitCard(IUnitCardSubject card, bool isEnemy)
+    public void AddUnitCard<T>(T card) where T : UnitCard, IUnitCardSubject
     {
-        if (isEnemy)
+        if (card.IsEnemy)
+        {
             EnemyUnitCards.Add(card);
+
+            if (card.CardData.CardSpecialAbilityType == CardSpecialAbilityType.Taunt)
+                tauntCardCount++;
+        }
         else
             PlayerUnitCards.Add(card);
     }
 
-    public void RemoveUnitCard(IUnitCardSubject card, bool isEnemy)
+    public void RemoveUnitCard<T>(T card) where T : UnitCard, IUnitCardSubject
     {
-        if (isEnemy)
+        if (card.IsEnemy)
+        {
             EnemyUnitCards.Remove(card);
+
+            if (card.CardData.CardSpecialAbilityType == CardSpecialAbilityType.Taunt)
+                tauntCardCount--;
+        }
         else
             PlayerUnitCards.Remove(card);
 
         card.Destroy();
     }
 
-    public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
+    public void TurnChange(bool myTurn)
     {
-        // 내가 보낼 때는 플레이어 카드를 보내고
-        // 내가 보내는게 아닐 때는 적 카드를 받아옴
+        var cards = myTurn ? PlayerUnitCards : EnemyUnitCards;
 
-        //if (stream.IsWriting)
-        //{
-        //    stream.SendNext(PlayerUnits.Count);
-
-        //    foreach (UnitCard card in PlayerUnits)
-        //        stream.SendNext(card);
-        //}
-        //else
-        //{
-        //    int count = (int)stream.ReceiveNext();
-        //    EnemyUnits.Clear();
-
-        //    for (int i = 0; i < count; i++)
-        //        EnemyUnits.Add((UnitCard)stream.ReceiveNext());
-        //}
-
-        //Serialize(stream, PlayerUnits, EnemyUnits);
-        //Serialize(stream, EnemyUnits, PlayerUnits);
+        cards.ForEach(card => card.HandleTurn());
     }
 
-    /// <summary> left를 보내고 right로 받음</summary>
-    private void Serialize(PhotonStream stream, List<UnitCard> left, List<UnitCard> right)
+    public void HealCards(int healAmount)
     {
-        if (stream.IsWriting)
-        {
-            stream.SendNext(left.Count);
+        PlayerUnitCards.ForEach(card => HealCards(healAmount));
+    }
 
-            foreach (var card in left)
-                stream.SendNext(card);
-        }
-        else
-        {
-            int count = (int)stream.ReceiveNext();
-            right.Clear();
+    public void AttackEnemyCards(int damage)
+    {
+        EnemyUnitCards.ForEach(card => card.Hit(damage));
 
-            for (int i = 0; i < count; i++)
-                right.Add((UnitCard)stream.ReceiveNext());
-        }
+    }
+
+    public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
+    {
+
     }
 }
