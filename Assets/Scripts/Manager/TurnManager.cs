@@ -107,6 +107,8 @@ public class TurnManager : SingletonPunCallbacks<TurnManager>, IPunObservable
     /// <summary> 턴이 시작했을 때 </summary>
     public void TurnBegin()
     {
+        CardManager.Instance.TurnChange(MyTurn);
+
         if (MyTurn)
             CardManager.Instance.CardDraw();
         // else

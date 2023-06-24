@@ -27,7 +27,7 @@ public class CardInfo : MonoBehaviourPun
     [SerializeField] protected TextMeshProUGUI deckHpText;
     [SerializeField] protected TextMeshProUGUI deckPowerText;
     [SerializeField] protected TextMeshProUGUI deckCostText;
-
+    
 
     [Space(15f), Header("Field Stat Texts")]
 
