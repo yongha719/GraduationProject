@@ -100,7 +100,7 @@ public abstract class Card : MonoBehaviourPun, IPunObservable
             PhotonNetwork.Destroy(gameObject);
     }
 
-    private void OnDestroy()
+    protected virtual void OnDestroy()
     {
         PhotonManager.PhotonViewRemove(photonView.ViewID);
     }

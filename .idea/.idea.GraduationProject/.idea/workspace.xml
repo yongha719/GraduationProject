@@ -6,11 +6,8 @@
   <component name="ChangeListManager">
     <list default="true" id="84fda498-b201-4473-bfed-18288e513613" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.GraduationProject/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.GraduationProject/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Card/Ingame/Card.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Card/Ingame/Card.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scripts/Card/Ingame/Unit Cards/A2Unit.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Card/Ingame/Unit Cards/A2Unit.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Card/Ingame/Unit Cards/C3Unit.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Card/Ingame/Unit Cards/C3Unit.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Card/Ingame/Unit Cards/IUnitCardAction.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Card/Ingame/Unit Cards/IUnitCardAction.cs.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Card/Ingame/Unit Cards/IUnitCardSubject.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Card/Ingame/Unit Cards/IUnitCardSubject.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scripts/Card/Ingame/UnitCard.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Card/Ingame/UnitCard.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scripts/Manager/TurnManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Manager/TurnManager.cs" afterDir="false" />
     </list>
@@ -197,6 +194,7 @@
       <workItem from="1687369317120" duration="3274000" />
       <workItem from="1687440006156" duration="597000" />
       <workItem from="1687588399904" duration="13681000" />
+      <workItem from="1687872792185" duration="5680000" />
     </task>
     <servers />
   </component>
