@@ -56,7 +56,7 @@ public class TurnManager : SingletonPunCallbacks<TurnManager>, IPunObservable
 
         turnChangeButton.onClick.AddListener(TurnChange);
 
-        yield return WaitTurn(2, MyTurn);
+        yield return WaitTurn(2);
 
         print("2턴뒤임");
     }
@@ -121,7 +121,6 @@ public class TurnManager : SingletonPunCallbacks<TurnManager>, IPunObservable
     /// <summary> 턴이 시작했을 때 </summary>
     public void TurnBegin()
     {
-
         if (MyTurn)
             playerTurnCount++;
         else
@@ -138,22 +137,38 @@ public class TurnManager : SingletonPunCallbacks<TurnManager>, IPunObservable
     /// <summary>
     /// N턴을 기다림
     /// </summary>
-    public static CustomYieldInstruction WaitTurn(int turnCount, bool playerTurn)
+    public static CustomYieldInstruction WaitTurn(int turnCount)
     {
+        var playerTurn = Instance.MyTurn;
+
         var curTurnCnt = playerTurn ? playerTurnCount : enemyTurnCount;
 
         return new WaitUntil(() =>
             (playerTurn ? playerTurnCount : enemyTurnCount) - curTurnCnt == turnCount);
     }
 
-    public void ExecuteAfterTurn(int turnCount, bool playerTurn, Action call)
+    public void ExecuteAfterTurn(int turnCount, Action call)
     {
-        StartCoroutine(ExecuteAfterTurnCoroutine(turnCount, playerTurn, call));
+        StartCoroutine(ExecuteAfterTurnCoroutine(turnCount, call));
     }
 
-    private IEnumerator ExecuteAfterTurnCoroutine(int turnCount, bool playerTurn, Action call)
+    public void ExecuteAfterTurn(int turnCount, Action beforeTurnCall, Action afterTurnCall)
     {
-        yield return WaitTurn(turnCount, playerTurn);
+        StartCoroutine(ExecuteAfterTurnCoroutine(turnCount, beforeTurnCall, afterTurnCall));
+    }
+
+    private IEnumerator ExecuteAfterTurnCoroutine(int turnCount, Action beforeTurnCall, Action afterTurnCall)
+    {
+        beforeTurnCall();
+
+        yield return WaitTurn(turnCount);
+
+        afterTurnCall();
+    }
+
+    private IEnumerator ExecuteAfterTurnCoroutine(int turnCount, Action call)
+    {
+        yield return WaitTurn(turnCount);
 
         call();
     }

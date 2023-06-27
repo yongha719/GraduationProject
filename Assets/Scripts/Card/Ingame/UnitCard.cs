@@ -1,5 +1,6 @@
 using Photon.Pun;
 using System;
+using System.Security.Permissions;
 using UnityEngine;
 
 /// <summary> 인게임 유닛 카드의 정보파트 </summary>
@@ -38,9 +39,12 @@ public class UnitCard : Card, IUnitCardSubject
 
     public int Damage => CardData.Damage;
 
-    [Tooltip("저체온증 상태인지 체크")]
-    public bool isHypothermic;
+    [Tooltip("저체온증 상태인지 체크")] public bool isHypothermic;
 
+    public bool IsHacked
+    {
+        set => isAttackableTurn = !value;
+    }
 
     private RaycastHit2D[] raycastHits = new RaycastHit2D[10];
 
@@ -64,7 +68,7 @@ public class UnitCard : Card, IUnitCardSubject
 
         hp = value;
 
-        
+
         if (value <= 0)
         {
             hp = 0;
@@ -121,7 +125,6 @@ public class UnitCard : Card, IUnitCardSubject
 
     #region UnitCard Virtuals
 
-
     protected virtual void BasicAttack(UnitCard enemyCard)
     {
         enemyCard.Hit(Damage, Hit);
@@ -152,7 +155,7 @@ public class UnitCard : Card, IUnitCardSubject
     public virtual void Hit(int damage, Action<int> hitAction)
     {
         hitAction(Damage);
-        
+
         Hit(damage);
     }
 
