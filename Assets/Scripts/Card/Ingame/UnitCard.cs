@@ -8,7 +8,7 @@ public class UnitCard : Card, IUnitCardSubject
 {
     private int hp = 1;
 
-    public int Hp
+    public virtual int Hp
     {
         get => hp;
 
@@ -64,6 +64,7 @@ public class UnitCard : Card, IUnitCardSubject
 
         hp = value;
 
+        
         if (value <= 0)
         {
             hp = 0;
@@ -136,20 +137,23 @@ public class UnitCard : Card, IUnitCardSubject
 
     #region IUnitCardSubject override
 
+    public int eventCountAfterNTurns { get; set; }
+
     public void HealCard(int healAmount)
     {
         Hp += healAmount;
     }
 
-    public void Hit(int damage)
+    public virtual void Hit(int damage)
     {
         Hp -= damage;
     }
 
-    public void Hit(int damage, Action<int> hitAction)
+    public virtual void Hit(int damage, Action<int> hitAction)
     {
         hitAction(Damage);
-        Hp -= damage;
+        
+        Hit(damage);
     }
 
     public virtual void HandleTurn()

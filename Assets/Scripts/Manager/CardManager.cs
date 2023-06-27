@@ -96,7 +96,7 @@ public class CardManager : SingletonPunCallbacks<CardManager>, IPunObservable
         card.Destroy();
     }
 
-    public void TurnChange(bool myTurn)
+    public void HandleCards(bool myTurn)
     {
         var cards = myTurn ? PlayerUnitCards : EnemyUnitCards;
 
