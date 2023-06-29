@@ -1,6 +1,7 @@
 using Photon.Pun;
 using System;
 using System.Security.Permissions;
+using UnityEditor;
 using UnityEngine;
 
 /// <summary> 인게임 유닛 카드의 정보파트 </summary>
@@ -41,6 +42,8 @@ public class UnitCard : Card, IUnitCardSubject
 
     [Tooltip("저체온증 상태인지 체크")] public bool isHypothermic;
 
+    [Tooltip("공격 턴 기다리는거 캐싱")] protected Action enableAttackCall;
+
     public bool IsHacked
     {
         set => isAttackableTurn = !value;
@@ -54,15 +57,27 @@ public class UnitCard : Card, IUnitCardSubject
 
         hp = CardData.Hp;
 
+        enableAttackCall = () =>
+            TurnManager.Instance.ExecuteAfterTurn(1,
+                beforeTurnCall: () => isAttackableTurn = false,
+                afterTurnCall: () => isAttackableTurn = true);
+
         if (CardData.CardSpecialAbilityType == CardSpecialAbilityType.Charge)
         {
             isAttackableTurn = true;
+        }
+        else
+        {
+            TurnManager.Instance.ExecuteAfterTurn(1, call: () => isAttackableTurn = true);
         }
     }
 
     [PunRPC]
     protected void SetCardHpRPC(int value)
     {
+        if (GameManager.Instance.IsPlayerInvincibility)
+            return;
+
         if (value > CardData.Hp)
             return;
 
@@ -168,6 +183,14 @@ public class UnitCard : Card, IUnitCardSubject
 
     #region Card Overrides
 
+    protected override void OnEndDrag()
+    {
+        if (CardState == CardState.Field && CanAttack == false)
+            return;
+
+        base.OnEndDrag();
+    }
+
     protected override void Attack()
     {
         if (CanAttack == false) return;
@@ -185,6 +208,8 @@ public class UnitCard : Card, IUnitCardSubject
 
             BasicAttack(enemyCard);
         }
+
+        enableAttackCall();
     }
 
     protected override void MoveCardFromDeckToField()
