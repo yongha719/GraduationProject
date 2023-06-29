@@ -147,6 +147,16 @@ public class TurnManager : SingletonPunCallbacks<TurnManager>, IPunObservable
             (playerTurn ? playerTurnCount : enemyTurnCount) - curTurnCnt == turnCount);
     }
 
+    public static CustomYieldInstruction WaitTurn(int turnCount, Action beforeTurnCall, Action afterTurnCall)
+    {
+        var playerTurn = Instance.MyTurn;
+
+        var curTurnCnt = playerTurn ? playerTurnCount : enemyTurnCount;
+
+        return new WaitUntil(() =>
+            (playerTurn ? playerTurnCount : enemyTurnCount) - curTurnCnt == turnCount);
+    }
+    
     public void ExecuteAfterTurn(int turnCount, Action call)
     {
         StartCoroutine(ExecuteAfterTurnCoroutine(turnCount, call));
