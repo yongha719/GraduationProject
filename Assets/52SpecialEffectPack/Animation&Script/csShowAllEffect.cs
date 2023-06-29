@@ -1,7 +1,6 @@
 using UnityEngine;
 using System.Collections;
 
-
 public class csShowAllEffect : MonoBehaviour
 {
     public string[] EffectName;
@@ -14,7 +13,7 @@ public class csShowAllEffect : MonoBehaviour
         Instantiate(Effect[i], new Vector3(0, 0, 0), Quaternion.identity);
     }
 
-    void Update()
+    void Update ()
     {
         //Text1.text = i + 1 + ":" + EffectName[i];
 
@@ -26,7 +25,7 @@ public class csShowAllEffect : MonoBehaviour
             else
                 i--;
 
-            Instantiate(Effect[i], new Vector3(0, 0, 0), Quaternion.identity);
+           Instantiate(Effect[i], new Vector3(0, 0, 0), Quaternion.identity);
         }
 
         if (Input.GetKeyDown(KeyCode.X))
@@ -41,7 +40,7 @@ public class csShowAllEffect : MonoBehaviour
         }
 
         if (Input.GetKeyDown(KeyCode.C))
-        {
+        { 
             Instantiate(Effect[i], new Vector3(0, 0, 0), Quaternion.identity);
         }
     }
