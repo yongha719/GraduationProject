@@ -5,56 +5,55 @@ using UnityEngine.UI;
 
 public class CharacterProduction : MonoBehaviour
 {
-    [SerializeField] private RectTransform glitering;
-    [SerializeField] private RectTransform backGround;
-    [SerializeField] private RectTransform illustration;
-    [SerializeField] private RectTransform illustration_back;
+    [SerializeField] private Transform effectBackGround;
+    [SerializeField] private Transform effectFront;
+    [SerializeField] private Transform illust;
+    [SerializeField] private Transform illustBack;
+    [SerializeField] private Transform characterName;
 
-    [SerializeField] private Image darkBackGround;
+    [SerializeField] private SpriteRenderer darkBackGround;
 
+    float lerpTime = 0.1f;
+    #region FrontEffectPos
+    private Vector2 startFrontEffectPos = new Vector2(10, 6);
+    private Vector2 middleFrontEffectPos = new Vector3(4, 3);
+    private Vector2 middleLerpFrontPos = new Vector2(3, 2);
+    private Vector2 endFrontPos = new Vector3(-8, -4);
+    #endregion
+    #region BackEffectPos
+    private Vector2 startBackEffectPos = new Vector2(12, 6);
+    private Vector2 middleBackEffectPos = new Vector2(2, 1);
+    private Vector2 middleLerpBackEffectPos = new Vector2(1, 0);
+    private Vector2 endBackEffectPos = new Vector2(-12, -8);
+    #endregion
 
-    [SerializeField] private Vector2 startPos1;
-    private Vector2 middlePos = Vector3.zero;
-    [SerializeField] private Vector2 endPos1;
+    #region NameEffectPos
+    private Vector2 startNameEffectPos = new Vector2(8, 3);
+    private Vector2 middleNameEffectPos = new Vector2(1.4f, -0.2f);
+    private Vector2 middleLerpNameEffectPos = new Vector2(0.8f, -0.75f);
+    private Vector2 endNameEffectPos = new Vector2(-2, -3);
+    #endregion
 
-    [SerializeField] private Vector2 startPos2;
-    private Vector2 middleLerpPos = new Vector2(-0.5f, -0.5f);
-    [SerializeField] private Vector2 endPos2;
+    #region IllustEffectPos
+    private Vector2 startillustEffectPos = new Vector2(15, 9);
+    private Vector2 middleillustEffectPos = new Vector2(0.25f, 0.25f);
+    private Vector2 middleLerpillustEffectPos = new Vector2(-0.25f, -0.25f);
+    private Vector2 endillustEffectPos = new Vector2(-14, -7);
+    #endregion
 
+    #region IllustBackEffectPos
+    private Vector2 startIllustBackEffectPos = new Vector2(15, 9);
+    private Vector2 middleIllustBackEffectPos = new Vector2(1, 0.25f);
+    private Vector2 middleLerpIllustBackEffectPos = new Vector2(-0.25f, -0.25f);
+    private Vector2 endIllustBackEffectPos = new Vector2(-14, -7);
+    #endregion
 
-    private IEnumerator IPlay1()
+    private Vector2 originPos = new Vector2(32, 17);
+
+    private void Start()
     {
-        StartCoroutine(IFadeInOut(darkBackGround, 0, 1, 0.2f));
-
-        #region 화면 밖에서 화면중앙으로
-        StartCoroutine(ILerpRectTransform(glitering, startPos1, middlePos, 0.1f));
-        StartCoroutine(ILerpRectTransform(backGround, startPos1, middlePos, 0.1f));
-
-        yield return new WaitForSeconds(0.1f);
-
-        StartCoroutine(ILerpRectTransform(illustration, startPos1, middlePos, 0.1f));
-
-        yield return new WaitForSeconds(0.05f);
-
-        StartCoroutine(ILerpRectTransform(illustration_back, startPos1, middlePos, 0.1f));
-        #endregion
-        yield return new WaitForSeconds(2f);
-
-        #region 화면중앙에서 화면 밖으로
-        StartCoroutine(ILerpRectTransform(illustration, middlePos, endPos1, 0.1f));
-        StartCoroutine(ILerpRectTransform(illustration_back, middlePos, endPos1, 0.1f));
-
-        StartCoroutine(IFadeInOut(darkBackGround, 1, 0, 0.2f));
-        yield return new WaitForSeconds(0.1f);
-
-        StartCoroutine(ILerpRectTransform(glitering, middlePos, endPos1, 0.1f));
-
-        StartCoroutine(ILerpRectTransform(backGround, middlePos, endPos1, 0.1f));
-
-        #endregion
-
-        Destroy(gameObject);
-        yield break;
+        StartCoroutine(IPlay2());
+        darkBackGround.GetComponent<Transform>().position = Vector2.zero;
     }
 
     private IEnumerator ILerpRectTransform(RectTransform origin, Vector3 startPos, Vector2 endPos, float time)
@@ -90,20 +89,20 @@ public class CharacterProduction : MonoBehaviour
             percent = current / time;
             currentPos = Vector2.Lerp(startPos, endPos, percent);
 
-            origin.position = currentPos;
+            origin.localPosition = currentPos;
             yield return null;
         }
 
         yield break;
     }
-    private IEnumerator IFadeInOut(Image image, float startAlpha, float endAlpha, float time)
+    private IEnumerator IFadeInOutImage(Image image, float startAlpha, float endAlpha, float time)
     {
         float current = 0;
         float percent = 0;
 
         Color fadeColor = default;
 
-        while(percent < 1)
+        while (percent < 1)
         {
             current += Time.deltaTime;
             percent = current / time;
@@ -117,30 +116,70 @@ public class CharacterProduction : MonoBehaviour
         }
         yield break;
     }
-
-    private IEnumerator IPlay2()
+    private IEnumerator IFadeInOutSprite(SpriteRenderer sprite, float startAlpha, float endAlpha, float time)
     {
-        StartCoroutine(ILerpTransform(transform, startPos2, middlePos, 0.1f));
-        yield return new WaitForSeconds(0.1f);
+        float current = 0;
+        float percent = 0;
 
-        StartCoroutine(ILerpTransform(transform, middlePos, middleLerpPos, 2f));
-        yield return new WaitForSeconds(2f);
+        Color fadeColor = default;
 
-        StartCoroutine(ILerpTransform(transform, middleLerpPos, endPos2, 0.1f));
-        yield return new WaitForSeconds(0.1f);
+        while (percent < 1)
+        {
+            current += Time.deltaTime;
+            percent = current / time;
 
+            fadeColor.a = Mathf.Lerp(startAlpha, endAlpha, percent);
+
+            sprite.color = fadeColor;
+
+            yield return null;
+
+        }
         yield break;
     }
 
-    private void Update()
+    private IEnumerator IPlay2()
     {
-        if (Input.GetKeyDown(KeyCode.Alpha1))
-        {
-            StartCoroutine(IPlay1());
-        }
-        else if (Input.GetKeyDown(KeyCode.Alpha2))
-        {
-            StartCoroutine(IPlay2());
-        }
+        StartCoroutine(ILerpTransform(effectFront, startFrontEffectPos, middleFrontEffectPos, lerpTime));
+        StartCoroutine(ILerpTransform(effectFront, middleFrontEffectPos, middleLerpFrontPos, 3f));
+
+        StartCoroutine(ILerpTransform(effectBackGround, startBackEffectPos, middleBackEffectPos, lerpTime));
+        StartCoroutine(ILerpTransform(effectBackGround, middleBackEffectPos, middleLerpBackEffectPos, 3f));
+
+        yield return new WaitForSeconds(0.5f);
+
+        StartCoroutine(ILerpTransform(illust, startillustEffectPos, middleillustEffectPos, lerpTime));
+
+        StartCoroutine(ILerpTransform(characterName, startNameEffectPos, middleNameEffectPos, lerpTime));
+
+        yield return new WaitForSeconds(lerpTime);
+        StartCoroutine(ILerpTransform(illust, middleillustEffectPos, middleLerpIllustBackEffectPos, 2f));
+
+        StartCoroutine(ILerpTransform(characterName, middleNameEffectPos, middleLerpNameEffectPos, 2f));
+
+        StartCoroutine(IFadeInOutSprite(darkBackGround, 0, 1, 0.5f));
+
+        yield return new WaitForSeconds(0.5f);
+
+        StartCoroutine(ILerpTransform(illustBack, startIllustBackEffectPos, middleIllustBackEffectPos, lerpTime));
+
+        yield return new WaitForSeconds(lerpTime);
+
+        StartCoroutine(ILerpTransform(illustBack, middleIllustBackEffectPos, middleLerpIllustBackEffectPos, 1.5f));
+
+        yield return new WaitForSeconds(1.5f);
+
+        StartCoroutine(ILerpTransform(effectFront, middleLerpFrontPos, endFrontPos, lerpTime));
+        StartCoroutine(ILerpTransform(effectBackGround, middleLerpBackEffectPos, endBackEffectPos, 0.1f));
+        StartCoroutine(ILerpTransform(illust, middleLerpillustEffectPos, endillustEffectPos, lerpTime));
+        StartCoroutine(ILerpTransform(characterName, middleLerpNameEffectPos, endNameEffectPos, lerpTime));
+        StartCoroutine(ILerpTransform(illustBack, middleLerpIllustBackEffectPos, endIllustBackEffectPos, lerpTime));
+        StartCoroutine(IFadeInOutSprite(darkBackGround, 1, 0, 0.5f));
+
+        yield return new WaitForSeconds(0.1f);
+        effectFront.gameObject.SetActive(false);
+        effectBackGround.gameObject.SetActive(false);
+
+        yield break;
     }
 }
