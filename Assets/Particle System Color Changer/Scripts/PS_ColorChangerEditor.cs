@@ -10,6 +10,8 @@ namespace TheDeveloper.ColorChanger
      * YouTube Channel: https://www.youtube.com/channel/UCwO0k5dccZrTW6-GmJsiFrg
      * Website: https://thedevelopers.tech
      */
+
+#if UNITY_EDITOR
     [CustomEditor(typeof(PS_ColorChanger))]
     public class PS_ColorChangerEditor : Editor
     {
@@ -23,4 +25,5 @@ namespace TheDeveloper.ColorChanger
                 ((PS_ColorChanger)target).SwapCurrentWithNewColors();
         }
     }
+#endif
 }

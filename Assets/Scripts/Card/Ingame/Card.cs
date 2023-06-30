@@ -54,12 +54,13 @@ public abstract class Card : MonoBehaviourPun, IPunObservable
         cardInfo = GetComponent<CardInfo>();
 
         cardDragAndDrop.Init();
-        //photonView.ObservedComponents.Add(this);
+        
+        IsEnemy = !photonView.IsMine;
     }
 
     protected virtual void Start()
     {
-        IsEnemy = !photonView.IsMine;
+        print("card Start");
 
         cardDragAndDrop.OnEndDrag += OnEndDrag;
         cardDragAndDrop.OnDrop += OnDrop;
