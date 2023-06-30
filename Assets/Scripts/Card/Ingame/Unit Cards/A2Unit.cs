@@ -18,22 +18,31 @@ public class A2Unit : UnitCard
         ChoiceUI = Instantiate(ChoiceUI, Vector3.zero, Quaternion.identity, transform.parent);
         ChoiceUI.SetActive(false);
 
+        var choiceUI = ChoiceUI.GetComponent<A2ChoiceUI>();
+
+        choiceUI.Init(this, Attack, Hacking);
+
         base.Start();
     }
 
     protected override void BasicAttack(UnitCard enemyCard)
     {
         curHackedUnitCard = enemyCard;
+        
+        ChoiceUI.SetActive(true);
     }
 
-    
-    
+    private void Attack()
+    {
+        base.BasicAttack(curHackedUnitCard);
+    }
+
     // 해킹
     public void Hacking()
     {
         TurnManager.Instance.ExecuteAfterTurn(1,
-            beforeTurnCall: () => { curHackedUnitCard.IsHacked = true; },
-            afterTurnCall: () => { curHackedUnitCard.IsHacked = false; });
+            beforeTurnCall: () => curHackedUnitCard.IsHacked = true,
+            afterTurnCall: () => curHackedUnitCard.IsHacked = false);
     }
 
     private IEnumerator HackingCoroutine()

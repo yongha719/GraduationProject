@@ -134,29 +134,6 @@ public class TurnManager : SingletonPunCallbacks<TurnManager>, IPunObservable
         //     OnEnemySpawnCallBack.CardSpawnEvent();
     }
 
-    /// <summary>
-    /// N턴을 기다림
-    /// </summary>
-    public static CustomYieldInstruction WaitTurn(int turnCount)
-    {
-        var playerTurn = Instance.MyTurn;
-
-        var curTurnCnt = playerTurn ? playerTurnCount : enemyTurnCount;
-
-        return new WaitUntil(() =>
-            (playerTurn ? playerTurnCount : enemyTurnCount) - curTurnCnt == turnCount);
-    }
-
-    public static CustomYieldInstruction WaitTurn(int turnCount, Action beforeTurnCall, Action afterTurnCall)
-    {
-        var playerTurn = Instance.MyTurn;
-
-        var curTurnCnt = playerTurn ? playerTurnCount : enemyTurnCount;
-
-        return new WaitUntil(() =>
-            (playerTurn ? playerTurnCount : enemyTurnCount) - curTurnCnt == turnCount);
-    }
-    
     public void ExecuteAfterTurn(int turnCount, Action call)
     {
         StartCoroutine(ExecuteAfterTurnCoroutine(turnCount, call));
@@ -181,6 +158,19 @@ public class TurnManager : SingletonPunCallbacks<TurnManager>, IPunObservable
         yield return WaitTurn(turnCount);
 
         call();
+    }
+    
+    /// <summary>
+    /// N턴을 기다림
+    /// </summary>
+    public static CustomYieldInstruction WaitTurn(int turnCount)
+    {
+        var playerTurn = Instance.MyTurn;
+
+        var curTurnCnt = playerTurn ? playerTurnCount : enemyTurnCount;
+
+        return new WaitUntil(() =>
+            (playerTurn ? playerTurnCount : enemyTurnCount) - curTurnCnt == turnCount);
     }
 
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)

@@ -51,8 +51,6 @@ public class CardDeckLayout : MonoBehaviourPunCallbacks, IPunObservable
 
         PhotonView cardPhotonView = cardObj.GetPhotonView();
 
-        photonResources = PhotonNetwork.GetResources();
-
         string cardName = CardManager.Instance.GetRandomCardName();
 
         if (isTest)

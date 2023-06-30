@@ -63,13 +63,13 @@ public class UnitCard : Card, IUnitCardSubject
                 afterTurnCall: () => isAttackableTurn = true);
 
         if (CardData.CardSpecialAbilityType == CardSpecialAbilityType.Charge)
-        {
             isAttackableTurn = true;
-        }
         else
-        {
-            TurnManager.Instance.ExecuteAfterTurn(1, call: () => isAttackableTurn = true);
-        }
+            TurnManager.Instance.ExecuteAfterTurn(1, call: () =>
+            {
+                print("now can attack");
+                isAttackableTurn = true;
+            });
     }
 
     [PunRPC]
@@ -118,7 +118,13 @@ public class UnitCard : Card, IUnitCardSubject
                 rect.localScale = Vector3.one * 0.6f;
 
                 if (IsEnemy)
-                    rect.Rotate(0, 0, 180);
+                {
+                    print("card rotate");
+                    rect.rotation = Quaternion.Euler(0, 0, 180);
+                    Debug.Break();
+                    print(rect.rotation);
+                }
+
                 break;
         }
     }
@@ -189,6 +195,14 @@ public class UnitCard : Card, IUnitCardSubject
             return;
 
         base.OnEndDrag();
+    }
+
+    protected override void OnDrop()
+    {
+        if (CardState == CardState.Field && CanAttack == false)
+            return;
+
+        base.OnDrop();
     }
 
     protected override void Attack()
