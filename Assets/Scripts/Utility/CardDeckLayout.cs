@@ -44,6 +44,12 @@ public class CardDeckLayout : MonoBehaviourPunCallbacks, IPunObservable
 #endif
     }
 
+    public void CardDraw(int count, bool istest = false)
+    {
+        for (int i = 0; i < count; i++)
+            CardDraw(istest);
+    }
+
     // 테스트 카드 소환
     public void CardDraw(bool isTest = false)
     {
@@ -81,7 +87,7 @@ public class CardDeckLayout : MonoBehaviourPunCallbacks, IPunObservable
         var cardType = cardPhotonView.gameObject.AddComponent(Type.GetType($"{cardName}Unit"));
 
         if (cardType is Card card)
-            card.Init(parentPhotonView.gameObject.transform, cardName);
+            card.Init(parentPhotonView.transform, cardName);
     }
 
     private void OnTransformChildrenChanged()

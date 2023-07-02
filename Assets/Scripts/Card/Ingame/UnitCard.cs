@@ -8,6 +8,7 @@ using UnityEngine;
 [Serializable]
 public class UnitCard : Card, IUnitCardSubject
 {
+    [SerializeField]
     private int hp = 1;
 
     public virtual int Hp
@@ -34,6 +35,7 @@ public class UnitCard : Card, IUnitCardSubject
 
     public override bool CanAttack => base.CanAttack && isAttackableTurn;
 
+    [SerializeField]
     protected bool isAttackableTurn = false;
 
     public bool HasSpecialAbility => CardData.CardSpecialAbilityType != CardSpecialAbilityType.None;
@@ -59,17 +61,33 @@ public class UnitCard : Card, IUnitCardSubject
 
         enableAttackCall = () =>
             TurnManager.Instance.ExecuteAfterTurn(1,
-                beforeTurnCall: () => isAttackableTurn = false,
-                afterTurnCall: () => isAttackableTurn = true);
+                beforeTurnCall: () =>
+                {
+                    isAttackableTurn = false;
+                    print($"Can't Attack :  {isAttackableTurn}");
+                },
+                afterTurnCall: () =>
+                {
+                    isAttackableTurn = true;
+                    print($"Can Attack : {isAttackableTurn}");
+                });
 
         if (CardData.CardSpecialAbilityType == CardSpecialAbilityType.Charge)
             isAttackableTurn = true;
         else
             TurnManager.Instance.ExecuteAfterTurn(1, call: () =>
             {
-                print("now can attack");
                 isAttackableTurn = true;
+                print($"now can attack  {isAttackableTurn}");
             });
+    }
+
+    private void Update()
+    {
+        if (IsEnemy)
+        {
+            transform.localRotation = Quaternion.Euler(0, 0, 180);
+        }
     }
 
     [PunRPC]
@@ -81,6 +99,8 @@ public class UnitCard : Card, IUnitCardSubject
         if (value > CardData.Hp)
             return;
 
+        print("hp Rpc");
+        
         hp = value;
 
 
@@ -116,15 +136,6 @@ public class UnitCard : Card, IUnitCardSubject
                 cardInfo.OnFieldStateChange();
 
                 rect.localScale = Vector3.one * 0.6f;
-
-                if (IsEnemy)
-                {
-                    print("card rotate");
-                    rect.rotation = Quaternion.Euler(0, 0, 180);
-                    Debug.Break();
-                    print(rect.rotation);
-                }
-
                 break;
         }
     }
@@ -149,11 +160,11 @@ public class UnitCard : Card, IUnitCardSubject
     protected virtual void BasicAttack(UnitCard enemyCard)
     {
         enemyCard.Hit(Damage, Hit);
+        print("Attack");
     }
 
     protected virtual void SpecialAbility()
     {
-        if (HasSpecialAbility == false) return;
     }
 
     #endregion
@@ -241,9 +252,6 @@ public class UnitCard : Card, IUnitCardSubject
         CardState = CardState.Field;
 
         rect.SetParent(parentView.transform);
-
-        if (IsEnemy)
-            transform.rotation = Quaternion.Euler(0, 0, 180);
     }
 
     #endregion

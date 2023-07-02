@@ -9,10 +9,10 @@ public class C3Unit : UnitCard
 {
     // 한번 버텼는지 체크
     private bool isSurvivedOnce = false;
-    
-    // 피 1 남기고 한번 버틸 수 있음
+
     public override void Hit(int damage)
     {
+        // 피 1 남기고 한번 버틸 수 있음
         if (isSurvivedOnce == false && Hp <= damage)
         {
             Hp = 1;
@@ -21,12 +21,13 @@ public class C3Unit : UnitCard
         else
             base.Hit(damage);
     }
-    
+
+    /// <summary>공격받고 상대한테 데미지도 입힘</summary>
+    /// <param name="hitAction">자기가 공격받고 나서 상대가 데미지입는 액션</param>
     public override void Hit(int damage, Action<int> hitAction)
     {
-        hitAction(Damage);
-
         Hit(damage);
-    }
 
+        hitAction(Damage);
+    }
 }

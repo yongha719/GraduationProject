@@ -44,8 +44,6 @@ public class CardInfo : MonoBehaviourPun
     private void Awake()
     {
         cardImageComponent = GetComponent<Image>();
-
-        card = GetComponent<Card>();
     }
 
     private void Start()
@@ -60,14 +58,23 @@ public class CardInfo : MonoBehaviourPun
         fieldPowerText.text = deckPowerText.text;
 
         #endregion
-
-        // 카드가 유닛카드와 마법카드가 있어서 이렇게 했음
-        if (card is UnitCard unitCard)
-            unitCard.OnSetHpChange += (hp) => fieldHpText.text = hp.ToString();
     }
 
-    public void Init(string name)
+    public void Init(Card card, string name)
     {
+        this.card = card; 
+        
+        // 카드가 유닛카드와 마법카드가 있어서 이렇게 했음
+        if (card is UnitCard unitCard)
+        {
+            print("card is Unitcard");
+            unitCard.OnSetHpChange += hp =>
+            {
+                print("hp Change");
+                fieldHpText.text = hp.ToString();
+            };
+        }
+        
         print("card info init");
         
         IsEnemy = !photonView.IsMine;

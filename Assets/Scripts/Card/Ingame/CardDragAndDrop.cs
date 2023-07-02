@@ -122,13 +122,14 @@ public class CardDragAndDrop : MonoBehaviourPun, IBeginDragHandler, IDragHandler
 
     void IEndDragHandler.OnEndDrag(PointerEventData eventData)
     {
+        // TODO : 여기서 코스트 감소
+        
         if (CanDrag == false) return;
 
         isDragging = false;
 
-        if(cardState == CardState.Field)
         // 다시 돌아가
-        transform.localRotation = layoutRot;
+        transform.localRotation = cardState != CardState.Field ? layoutRot : Quaternion.identity;
         rectTransform.anchoredPosition = originPos;
     }
 

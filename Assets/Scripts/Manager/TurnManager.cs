@@ -16,6 +16,7 @@ public enum TurnState
 public class TurnManager : SingletonPunCallbacks<TurnManager>, IPunObservable
 {
     private CardDeckLayout playerDeck;
+    private CardDeckLayout enemyDeck;
 
     [SerializeField] private TurnState turnState;
 
@@ -28,21 +29,10 @@ public class TurnManager : SingletonPunCallbacks<TurnManager>, IPunObservable
 
     public bool MyTurn => TurnState == TurnState.PlayerTurn;
 
-    public event Action<UnitCard> OnEnemySpawnCallBack;
+    public event Action<UnitCard> OnEnemySpawnAction;
 
-    private event Action<bool, int> turnChangeEvent = (myTurn, turnCnt) => { };
-
-    // 같은 함수를 여러번 등록했을 때 이벤트의 제거 방식이
-    // Stack처럼 작동한다해서 이렇게 해줌
-    public event Action<bool, int> TurnChangeEvent
-    {
-        add => turnChangeEvents.Enqueue(value);
-
-        remove => turnChangeEvents.Dequeue();
-    }
-
-    private Queue<Action<bool, int>> turnChangeEvents = new(10);
-
+    public event Action OnPlayerTurnAction = () => {};
+ 
     [SerializeField] private TextMeshProUGUI testTurnStateText;
 
     [SerializeField] private Button turnChangeButton;
@@ -53,6 +43,7 @@ public class TurnManager : SingletonPunCallbacks<TurnManager>, IPunObservable
     private IEnumerator Start()
     {
         playerDeck = PhotonManager.GetPhotonViewByType(PhotonViewType.PlayerDeck).GetComponent<CardDeckLayout>();
+        enemyDeck = PhotonManager.GetPhotonViewByType(PhotonViewType.EnemyDeck).GetComponent<CardDeckLayout>();
 
         turnChangeButton.onClick.AddListener(TurnChange);
 
@@ -81,8 +72,8 @@ public class TurnManager : SingletonPunCallbacks<TurnManager>, IPunObservable
         turnChangeButton.interactable = MyTurn;
         testTurnStateText.text = TurnState.ToString();
 
-        if (MyTurn)
-            playerDeck.CardDraw();
+        playerDeck.CardDraw(3);
+        enemyDeck.CardDraw(3);
 
         playerTurnCount++;
     }
@@ -122,7 +113,10 @@ public class TurnManager : SingletonPunCallbacks<TurnManager>, IPunObservable
     public void TurnBegin()
     {
         if (MyTurn)
+        {
+            OnPlayerTurnAction();
             playerTurnCount++;
+        }
         else
             enemyTurnCount++;
 
@@ -159,7 +153,7 @@ public class TurnManager : SingletonPunCallbacks<TurnManager>, IPunObservable
 
         call();
     }
-    
+
     /// <summary>
     /// N턴을 기다림
     /// </summary>

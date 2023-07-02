@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
-// TODO : RuntimeInitializeOnLoadMethod Attribute 써서 정적 클래스로 만들기
-
 /// <summary> 이 스크립트는 Canvas에 있어야 합니다 </summary>
 public class CanvasUtility : MonoBehaviour
 {
@@ -47,8 +45,5 @@ public class CanvasUtility : MonoBehaviour
         }
         else
             return false;
-
-        // TODO : 이거 왜 안되는지 알아보기
-        //RectTransformUtility.RectangleContainsScreenPoint
     }
 }

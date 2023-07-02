@@ -6,8 +6,7 @@ using UnityEngine;
 
 public class CardFieldLayout : MonoBehaviourPun
 {
-    [SerializeField]
-    private bool IsMine;
+    [SerializeField] private bool IsMine;
 
     public List<UnitCard> Cards = new List<UnitCard>();
 
@@ -23,6 +22,13 @@ public class CardFieldLayout : MonoBehaviourPun
 
     private void OnTransformChildrenChanged()
     {
-
+        if (IsMine == false)
+        {
+            for (int i = 0; i < transform.childCount; i++)
+            {
+                print("field rotate");
+                transform.GetChild(i).rotation = Quaternion.Euler(0, 0, 180);
+            }
+        }
     }
 }

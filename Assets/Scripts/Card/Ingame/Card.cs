@@ -53,6 +53,7 @@ public abstract class Card : MonoBehaviourPun, IPunObservable
         cardDragAndDrop = GetComponent<CardDragAndDrop>();
         cardInfo = GetComponent<CardInfo>();
 
+        
         cardDragAndDrop.Init();
         
         IsEnemy = !photonView.IsMine;
@@ -75,7 +76,7 @@ public abstract class Card : MonoBehaviourPun, IPunObservable
         // Vector2로 대입해줘서 0 만들어주기
         rect.anchoredPosition3D = rect.anchoredPosition;
 
-        cardInfo.Init(name);
+        cardInfo.Init(this, name);
     }
 
     protected virtual void OnEndDrag()
