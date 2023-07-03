@@ -15,13 +15,38 @@ public class GameManager : SingletonPunCallbacks<GameManager>, IPunObservable
     [Tooltip("플레이어 무적")]
     public bool IsPlayerInvincibility;
 
-    [Tooltip("내 코스트")] 
-    public uint Cost;
-    
+    [Tooltip("내 코스트"), SerializeField]
+    private uint cost = 3;
+
+    public uint Cost
+    {
+        get => cost;
+        
+        set
+        {
+            if(value > MaxCost)
+                return;
+            
+            cost = value;
+        }
+    }
+
+
     [Tooltip("내 최대 코스트"), SerializeField]
     private uint maxCost = 3;
 
-    public uint MaxCost => maxCost;
+    public uint MaxCost
+    {
+        get => maxCost;
+
+        set
+        {
+            if(value > 10)
+                return;
+
+            maxCost = value;
+        }
+    }
     
     protected override void Awake()
     {
@@ -41,7 +66,7 @@ public class GameManager : SingletonPunCallbacks<GameManager>, IPunObservable
     private void IncreaseCost()
     {
         Cost++;
-        maxCost++;
+        MaxCost++;
     }
     
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
