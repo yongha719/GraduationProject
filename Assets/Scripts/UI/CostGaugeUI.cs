@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.Serialization;
 
@@ -9,13 +10,21 @@ public class CostGaugeUI : MonoBehaviour
     private Sprite costGaugeMiddleSprite;
     private Sprite costGaugeTopSprite;
 
-    [Tooltip("코스트 게이지칸"), SerializeField] 
+    [Space]
+
+    [SerializeField]
+    private TextMeshProUGUI costText;
+
+    [Space]
+
+    [Tooltip("코스트 게이지칸"), SerializeField]
     private List<GameObject> costGaugeParts = new(10);
 
     private List<GameObject> curCostGaugeParts = new(10);
 
     [Tooltip("코스트 게이지칸 배경"), SerializeField]
     private List<GameObject> costGaugeBackgroundParts = new(10);
+
 
     void Start()
     {
@@ -32,37 +41,21 @@ public class CostGaugeUI : MonoBehaviour
 
     private void CostGaugeChange()
     {
-        curCostGaugeParts.Clear();
-
-        for (var i = 0; i < costGaugeBackgroundParts.Count; i++)
-        {
-            costGaugeBackgroundParts[i].SetActive(false);
-            costGaugeParts[i].SetActive(false);
-        }
-
         var maxCost = GameManager.Instance.MaxCost;
+        var cost = GameManager.Instance.Cost;
 
-        if (maxCost > 0)
+        for (int i = 0; i < costGaugeBackgroundParts.Count; i++)
         {
-            for (int i = 0; i < maxCost - 1; i++)
-            {
-                costGaugeParts[i].SetActive(true);
-                curCostGaugeParts.Add(costGaugeParts[i]);
-
-                costGaugeBackgroundParts[i].SetActive(true);
-            }
-
-            costGaugeParts[9].SetActive(true);
-            curCostGaugeParts.Add(costGaugeParts[9]);
-
-            costGaugeBackgroundParts[9].SetActive(true);
+            costGaugeBackgroundParts[i].SetActive(i < maxCost - 1);
+            costGaugeParts[i].SetActive(i < cost);
         }
 
-        foreach (var costGaugePart in curCostGaugeParts)
-            costGaugePart.SetActive(false);
+        costGaugeBackgroundParts[9].SetActive(true);
 
-        for (int i = 0; i < GameManager.Instance.Cost; i++)
-            curCostGaugeParts[i].SetActive(true);
+        costGaugeParts[(int)cost - 1].SetActive(maxCost != cost);
+        costGaugeParts[9].SetActive(maxCost == cost);
+
+        costText.text = $"{cost}/{maxCost}";
     }
 
     // Update is called once per frame
