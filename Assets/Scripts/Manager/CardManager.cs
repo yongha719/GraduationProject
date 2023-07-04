@@ -18,8 +18,6 @@ public class CardManager : SingletonPunCallbacks<CardManager>, IPunObservable
     [Tooltip("카드 데이터들"), SerializedDictionary("Card Rating", "Card Data")]
     public SerializedDictionary<string, CardData> CardDatas = new(15);
 
-    private const string INGAME_CARD_PATH = "Cards/In game Cards";
-
     // 포톤은 오브젝트를 리소스 폴더에서 가져와서 오브젝트의 이름으로 가져오기 위해 string으로 함
     [SerializeField] private List<string> myDeckNames = new(20);
 

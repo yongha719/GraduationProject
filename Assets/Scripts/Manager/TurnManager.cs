@@ -73,7 +73,6 @@ public class TurnManager : SingletonPunCallbacks<TurnManager>, IPunObservable
         testTurnStateText.text = TurnState.ToString();
 
         playerDeck.CardDraw(3);
-        enemyDeck.CardDraw(3);
 
         playerTurnCount++;
     }
@@ -122,7 +121,7 @@ public class TurnManager : SingletonPunCallbacks<TurnManager>, IPunObservable
 
         CardManager.Instance.HandleCards(MyTurn);
 
-        if (MyTurn)
+        if (playerTurnCount != 1 && MyTurn)
             CardManager.Instance.CardDraw();
         // else
         //     OnEnemySpawnCallBack.CardSpawnEvent();

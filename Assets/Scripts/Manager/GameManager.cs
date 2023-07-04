@@ -25,7 +25,10 @@ public class GameManager : SingletonPunCallbacks<GameManager>, IPunObservable
         set
         {
             if(value > MaxCost)
+            {
+                cost = MaxCost;
                 return;
+            }
             
             cost = value;
         }
@@ -47,10 +50,14 @@ public class GameManager : SingletonPunCallbacks<GameManager>, IPunObservable
             maxCost = value;
         }
     }
-    
+
+    private GameObject LogCanvas;
+
     protected override void Awake()
     {
         base.Awake();
+
+        LogCanvas = FindObjectOfType<LogManager>().gameObject;
     }
 
     private void Start()
@@ -62,11 +69,16 @@ public class GameManager : SingletonPunCallbacks<GameManager>, IPunObservable
         };
     }
 
-    
+    private void Update()
+    {
+        if (Input.GetKey(KeyCode.F11))
+            LogCanvas?.SetActive(true);
+    }
+
     private void IncreaseCost()
     {
-        Cost++;
         MaxCost++;
+        Cost = MaxCost;
     }
     
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)

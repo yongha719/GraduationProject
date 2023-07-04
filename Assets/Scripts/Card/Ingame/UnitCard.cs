@@ -99,10 +99,7 @@ public class UnitCard : Card, IUnitCardSubject
         if (value > CardData.Hp)
             return;
 
-        print("hp Rpc");
-        
         hp = value;
-
 
         if (value <= 0)
         {
@@ -168,7 +165,6 @@ public class UnitCard : Card, IUnitCardSubject
     }
 
     #endregion
-
 
     #region IUnitCardSubject override
 

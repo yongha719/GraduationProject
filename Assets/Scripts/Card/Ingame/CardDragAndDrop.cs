@@ -45,6 +45,8 @@ public class CardDragAndDrop : MonoBehaviourPun, IBeginDragHandler, IDragHandler
     
     private void OnMouseEnter()
     {
+        print("mouse enter");
+
         switch (cardState)
         {
             case CardState.Deck:
