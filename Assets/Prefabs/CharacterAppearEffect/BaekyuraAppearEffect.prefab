@@ -974,12 +974,29 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bba544e8c045ea847836c2b83c06facd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  characterType: 0
   effectBackGround: {fileID: 7416922823557406685}
   effectFront: {fileID: 7416922823582632107}
   illust: {fileID: 7416922822742838836}
   illustBack: {fileID: 7416922823387593149}
   characterName: {fileID: 7416922822761079183}
   darkBackGround: {fileID: 7416922822259897223}
+  effectBackGroundSpriteRendererList:
+  - {fileID: 7416922822201493577}
+  - {fileID: 7416922822503214627}
+  - {fileID: 7416922822630854585}
+  effectFrontSpriteRendererListTop:
+  - {fileID: 7416922822986105770}
+  - {fileID: 7416922822961050746}
+  - {fileID: 7416922821974938953}
+  effectFrontSpriteRendererListBottom:
+  - {fileID: 7416922822968831555}
+  - {fileID: 7416922822777984171}
+  - {fileID: 7416922823728579592}
+  illustRenderer: {fileID: 7416922822742838837}
+  illustBackRenderer: {fileID: 7416922823387593148}
+  characterNameRenderer: {fileID: 7416922822761079180}
+  characterResources: []
 --- !u!1 &7416922823295317328
 GameObject:
   m_ObjectHideFlags: 0

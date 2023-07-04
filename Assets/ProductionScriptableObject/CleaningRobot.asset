@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 0}
+  m_Name: CleaningRobot
+  m_EditorClassIdentifier: Assembly-CSharp::CharacterProductionResources
+  effectBackGround:
+  - {fileID: 21300000, guid: f54e4ae871649034d840e0f34aacf677, type: 3}
+  - {fileID: 21300000, guid: 7761d0944df01d949a1db584c1319622, type: 3}
+  - {fileID: 21300000, guid: 9153182de9dd8a34b9b3a8595b3300b3, type: 3}
+  effectFront:
+  - {fileID: 21300000, guid: d2c3fe0311c2b9940b09185863f3acfd, type: 3}
+  - {fileID: 21300000, guid: f29b9eedf0819b848a73e53892919619, type: 3}
+  - {fileID: 21300000, guid: 14f98bff00097734da15faed4e35bc21, type: 3}
+  illust: {fileID: 21300000, guid: 3a464a8b2f1987b408efea77fb4d908a, type: 3}
+  illustBack: {fileID: 21300000, guid: 6c57bf2561e68eb489888f5bf995284e, type: 3}
+  characterName: {fileID: 21300000, guid: fbd3190bf9933844c98729637e43287d, type: 3}

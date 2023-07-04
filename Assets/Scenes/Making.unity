@@ -1086,9 +1086,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bba544e8c045ea847836c2b83c06facd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  characterType: 0
   effectBackGround: {fileID: 0}
   effectFront: {fileID: 0}
   illust: {fileID: 0}
   illustBack: {fileID: 0}
   characterName: {fileID: 0}
   darkBackGround: {fileID: 0}
+  effectBackGroundSpriteRendererList: []
+  effectFrontSpriteRendererListTop: []
+  effectFrontSpriteRendererListBottom: []
+  illustRenderer: {fileID: 0}
+  illustBackRenderer: {fileID: 0}
+  characterNameRenderer: {fileID: 0}
+  characterResources: []

@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 0}
+  m_Name: Yooeunha
+  m_EditorClassIdentifier: Assembly-CSharp::CharacterProductionResources
+  effectBackGround:
+  - {fileID: 21300000, guid: f2751b48a4881aa49bdfb480c2d44647, type: 3}
+  - {fileID: 21300000, guid: cfb79da9943186a45b5eeb61c0a0fe1d, type: 3}
+  - {fileID: 21300000, guid: d27400ebe02f0d34183fc8aa22bab2c0, type: 3}
+  effectFront:
+  - {fileID: 21300000, guid: 2685d8a2390c26c489c5eec71269365b, type: 3}
+  - {fileID: 21300000, guid: dfcd7eab1fa8cc547ac3bd3006b289d5, type: 3}
+  - {fileID: 21300000, guid: 848a1309bc56ea645bc883920661581d, type: 3}
+  illust: {fileID: 21300000, guid: b7ee0dd10ffa86844b07e12e4fecebb2, type: 3}
+  illustBack: {fileID: 21300000, guid: bab4905b95db431469ecb7cf85e667f5, type: 3}
+  characterName: {fileID: 21300000, guid: a760cc8a9c329b242916b1916b246205, type: 3}

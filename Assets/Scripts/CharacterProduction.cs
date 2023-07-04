@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 
 [CreateAssetMenu(fileName = "CharacterProductionResources", menuName = "Productions", order = int.MinValue)]
-public class CharacterProductionResoures : ScriptableObject
+public class CharacterProductionResources : ScriptableObject
 {
     public List<Sprite> effectBackGround = new List<Sprite>();
     public List<Sprite> effectFront = new List<Sprite>();
@@ -18,9 +18,17 @@ public class CharacterProduction : MonoBehaviour
     public enum ECharacterType
     {
         Baekyura,
-        
+        CleaningRobot,
+        Hanseorin,
+        Kangsebin,
+        //Leesooha,
+        Yooeunha,
+        Yuki,
     }
 
+    public ECharacterType characterType;
+
+    [Header("움직이는 오브젝트")]
     [SerializeField] private Transform effectBackGround;
     [SerializeField] private Transform effectFront;
     [SerializeField] private Transform illust;
@@ -29,16 +37,20 @@ public class CharacterProduction : MonoBehaviour
 
     [SerializeField] private SpriteRenderer darkBackGround;
 
-    [SerializeField] private List<SpriteRenderer> effectBackGroundSpriteRendererList = new List<SpriteRenderer>();
-    [SerializeField] private List<SpriteRenderer> effectFrontSpriteRendererList = new List<SpriteRenderer>();
+    [Space(10f)]
+    [Header("유동적으로 바꿀 Sprite")]
+    [SerializeField, Tooltip("뒤에 반짝거리는 배경")] private List<SpriteRenderer> effectBackGroundSpriteRendererList = new List<SpriteRenderer>();
+    [SerializeField, Tooltip("앞에 반짝거리는 이펙트 위")] private List<SpriteRenderer> effectFrontSpriteRendererListTop = new List<SpriteRenderer>();
+    [SerializeField, Tooltip("앞에 반짝거리는 이펙트 아래")] private List<SpriteRenderer> effectFrontSpriteRendererListBottom = new List<SpriteRenderer>();
     [SerializeField] private SpriteRenderer illustRenderer;
     [SerializeField] private SpriteRenderer illustBackRenderer;
     [SerializeField] private SpriteRenderer characterNameRenderer;
 
-    [SerializeField] private CharacterProductionResoures characterResources;
+    [SerializeField, Tooltip("연출 정보가 담겨 있는 Class")] private List<CharacterProductionResources> characterResources = new List<CharacterProductionResources>();
 
 
     float lerpTime = 0.1f;
+
     #region FrontEffectPos
     private Vector2 startFrontEffectPos = new Vector2(10, 6);
     private Vector2 middleFrontEffectPos = new Vector3(4, 3);
@@ -77,18 +89,25 @@ public class CharacterProduction : MonoBehaviour
 
     private void Start()
     {
+        LoadReSource();
         StartCoroutine(IPlay2());
         darkBackGround.GetComponent<Transform>().position = Vector2.zero;
     }
 
     private void LoadReSource()
     {
+        int index = (int)characterType;
+
         for (int i = 0; i < 3; i++)
         {
-            effectBackGroundSpriteRendererList[i].sprite = characterResources.effectBackGround[i];
-            effectFrontSpriteRendererList[i].sprite = characterResources.effectFront[i];
+            effectBackGroundSpriteRendererList[i].sprite = characterResources[index].effectBackGround[i];
+            effectFrontSpriteRendererListTop[i].sprite = characterResources[index].effectFront[i];
+            effectFrontSpriteRendererListBottom[i].sprite = characterResources[index].effectFront[i];
         }
-        
+
+        illustRenderer.sprite = characterResources[index].illust;
+        illustBackRenderer.sprite = characterResources[index].illustBack;
+        characterNameRenderer.sprite = characterResources[index].characterName;
     }
 
     private IEnumerator ILerpRectTransform(RectTransform origin, Vector3 startPos, Vector2 endPos, float time)
