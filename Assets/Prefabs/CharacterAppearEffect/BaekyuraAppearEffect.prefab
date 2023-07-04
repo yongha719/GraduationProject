@@ -935,7 +935,7 @@ GameObject:
   - component: {fileID: 7416922823109493208}
   - component: {fileID: 7416922823109493211}
   m_Layer: 0
-  m_Name: EffectPerent
+  m_Name: BaekyuraAppearEffect
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

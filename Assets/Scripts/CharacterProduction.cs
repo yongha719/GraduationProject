@@ -3,8 +3,24 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+[CreateAssetMenu(fileName = "CharacterProductionResources", menuName = "Productions", order = int.MinValue)]
+public class CharacterProductionResoures : ScriptableObject
+{
+    public List<Sprite> effectBackGround = new List<Sprite>();
+    public List<Sprite> effectFront = new List<Sprite>();
+    public Sprite illust;
+    public Sprite illustBack;
+    public Sprite characterName;
+}
+
 public class CharacterProduction : MonoBehaviour
 {
+    public enum ECharacterType
+    {
+        Baekyura,
+        
+    }
+
     [SerializeField] private Transform effectBackGround;
     [SerializeField] private Transform effectFront;
     [SerializeField] private Transform illust;
@@ -12,6 +28,15 @@ public class CharacterProduction : MonoBehaviour
     [SerializeField] private Transform characterName;
 
     [SerializeField] private SpriteRenderer darkBackGround;
+
+    [SerializeField] private List<SpriteRenderer> effectBackGroundSpriteRendererList = new List<SpriteRenderer>();
+    [SerializeField] private List<SpriteRenderer> effectFrontSpriteRendererList = new List<SpriteRenderer>();
+    [SerializeField] private SpriteRenderer illustRenderer;
+    [SerializeField] private SpriteRenderer illustBackRenderer;
+    [SerializeField] private SpriteRenderer characterNameRenderer;
+
+    [SerializeField] private CharacterProductionResoures characterResources;
+
 
     float lerpTime = 0.1f;
     #region FrontEffectPos
@@ -54,6 +79,16 @@ public class CharacterProduction : MonoBehaviour
     {
         StartCoroutine(IPlay2());
         darkBackGround.GetComponent<Transform>().position = Vector2.zero;
+    }
+
+    private void LoadReSource()
+    {
+        for (int i = 0; i < 3; i++)
+        {
+            effectBackGroundSpriteRendererList[i].sprite = characterResources.effectBackGround[i];
+            effectFrontSpriteRendererList[i].sprite = characterResources.effectFront[i];
+        }
+        
     }
 
     private IEnumerator ILerpRectTransform(RectTransform origin, Vector3 startPos, Vector2 endPos, float time)
