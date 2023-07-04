@@ -9,9 +9,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 0}
+  m_Script: {fileID: 11500000, guid: b0a3575475f505348a891de475010ed3, type: 3}
   m_Name: Baekyura
-  m_EditorClassIdentifier: Assembly-CSharp::CharacterProductionResources
+  m_EditorClassIdentifier: 
   effectBackGround:
   - {fileID: 21300000, guid: d4336fce6fe808645a952d0902ae8c19, type: 3}
   - {fileID: 21300000, guid: 91d0857ac783513459d0776a03ae707d, type: 3}

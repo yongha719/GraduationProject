@@ -9,9 +9,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 0}
+  m_Script: {fileID: 11500000, guid: b0a3575475f505348a891de475010ed3, type: 3}
   m_Name: Leesooha
-  m_EditorClassIdentifier: Assembly-CSharp::CharacterProductionResources
+  m_EditorClassIdentifier: 
   effectBackGround:
   - {fileID: 21300000, guid: b9cdf361574a4014eb8ea03530813c7a, type: 3}
   - {fileID: 21300000, guid: d62d6fb2f2853ce45a9872e9dcd55bed, type: 3}
@@ -20,6 +20,6 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 2627411cd7bbd5f438c37a741952f0c3, type: 3}
   - {fileID: 21300000, guid: ceeef9bf02c3aff4099e3f571e406e49, type: 3}
   - {fileID: 21300000, guid: 3e3212866e9ff824c8915bbddc55983d, type: 3}
-  illust: {fileID: 0}
-  illustBack: {fileID: 0}
+  illust: {fileID: 21300000, guid: f0fd5b44d1db3ed40b053209d9f6f42c, type: 3}
+  illustBack: {fileID: 21300000, guid: eaed44cd789de3d4bb0eee87023bd8c6, type: 3}
   characterName: {fileID: 21300000, guid: 89209bde839edab4e8ae888ee3e5ba78, type: 3}

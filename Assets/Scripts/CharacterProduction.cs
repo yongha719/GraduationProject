@@ -3,28 +3,21 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-[CreateAssetMenu(fileName = "CharacterProductionResources", menuName = "Productions", order = int.MinValue)]
-public class CharacterProductionResources : ScriptableObject
-{
-    public List<Sprite> effectBackGround = new List<Sprite>();
-    public List<Sprite> effectFront = new List<Sprite>();
-    public Sprite illust;
-    public Sprite illustBack;
-    public Sprite characterName;
-}
 
+
+public enum ECharacterType
+{
+    Baekyura,
+    CleaningRobot,
+    Hanseorin,
+    Kangsebin,
+    Leesooha,
+    Yooeunha,
+    Yuki,
+    End,
+}
 public class CharacterProduction : MonoBehaviour
 {
-    public enum ECharacterType
-    {
-        Baekyura,
-        CleaningRobot,
-        Hanseorin,
-        Kangsebin,
-        //Leesooha,
-        Yooeunha,
-        Yuki,
-    }
 
     public ECharacterType characterType;
 
@@ -65,10 +58,10 @@ public class CharacterProduction : MonoBehaviour
     #endregion
 
     #region NameEffectPos
-    private Vector2 startNameEffectPos = new Vector2(8, 3);
-    private Vector2 middleNameEffectPos = new Vector2(1.4f, -0.2f);
-    private Vector2 middleLerpNameEffectPos = new Vector2(0.8f, -0.75f);
-    private Vector2 endNameEffectPos = new Vector2(-2, -3);
+    private Vector2 startNameEffectPos = new Vector2(8, -0.5f);
+    private Vector2 middleNameEffectPos = new Vector2(3f, -0.5f);
+    private Vector2 middleLerpNameEffectPos = new Vector2(1.5f, -0.5f);
+    private Vector2 endNameEffectPos = new Vector2(-15f, -0.5f);
     #endregion
 
     #region IllustEffectPos
@@ -204,22 +197,27 @@ public class CharacterProduction : MonoBehaviour
 
         StartCoroutine(ILerpTransform(illust, startillustEffectPos, middleillustEffectPos, lerpTime));
 
-        StartCoroutine(ILerpTransform(characterName, startNameEffectPos, middleNameEffectPos, lerpTime));
+        
 
         yield return new WaitForSeconds(lerpTime);
         StartCoroutine(ILerpTransform(illust, middleillustEffectPos, middleLerpIllustBackEffectPos, 2f));
 
-        StartCoroutine(ILerpTransform(characterName, middleNameEffectPos, middleLerpNameEffectPos, 2f));
-
         StartCoroutine(IFadeInOutSprite(darkBackGround, 0, 1, 0.5f));
+
+
 
         yield return new WaitForSeconds(0.5f);
 
         StartCoroutine(ILerpTransform(illustBack, startIllustBackEffectPos, middleIllustBackEffectPos, lerpTime));
 
         yield return new WaitForSeconds(lerpTime);
+        StartCoroutine(ILerpTransform(characterName, startNameEffectPos, middleNameEffectPos, lerpTime));
+
+        yield return new WaitForSeconds(lerpTime);
 
         StartCoroutine(ILerpTransform(illustBack, middleIllustBackEffectPos, middleLerpIllustBackEffectPos, 1.5f));
+
+        StartCoroutine(ILerpTransform(characterName, middleNameEffectPos, middleLerpNameEffectPos, 1.5f));
 
         yield return new WaitForSeconds(1.5f);
 
@@ -233,6 +231,9 @@ public class CharacterProduction : MonoBehaviour
         yield return new WaitForSeconds(0.1f);
         effectFront.gameObject.SetActive(false);
         effectBackGround.gameObject.SetActive(false);
+
+        yield return new WaitForSeconds(lerpTime - 0.1f);
+        Destroy(gameObject);
 
         yield break;
     }
