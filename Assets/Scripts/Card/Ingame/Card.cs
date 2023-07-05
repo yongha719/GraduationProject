@@ -28,9 +28,6 @@ public abstract class Card : MonoBehaviourPun, IPunObservable
     /// <summary> 드래그 가능한 상태인지 체크 </summary>
     protected bool CanDrag => cardDragAndDrop.CanDrag;
 
-    /// <summary> 공격 가능한 상태인지 체크 </summary>
-    public virtual bool CanAttack => IsEnemy == false && CardState == CardState.Field && TurnManager.Instance.MyTurn;
-
     public CardData CardData
     {
         get => cardInfo.CardData;
@@ -79,22 +76,11 @@ public abstract class Card : MonoBehaviourPun, IPunObservable
         cardInfo.Init(this, name);
     }
 
-    protected virtual void OnEndDrag()
-    {
-        Attack();
-    }
+    protected virtual void OnEndDrag() { }
 
-    protected virtual void OnDrop()
-    {
-        Attack();
+    protected virtual void OnDrop() { }
 
-        if (CanvasUtility.IsDropMyField())
-            MoveCardFromDeckToField();
-    }
-
-    protected abstract void Attack();
-
-    protected virtual void MoveCardFromDeckToField() { }
+    protected virtual void Attack() { }
 
     public void Destroy()
     {

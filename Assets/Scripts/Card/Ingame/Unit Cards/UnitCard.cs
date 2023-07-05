@@ -33,7 +33,8 @@ public class UnitCard : Card, IUnitCardSubject
         }
     }
 
-    public override bool CanAttack => base.CanAttack && isAttackableTurn;
+    public bool CanAttack => 
+        IsEnemy == false && CardState == CardState.Field && TurnManager.Instance.MyTurn && isAttackableTurn;
 
     [SerializeField]
     protected bool isAttackableTurn = false;
@@ -201,7 +202,7 @@ public class UnitCard : Card, IUnitCardSubject
         if (CardState == CardState.Field && CanAttack == false)
             return;
 
-        base.OnEndDrag();
+        Attack();
     }
 
     protected override void OnDrop()
@@ -209,7 +210,8 @@ public class UnitCard : Card, IUnitCardSubject
         if (CardState == CardState.Field && CanAttack == false)
             return;
 
-        base.OnDrop();
+        if (CanvasUtility.IsDropMyField())
+            MoveCardFromDeckToField();
     }
 
     protected override void Attack()
@@ -233,7 +235,7 @@ public class UnitCard : Card, IUnitCardSubject
         enableAttackCall();
     }
 
-    protected override void MoveCardFromDeckToField()
+    protected void MoveCardFromDeckToField()
     {
         if (GameManager.Instance.IsTest)
             MoveCardFromDeckToFieldRPC();
