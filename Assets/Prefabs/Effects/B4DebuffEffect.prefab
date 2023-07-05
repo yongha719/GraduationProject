@@ -14450,7 +14450,7 @@ GameObject:
   - component: {fileID: 269883737967213702}
   - component: {fileID: 269883737967213703}
   m_Layer: 0
-  m_Name: B4Effect
+  m_Name: B4DebuffEffect
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

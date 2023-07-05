@@ -21,5 +21,5 @@ MonoBehaviour:
   - {fileID: 21300000, guid: eedfec233d9eb454980e80527aa5ee97, type: 3}
   - {fileID: 21300000, guid: ffed48f86140c8d408c8bb7c3f3dd7d3, type: 3}
   illust: {fileID: 21300000, guid: 65878335a8c14d8489c0975ee885ca2f, type: 3}
-  illustBack: {fileID: 21300000, guid: 9578d8b12849ac64d9112f9447b9135a, type: 3}
+  illustBack: {fileID: 21300000, guid: e432060fe03af8749a5d5abe7c86a791, type: 3}
   characterName: {fileID: 21300000, guid: 3612c0c22bdfae045afeeb8e172aa08d, type: 3}
