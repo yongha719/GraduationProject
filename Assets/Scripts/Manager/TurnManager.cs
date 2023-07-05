@@ -123,8 +123,6 @@ public class TurnManager : SingletonPunCallbacks<TurnManager>, IPunObservable
 
         if (playerTurnCount != 1 && MyTurn)
             CardManager.Instance.CardDraw();
-        // else
-        //     OnEnemySpawnCallBack.CardSpawnEvent();
     }
 
     public void ExecuteAfterTurn(int turnCount, Action call)

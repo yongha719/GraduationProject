@@ -75,6 +75,19 @@ public class GameManager : SingletonPunCallbacks<GameManager>, IPunObservable
             LogCanvas?.SetActive(true);
     }
 
+    public bool CheckCardCostAvailability(uint cost)
+    {
+        if (cost > Cost)
+        {
+            return false;
+        }
+        else
+        {
+            Cost -= cost;
+            return true;
+        }
+    }
+    
     private void IncreaseCost()
     {
         MaxCost++;
