@@ -59,7 +59,7 @@ public class MasicCard : Card, IMasicCardSubject
 
     protected override void OnEndDrag()
     {
-        if (GameManager.Instance.CheckCardCostAvailability())
+        if (GameManager.Instance.CheckCardCostAvailability(0))
         {
         }
     }
