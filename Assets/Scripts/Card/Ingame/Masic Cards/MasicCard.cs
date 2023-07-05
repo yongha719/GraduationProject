@@ -52,16 +52,19 @@ public class MasicCard : Card, IMasicCardSubject
 
         foreach (var hit in raycastHits)
         {
-            if (hit.collider is not null && CheckAbilityTargetConditionsAndExecuteAttack(hit.collider))
+            if (hit.collider is not null &&
+                GameManager.Instance.CheckCardCostAvailability(2, out Action costDecrease) &&
+                CheckAbilityTargetConditionsAndExecuteAttack(hit.collider))
+            {
+                costDecrease();
                 print("Use Ability");
+            }
         }
     }
 
     protected override void OnEndDrag()
     {
-        if (GameManager.Instance.CheckCardCostAvailability())
-        {
-        }
+        Attack();
     }
 
     public virtual void Ability()
