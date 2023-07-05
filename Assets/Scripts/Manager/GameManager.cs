@@ -75,17 +75,14 @@ public class GameManager : SingletonPunCallbacks<GameManager>, IPunObservable
             LogCanvas?.SetActive(true);
     }
 
-    public bool CheckCardCostAvailability(uint cost)
+    /// <summary>
+    /// 카드 낼 코스트 있는지 확인
+    /// </summary>
+    public bool CheckCardCostAvailability(uint cost, out Action costDecrease)
     {
-        if (cost > Cost)
-        {
-            return false;
-        }
-        else
-        {
-            Cost -= cost;
-            return true;
-        }
+        costDecrease = () => Cost -= cost;
+        
+        return cost <= Cost;
     }
     
     private void IncreaseCost()

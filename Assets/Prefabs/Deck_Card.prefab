@@ -285,6 +285,8 @@ GameObject:
   - component: {fileID: 584926971}
   - component: {fileID: -5134281744068676921}
   - component: {fileID: 6874194676682780297}
+  - component: {fileID: 489973605086937119}
+  - component: {fileID: -6156715782680867417}
   m_Layer: 6
   m_Name: Deck_Card
   m_TagString: Untagged
@@ -366,8 +368,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ff66b517c2ace044e840477961a53206, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CardData: {fileID: 0}
   IsEnemy: 0
+  cardState: 0
+  hp: 1
+  isAttackableTurn: 0
+  isHypothermic: 0
 --- !u!61 &584926971
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -413,6 +418,7 @@ MonoBehaviour:
   OwnershipTransfer: 0
   observableSearch: 2
   ObservedComponents:
+  - {fileID: 2779581622520894037}
   - {fileID: 6874194676682780297}
   sceneViewId: 0
   InstantiationId: 0
@@ -433,6 +439,34 @@ MonoBehaviour:
   m_SynchronizeRotation: 1
   m_SynchronizeScale: 1
   m_UseLocal: 1
+--- !u!114 &489973605086937119
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6383597969553335793}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cfabb0440166ab443bba8876756fdfa9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_EffectColor: {r: 0, g: 0, b: 0, a: 0.5}
+  m_EffectDistance: {x: 8, y: -8}
+  m_UseGraphicAlpha: 1
+--- !u!114 &-6156715782680867417
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6383597969553335793}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8c03a15f385c3364b849c88f2f2b7d1f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rect: {fileID: 0}
 --- !u!1 &6383597969798471958
 GameObject:
   m_ObjectHideFlags: 0

@@ -92,6 +92,8 @@ public class CardDeckLayout : MonoBehaviourPunCallbacks, IPunObservable
 
     private void OnTransformChildrenChanged()
     {
+        print("child change");
+        
         float[] lerpValue;
 
         switch (transform.childCount)

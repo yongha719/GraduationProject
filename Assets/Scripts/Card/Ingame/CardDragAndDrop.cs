@@ -11,6 +11,7 @@ public class CardDragAndDrop : MonoBehaviourPun, IBeginDragHandler, IDragHandler
     /// <summary> 드래그 가능한 상태인지 체크 </summary>
     public bool CanDrag => isEnemy == false && TurnManager.Instance.MyTurn;
 
+    [SerializeField]
     private bool isDragging;
 
     private bool isEnemy;
@@ -75,6 +76,7 @@ public class CardDragAndDrop : MonoBehaviourPun, IBeginDragHandler, IDragHandler
         {
             cardState = CardState.Deck;
             rectTransform.localRotation = layoutRot;
+            print(layoutRot);
         }
     }
 
@@ -91,6 +93,8 @@ public class CardDragAndDrop : MonoBehaviourPun, IBeginDragHandler, IDragHandler
 
         if (cardState == CardState.ExpansionDeck)
             cardState = CardState.Deck;
+        
+        print("OnBeginDrag");
 
         // 왼쪽 버튼으로 드래그 시작했을때 원래 포지션 저장과 마우스 포인터와 거리도 저장
         if (eventData.button == PointerEventData.InputButton.Left)
