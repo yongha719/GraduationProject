@@ -14,7 +14,7 @@ public class DeckManager : Singleton<DeckManager>
     public const float standardX = 450;
 
     [Tooltip("모든 카드 정보")]
-    public List<CardData> allCardData = new List<CardData>();
+    public List<UnitCardData> allCardData = new List<UnitCardData>();
 
     #region 카드 List들
     [Header("카드List변수들")]
@@ -84,7 +84,7 @@ public class DeckManager : Singleton<DeckManager>
 
     }
 
-    public void SelectCard(CardData data)
+    public void SelectCard(UnitCardData data)
     {
         DeckBuildingCard tempCard = Instantiate(buildingCard, selectCardParent);
         tempCard.data = data;
@@ -99,7 +99,7 @@ public class DeckManager : Singleton<DeckManager>
 
         card.IsSelect = false;
     }
-    public DragCard SpawnDragCard(CardData data, Sprite sprite1, Sprite sprite2)
+    public DragCard SpawnDragCard(UnitCardData data, Sprite sprite1, Sprite sprite2)
     {
         DragCard card = Instantiate(dragCard, canvas.transform);
         //card.SetDragCard(data);
@@ -119,7 +119,7 @@ public class DeckManager : Singleton<DeckManager>
     /// PutOn카드 정렬
     /// </summary>
     /// <param name="list"></param>
-    private void SortDeck(List<CardData> list)
+    private void SortDeck(List<UnitCardData> list)
     {
         list.OrderBy(item => item.Cost);
     }

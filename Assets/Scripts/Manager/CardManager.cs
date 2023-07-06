@@ -16,17 +16,17 @@ public class CardManager : SingletonPunCallbacks<CardManager>, IPunObservable
     public Action EnemyCardDraw;
 
     [Tooltip("카드 데이터들"), SerializedDictionary("Card Rating", "Card Data")]
-    public SerializedDictionary<string, CardData> CardDatas = new(15);
+    public SerializedDictionary<string, UnitCardData> CardDatas = new(15);
 
     // 포톤은 오브젝트를 리소스 폴더에서 가져와서 오브젝트의 이름으로 가져오기 위해 string으로 함
-    [SerializeField] private List<string> myDeckNames = new(20);
+    [SerializeField] private List<string> cardNames = new(20);
 
     /// <summary> - 내 덱 </summary>
     public List<string> MyDeckNames
     {
-        get => myDeckNames;
+        get => cardNames;
 
-        set => myDeckNames = value;
+        set => cardNames = value;
     }
 
     public bool HasEnemyTauntCard => tauntCardCount != 0;
@@ -45,7 +45,7 @@ public class CardManager : SingletonPunCallbacks<CardManager>, IPunObservable
     /// 없을 경우 null반환
     /// </summary>
     /// <param name="name">카드의 등급을 인자로 받음</param>
-    public void TryGetCardData(string name, ref CardData cardData)
+    public void TryGetCardData(string name, ref UnitCardData cardData)
     {
         if (CardDatas.TryGetValue(name, out cardData) == false)
             Debug.Assert(false, $"카드 등급이 없음 \n 카드 등급 : {name}");
@@ -72,7 +72,7 @@ public class CardManager : SingletonPunCallbacks<CardManager>, IPunObservable
         {
             EnemyUnitCards.Add(card);
 
-            if (card.CardData.CardSpecialAbilityType == CardSpecialAbilityType.Taunt)
+            if (card.CardData.UnitCardSpecialAbilityType == UnitCardSpecialAbilityType.Taunt)
                 tauntCardCount++;
         }
         else
@@ -85,7 +85,7 @@ public class CardManager : SingletonPunCallbacks<CardManager>, IPunObservable
         {
             EnemyUnitCards.Remove(card);
 
-            if (card.CardData.CardSpecialAbilityType == CardSpecialAbilityType.Taunt)
+            if (card.CardData.UnitCardSpecialAbilityType == UnitCardSpecialAbilityType.Taunt)
                 tauntCardCount--;
         }
         else
@@ -103,13 +103,15 @@ public class CardManager : SingletonPunCallbacks<CardManager>, IPunObservable
 
     public void HealCards(int healAmount)
     {
-        PlayerUnitCards.ForEach(card => HealCards(healAmount));
+        foreach (var card in PlayerUnitCards)
+        {
+            card.HealCard(healAmount);
+        }
     }
 
     public void AttackEnemyCards(int damage)
     {
         EnemyUnitCards.ForEach(card => card.Hit(damage));
-
     }
 
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)

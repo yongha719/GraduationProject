@@ -35,8 +35,8 @@ public class CardDeck : MonoBehaviour,IPointerDownHandler
     [SerializeField]
     private GameObject deSelectCard;
     
-    private CardData data;
-    public CardData Data
+    private UnitCardData data;
+    public UnitCardData Data
     {
         get
         {

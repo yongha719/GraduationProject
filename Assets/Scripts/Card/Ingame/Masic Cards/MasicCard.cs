@@ -19,6 +19,7 @@ public class MasicCard : Card, IMasicCardSubject
 
     private RaycastHit2D[] raycastHits = new RaycastHit2D[10];
 
+
     private bool CheckAbilityTargetConditionsAndExecuteAttack(Collider2D collider)
     {
         if (AbilityTarget == MasicAbilityTarget.Field && collider.TryGetComponent(out CardFieldLayout layout))

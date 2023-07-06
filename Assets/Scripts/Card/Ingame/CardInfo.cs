@@ -9,8 +9,6 @@ using UnityEngine.UI;
 
 public class CardInfo : MonoBehaviourPun
 {
-    public CardData CardData;
-
     [Space(15f), Header("Sprites")]
 
     [SerializeField] protected Sprite cardBackSprite;
@@ -27,7 +25,7 @@ public class CardInfo : MonoBehaviourPun
     [SerializeField] protected TextMeshProUGUI deckHpText;
     [SerializeField] protected TextMeshProUGUI deckPowerText;
     [SerializeField] protected TextMeshProUGUI deckCostText;
-    
+
 
     [Space(15f), Header("Field Stat Texts")]
 
@@ -50,20 +48,26 @@ public class CardInfo : MonoBehaviourPun
     {
         #region Init Texts
 
-        deckHpText.text = CardData.Hp.ToString();
-        deckPowerText.text = CardData.Power.ToString();
-        deckCostText.text = CardData.Cost.ToString();
+        if (card is UnitCard unitcard)
+        {
+            deckHpText.text = unitcard.CardData.Hp.ToString();
+            deckPowerText.text = unitcard.CardData.Power.ToString();
+            deckCostText.text = unitcard.CardData.Cost.ToString();
 
-        fieldHpText.text = deckHpText.text;
-        fieldPowerText.text = deckPowerText.text;
+            fieldHpText.text = deckHpText.text;
+            fieldPowerText.text = deckPowerText.text;
+        }
+        else if(card is MasicCard masicCard)
+        {
 
+        }
         #endregion
     }
 
     public void Init(Card card, string name)
     {
-        this.card = card; 
-        
+        this.card = card;
+
         // 카드가 유닛카드와 마법카드가 있어서 이렇게 했음
         if (card is UnitCard unitCard)
         {
@@ -74,13 +78,16 @@ public class CardInfo : MonoBehaviourPun
                 fieldHpText.text = hp.ToString();
             };
         }
-        
+
+        else if (card is MasicCard masicCard)
+        {
+            deckHpText.gameObject.SetActive(false);
+            deckPowerText.gameObject.SetActive(false);
+        }
+
         print("card info init");
-        
+
         IsEnemy = !photonView.IsMine;
-        
-        // 오브젝트의 이름이 카드의 등급이고 딕셔너리의 키 값이 카드의 등급임 
-        CardManager.Instance.TryGetCardData(name, ref CardData);
 
         gameObject.name = name + (IsEnemy ? "_Enemy" : "_Player");
 

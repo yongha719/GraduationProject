@@ -556,7 +556,6 @@ GameObject:
   - component: {fileID: 3794628939791515619}
   - component: {fileID: 9101778247568541867}
   - component: {fileID: -815403951443178334}
-  - component: {fileID: 5915159677673100737}
   - component: {fileID: 7811119795412894766}
   m_Layer: 6
   m_Name: In Game Card
@@ -663,17 +662,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 21392e5814ec2b84da2428450d91d684, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CardData:
-    name: 
-    power: 0
-    hp: 0
-    cost: 0
-    criticalPercentage: 0
-    criticalPower: 0
-    basicAttackExplain: 
-    cardSpecialAbilityType: 0
-    specialAttackExplain: 
-    cardRating: 
   cardBackSprite: {fileID: 21300000, guid: d388c52741e50554c8e35c3295e25dd3, type: 3}
   deckCardSprite: {fileID: 0}
   fieldCardSprite: {fileID: 0}
@@ -737,18 +725,6 @@ MonoBehaviour:
   m_SynchronizeRotation: 1
   m_SynchronizeScale: 0
   m_UseLocal: 1
---- !u!114 &5915159677673100737
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6383597969553335793}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8c03a15f385c3364b849c88f2f2b7d1f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &7811119795412894766
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -761,7 +737,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cfabb0440166ab443bba8876756fdfa9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_EffectColor: {r: 0.55345905, g: 1, b: 0.9112178, a: 0.5}
+  m_EffectColor: {r: 1, g: 0.5137255, b: 0.90588236, a: 0.6666667}
   m_EffectDistance: {x: 8, y: -8}
   m_UseGraphicAlpha: 1
 --- !u!1 &7118958901658495072

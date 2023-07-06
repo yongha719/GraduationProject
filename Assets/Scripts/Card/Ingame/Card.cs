@@ -28,12 +28,7 @@ public abstract class Card : MonoBehaviourPun, IPunObservable
     /// <summary> 드래그 가능한 상태인지 체크 </summary>
     protected bool CanDrag => cardDragAndDrop.CanDrag;
 
-    public CardData CardData
-    {
-        get => cardInfo.CardData;
-
-        set => cardInfo.CardData = value;
-    }
+    public virtual int Cost { get; }
 
     protected RectTransform rect;
     protected Image cardImageComponent;
@@ -50,9 +45,9 @@ public abstract class Card : MonoBehaviourPun, IPunObservable
         cardDragAndDrop = GetComponent<CardDragAndDrop>();
         cardInfo = GetComponent<CardInfo>();
 
-        
+
         cardDragAndDrop.Init();
-        
+
         IsEnemy = !photonView.IsMine;
     }
 
@@ -93,7 +88,7 @@ public abstract class Card : MonoBehaviourPun, IPunObservable
         PhotonManager.PhotonViewRemove(photonView.ViewID);
     }
 
-    public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
+    public virtual void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
     {
 
     }

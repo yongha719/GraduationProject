@@ -2,6 +2,7 @@ using System;
 using System.ComponentModel;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.Serialization;
 using WebSocketSharp;
 
 [Serializable]
@@ -22,7 +23,7 @@ public enum CardDataIndex
 }
 
 [Serializable]
-public enum CardSpecialAbilityType
+public enum UnitCardSpecialAbilityType
 {
     None,
     Taunt,                      // 도발
@@ -33,7 +34,7 @@ public enum CardSpecialAbilityType
 
 
 [Serializable]
-public class CardData
+public class UnitCardData
 {
     [Tooltip("이름"), SerializeField]
     private string name;
@@ -90,14 +91,15 @@ public class CardData
     private string basicAttackExplain;
     public string BasicAttackExplain => basicAttackExplain;
 
+    [FormerlySerializedAs("cardSpecialAbilityType")]
     [Space]
 
     [Tooltip("특성"), SerializeField]
-    private CardSpecialAbilityType cardSpecialAbilityType;
-    public CardSpecialAbilityType CardSpecialAbilityType
+    private UnitCardSpecialAbilityType unitCardSpecialAbilityType;
+    public UnitCardSpecialAbilityType UnitCardSpecialAbilityType
     {
-        get => cardSpecialAbilityType;
-        set => cardSpecialAbilityType = value;
+        get => unitCardSpecialAbilityType;
+        set => unitCardSpecialAbilityType = value;
     }
 
     [Space]
@@ -125,7 +127,7 @@ public class CardData
     }
 
 
-    public CardData(CardData data)
+    public UnitCardData(UnitCardData data)
     {
         name = data.name;
         power = data.power;
@@ -134,12 +136,12 @@ public class CardData
         criticalPercentage = data.criticalPercentage;
         criticalPower = data.criticalPower;
         basicAttackExplain = data.basicAttackExplain;
-        cardSpecialAbilityType = data.cardSpecialAbilityType;
+        unitCardSpecialAbilityType = data.unitCardSpecialAbilityType;
         specialAttackExplain = data.specialAttackExplain;
         cardRating = data.cardRating;
     }
 
-    public CardData(string[] data)
+    public UnitCardData(string[] data)
     {
         name = data[0];
         power = int.Parse(data[1]);
@@ -148,7 +150,7 @@ public class CardData
         criticalPercentage = int.Parse(data[4]);
         criticalPower = int.Parse(data[5]);
         basicAttackExplain = data[6];
-        Enum.TryParse(data[7], out cardSpecialAbilityType);
+        Enum.TryParse(data[7], out unitCardSpecialAbilityType);
         specialAttackExplain = data[8];
         cardRating = data[9].Replace("\r", "");
     }
@@ -165,7 +167,7 @@ public class CardData
             4 => criticalPercentage.ToString(),
             5 => criticalPower.ToString(),
             6 => basicAttackExplain,
-            7 => CardSpecialAbilityType.ToString(),
+            7 => UnitCardSpecialAbilityType.ToString(),
             8 => SpecialAttackExplain,
             9 => CardRating.ToString(),
             10 => Damage.ToString(),
@@ -199,7 +201,7 @@ public class CardData
                     break;
                 case 7:
                     if (value.IsNullOrEmpty() == false)
-                        cardSpecialAbilityType = (CardSpecialAbilityType)Enum.Parse(typeof(CardSpecialAbilityType), value);
+                        unitCardSpecialAbilityType = (UnitCardSpecialAbilityType)Enum.Parse(typeof(UnitCardSpecialAbilityType), value);
                     break;
                 case 8:
                     specialAttackExplain = value;
@@ -213,8 +215,8 @@ public class CardData
         }
     }
 
-    public CardData Copy()
+    public UnitCardData Copy()
     {
-        return new CardData(this);
+        return new UnitCardData(this);
     }
 }

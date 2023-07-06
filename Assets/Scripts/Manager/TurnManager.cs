@@ -32,6 +32,8 @@ public class TurnManager : SingletonPunCallbacks<TurnManager>, IPunObservable
     public event Action<UnitCard> OnEnemySpawnAction;
 
     public event Action OnPlayerTurnAction = () => {};
+    
+    public event Action OnTurnChangeAction = () => {};
  
     [SerializeField] private TextMeshProUGUI testTurnStateText;
 
@@ -74,7 +76,10 @@ public class TurnManager : SingletonPunCallbacks<TurnManager>, IPunObservable
 
         playerDeck.CardDraw(3);
 
-        playerTurnCount++;
+        if (MyTurn)
+            playerTurnCount++;
+        else
+            enemyTurnCount++;
     }
 
     /// <summary> 턴의 시간이 끝났을 때 </summary>
@@ -95,6 +100,17 @@ public class TurnManager : SingletonPunCallbacks<TurnManager>, IPunObservable
 
         // 나중에 턴 전환시 액션 넣을 예정
         testTurnStateText.text = TurnState.ToString();
+        
+        if (MyTurn)
+        {
+            OnPlayerTurnAction();
+            playerTurnCount++;
+        }
+        else
+            enemyTurnCount++;
+        
+        OnTurnChangeAction();
+
         yield return null;
 
         TurnBegin();
@@ -111,14 +127,6 @@ public class TurnManager : SingletonPunCallbacks<TurnManager>, IPunObservable
     /// <summary> 턴이 시작했을 때 </summary>
     public void TurnBegin()
     {
-        if (MyTurn)
-        {
-            OnPlayerTurnAction();
-            playerTurnCount++;
-        }
-        else
-            enemyTurnCount++;
-
         CardManager.Instance.HandleCards(MyTurn);
 
         if (playerTurnCount != 1 && MyTurn)
