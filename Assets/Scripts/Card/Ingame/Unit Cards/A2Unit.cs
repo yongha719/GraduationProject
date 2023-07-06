@@ -15,14 +15,16 @@ public class A2Unit : UnitCard
 
     protected override void Start()
     {
-        ChoiceUI = Instantiate(ChoiceUI, Vector3.zero, Quaternion.identity, transform.parent);
+        base.Start();
+
+        ChoiceUI = Resources.Load<GameObject>("Cards/A2_UI");
+
+        ChoiceUI = Instantiate(ChoiceUI, Vector3.zero, Quaternion.identity, transform.parent.parent.parent);
         ChoiceUI.SetActive(false);
 
         var choiceUI = ChoiceUI.GetComponent<A2ChoiceUI>();
 
         choiceUI.Init(this, Attack, Hacking);
-
-        base.Start();
     }
 
     protected override void BasicAttack(UnitCard enemyCard)
@@ -32,7 +34,7 @@ public class A2Unit : UnitCard
         ChoiceUI.SetActive(true);
     }
 
-    private void Attack()
+    protected override void Attack()
     {
         base.BasicAttack(curHackedUnitCard);
     }
@@ -45,29 +47,11 @@ public class A2Unit : UnitCard
             afterTurnCall: () => curHackedUnitCard.IsHacked = false);
     }
 
-    private IEnumerator HackingCoroutine()
-    {
-        yield return TurnManager.WaitTurn(1);
-    }
-
-    // 해킹하고 상대 유닛 통제
-    // N턴뒤에 해킹이 풀리는거까지
-    private void HackingCount(bool myTurn, int turnCount)
-    {
-        if (myTurn == false)
-            return;
-
-        if (turnCount != 0)
-            turnCount--;
-        else
-        {
-        }
-    }
 
     protected override void OnDestroy()
     {
-        base.OnDestroy();
-
         Destroy(ChoiceUI);
+
+        base.OnDestroy();
     }
 }

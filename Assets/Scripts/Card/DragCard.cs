@@ -8,7 +8,7 @@ using TMPro;
 [RequireComponent(typeof(RectTransform))]
 public class DragCard : MonoBehaviour
 {
-    private CardData data;
+    private UnitCardData data;
 
     [HideInInspector]
     public RectTransform rect;
@@ -66,7 +66,7 @@ public class DragCard : MonoBehaviour
         }
     }
 
-    public void SetDragCard(CardData data)
+    public void SetDragCard(UnitCardData data)
     {
         this.data = data;
         costText.text = $"{data.Cost}";

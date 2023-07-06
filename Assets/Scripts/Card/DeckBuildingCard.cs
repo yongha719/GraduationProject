@@ -13,7 +13,7 @@ public class DeckBuildingCard : MonoBehaviour, IPointerDownHandler, IDragHandler
 {
     private RectTransform rect;
 
-    public CardData data;
+    public UnitCardData data;
 
     #region UI
     [SerializeField]
@@ -71,7 +71,7 @@ public class DeckBuildingCard : MonoBehaviour, IPointerDownHandler, IDragHandler
         rect = GetComponent<RectTransform>();
     }
 
-    private void SetCard(CardData data)
+    private void SetCard(UnitCardData data)
     {
         //this.data = data;
         costText.text = $"{data.Cost}";

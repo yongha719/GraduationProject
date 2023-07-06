@@ -4,5 +4,12 @@ using UnityEngine;
 
 public class B2Unit : UnitCard
 {
-    
+    // 
+
+    protected override void BasicAttack(UnitCard enemyCard)
+    {
+        base.BasicAttack(enemyCard);
+        
+        
+    }
 }

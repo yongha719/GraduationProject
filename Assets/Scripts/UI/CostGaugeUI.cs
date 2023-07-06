@@ -15,6 +15,10 @@ public class CostGaugeUI : MonoBehaviour
     [SerializeField]
     private TextMeshProUGUI costText;
 
+    [SerializeField] 
+    private TextMeshProUGUI enemyCostText;
+    
+
     [Space]
 
     [Tooltip("코스트 게이지칸"), SerializeField]
@@ -31,7 +35,7 @@ public class CostGaugeUI : MonoBehaviour
         // Test
         CostGaugeChange();
 
-        TurnManager.Instance.OnPlayerTurnAction += () =>
+        TurnManager.Instance.OnTurnChangeAction += () =>
         {
             print("Cost UI");
 
@@ -56,6 +60,7 @@ public class CostGaugeUI : MonoBehaviour
         costGaugeParts[9].SetActive(maxCost == cost);
 
         costText.text = $"{cost}/{maxCost}";
+        enemyCostText.text = $"{GameManager.Instance.EnemyCost}/{GameManager.Instance.EnemyMaxCost}";
     }
 
     // Update is called once per frame

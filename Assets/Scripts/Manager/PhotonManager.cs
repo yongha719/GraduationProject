@@ -65,8 +65,10 @@ public class PhotonManager : SingletonPunCallbacks<PhotonManager>
         PhotonNetwork.ConnectUsingSettings();
     }
 
+
     private void Start()
     {
+
     }
 
     public static PhotonView GetPhotonView(int viewId)

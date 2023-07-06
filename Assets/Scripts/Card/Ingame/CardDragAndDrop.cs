@@ -2,8 +2,9 @@ using Photon.Pun;
 using System;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
-public class CardDragAndDrop : MonoBehaviourPun, IBeginDragHandler, IDragHandler, IEndDragHandler, IDropHandler
+public class CardDragAndDrop : MonoBehaviourPun, IBeginDragHandler, IDragHandler, IEndDragHandler, IDropHandler, IPunObservable
 {
     public event Action OnEndDrag;
     public event Action OnDrop;
@@ -12,7 +13,7 @@ public class CardDragAndDrop : MonoBehaviourPun, IBeginDragHandler, IDragHandler
     public bool CanDrag => isEnemy == false && TurnManager.Instance.MyTurn;
 
     [SerializeField]
-    private bool isDragging;
+    private static bool isDragging;
 
     private bool isEnemy;
 
@@ -29,21 +30,31 @@ public class CardDragAndDrop : MonoBehaviourPun, IBeginDragHandler, IDragHandler
     private Vector2 mousePosDistance;
 
     private RectTransform rectTransform;
+    private Shadow shadow;
 
     private Card card;
+
+    private Vector2 rectMax;
+    private Vector2 rectMin;
 
     private void Start()
     {
         isEnemy = !photonView.IsMine;
 
         rectTransform = transform as RectTransform;
+
+        shadow = GetComponent<Shadow>();
+
+        rectMax = rectTransform.rect.max;
+        rectMin = rectTransform.rect.min;
     }
 
     public void Init()
     {
         card = GetComponent<Card>();
+
     }
-    
+
     private void OnMouseEnter()
     {
         print("mouse enter");
@@ -51,7 +62,8 @@ public class CardDragAndDrop : MonoBehaviourPun, IBeginDragHandler, IDragHandler
         switch (cardState)
         {
             case CardState.Deck:
-                if (CanDrag && isDragging == false)
+                print($"isenemy : {isEnemy}");
+                if (isEnemy == false && isDragging == false)
                 {
                     cardState = CardState.ExpansionDeck;
                     layoutRot = rectTransform.localRotation;
@@ -62,21 +74,49 @@ public class CardDragAndDrop : MonoBehaviourPun, IBeginDragHandler, IDragHandler
             case CardState.ExpansionDeck:
                 break;
             case CardState.Field:
-                if (CanDrag)
-                {
-                }
 
                 break;
         }
     }
 
+    private void OnMouseOver()
+    {
+        if (cardState == CardState.Field || isEnemy)
+            return;
+
+        Vector2 mousePosition = Input.mousePosition;
+
+        RectTransformUtility.ScreenPointToLocalPointInRectangle(rectTransform, mousePosition, Camera.main, out Vector2 uiPosition);
+
+        if (RectTransformUtility.RectangleContainsScreenPoint(rectTransform, mousePosition, Camera.main))
+        {
+            // rect 회전값
+            Vector3 rotation = Vector3.one;
+
+            rotation.y = Mathf.Lerp(-20, 20, MapToZeroToOneX(uiPosition.x));
+            rotation.x = Mathf.Lerp(20, -20, MapToZeroToOneY(uiPosition.y));
+
+            rectTransform.rotation = Quaternion.Euler(rotation);
+
+            // Shadow effectDistance 값
+            Vector2 effectDistance;
+
+            effectDistance.x = Mathf.Lerp(-10, 10, MapToZeroToOneX(uiPosition.x));
+            effectDistance.y = Mathf.Lerp(-10, 10, MapToZeroToOneY(uiPosition.y));
+
+            shadow.effectDistance = effectDistance;
+        }
+    }
+
+
+
     private void OnMouseExit()
     {
-        if (CanDrag && cardState == CardState.ExpansionDeck && isDragging == false)
+        if (isEnemy == false && cardState == CardState.ExpansionDeck && isDragging == false)
         {
             cardState = CardState.Deck;
             rectTransform.localRotation = layoutRot;
-            print(layoutRot);
+            print("layout : " + layoutRot.eulerAngles);
         }
     }
 
@@ -93,7 +133,7 @@ public class CardDragAndDrop : MonoBehaviourPun, IBeginDragHandler, IDragHandler
 
         if (cardState == CardState.ExpansionDeck)
             cardState = CardState.Deck;
-        
+
         print("OnBeginDrag");
 
         // 왼쪽 버튼으로 드래그 시작했을때 원래 포지션 저장과 마우스 포인터와 거리도 저장
@@ -128,8 +168,6 @@ public class CardDragAndDrop : MonoBehaviourPun, IBeginDragHandler, IDragHandler
 
     void IEndDragHandler.OnEndDrag(PointerEventData eventData)
     {
-        // TODO : 여기서 코스트 감소
-        
         if (CanDrag == false) return;
 
         isDragging = false;
@@ -143,6 +181,46 @@ public class CardDragAndDrop : MonoBehaviourPun, IBeginDragHandler, IDragHandler
     {
         if (CanDrag == false) return;
 
+        // TODO : 여기서 코스트 감소
+        if (GameManager.Instance.CheckCardCostAvailability((uint)card.Cost, out Action costDecrease) == false)
+            return;
+
+        costDecrease();
+        
         OnDrop();
+    }
+
+    float MapToZeroToOneX(float value)
+    {
+        // 상대적인 위치 계산
+        float relativePosition = (value - rectMin.x) / (rectMax.x - rectMin.x);
+
+        // 0과 1 사이의 범위로 매핑
+        float mappedValue = Mathf.Clamp01(relativePosition);
+
+        return mappedValue;
+    }
+
+    float MapToZeroToOneY(float value)
+    {
+        // 상대적인 위치 계산
+        float relativePosition = (value - rectMin.y) / (rectMax.y - rectMin.y);
+
+        // 0과 1 사이의 범위로 매핑
+        float mappedValue = Mathf.Clamp01(relativePosition);
+
+        return mappedValue;
+    }
+
+    public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
+    {
+        if (stream.IsWriting)
+        {
+            stream.SendNext(layoutRot);
+        }
+        else
+        {
+            layoutRot = (Quaternion)stream.PeekNext();
+        }
     }
 }

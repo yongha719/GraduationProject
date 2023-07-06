@@ -6,11 +6,17 @@ using UnityEngine.Networking;
 
 public class ResourceManager : Singleton<ResourceManager>
 {
-    [Tooltip("카드 데이터 받아올 스프레드시트 링크")]
-    private const string CARD_DATA_URL =
-        "https://docs.google.com/spreadsheets/d/1uZHW4YokPwbg9gl0dDWcIjlWeieUlkiMwRk_PvQCPWU/export?format=tsv&range=A3:j16";
+    [Tooltip("유닛 카드 데이터 받아올 스프레드시트 링크")]
+    private const string UNIT_CARD_DATA_URL =
+        "https://docs.google.com/spreadsheets/d/1uZHW4YokPwbg9gl0dDWcIjlWeieUlkiMwRk_PvQCPWU/export?format=tsv&range=A3:J16";
 
-    private SerializedDictionary<string, CardData> cardDatas = new();
+    [Tooltip("마법 카드 데이터 받아올 스프레드시트 링크")]
+    private const string MASIC_CARD_DATA_URL =
+    "https://docs.google.com/spreadsheets/d/1uZHW4YokPwbg9gl0dDWcIjlWeieUlkiMwRk_PvQCPWU/export?format=tsv&range=A20:F28";
+
+    [SerializedDictionary("유닛 카드 등급", "유닛 카드 데이터")]
+    private SerializedDictionary<string, UnitCardData> unitCardDatas = new();
+    private SerializedDictionary<string, UnitCardData> masicCardDatas = new();
 
 
     private const string CARD_DECK_TEXTURES = "Cards/Sprite/Deck";
@@ -36,14 +42,14 @@ public class ResourceManager : Singleton<ResourceManager>
         }
     }
 
-    public async Task<SerializedDictionary<string, CardData>> AsyncRequestCardData()
+    public async Task<SerializedDictionary<string, UnitCardData>> AsyncRequestCardData()
     {
         if (Application.internetReachability == NetworkReachability.NotReachable)
         {
             Debug.Assert(false, "인터넷 연결안됨");
         }
 
-        var request = UnityWebRequest.Get(CARD_DATA_URL);
+        var request = UnityWebRequest.Get(UNIT_CARD_DATA_URL);
 
         // 비동기 작업의 완료를 나타내는 개체임
         // bool 반환값을 가지는 개체 생성
@@ -52,30 +58,28 @@ public class ResourceManager : Singleton<ResourceManager>
         var asyncOp = request.SendWebRequest();
 
         // 받아왔을 때 실행할 이벤트
-        asyncOp.completed += operation => { tcs.SetResult(request.result == UnityWebRequest.Result.Success); };
+        asyncOp.completed += operation => tcs.SetResult(request.result == UnityWebRequest.Result.Success);
 
         // 비동기 작업이 완료될때 까지 대기
         await Task.Run(() => tcs.Task);
         // 여기서 다음 코드 실행
 
-        return ParsingCardData(request.downloadHandler.text);
+        ParsingCardData(request.downloadHandler.text);
+
+        return unitCardDatas;
     }
 
     /// <summary> Request로 받은 데이터를 카드 데이터로 파싱해서 반환 </summary>
-    private SerializedDictionary<string, CardData> ParsingCardData(string requsetdata)
+    private void ParsingCardData(string requsetdata)
     {
-        var datas = new SerializedDictionary<string, CardData>();
-
         string[] line = requsetdata.Split('\n');
 
         for (int i = 0; i < line.Length; i++)
         {
-            CardData cardData = new CardData(line[i].Split('\t'));
+            var cardData = new UnitCardData(line[i].Split('\t'));
 
-            datas.Add(cardData.CardRating, cardData);
+            unitCardDatas.Add(cardData.CardRating, cardData);
         }
-
-        return datas;
     }
 
     /// <summary>

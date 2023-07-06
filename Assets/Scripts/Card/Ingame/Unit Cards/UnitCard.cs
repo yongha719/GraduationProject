@@ -1,6 +1,5 @@
 using Photon.Pun;
 using System;
-using System.Security.Permissions;
 using UnityEditor;
 using UnityEngine;
 
@@ -8,6 +7,8 @@ using UnityEngine;
 [Serializable]
 public class UnitCard : Card, IUnitCardSubject
 {
+    public UnitCardData CardData;
+
     [SerializeField]
     private int hp = 1;
 
@@ -33,15 +34,17 @@ public class UnitCard : Card, IUnitCardSubject
         }
     }
 
-    public bool CanAttack => 
+    public bool CanAttack =>
         IsEnemy == false && CardState == CardState.Field && TurnManager.Instance.MyTurn && isAttackableTurn;
 
     [SerializeField]
     protected bool isAttackableTurn = false;
 
-    public bool HasSpecialAbility => CardData.CardSpecialAbilityType != CardSpecialAbilityType.None;
+    public bool HasSpecialAbility => CardData.UnitCardSpecialAbilityType != UnitCardSpecialAbilityType.None;
 
     public int Damage => CardData.Damage;
+
+    public override int Cost => CardData.Cost;
 
     [Tooltip("저체온증 상태인지 체크")] public bool isHypothermic;
 
@@ -54,11 +57,25 @@ public class UnitCard : Card, IUnitCardSubject
 
     private RaycastHit2D[] raycastHits = new RaycastHit2D[10];
 
+    private BoxCollider2D boxCollider;
+
+    protected override void Awake()
+    {
+        base.Awake();
+
+        // 오브젝트의 이름이 카드의 등급이고 딕셔너리의 키 값이 카드의 등급임 
+        CardManager.Instance.TryGetCardData(name.Split("_")[0], ref CardData);
+    }
+
     protected override void Start()
     {
         base.Start();
 
+
         hp = CardData.Hp;
+
+        boxCollider = GetComponent<BoxCollider2D>();
+
 
         enableAttackCall = () =>
             TurnManager.Instance.ExecuteAfterTurn(1,
@@ -73,7 +90,7 @@ public class UnitCard : Card, IUnitCardSubject
                     print($"Can Attack : {isAttackableTurn}");
                 });
 
-        if (CardData.CardSpecialAbilityType == CardSpecialAbilityType.Charge)
+        if (CardData.UnitCardSpecialAbilityType == UnitCardSpecialAbilityType.Charge)
             isAttackableTurn = true;
         else
             TurnManager.Instance.ExecuteAfterTurn(1, call: () =>
@@ -85,7 +102,7 @@ public class UnitCard : Card, IUnitCardSubject
 
     private void Update()
     {
-        if (IsEnemy)
+        if (CardState == CardState.Field && IsEnemy)
         {
             transform.localRotation = Quaternion.Euler(0, 0, 180);
         }
@@ -120,12 +137,18 @@ public class UnitCard : Card, IUnitCardSubject
         switch (value)
         {
             case CardState.Deck:
+                rect.localRotation = Quaternion.identity;
                 rect.localScale = Vector3.one;
+                if (IsEnemy == false)
+                {
+                    boxCollider.size *= 0.6667f;
+                }
                 break;
             case CardState.ExpansionDeck:
                 if (IsEnemy == false)
                 {
-                    rect.localScale = Vector3.one * 1.5f;
+                    rect.localScale *= 1.5f;
+                    boxCollider.size *= 1.5f;
                 }
 
                 // 덱에 있는 카드를 눌렀을 때 커지는 모션
@@ -148,7 +171,7 @@ public class UnitCard : Card, IUnitCardSubject
         // 이 카드가 적이고 필드에 도발 카드를 가지고 있는지 확인
         // 도발 카드가 없거나 이 카드가 도발 카드일 때 공격 가능
         if (CardManager.Instance.HasEnemyTauntCard)
-            return CardData.CardSpecialAbilityType == CardSpecialAbilityType.Taunt;
+            return CardData.UnitCardSpecialAbilityType == UnitCardSpecialAbilityType.Taunt;
 
         return true;
     }
@@ -250,6 +273,11 @@ public class UnitCard : Card, IUnitCardSubject
         CardState = CardState.Field;
 
         rect.SetParent(parentView.transform);
+    }
+
+    public override void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
+    {
+
     }
 
     #endregion

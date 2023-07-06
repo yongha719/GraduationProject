@@ -11,7 +11,7 @@ using UnityEngine;
 [AddComponentMenu("MyComponent/Card Deck Layout", int.MinValue)]
 public class CardDeckLayout : MonoBehaviourPunCallbacks, IPunObservable
 {
-    private readonly Vector3 leftPosition = new Vector3(-200, -30, 0);
+    private readonly Vector3 leftPosition = new Vector3(-220, -10, 0);
     private readonly Vector3 rightPosition = new Vector3(420, -30, 0);
     private readonly Quaternion leftRotation = Quaternion.Euler(0, 0, 15f);
     private readonly Quaternion rightRotation = Quaternion.Euler(0, 0, -15f);

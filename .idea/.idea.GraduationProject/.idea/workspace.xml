@@ -6,16 +6,34 @@
   <component name="ChangeListManager">
     <list default="true" id="84fda498-b201-4473-bfed-18288e513613" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.GraduationProject/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.GraduationProject/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/AC Little Enchant Mesh VFX/Materials/HDRPMaterials.unitypackage.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/AC Little Enchant Mesh VFX/Materials/URPMaterials.unitypackage.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/Deck_Card.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefabs/Deck_Card.prefab" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/Card/A2_UI.prefab" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/Card/A2_UI.prefab.meta" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Resources/Cards/In Game Card.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Resources/Cards/In Game Card.prefab" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Resources/Cards/Resource.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Resources/ProductionInfos.meta" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scenes/Card.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/Card.unity" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Card/CardDeck.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Card/CardDeck.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Card/DeckBuildingCard.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Card/DeckBuildingCard.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Card/DragCard.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Card/DragCard.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Card/Ingame/Card.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Card/Ingame/Card.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Card/Ingame/CardData.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Card/Ingame/CardData.cs.meta" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scripts/Card/Ingame/CardDragAndDrop.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Card/Ingame/CardDragAndDrop.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Card/Ingame/CardInfo.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Card/Ingame/CardInfo.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scripts/Card/Ingame/Masic Cards/MasicCard.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Card/Ingame/Masic Cards/MasicCard.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Card/Ingame/Unit Cards/A2Unit.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Card/Ingame/Unit Cards/A2Unit.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Card/Ingame/Unit Cards/B2Unit.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Card/Ingame/Unit Cards/B2Unit.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Card/Ingame/Unit Cards/UnitCard.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Card/Ingame/Unit Cards/UnitCard.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/DeckManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/DeckManager.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Manager/CardManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Manager/CardManager.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scripts/Manager/GameManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Manager/GameManager.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Manager/PhotonManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Manager/PhotonManager.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Manager/ResourceManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Manager/ResourceManager.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Manager/TurnManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Manager/TurnManager.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Test/MousePositionOnUI.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Test/MousePositionOnUI.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/UI/CostGaugeUI.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/UI/CostGaugeUI.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scripts/Utility/CardDeckLayout.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Utility/CardDeckLayout.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/UserSettings/Search.settings" beforeDir="false" afterPath="$PROJECT_DIR$/UserSettings/Search.settings" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -59,9 +77,9 @@
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Card/Ingame/Masic Cards/MasicCard.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Card/Ingame/Unit Cards/A2ChoiceUI.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Card/Ingame/Unit Cards/A4Unit.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/Scripts/Card/Ingame/Unit Cards/B1Unit.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Card/Ingame/Unit Cards/B2Unit.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Manager/ResourceManager.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Assets/Scripts/Test/MousePositionOnUI.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/UI/CostGaugeUI.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.ugui@1.0.0/Editor/UI/MenuOptions.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.ugui@1.0.0/Runtime/UI/Core/Layout/HorizontalLayoutGroup.cs" root0="SKIP_HIGHLIGHTING" />
@@ -219,7 +237,9 @@
       <workItem from="1688480806210" duration="2711000" />
       <workItem from="1688485779280" duration="3267000" />
       <workItem from="1688560002114" duration="8834000" />
-      <workItem from="1688573655754" duration="6552000" />
+      <workItem from="1688573655754" duration="7334000" />
+      <workItem from="1688643330265" duration="3732000" />
+      <workItem from="1688653759896" duration="5251000" />
     </task>
     <servers />
   </component>
