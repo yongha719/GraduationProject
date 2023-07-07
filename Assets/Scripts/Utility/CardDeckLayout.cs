@@ -50,29 +50,28 @@ public class CardDeckLayout : MonoBehaviourPunCallbacks, IPunObservable
 #endif
     }
 
+    public GameObject CardDraw(bool isTest = false)
+    {
+        return CardDraw(CardManager.Instance.GetRandomCardName(), isTest);
+    }
+    
     public void CardDraw(int count, bool istest = false)
     {
         for (int i = 0; i < count; i++)
             CardDraw(istest);
     }
 
-    // 테스트 카드 소환
-    public GameObject CardDraw(bool isTest = false)
-    {
-        return CardDraw(CardManager.Instance.GetRandomCardName(), isTest);
-    }
-
-    public GameObject CardDraw(string name, bool isTest = false, Transform parent = null)
+    public GameObject CardDraw(string name, bool isTest = false, int parentViewId = -1)
     {
         var cardObj = PhotonNetwork.Instantiate(CardPath, Vector2.zero, Quaternion.identity);
 
         PhotonView cardPhotonView = cardObj.GetPhotonView();
 
         if (isTest)
-            SetCardAndParentRPC(cardPhotonView.ViewID, name, parent);
+            SetCardAndParentRPC(cardPhotonView.ViewID, name, parentViewId);
         else
             photonView.RPC(nameof(SetCardAndParentRPC), RpcTarget.AllBuffered,
-                cardPhotonView.ViewID, name, parent);
+                cardPhotonView.ViewID, name, parentViewId);
 
         return cardObj;
     }
@@ -83,7 +82,7 @@ public class CardDeckLayout : MonoBehaviourPunCallbacks, IPunObservable
     /// RPC 호출이라 다른 개체에서는 어떤 개체인지 모르기 때문에
     /// viewId로 찾아야 하기 때문에 인자로 넘겨줘야함
     [PunRPC]
-    private void SetCardAndParentRPC(int cardViewId, string cardName, Transform parent = null)
+    private void SetCardAndParentRPC(int cardViewId, string cardName, int parentViewId = -1)
     {
         PhotonView cardPhotonView = PhotonManager.GetPhotonView(cardViewId);
 
@@ -96,8 +95,11 @@ public class CardDeckLayout : MonoBehaviourPunCallbacks, IPunObservable
 
         var cardType = cardPhotonView.gameObject.AddComponent(Type.GetType($"{cardName}Unit"));
 
+        print(Type.GetType($"{cardName}Unit"));        
+        print(parentViewId);
+        
         if (cardType is Card card)
-            card.Init(cardName, parent == null ? parentPhotonView.transform : parent);
+            card.Init(cardName, parentViewId == -1 ? parentPhotonView.transform : PhotonManager.GetPhotonView(parentViewId).transform);
     }
 
     private void OnTransformChildrenChanged()

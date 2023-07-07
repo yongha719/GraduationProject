@@ -803,13 +803,10 @@ MonoBehaviour:
   CardDatas:
     _serializedList: []
   cardNames:
-  - A1
-  - A2
   - A4
   - A4
-  - A4
-  - A4
-  - A4
+  - C1
+  - C1
 --- !u!114 &214781209
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2886,7 +2883,7 @@ MonoBehaviour:
   PlayerName: 
   IsTest: 0
   IsPlayerInvincibility: 0
-  cost: 3
+  cost: 54
   maxCost: 3
 --- !u!114 &1018583212
 MonoBehaviour:
