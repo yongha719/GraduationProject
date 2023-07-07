@@ -62,7 +62,9 @@ public abstract class Card : MonoBehaviourPun, IPunObservable
     public void Init(string name, Transform parent = null)
     {
         if (parent != null)
+        {
             transform.SetParent(parent);
+        }
 
         transform.localScale = Vector3.one;
 

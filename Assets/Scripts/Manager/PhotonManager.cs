@@ -16,6 +16,7 @@ using UnityEngine;
 // 적 관련 ViewId는 200부터 시작
 
 /// <summary> 내 PhotonView들을 ViewId로 값으로 Type을 만들었음 </summary>
+[Serializable]
 public enum PhotonViewType
 {
     PlayerDeck = 100,

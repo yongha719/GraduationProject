@@ -9,18 +9,20 @@ public class C1Unit : UnitCard
     {
         base.MoveCardFromDeckToField();
 
+        Debug.Break();
+        
         Spawn();
     }
 
     // 특수 능력이 소환인데 C2 경비원을 양쪽에 2개 스폰함
     private void Spawn()
     {
-        var slibingindex = transform.GetSiblingIndex();
+        var fieldViewId = PhotonManager.GetFieldPhotonView(true).ViewID;
 
-        var leftC2 = CardManager.Instance.CardDrawToName("C2");
-        leftC2.transform.SetSiblingIndex(slibingindex == 0 ? 0 : slibingindex - 1);
+        var leftC2 = CardManager.Instance.CardDrawToName("C2", false, fieldViewId);
+        leftC2.transform.SetSiblingIndex(transform.GetSiblingIndex());
 
-        var rightC2 = CardManager.Instance.CardDrawToName("C2");
+        var rightC2 = CardManager.Instance.CardDrawToName("C2", false, fieldViewId);
         rightC2.transform.SetSiblingIndex(transform.GetSiblingIndex() + 1);
     }
 }

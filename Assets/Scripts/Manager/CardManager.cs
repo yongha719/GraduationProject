@@ -13,7 +13,7 @@ public class CardManager : SingletonPunCallbacks<CardManager>, IPunObservable
     public List<IUnitCardSubject> EnemyUnitCards = new(10);
 
     public Action CardDraw = () => { };
-    public Func<string, bool, Transform, GameObject> CardDrawToName;
+    public Func<string, bool, int, GameObject> CardDrawToName;
     public Action EnemyCardDraw = () => { };
 
     [Tooltip("카드 데이터들"), SerializedDictionary("Card Rating", "Card Data")]

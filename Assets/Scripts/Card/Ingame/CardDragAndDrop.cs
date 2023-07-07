@@ -49,8 +49,6 @@ public class CardDragAndDrop : MonoBehaviourPun, IBeginDragHandler, IDragHandler
 
         rectMax = rectTransform.rect.max * 1.5f;
         rectMin = rectTransform.rect.min * 1.5f;
-        print($"rectMin : {rectTransform.rect.min}");
-        print($"rectMin * 1.5f : {rectMin * 1.5f}");
     }
 
     public void Init()
@@ -60,12 +58,9 @@ public class CardDragAndDrop : MonoBehaviourPun, IBeginDragHandler, IDragHandler
 
     private void OnMouseEnter()
     {
-        print("mouse enter");
-
         switch (cardState)
         {
             case CardState.Deck:
-                print($"isenemy : {isEnemy}");
                 if (isEnemy == false && isDragging == false)
                 {
                     cardState = CardState.ExpansionDeck;
