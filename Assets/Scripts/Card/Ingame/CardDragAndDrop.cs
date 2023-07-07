@@ -4,7 +4,8 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class CardDragAndDrop : MonoBehaviourPun, IBeginDragHandler, IDragHandler, IEndDragHandler, IDropHandler, IPunObservable
+public class CardDragAndDrop : MonoBehaviourPun, IBeginDragHandler, IDragHandler, IEndDragHandler, IDropHandler,
+    IPunObservable
 {
     public event Action OnEndDrag;
     public event Action OnDrop;
@@ -12,8 +13,7 @@ public class CardDragAndDrop : MonoBehaviourPun, IBeginDragHandler, IDragHandler
     /// <summary> 드래그 가능한 상태인지 체크 </summary>
     public bool CanDrag => isEnemy == false && TurnManager.Instance.MyTurn;
 
-    [SerializeField]
-    private static bool isDragging;
+    [SerializeField] private static bool isDragging;
 
     private bool isEnemy;
 
@@ -37,6 +37,8 @@ public class CardDragAndDrop : MonoBehaviourPun, IBeginDragHandler, IDragHandler
     private Vector2 rectMax;
     private Vector2 rectMin;
 
+    private int silblingIndex;
+
     private void Start()
     {
         isEnemy = !photonView.IsMine;
@@ -45,14 +47,15 @@ public class CardDragAndDrop : MonoBehaviourPun, IBeginDragHandler, IDragHandler
 
         shadow = GetComponent<Shadow>();
 
-        rectMax = rectTransform.rect.max;
-        rectMin = rectTransform.rect.min;
+        rectMax = rectTransform.rect.max * 1.5f;
+        rectMin = rectTransform.rect.min * 1.5f;
+        print($"rectMin : {rectTransform.rect.min}");
+        print($"rectMin * 1.5f : {rectMin * 1.5f}");
     }
 
     public void Init()
     {
         card = GetComponent<Card>();
-
     }
 
     private void OnMouseEnter()
@@ -66,15 +69,18 @@ public class CardDragAndDrop : MonoBehaviourPun, IBeginDragHandler, IDragHandler
                 if (isEnemy == false && isDragging == false)
                 {
                     cardState = CardState.ExpansionDeck;
+
                     layoutRot = rectTransform.localRotation;
                     rectTransform.localRotation = Quaternion.identity;
+
+                    silblingIndex = rectTransform.GetSiblingIndex();
+                    rectTransform.SetAsLastSibling();
                 }
 
                 break;
             case CardState.ExpansionDeck:
                 break;
             case CardState.Field:
-
                 break;
         }
     }
@@ -86,29 +92,40 @@ public class CardDragAndDrop : MonoBehaviourPun, IBeginDragHandler, IDragHandler
 
         Vector2 mousePosition = Input.mousePosition;
 
-        RectTransformUtility.ScreenPointToLocalPointInRectangle(rectTransform, mousePosition, Camera.main, out Vector2 uiPosition);
+        RectTransformUtility.ScreenPointToLocalPointInRectangle(rectTransform, mousePosition, Camera.main,
+            out Vector2 localPoint);
 
-        if (RectTransformUtility.RectangleContainsScreenPoint(rectTransform, mousePosition, Camera.main))
+        if (RectangleContainsScreenPoint(rectTransform, mousePosition, Camera.main, localPoint))
         {
             // rect 회전값
             Vector3 rotation = Vector3.one;
 
-            rotation.y = Mathf.Lerp(-20, 20, MapToZeroToOneX(uiPosition.x));
-            rotation.x = Mathf.Lerp(20, -20, MapToZeroToOneY(uiPosition.y));
+            rotation.y = Mathf.Lerp(-20, 20, MapToZeroToOneX(localPoint.x));
+            rotation.x = Mathf.Lerp(20, -20, MapToZeroToOneY(localPoint.y));
 
             rectTransform.rotation = Quaternion.Euler(rotation);
 
             // Shadow effectDistance 값
             Vector2 effectDistance;
 
-            effectDistance.x = Mathf.Lerp(-10, 10, MapToZeroToOneX(uiPosition.x));
-            effectDistance.y = Mathf.Lerp(-10, 10, MapToZeroToOneY(uiPosition.y));
+            effectDistance.x = Mathf.Lerp(-10, 10, MapToZeroToOneX(localPoint.x));
+            effectDistance.y = Mathf.Lerp(-10, 10, MapToZeroToOneY(localPoint.y));
 
             shadow.effectDistance = effectDistance;
         }
     }
 
+    // 1.5 배 큰 범위로 잡고 싶어서 만들었음
+    private bool RectangleContainsScreenPoint(RectTransform rectTransform, Vector2 screenPoint, Camera camera, Vector2 rectPosition)
+    {
+        // 로컬 좌표가 RectTransform의 경계 내에 있는지 확인합니다.
+        Rect rect = rectTransform.rect;
 
+        rect.max *= 1.5f;
+        rect.min *= 1.5f;
+        
+        return rect.Contains(rectPosition);
+    }
 
     private void OnMouseExit()
     {
@@ -116,7 +133,7 @@ public class CardDragAndDrop : MonoBehaviourPun, IBeginDragHandler, IDragHandler
         {
             cardState = CardState.Deck;
             rectTransform.localRotation = layoutRot;
-            print("layout : " + layoutRot.eulerAngles);
+            rectTransform.SetSiblingIndex(silblingIndex);
         }
     }
 
@@ -186,7 +203,7 @@ public class CardDragAndDrop : MonoBehaviourPun, IBeginDragHandler, IDragHandler
             return;
 
         costDecrease();
-        
+
         OnDrop();
     }
 
@@ -216,11 +233,17 @@ public class CardDragAndDrop : MonoBehaviourPun, IBeginDragHandler, IDragHandler
     {
         if (stream.IsWriting)
         {
-            stream.SendNext(layoutRot);
+            stream.SendNext(layoutRot.x);
+            stream.SendNext(layoutRot.y);
+            stream.SendNext(layoutRot.z);
         }
         else
         {
-            layoutRot = (Quaternion)stream.PeekNext();
+            float x = (float)stream.PeekNext();
+            float y = (float)stream.PeekNext();
+            float z = (float)stream.PeekNext();
+
+            layoutRot = Quaternion.Euler(x, y, z);
         }
     }
 }

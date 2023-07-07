@@ -684,7 +684,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e822603cb775f8547baf34d6d58d4911, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isDragging: 0
   layoutRot: {x: 0, y: 0, z: 0, w: 0}
 --- !u!114 &9101778247568541867
 MonoBehaviour:
@@ -705,6 +704,7 @@ MonoBehaviour:
   OwnershipTransfer: 0
   observableSearch: 2
   ObservedComponents:
+  - {fileID: 3794628939791515619}
   - {fileID: -815403951443178334}
   sceneViewId: 0
   InstantiationId: 0
@@ -722,7 +722,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_SynchronizePosition: 1
-  m_SynchronizeRotation: 1
+  m_SynchronizeRotation: 0
   m_SynchronizeScale: 0
   m_UseLocal: 1
 --- !u!114 &7811119795412894766

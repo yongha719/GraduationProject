@@ -253,12 +253,12 @@ public class UnitCard : Card, IUnitCardSubject
                 continue;
 
             BasicAttack(enemyCard);
+            enableAttackCall();
         }
 
-        enableAttackCall();
     }
 
-    protected void MoveCardFromDeckToField()
+    protected virtual void MoveCardFromDeckToField()
     {
         if (GameManager.Instance.IsTest)
             MoveCardFromDeckToFieldRPC();

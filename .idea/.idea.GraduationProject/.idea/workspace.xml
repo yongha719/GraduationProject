@@ -5,35 +5,34 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="84fda498-b201-4473-bfed-18288e513613" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/Assets/Resources/Cards/Sprite/Deck/B3_Yuki_Deck.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Resources/Cards/Sprite/Deck/B3_Yuki_Deck.png.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Resources/Cards/Sprite/Deck/C2_Endy_deck.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Resources/Cards/Sprite/Deck/C2_Endy_deck.png.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Resources/Cards/Sprite/Field/B3_Yuki_Field.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Resources/Cards/Sprite/Field/B3_Yuki_Field.png.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Resources/Cards/Sprite/Field/C2_Endy_Field.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Resources/Cards/Sprite/Field/C2_Endy_Field.png.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Scripts/Card/Ingame/Unit Cards/C1Unit.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Scripts/Card/Ingame/Unit Cards/C1Unit.cs.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/~UnityDirMonSyncFile~239f5f86afc934240bb64d4ca67120d9~" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/~UnityDirMonSyncFile~3ad91a4fc5f3a7b478e0001aa8085dfd~" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/~UnityDirMonSyncFile~bf777fdc9f67d334eb6b565f467415c4~" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ProjectSettings/TimelineSettings.asset" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.GraduationProject/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.GraduationProject/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/Card/A2_UI.prefab" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/Card/A2_UI.prefab.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/AC Little Enchant Mesh VFX/Materials/HDRPMaterials.unitypackage.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/AC Little Enchant Mesh VFX/Materials/URPMaterials.unitypackage.meta" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Resources/Cards/In Game Card.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Resources/Cards/In Game Card.prefab" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Resources/ProductionInfos.meta" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scenes/Card.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/Card.unity" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Card/CardDeck.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Card/CardDeck.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Card/DeckBuildingCard.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Card/DeckBuildingCard.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Card/DragCard.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Card/DragCard.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scripts/Card/Ingame/Card.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Card/Ingame/Card.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Card/Ingame/CardData.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Card/Ingame/CardData.cs.meta" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scripts/Card/Ingame/CardDragAndDrop.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Card/Ingame/CardDragAndDrop.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Card/Ingame/CardInfo.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Card/Ingame/CardInfo.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Card/Ingame/Masic Cards/MasicCard.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Card/Ingame/Masic Cards/MasicCard.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Card/Ingame/Unit Cards/A2Unit.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Card/Ingame/Unit Cards/A2Unit.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scripts/Card/Ingame/Unit Cards/B2Unit.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Card/Ingame/Unit Cards/B2Unit.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scripts/Card/Ingame/Unit Cards/UnitCard.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Card/Ingame/Unit Cards/UnitCard.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/DeckManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/DeckManager.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scripts/Manager/CardManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Manager/CardManager.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Manager/GameManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Manager/GameManager.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Manager/PhotonManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Manager/PhotonManager.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scripts/Manager/ResourceManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Manager/ResourceManager.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Manager/TurnManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Manager/TurnManager.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Test/MousePositionOnUI.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Test/MousePositionOnUI.cs.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/UI/CostGaugeUI.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/UI/CostGaugeUI.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Utility/CanvasUtility.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Utility/CanvasUtility.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scripts/Utility/CardDeckLayout.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Utility/CardDeckLayout.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/UserSettings/Search.settings" beforeDir="false" afterPath="$PROJECT_DIR$/UserSettings/Search.settings" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Utility/CardFieldLayout.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Utility/CardFieldLayout.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -63,6 +62,7 @@
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/93a8f82184b4439ca5abff025375fe32564da0/a4/0862802d/Task`1.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/93a8f82184b4439ca5abff025375fe32564da0/a4/a890eda2/ObsoleteAttribute.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/93a8f82184b4439ca5abff025375fe32564da0/b2/19f8b0f6/Dictionary`2.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/c332d0297b01448983967bca183d6bbf6e00/9f/ae906907/RectTransformUtility.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/dc28434fa61c4453b887bdc67f5934aa574bb0/53/d0b88e61/IFormatProvider.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/dc28434fa61c4453b887bdc67f5934aa574bb0/a2/4b9f1e6d/ValueTuple`2.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/e8a406da998549af9a2680936c7da25a159c00/05/fc276732/Rect.cs" root0="SKIP_HIGHLIGHTING" />
@@ -135,7 +135,7 @@
       <method v="2" />
     </configuration>
     <configuration name="독립실행형 플레이어" type="RunUnityExe" factoryName="Unity Executable">
-      <option name="EXE_PATH" value="$PROJECT_DIR$/../../Build/졸작/23_07_06/GraduationProject.exe" />
+      <option name="EXE_PATH" value="$PROJECT_DIR$/../../Build/졸작/23_07_07/GraduationProject.exe" />
       <option name="PROGRAM_PARAMETERS" value="" />
       <option name="WORKING_DIRECTORY" value="E:\Build\졸작\2023_05_21" />
       <option name="PASS_PARENT_ENVS" value="1" />
@@ -240,6 +240,7 @@
       <workItem from="1688573655754" duration="7334000" />
       <workItem from="1688643330265" duration="3732000" />
       <workItem from="1688653759896" duration="5251000" />
+      <workItem from="1688736227333" duration="2045000" />
     </task>
     <servers />
   </component>

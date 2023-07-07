@@ -59,9 +59,11 @@ public abstract class Card : MonoBehaviourPun, IPunObservable
         cardDragAndDrop.OnDrop += OnDrop;
     }
 
-    public void Init(Transform parent, string name)
+    public void Init(string name, Transform parent = null)
     {
-        transform.SetParent(parent);
+        if (parent != null)
+            transform.SetParent(parent);
+
         transform.localScale = Vector3.one;
 
         // PosZ가 0이 아니라서 콜라이더 크기가 이상해짐
