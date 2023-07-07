@@ -11,8 +11,8 @@ using UnityEngine;
 [AddComponentMenu("MyComponent/Card Deck Layout", int.MinValue)]
 public class CardDeckLayout : MonoBehaviourPunCallbacks, IPunObservable
 {
-    private readonly Vector3 leftPosition = new Vector3(-220, -10, 0);
-    private readonly Vector3 rightPosition = new Vector3(420, -30, 0);
+    private readonly Vector3 leftPosition = new Vector3(-220, -30, 0);
+    private readonly Vector3 rightPosition = new Vector3(440, -30, 0);
     private readonly Quaternion leftRotation = Quaternion.Euler(0, 0, 15f);
     private readonly Quaternion rightRotation = Quaternion.Euler(0, 0, -15f);
 
@@ -26,12 +26,18 @@ public class CardDeckLayout : MonoBehaviourPunCallbacks, IPunObservable
     /// 이런식으로 경로를 정의함
     private string CardPath => "Cards/In Game Card";
 
+    [SerializeField]
+    private int childCount;
+
     private void Start()
     {
         IsMine = photonView.ViewID == (int)PhotonViewType.PlayerDeck;
 
         if (IsMine)
+        {
             CardManager.Instance.CardDraw += () => CardDraw();
+            CardManager.Instance.CardDrawToName = (name, isTest, parent ) => CardDraw(name, isTest, parent);
+        }
         else
             CardManager.Instance.EnemyCardDraw += () => CardDraw();
     }
@@ -51,29 +57,33 @@ public class CardDeckLayout : MonoBehaviourPunCallbacks, IPunObservable
     }
 
     // 테스트 카드 소환
-    public void CardDraw(bool isTest = false)
+    public GameObject CardDraw(bool isTest = false)
+    {
+        return CardDraw(CardManager.Instance.GetRandomCardName(), isTest);
+    }
+
+    public GameObject CardDraw(string name, bool isTest = false, Transform parent = null)
     {
         var cardObj = PhotonNetwork.Instantiate(CardPath, Vector2.zero, Quaternion.identity);
 
         PhotonView cardPhotonView = cardObj.GetPhotonView();
 
-        string cardName = CardManager.Instance.GetRandomCardName();
-
         if (isTest)
-            SetCardAndParentRPC(cardPhotonView.ViewID, cardName);
+            SetCardAndParentRPC(cardPhotonView.ViewID, name, parent);
         else
             photonView.RPC(nameof(SetCardAndParentRPC), RpcTarget.AllBuffered,
-                cardPhotonView.ViewID, cardName);
-    }
+                cardPhotonView.ViewID, name, parent);
 
+        return cardObj;
+    }
 
     /// <summary>
     /// 카드 이름과 필드 세팅
     /// </summary>
     /// RPC 호출이라 다른 개체에서는 어떤 개체인지 모르기 때문에
-    /// viewId를 모르기 때문에 인자로 넘겨줘야함
+    /// viewId로 찾아야 하기 때문에 인자로 넘겨줘야함
     [PunRPC]
-    private void SetCardAndParentRPC(int cardViewId, string cardName)
+    private void SetCardAndParentRPC(int cardViewId, string cardName, Transform parent = null)
     {
         PhotonView cardPhotonView = PhotonManager.GetPhotonView(cardViewId);
 
@@ -87,13 +97,14 @@ public class CardDeckLayout : MonoBehaviourPunCallbacks, IPunObservable
         var cardType = cardPhotonView.gameObject.AddComponent(Type.GetType($"{cardName}Unit"));
 
         if (cardType is Card card)
-            card.Init(parentPhotonView.transform, cardName);
+            card.Init(cardName, parent == null ? parentPhotonView.transform : parent);
     }
 
     private void OnTransformChildrenChanged()
     {
-        print("child change");
-        
+        if (childCount == transform.childCount)
+            return;
+
         float[] lerpValue;
 
         switch (transform.childCount)
@@ -133,6 +144,8 @@ public class CardDeckLayout : MonoBehaviourPunCallbacks, IPunObservable
             rect.anchoredPosition = targetPos;
             rect.localRotation = targetRos;
         }
+
+        childCount = transform.childCount;
     }
 
     void IPunObservable.OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)

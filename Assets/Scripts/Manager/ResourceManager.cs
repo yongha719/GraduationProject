@@ -26,10 +26,10 @@ public class ResourceManager : Singleton<ResourceManager>
 
     protected override void Awake()
     {
-        LoadCardSprites();
+        LoadUnitCardSprites();
     }
 
-    private void LoadCardSprites()
+    private void LoadUnitCardSprites()
     {
         var deckTextures = Resources.LoadAll<Texture2D>(CARD_DECK_TEXTURES);
         var fieldTextures = Resources.LoadAll<Texture2D>(CARD_FIELD_TEXTURES);
@@ -40,6 +40,8 @@ public class ResourceManager : Singleton<ResourceManager>
 
             cardTextures.Add(cardRating, (deckTextures[i], fieldTextures[i]));
         }
+
+        print(cardTextures.Count);
     }
 
     public async Task<SerializedDictionary<string, UnitCardData>> AsyncRequestCardData()

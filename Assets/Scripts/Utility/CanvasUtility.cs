@@ -12,6 +12,8 @@ public class CanvasUtility : MonoBehaviour
     public static RectTransform MyFieldRect { get; set; }
     public static RectTransform EnemyFieldRect { get; set; }
 
+    private static RaycastHit2D[] raycastHits = new RaycastHit2D[10];
+
     private void Start()
     {
         CanvasTr = transform as RectTransform;
@@ -37,13 +39,28 @@ public class CanvasUtility : MonoBehaviour
     {
         var mousePos = GetMousePosToCanvasPos();
 
-        // 마우스 포지션이 내 필드 안에 있는지 확인
-        if (MyFieldRect.rect.xMin < mousePos.x && MyFieldRect.rect.yMin < mousePos.y
-            && MyFieldRect.rect.xMax > mousePos.x & MyFieldRect.rect.yMax > mousePos.y)
+        Vector2 worldPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+
+        Physics2D.RaycastNonAlloc(worldPosition, Vector2.zero, raycastHits);
+
+        foreach (var hit in raycastHits)
         {
+            if (hit.collider is null ||
+                hit.collider.TryGetComponent(out CardFieldLayout field) == false)
+                continue;
+
             return true;
         }
-        else
-            return false;
+
+        return false;
+
+        //// 마우스 포지션이 내 필드 안에 있는지 확인
+        //if (MyFieldRect.rect.xMin < mousePos.x && MyFieldRect.rect.yMin < mousePos.y
+        //    && MyFieldRect.rect.xMax > mousePos.x & MyFieldRect.rect.yMax > mousePos.y)
+        //{
+        //    return true;
+        //}
+        //else
+        //    return false;
     }
 }
