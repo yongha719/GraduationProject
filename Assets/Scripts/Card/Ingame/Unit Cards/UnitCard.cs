@@ -71,11 +71,9 @@ public class UnitCard : Card, IUnitCardSubject
     {
         base.Start();
 
-
         hp = CardData.Hp;
 
         boxCollider = GetComponent<BoxCollider2D>();
-
 
         enableAttackCall = () =>
             TurnManager.Instance.ExecuteAfterTurn(1,

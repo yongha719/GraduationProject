@@ -76,6 +76,7 @@ public class CardDragAndDrop : MonoBehaviourPun, IBeginDragHandler, IDragHandler
             case CardState.ExpansionDeck:
                 break;
             case CardState.Field:
+                shadow.enabled = false;
                 break;
         }
     }
@@ -129,6 +130,8 @@ public class CardDragAndDrop : MonoBehaviourPun, IBeginDragHandler, IDragHandler
             cardState = CardState.Deck;
             rectTransform.localRotation = layoutRot;
             rectTransform.SetSiblingIndex(silblingIndex);
+            
+            shadow.effectDistance = Vector2.zero;
         }
     }
 
@@ -162,11 +165,6 @@ public class CardDragAndDrop : MonoBehaviourPun, IBeginDragHandler, IDragHandler
 
     void IDragHandler.OnDrag(PointerEventData eventData)
     {
-        if (cardState == CardState.Field)
-        {
-            // lineRenderer.SetPosition(1, (Vector3)CanvasUtility.GetMousePosToCanvasPos() + Vector3.back);
-        }
-
         if (CanDrag == false) return;
 
         // 드래그할 때 포지션 바꿔줌
@@ -226,19 +224,6 @@ public class CardDragAndDrop : MonoBehaviourPun, IBeginDragHandler, IDragHandler
 
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
     {
-        if (stream.IsWriting)
-        {
-            stream.SendNext(layoutRot.x);
-            stream.SendNext(layoutRot.y);
-            stream.SendNext(layoutRot.z);
-        }
-        else
-        {
-            float x = (float)stream.PeekNext();
-            float y = (float)stream.PeekNext();
-            float z = (float)stream.PeekNext();
-
-            layoutRot = Quaternion.Euler(x, y, z);
-        }
+ 
     }
 }
