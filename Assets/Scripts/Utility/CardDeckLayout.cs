@@ -9,6 +9,7 @@ using UnityEngine;
 
 /// <summary>인게임에서 덱에 있는 카드의 레이아웃 </summary>
 [AddComponentMenu("MyComponent/Card Deck Layout", int.MinValue)]
+[ExecuteAlways]
 public class CardDeckLayout : MonoBehaviourPunCallbacks, IPunObservable
 {
     private readonly Vector3 leftPosition = new Vector3(-220, -30, 0);
@@ -31,12 +32,15 @@ public class CardDeckLayout : MonoBehaviourPunCallbacks, IPunObservable
 
     private void Start()
     {
+        if (Application.isPlaying == false)
+            return;
+        
         IsMine = photonView.ViewID == (int)PhotonViewType.PlayerDeck;
 
         if (IsMine)
         {
             CardManager.Instance.CardDraw += () => CardDraw();
-            CardManager.Instance.CardDrawToName = (name, isTest, parent ) => CardDraw(name, isTest, parent);
+            CardManager.Instance.CardDrawToName = (name, isTest, setParentAsDeck ) => CardDraw(name, isTest, setParentAsDeck);
         }
         else
             CardManager.Instance.EnemyCardDraw += () => CardDraw();
@@ -61,17 +65,17 @@ public class CardDeckLayout : MonoBehaviourPunCallbacks, IPunObservable
             CardDraw(istest);
     }
 
-    public GameObject CardDraw(string name, bool isTest = false, int parentViewId = -1)
+    public GameObject CardDraw(string name, bool isTest = false,  bool setParentAsDeck = true)
     {
         var cardObj = PhotonNetwork.Instantiate(CardPath, Vector2.zero, Quaternion.identity);
 
         PhotonView cardPhotonView = cardObj.GetPhotonView();
 
         if (isTest)
-            SetCardAndParentRPC(cardPhotonView.ViewID, name, parentViewId);
+            SetCardAndParentRPC(cardPhotonView.ViewID, name, setParentAsDeck);
         else
             photonView.RPC(nameof(SetCardAndParentRPC), RpcTarget.AllBuffered,
-                cardPhotonView.ViewID, name, parentViewId);
+                cardPhotonView.ViewID, name, setParentAsDeck);
 
         return cardObj;
     }
@@ -82,24 +86,33 @@ public class CardDeckLayout : MonoBehaviourPunCallbacks, IPunObservable
     /// RPC 호출이라 다른 개체에서는 어떤 개체인지 모르기 때문에
     /// viewId로 찾아야 하기 때문에 인자로 넘겨줘야함
     [PunRPC]
-    private void SetCardAndParentRPC(int cardViewId, string cardName, int parentViewId = -1)
+    private void SetCardAndParentRPC(int cardViewId, string cardName, bool setParentAsDeck = true)
     {
         PhotonView cardPhotonView = PhotonManager.GetPhotonView(cardViewId);
-
-        PhotonView parentPhotonView =
-            PhotonManager.GetPhotonViewByType(cardPhotonView.IsMine
+        
+        PhotonView parentPhotonView;
+        
+        if (setParentAsDeck)
+        {
+            parentPhotonView = PhotonManager.GetPhotonViewByType(cardPhotonView.IsMine
                 ? PhotonViewType.PlayerDeck
                 : PhotonViewType.EnemyDeck);
+        }
+        else
+        {
+            parentPhotonView = PhotonManager.GetPhotonViewByType(cardPhotonView.IsMine
+                ? PhotonViewType.PlayerField
+                : PhotonViewType.EnemyField);
+        }
 
         cardPhotonView.gameObject.name = cardName;
 
         var cardType = cardPhotonView.gameObject.AddComponent(Type.GetType($"{cardName}Unit"));
 
-        print(Type.GetType($"{cardName}Unit"));        
-        print(parentViewId);
-        
         if (cardType is Card card)
-            card.Init(cardName, parentViewId == -1 ? parentPhotonView.transform : PhotonManager.GetPhotonView(parentViewId).transform);
+        {
+            card.Init(cardName, parentPhotonView.transform);
+        }
     }
 
     private void OnTransformChildrenChanged()
@@ -137,7 +150,7 @@ public class CardDeckLayout : MonoBehaviourPunCallbacks, IPunObservable
 
             if (transform.childCount >= 4)
             {
-                float curve = Mathf.Sqrt(Mathf.Pow(0.5f, 2f) - Mathf.Pow(lerpValue[i] - 0.5f, 2)) * 80f;
+                float curve = Mathf.Sqrt(0.25f - Mathf.Pow(lerpValue[i] - 0.5f, 2)) * 80f;
                 targetPos.y += curve;
                 targetRos = Quaternion.Slerp(leftRotation, rightRotation, lerpValue[i]);
             }
@@ -146,7 +159,7 @@ public class CardDeckLayout : MonoBehaviourPunCallbacks, IPunObservable
             rect.anchoredPosition = targetPos;
             rect.localRotation = targetRos;
         }
-
+        
         childCount = transform.childCount;
     }
 

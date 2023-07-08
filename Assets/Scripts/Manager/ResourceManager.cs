@@ -40,8 +40,6 @@ public class ResourceManager : Singleton<ResourceManager>
 
             cardTextures.Add(cardRating, (deckTextures[i], fieldTextures[i]));
         }
-
-        print(cardTextures.Count);
     }
 
     public async Task<SerializedDictionary<string, UnitCardData>> AsyncRequestCardData()

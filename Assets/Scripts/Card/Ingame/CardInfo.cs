@@ -83,8 +83,6 @@ public class CardInfo : MonoBehaviourPun
             deckPowerText.gameObject.SetActive(false);
         }
 
-        print("card info init");
-
         IsEnemy = !photonView.IsMine;
 
         gameObject.name = name + (IsEnemy ? "_Enemy" : "_Player");

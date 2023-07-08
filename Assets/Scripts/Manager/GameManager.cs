@@ -59,11 +59,7 @@ public class GameManager : SingletonPunCallbacks<GameManager>, IPunObservable
 
     private void Start()
     {
-        TurnManager.Instance.OnPlayerTurnAction += () =>
-        {
-            IncreaseCost();
-            print("Gm");
-        };
+        TurnManager.Instance.OnPlayerTurnAction += IncreaseCost;
     }
 
     private void Update()
@@ -72,6 +68,7 @@ public class GameManager : SingletonPunCallbacks<GameManager>, IPunObservable
             LogCanvas.SetActive(true);
         else if (Input.GetKey(KeyCode.F2))
         {
+            IncreaseCost();
         }
     }
 
@@ -100,8 +97,6 @@ public class GameManager : SingletonPunCallbacks<GameManager>, IPunObservable
         }
         else
         {
-            print($"enemy cost : {EnemyCost}");
-
             // uint 로 변환하려면 이렇게 해야댐 포톤에서 
             EnemyCost = (uint)(int)stream.PeekNext();
             EnemyMaxCost = (uint)(int)stream.PeekNext();

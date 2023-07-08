@@ -30,7 +30,7 @@ public abstract class Card : MonoBehaviourPun, IPunObservable
 
     public virtual int Cost { get; }
 
-    protected RectTransform rect;
+    public RectTransform rect;
     protected Image cardImageComponent;
 
     protected CardInfo cardInfo;
@@ -53,8 +53,6 @@ public abstract class Card : MonoBehaviourPun, IPunObservable
 
     protected virtual void Start()
     {
-        print("card Start");
-
         cardDragAndDrop.OnEndDrag += OnEndDrag;
         cardDragAndDrop.OnDrop += OnDrop;
     }

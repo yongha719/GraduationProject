@@ -8,12 +8,13 @@ public class CardDragAndDrop : MonoBehaviourPun, IBeginDragHandler, IDragHandler
     IPunObservable
 {
     public event Action OnEndDrag;
-    public event Action OnDrop;
+    public event Action OnDrop = () => { };
 
     /// <summary> 드래그 가능한 상태인지 체크 </summary>
     public bool CanDrag => isEnemy == false && TurnManager.Instance.MyTurn;
 
-    [SerializeField] private static bool isDragging;
+    private static bool hasExpansionCard;
+    private bool isDragging;
 
     private bool isEnemy;
 
@@ -30,7 +31,7 @@ public class CardDragAndDrop : MonoBehaviourPun, IBeginDragHandler, IDragHandler
     private Vector2 mousePosDistance;
 
     private RectTransform rectTransform;
-    private Shadow shadow;
+    public Shadow shadow;
 
     private Card card;
 
@@ -61,7 +62,7 @@ public class CardDragAndDrop : MonoBehaviourPun, IBeginDragHandler, IDragHandler
         switch (cardState)
         {
             case CardState.Deck:
-                if (isEnemy == false && isDragging == false)
+                if (isEnemy == false && hasExpansionCard == false && isDragging == false)
                 {
                     cardState = CardState.ExpansionDeck;
 
@@ -86,6 +87,8 @@ public class CardDragAndDrop : MonoBehaviourPun, IBeginDragHandler, IDragHandler
         if (cardState == CardState.Field || isEnemy)
             return;
 
+        hasExpansionCard = true;
+
         Vector2 mousePosition = Input.mousePosition;
 
         RectTransformUtility.ScreenPointToLocalPointInRectangle(rectTransform, mousePosition, Camera.main,
@@ -96,8 +99,8 @@ public class CardDragAndDrop : MonoBehaviourPun, IBeginDragHandler, IDragHandler
             // rect 회전값
             Vector3 rotation = Vector3.one;
 
-            rotation.y = Mathf.Lerp(-20, 20, MapToZeroToOneX(localPoint.x));
-            rotation.x = Mathf.Lerp(20, -20, MapToZeroToOneY(localPoint.y));
+            rotation.y = Mathf.Lerp(-25, 25, MapToZeroToOneX(localPoint.x));
+            rotation.x = Mathf.Lerp(25, -25, MapToZeroToOneY(localPoint.y));
 
             rectTransform.rotation = Quaternion.Euler(rotation);
 
@@ -112,25 +115,28 @@ public class CardDragAndDrop : MonoBehaviourPun, IBeginDragHandler, IDragHandler
     }
 
     // 1.5 배 큰 범위로 잡고 싶어서 만들었음
-    private bool RectangleContainsScreenPoint(RectTransform rectTransform, Vector2 screenPoint, Camera camera, Vector2 rectPosition)
+    private bool RectangleContainsScreenPoint(RectTransform rectTransform, Vector2 screenPoint, Camera camera,
+        Vector2 rectPosition)
     {
         // 로컬 좌표가 RectTransform의 경계 내에 있는지 확인합니다.
         Rect rect = rectTransform.rect;
 
         rect.max *= 1.5f;
         rect.min *= 1.5f;
-        
+
         return rect.Contains(rectPosition);
     }
 
     private void OnMouseExit()
     {
-        if (isEnemy == false && cardState == CardState.ExpansionDeck && isDragging == false)
+        if (isEnemy == false && cardState == CardState.ExpansionDeck && hasExpansionCard)
         {
             cardState = CardState.Deck;
             rectTransform.localRotation = layoutRot;
             rectTransform.SetSiblingIndex(silblingIndex);
-            
+
+            hasExpansionCard = false;
+
             shadow.effectDistance = Vector2.zero;
         }
     }
@@ -148,8 +154,6 @@ public class CardDragAndDrop : MonoBehaviourPun, IBeginDragHandler, IDragHandler
 
         if (cardState == CardState.ExpansionDeck)
             cardState = CardState.Deck;
-
-        print("OnBeginDrag");
 
         // 왼쪽 버튼으로 드래그 시작했을때 원래 포지션 저장과 마우스 포인터와 거리도 저장
         if (eventData.button == PointerEventData.InputButton.Left)
@@ -190,14 +194,19 @@ public class CardDragAndDrop : MonoBehaviourPun, IBeginDragHandler, IDragHandler
     void IDropHandler.OnDrop(PointerEventData eventData)
     {
         if (CanDrag == false) return;
+        
+        hasExpansionCard = false;
 
         // TODO : 여기서 코스트 감소
-        if (GameManager.Instance.CheckCardCostAvailability((uint)card.Cost, out Action costDecrease) == false)
+        if (GameManager.Instance.CheckCardCostAvailability((uint)card.Cost, out Action costDecrease) == false && cardState != CardState.Field)
             return;
 
         costDecrease();
 
         OnDrop();
+        
+        if (cardState == CardState.Field)
+            shadow.enabled = false;
     }
 
     float MapToZeroToOneX(float value)
@@ -224,6 +233,5 @@ public class CardDragAndDrop : MonoBehaviourPun, IBeginDragHandler, IDragHandler
 
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
     {
- 
     }
 }
