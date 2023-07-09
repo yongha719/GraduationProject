@@ -6,6 +6,10 @@ using UnityEngine;
 public class ProductionTest : MonoBehaviour
 {
     [SerializeField] private CharacterProduction illustAppearProduction;
+    [SerializeField] private GameObject last;
+    [SerializeField] private GameObject trap;
+
+    public Canvas canvas;
     void Update()
     {
         #region 테스트 코드
@@ -38,6 +42,14 @@ public class ProductionTest : MonoBehaviour
             SpawnAppearEffect(ECharacterType.Yooeunha);
         }
         #endregion
+        if (Input.GetKeyDown(KeyCode.Q))
+        {
+            Instantiate(last, canvas.transform);
+        }
+        else if(Input.GetKeyDown(KeyCode.W)) 
+        {
+            Instantiate(trap, canvas.transform);
+        }
     }
 
     private void SpawnAppearEffect(ECharacterType type)
