@@ -16,41 +16,54 @@ public class SoundManager : Singleton<SoundManager>
 
     private List<AudioClip> sfxSoundClipList = new List<AudioClip>();
 
-    private List<AudioClip> dialogueRecordingList = new List<AudioClip>();
+    private List<AudioClip> manDialogueRecordingList = new List<AudioClip>();
+
+    private List<AudioClip> womanDialogueRecordingList = new List<AudioClip>();
 
     private Dictionary<string, AudioClip> backGroundSoundClipDic = new Dictionary<string, AudioClip>();
 
     private Dictionary<string, AudioClip> sfxSoundClipDic = new Dictionary<string , AudioClip>();
 
-    private Dictionary<string, AudioClip> dialogueRecordingDic = new Dictionary<string, AudioClip>();
+    private Dictionary<string, AudioClip> manDialogueRecordingDic = new Dictionary<string, AudioClip>();
 
+    private Dictionary<string, AudioClip> womanDialogueRecordingDic = new Dictionary<string, AudioClip>();
 
     public void PlayBackGroundSound(string name)
     {
         GameObject go = new GameObject(backGroundSoundClipDic[name] + "Sound");
         go.transform.parent = backGroundSoundObject;
-        go.AddComponent<AudioSource>().clip = backGroundSoundClipDic[name];
-        go.GetComponent<AudioSource>().Play();
+        go.GetComponent<AudioSource>().PlayOneShot(backGroundSoundClipDic[name]);
     }
 
     public void PlaySFXSound(string name)
     {
         GameObject go = new GameObject(sfxSoundClipDic[name] + "Sound");
         go.transform.parent = sfxSoundObject;
-        go.AddComponent<AudioSource>().clip = sfxSoundClipDic[name];
-        go.GetComponent<AudioSource>().Play();
+
+        go.GetComponent<AudioSource>().PlayOneShot(sfxSoundClipDic[name]);
 
         Destroy(go, sfxSoundClipDic[name].length);
     }
 
-    public void PlayDialogue(string name)
+    public void PlayDialogue(string name, bool isMan)
     {
-        GameObject go = new GameObject(dialogueRecordingDic[name] + "Sound");
-        go.transform.parent = sfxSoundObject;
-        go.AddComponent<AudioSource>().clip = dialogueRecordingDic[name];
-        go.GetComponent<AudioSource>().Play();
+        if (isMan)
+        {
+            GameObject go = new GameObject(manDialogueRecordingDic[name] + "Sound");
+            go.transform.parent = sfxSoundObject;
+            go.GetComponent<AudioSource>().PlayOneShot(manDialogueRecordingDic[name]);
 
-        Destroy(go, dialogueRecordingDic[name].length);
+            Destroy(go, manDialogueRecordingDic[name].length);
+        }
+        else
+        {
+            GameObject go = new GameObject(womanDialogueRecordingDic[name] + "Sound");
+            go.transform.parent = sfxSoundObject;
+            go.GetComponent<AudioSource>().PlayOneShot(womanDialogueRecordingDic[name]);
+
+            Destroy(go, womanDialogueRecordingDic[name].length);
+        }
+        
     }
 
     private void Start()
@@ -60,7 +73,7 @@ public class SoundManager : Singleton<SoundManager>
 
     private void LoadSound()
     {
-        Object[] backObjs = Resources.LoadAll("/Sound/BackGround");
+        Object[] backObjs = Resources.LoadAll("Sound/BackGround");
         foreach(Object obj in backObjs)
         {
             backGroundSoundClipList.Add((AudioClip)obj);
@@ -71,7 +84,7 @@ public class SoundManager : Singleton<SoundManager>
             backGroundSoundClipDic.Add(backGroundSoundClipList[i].name, backGroundSoundClipList[i]);
         }
 
-        Object[] sfxObjs = Resources.LoadAll("/Sound/SFX");
+        Object[] sfxObjs = Resources.LoadAll("Sound/SFX");
         foreach(Object obj in sfxObjs)
         {
             sfxSoundClipList.Add((AudioClip)obj);
@@ -82,16 +95,28 @@ public class SoundManager : Singleton<SoundManager>
             sfxSoundClipDic.Add(sfxSoundClipList[i].name, sfxSoundClipList[i]);
         }
 
-        Object[] dialongObjs = Resources.LoadAll("/Sound/DialogueRecording");
-        foreach(Object obj in dialongObjs)
+        Object[] manDialongObjs = Resources.LoadAll("Sound/DialogueRecording/Man");
+        foreach(Object obj in manDialongObjs)
         {
-            dialogueRecordingList.Add((AudioClip)obj);
+            manDialogueRecordingList.Add((AudioClip)obj);
         }
 
-        for (int i = 0; i < dialogueRecordingList.Count; i++)
+        for (int i = 0; i < manDialogueRecordingList.Count; i++)
         {
-            dialogueRecordingDic.Add(dialogueRecordingList[i].name, dialogueRecordingList[i]);
+            manDialogueRecordingDic.Add(manDialogueRecordingList[i].name, manDialogueRecordingList[i]);
         }
+
+        Object[] womanDialongObjs = Resources.LoadAll("Sound/DialogueRecording/Woman");
+        foreach (Object obj in womanDialongObjs)
+        {
+            womanDialogueRecordingList.Add((AudioClip)obj);
+        }
+
+        for (int i = 0; i < manDialogueRecordingList.Count; i++)
+        {
+            womanDialogueRecordingDic.Add(womanDialogueRecordingList[i].name, womanDialogueRecordingList[i]);
+        }
+
     }
 
     /// <summary>
