@@ -16,17 +16,41 @@ public class SoundManager : Singleton<SoundManager>
 
     private List<AudioClip> sfxSoundClipList = new List<AudioClip>();
 
+    private List<AudioClip> dialogueRecordingList = new List<AudioClip>();
+
     private Dictionary<string, AudioClip> backGroundSoundClipDic = new Dictionary<string, AudioClip>();
+
+    private Dictionary<string, AudioClip> sfxSoundClipDic = new Dictionary<string , AudioClip>();
+
+    private Dictionary<string, AudioClip> dialogueRecordingDic = new Dictionary<string, AudioClip>();
 
 
     public void PlayBackGroundSound(string name)
     {
-
+        GameObject go = new GameObject(backGroundSoundClipDic[name] + "Sound");
+        go.transform.parent = backGroundSoundObject;
+        go.AddComponent<AudioSource>().clip = backGroundSoundClipDic[name];
+        go.GetComponent<AudioSource>().Play();
     }
 
     public void PlaySFXSound(string name)
     {
+        GameObject go = new GameObject(sfxSoundClipDic[name] + "Sound");
+        go.transform.parent = sfxSoundObject;
+        go.AddComponent<AudioSource>().clip = sfxSoundClipDic[name];
+        go.GetComponent<AudioSource>().Play();
 
+        Destroy(go, sfxSoundClipDic[name].length);
+    }
+
+    public void PlayDialogue(string name)
+    {
+        GameObject go = new GameObject(dialogueRecordingDic[name] + "Sound");
+        go.transform.parent = sfxSoundObject;
+        go.AddComponent<AudioSource>().clip = dialogueRecordingDic[name];
+        go.GetComponent<AudioSource>().Play();
+
+        Destroy(go, dialogueRecordingDic[name].length);
     }
 
     private void Start()
@@ -42,10 +66,31 @@ public class SoundManager : Singleton<SoundManager>
             backGroundSoundClipList.Add((AudioClip)obj);
         }
 
+        for (int i = 0; i < backGroundSoundClipList.Count; i++)
+        {
+            backGroundSoundClipDic.Add(backGroundSoundClipList[i].name, backGroundSoundClipList[i]);
+        }
+
         Object[] sfxObjs = Resources.LoadAll("/Sound/SFX");
         foreach(Object obj in sfxObjs)
         {
             sfxSoundClipList.Add((AudioClip)obj);
+        }
+
+        for (int i = 0; i < sfxSoundClipList.Count; i++)
+        {
+            sfxSoundClipDic.Add(sfxSoundClipList[i].name, sfxSoundClipList[i]);
+        }
+
+        Object[] dialongObjs = Resources.LoadAll("/Sound/DialogueRecording");
+        foreach(Object obj in dialongObjs)
+        {
+            dialogueRecordingList.Add((AudioClip)obj);
+        }
+
+        for (int i = 0; i < dialogueRecordingList.Count; i++)
+        {
+            dialogueRecordingDic.Add(dialogueRecordingList[i].name, dialogueRecordingList[i]);
         }
     }
 
@@ -66,11 +111,7 @@ public class SoundManager : Singleton<SoundManager>
 
         for (int i = 0; i < playingBackGroundSoundList.Length; i++)
         {
-
+            playingBackGroundSoundList[i].volume = value;
         }
     }
-
-
-
-
 }
