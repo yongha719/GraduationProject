@@ -6,21 +6,21 @@
   <component name="ChangeListManager">
     <list default="true" id="84fda498-b201-4473-bfed-18288e513613" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.GraduationProject/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.GraduationProject/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Font/GmarketSansTTFMedium SDF.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Font/GmarketSansTTFMedium SDF.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Resources/Cards/A2_UI.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Resources/Cards/A2_UI.prefab" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Resources/Cards/In Game Card.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Resources/Cards/In Game Card.prefab" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scenes/Card.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/Card.unity" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Card/Ingame/Unit Cards/C2Unit.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Card/Ingame/Unit Cards/C2Unit.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scenes/Menu.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/Menu.unity" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Card/Ingame/Unit Cards/A2ChoiceUI.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Card/Ingame/Unit Cards/A2ChoiceUI.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Card/Ingame/Unit Cards/A2Unit.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Card/Ingame/Unit Cards/A2Unit.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Card/Ingame/Unit Cards/UnitCard.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Card/Ingame/Unit Cards/UnitCard.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/In game/Comander Inherence Skill/FastChargerSkill.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/In game/Comander Inherence Skill/FastChargerSkill.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/In game/Comander Inherence Skill/InherenceSkill.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/In game/Comander Inherence Skill/InherenceSkill.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scripts/In game/Commander.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/In game/Commander.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scripts/Manager/GameManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Manager/GameManager.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scripts/Manager/MainMenuManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Manager/MainMenuManager.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Manager/ResourceManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Manager/ResourceManager.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Sprites/CharacterEffectSprites/Cleaning robot/Cl_Name.png.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Sprites/CharacterEffectSprites/Cleaning robot/Cl_Name.png.meta" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Sprites/InherenceSkillUI/광자 보호막_스킬.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Sprites/InherenceSkillUI/광자 보호막_스킬.png.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Sprites/InherenceSkillUI/급속 충전기_스킬.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Sprites/InherenceSkillUI/급속 충전기_스킬.png.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Sprites/InherenceSkillUI/긴급호출_스킬.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Sprites/InherenceSkillUI/긴급호출_스킬.png.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Manager/Singleton.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Manager/Singleton.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Manager/TurnManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Manager/TurnManager.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ProjectSettings/EditorBuildSettings.asset" beforeDir="false" afterPath="$PROJECT_DIR$/ProjectSettings/EditorBuildSettings.asset" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -246,7 +246,7 @@
       <workItem from="1688736227333" duration="3732000" />
       <workItem from="1688741765422" duration="8062000" />
       <workItem from="1688803382976" duration="29117000" />
-      <workItem from="1688886940110" duration="34545000" />
+      <workItem from="1688886940110" duration="40487000" />
     </task>
     <servers />
   </component>

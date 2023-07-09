@@ -66,7 +66,14 @@ public class SingletonPunCallbacks<T> : MonoBehaviourPunCallbacks where T : Sing
 
     protected virtual void Awake()
     {
-        instance = (T)this;
+        if (instance != null)
+        {
+            Destroy(gameObject);
+        }
+        else
+        {
+            instance = (T)this;
+        }
     }
 
     protected virtual void OnDestroy()
