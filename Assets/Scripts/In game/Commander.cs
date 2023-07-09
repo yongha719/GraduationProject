@@ -28,6 +28,8 @@ public class Commander : MonoBehaviourPun, IPunObservable
 
     [SerializeField] private EInherenceSkillType inherenceSkillType;
 
+    [SerializeField] private GameObject inherenceSkillParent;
+
     [SerializeField] private Image commanderImage;
 
     public bool CanAttackThis => CardManager.Instance.PlayerUnitCards.Count == 0;
@@ -39,11 +41,11 @@ public class Commander : MonoBehaviourPun, IPunObservable
         commanderImage = GetComponent<Image>();
 
         TurnManager.Instance.FirstTurnAction += Init;
-        
+
         if (isEnemy)
             return;
-        
-        var skill = transform.GetChild(0).gameObject.AddComponent(Type.GetType($"{inherenceSkillType}Skill"));
+
+        var skill = inherenceSkillParent.AddComponent(Type.GetType($"{inherenceSkillType}Skill"));
 
         if (skill is InherenceSkill inherenceSkill)
         {
@@ -56,9 +58,9 @@ public class Commander : MonoBehaviourPun, IPunObservable
         string spritePath;
 
         if (PhotonNetwork.IsMasterClient)
-            spritePath = isEnemy ? "Commander/Player_Female_Commader" : "Commander/Enemy_Male_Commader";
+            spritePath = isEnemy ? "Commander/Enemy_Female_Commader" : "Commander/Player_Male_Commader";
         else
-            spritePath = isEnemy ? "Commander/Enemy_Male_Commader" : "Commander/Player_Male_Commader";
+            spritePath = isEnemy ? "Commander/Enemy_Male_Commader" : "Commander/Player_Female_Commader";
 
         commanderImage.sprite = Resources.Load<Sprite>(spritePath);
     }

@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
-using UnityEngine.Serialization;
+using Photon.Pun;
 
 public class CostGaugeUI : MonoBehaviour
 {
@@ -42,7 +42,8 @@ public class CostGaugeUI : MonoBehaviour
         };
     }
 
-    private void CostGaugeChange()
+    [PunRPC]
+    public void CostGaugeChange()
     {
         var maxCost = GameManager.Instance.MaxCost;
         var cost = GameManager.Instance.Cost;
