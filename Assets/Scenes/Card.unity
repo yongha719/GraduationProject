@@ -318,6 +318,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   IsMine: 0
   Cards: []
+  spacing: 10
 --- !u!1 &44141131
 GameObject:
   m_ObjectHideFlags: 0
@@ -597,7 +598,7 @@ RectTransform:
   - {fileID: 66819808}
   - {fileID: 1512094842}
   m_Father: {fileID: 1473619506}
-  m_RootOrder: 5
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -805,11 +806,15 @@ MonoBehaviour:
   cardNames:
   - A1
   - A2
+  - A2
   - A4
   - A4
-  - A4
-  - A4
-  - A4
+  - B2
+  - B3
+  - B4
+  - B4
+  - C1
+  - C3
 --- !u!114 &214781209
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1245,7 +1250,7 @@ RectTransform:
   - {fileID: 522549573}
   - {fileID: 1944917938}
   m_Father: {fileID: 1473619506}
-  m_RootOrder: 4
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -1903,7 +1908,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1473619506}
-  m_RootOrder: 3
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &626475423
 GameObject:
@@ -2481,7 +2486,7 @@ MonoBehaviour:
     m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
     m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
     m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
-    m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
+    m_DisabledColor: {r: 1, g: 1, b: 1, a: 1}
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
   m_SpriteState:
@@ -2586,6 +2591,8 @@ MonoBehaviour:
   turnState: 0
   testTurnStateText: {fileID: 66819809}
   turnChangeButton: {fileID: 805898390}
+  turnFinishSprite: {fileID: 21300000, guid: a45c823d5a3b38e488c8ec15773ab2dd, type: 3}
+  enemyTurnSprite: {fileID: 21300000, guid: 4b3288156c27af74d9eb2853b9010f52, type: 3}
 --- !u!114 &831910252
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3266,7 +3273,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: -160.62628, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &1231272628
 MonoBehaviour:
@@ -3491,9 +3498,9 @@ Transform:
   - {fileID: 1635485361}
   - {fileID: 519420032}
   - {fileID: 1766464587}
-  - {fileID: 604856499}
   - {fileID: 478015932}
   - {fileID: 192736469}
+  - {fileID: 604856499}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -3733,6 +3740,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   IsMine: 0
   Cards: []
+  spacing: 10
 --- !u!1 &1635485359
 GameObject:
   m_ObjectHideFlags: 0

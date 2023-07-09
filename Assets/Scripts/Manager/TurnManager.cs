@@ -31,16 +31,19 @@ public class TurnManager : SingletonPunCallbacks<TurnManager>, IPunObservable
 
     public event Action<UnitCard> OnEnemySpawnAction;
 
-    public event Action OnPlayerTurnAction = () => {};
-    
-    public event Action OnTurnChangeAction = () => {};
- 
+    public event Action OnPlayerTurnAction = () => { };
+
+    public event Action OnTurnChangeAction = () => { };
+
     [SerializeField] private TextMeshProUGUI testTurnStateText;
 
     [SerializeField] private Button turnChangeButton;
 
-    [SerializeField] private static int playerTurnCount;
-    [SerializeField] private static int enemyTurnCount;
+    [SerializeField] private Sprite turnFinishSprite;
+    [SerializeField] private Sprite enemyTurnSprite;
+
+    private static int playerTurnCount;
+    private static int enemyTurnCount;
 
     private IEnumerator Start()
     {
@@ -72,6 +75,8 @@ public class TurnManager : SingletonPunCallbacks<TurnManager>, IPunObservable
         TurnState = PhotonNetwork.IsMasterClient ? TurnState.PlayerTurn : TurnState.EnemyTurn;
 
         turnChangeButton.interactable = MyTurn;
+        turnChangeButton.image.sprite = MyTurn ? turnFinishSprite : enemyTurnSprite;
+
         testTurnStateText.text = TurnState.ToString();
 
         playerDeck.CardDraw(3);
@@ -100,7 +105,7 @@ public class TurnManager : SingletonPunCallbacks<TurnManager>, IPunObservable
 
         // 나중에 턴 전환시 액션 넣을 예정
         testTurnStateText.text = TurnState.ToString();
-        
+
         if (MyTurn)
         {
             OnPlayerTurnAction();
@@ -108,7 +113,7 @@ public class TurnManager : SingletonPunCallbacks<TurnManager>, IPunObservable
         }
         else
             enemyTurnCount++;
-        
+
         OnTurnChangeAction();
 
         yield return null;
@@ -122,6 +127,7 @@ public class TurnManager : SingletonPunCallbacks<TurnManager>, IPunObservable
         TurnState = MyTurn ? TurnState.EnemyTurn : TurnState.PlayerTurn;
 
         turnChangeButton.interactable = MyTurn;
+        turnChangeButton.image.sprite = MyTurn ? turnFinishSprite : enemyTurnSprite;
     }
 
     /// <summary> 턴이 시작했을 때 </summary>

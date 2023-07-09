@@ -9,6 +9,7 @@ using UnityEngine;
 
 /// <summary>인게임에서 덱에 있는 카드의 레이아웃 </summary>
 [AddComponentMenu("MyComponent/Card Deck Layout", int.MinValue)]
+[ExecuteAlways]
 public class CardDeckLayout : MonoBehaviourPunCallbacks, IPunObservable
 {
     private readonly Vector3 leftPosition = new Vector3(-220, -30, 0);
@@ -26,17 +27,19 @@ public class CardDeckLayout : MonoBehaviourPunCallbacks, IPunObservable
     /// 이런식으로 경로를 정의함
     private string CardPath => "Cards/In Game Card";
 
-    [SerializeField]
-    private int childCount;
+    [SerializeField] private int childCount;
 
     private void Start()
     {
+        if (Application.isPlaying == false)
+            return;
+
         IsMine = photonView.ViewID == (int)PhotonViewType.PlayerDeck;
 
         if (IsMine)
         {
             CardManager.Instance.CardDraw += () => CardDraw();
-            CardManager.Instance.CardDrawToName = (name, isTest, parent ) => CardDraw(name, isTest, parent);
+            CardManager.Instance.CardDrawToName += CardDraw;
         }
         else
             CardManager.Instance.EnemyCardDraw += () => CardDraw();
@@ -50,29 +53,28 @@ public class CardDeckLayout : MonoBehaviourPunCallbacks, IPunObservable
 #endif
     }
 
-    public void CardDraw(int count, bool istest = false)
+    public GameObject CardDraw(bool isTest = false, bool isUnit = true)
+    {
+        return CardDraw(CardManager.Instance.GetRandomCardName(), isTest, isUnit);
+    }
+
+    public void CardDraw(int count, bool isTest = false)
     {
         for (int i = 0; i < count; i++)
-            CardDraw(istest);
+            CardDraw(isTest);
     }
 
-    // 테스트 카드 소환
-    public GameObject CardDraw(bool isTest = false)
-    {
-        return CardDraw(CardManager.Instance.GetRandomCardName(), isTest);
-    }
-
-    public GameObject CardDraw(string name, bool isTest = false, Transform parent = null)
+    public GameObject CardDraw(string name, bool isTest = false, bool isUnit = true, bool setParentAsDeck = true)
     {
         var cardObj = PhotonNetwork.Instantiate(CardPath, Vector2.zero, Quaternion.identity);
 
         PhotonView cardPhotonView = cardObj.GetPhotonView();
 
         if (isTest)
-            SetCardAndParentRPC(cardPhotonView.ViewID, name, parent);
+            SetCardAndParentRPC(cardPhotonView.ViewID, name, isUnit, setParentAsDeck);
         else
             photonView.RPC(nameof(SetCardAndParentRPC), RpcTarget.AllBuffered,
-                cardPhotonView.ViewID, name, parent);
+                cardPhotonView.ViewID, name, isUnit, setParentAsDeck);
 
         return cardObj;
     }
@@ -83,21 +85,38 @@ public class CardDeckLayout : MonoBehaviourPunCallbacks, IPunObservable
     /// RPC 호출이라 다른 개체에서는 어떤 개체인지 모르기 때문에
     /// viewId로 찾아야 하기 때문에 인자로 넘겨줘야함
     [PunRPC]
-    private void SetCardAndParentRPC(int cardViewId, string cardName, Transform parent = null)
+    private void SetCardAndParentRPC(int cardViewId, string cardName, bool isUnit = true, bool setParentAsDeck = true)
     {
         PhotonView cardPhotonView = PhotonManager.GetPhotonView(cardViewId);
 
-        PhotonView parentPhotonView =
-            PhotonManager.GetPhotonViewByType(cardPhotonView.IsMine
+        PhotonView parentPhotonView;
+
+        if (setParentAsDeck)
+        {
+            parentPhotonView = PhotonManager.GetPhotonViewByType(cardPhotonView.IsMine
                 ? PhotonViewType.PlayerDeck
                 : PhotonViewType.EnemyDeck);
+        }
+        else
+        {
+            parentPhotonView = PhotonManager.GetPhotonViewByType(cardPhotonView.IsMine
+                ? PhotonViewType.PlayerField
+                : PhotonViewType.EnemyField);
+        }
 
         cardPhotonView.gameObject.name = cardName;
 
-        var cardType = cardPhotonView.gameObject.AddComponent(Type.GetType($"{cardName}Unit"));
+        Component cardType = null;
+
+        if (isUnit)
+            cardType = cardPhotonView.gameObject.AddComponent(Type.GetType($"{cardName}Unit"));
+        else
+            cardType = cardPhotonView.gameObject.AddComponent(Type.GetType($"{cardName}Masic"));
 
         if (cardType is Card card)
-            card.Init(cardName, parent == null ? parentPhotonView.transform : parent);
+        {
+            card.Init(cardName, parentPhotonView.transform);
+        }
     }
 
     private void OnTransformChildrenChanged()
@@ -135,7 +154,7 @@ public class CardDeckLayout : MonoBehaviourPunCallbacks, IPunObservable
 
             if (transform.childCount >= 4)
             {
-                float curve = Mathf.Sqrt(Mathf.Pow(0.5f, 2f) - Mathf.Pow(lerpValue[i] - 0.5f, 2)) * 80f;
+                float curve = Mathf.Sqrt(0.25f - Mathf.Pow(lerpValue[i] - 0.5f, 2)) * 80f;
                 targetPos.y += curve;
                 targetRos = Quaternion.Slerp(leftRotation, rightRotation, lerpValue[i]);
             }

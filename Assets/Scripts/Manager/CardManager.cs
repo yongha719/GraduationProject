@@ -13,7 +13,8 @@ public class CardManager : SingletonPunCallbacks<CardManager>, IPunObservable
     public List<IUnitCardSubject> EnemyUnitCards = new(10);
 
     public Action CardDraw = () => { };
-    public Func<string, bool, Transform, GameObject> CardDrawToName;
+    public event Func<string, bool, bool, bool, GameObject> CardDrawToName;
+    
     public Action EnemyCardDraw = () => { };
 
     [Tooltip("카드 데이터들"), SerializedDictionary("Card Rating", "Card Data")]
@@ -67,6 +68,11 @@ public class CardManager : SingletonPunCallbacks<CardManager>, IPunObservable
         return cardName;
     }
 
+    public static GameObject CardDrawCall(string name, bool isTest, bool isUnit , bool setParentAsDeck)
+    {
+       return Instance.CardDrawToName(name, isTest, isUnit, setParentAsDeck);
+    }
+
     public void AddUnitCard<T>(T card) where T : UnitCard, IUnitCardSubject
     {
         if (card.IsEnemy)
@@ -92,7 +98,7 @@ public class CardManager : SingletonPunCallbacks<CardManager>, IPunObservable
         else
             PlayerUnitCards.Remove(card);
 
-        card.Destroy();
+        CardDestroy(card);
     }
 
     public void HandleCards(bool myTurn)
@@ -113,6 +119,14 @@ public class CardManager : SingletonPunCallbacks<CardManager>, IPunObservable
     public void AttackEnemyCards(int damage)
     {
         EnemyUnitCards.ForEach(card => card.Hit(damage));
+    }
+
+    private void CardDestroy(UnitCard unitCard)
+    {
+        unitCard.gameObject.SetActive(false);
+        
+        if(!unitCard.IsEnemy)
+            PhotonNetwork.Destroy(unitCard.gameObject);
     }
 
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)

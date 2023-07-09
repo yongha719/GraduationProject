@@ -71,10 +71,8 @@ public class CardInfo : MonoBehaviourPun
         // 카드가 유닛카드와 마법카드가 있어서 이렇게 했음
         if (card is UnitCard unitCard)
         {
-            print("card is Unitcard");
             unitCard.OnSetHpChange += hp =>
             {
-                print("hp Change");
                 fieldHpText.text = hp.ToString();
             };
         }
@@ -85,13 +83,11 @@ public class CardInfo : MonoBehaviourPun
             deckPowerText.gameObject.SetActive(false);
         }
 
-        print("card info init");
-
         IsEnemy = !photonView.IsMine;
 
         gameObject.name = name + (IsEnemy ? "_Enemy" : "_Player");
 
-        var sprites = ResourceManager.GetCardSprites(name);
+        var sprites = ResourceManager.GetUnitCardSprites(name);
 
         deckCardSprite = sprites.deck;
         fieldCardSprite = sprites.field;

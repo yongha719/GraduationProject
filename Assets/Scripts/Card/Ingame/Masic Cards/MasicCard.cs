@@ -6,19 +6,13 @@ using Unity.VisualScripting;
 using UnityEngine;
 
 
-public enum MasicAbilityTarget
-{
-    Field,
-    Ally,
-    Enemy,
-}
+
 
 public class MasicCard : Card, IMasicCardSubject
 {
-    public virtual MasicAbilityTarget AbilityTarget { get; }
+    public virtual MasicAbilityTarget AbilityTarget { get; protected set; }
 
     private RaycastHit2D[] raycastHits = new RaycastHit2D[10];
-
 
     private bool CheckAbilityTargetConditionsAndExecuteAttack(Collider2D collider)
     {

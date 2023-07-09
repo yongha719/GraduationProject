@@ -6,42 +6,66 @@ using UnityEngine.Networking;
 
 public class ResourceManager : Singleton<ResourceManager>
 {
-    [Tooltip("유닛 카드 데이터 받아올 스프레드시트 링크")]
-    private const string UNIT_CARD_DATA_URL =
+    [Tooltip("유닛 카드 데이터 받아올 스프레드시트 링크")] private const string UNIT_CARD_DATA_URL =
         "https://docs.google.com/spreadsheets/d/1uZHW4YokPwbg9gl0dDWcIjlWeieUlkiMwRk_PvQCPWU/export?format=tsv&range=A3:J16";
 
-    [Tooltip("마법 카드 데이터 받아올 스프레드시트 링크")]
-    private const string MASIC_CARD_DATA_URL =
-    "https://docs.google.com/spreadsheets/d/1uZHW4YokPwbg9gl0dDWcIjlWeieUlkiMwRk_PvQCPWU/export?format=tsv&range=A20:F28";
+    [Tooltip("마법 카드 데이터 받아올 스프레드시트 링크")] private const string MASIC_CARD_DATA_URL =
+        "https://docs.google.com/spreadsheets/d/1uZHW4YokPwbg9gl0dDWcIjlWeieUlkiMwRk_PvQCPWU/export?format=tsv&range=A20:F28";
 
     [SerializedDictionary("유닛 카드 등급", "유닛 카드 데이터")]
     private SerializedDictionary<string, UnitCardData> unitCardDatas = new();
+
     private SerializedDictionary<string, UnitCardData> masicCardDatas = new();
 
 
-    private const string CARD_DECK_TEXTURES = "Cards/Sprite/Deck";
-    private const string CARD_FIELD_TEXTURES = "Cards/Sprite/Field";
+    private const string UNIT_CARD_DECK_TEXTURES = "Cards/UnitSprite/Deck";
+    private const string UNIT_CARD_FIELD_TEXTURES = "Cards/UnitSprite/Field";
 
-    private static SerializedDictionary<string, (Texture2D deck, Texture2D field)> cardTextures = new();
+    private const string MASIC_CARD_FIELD_TEXTURES = "Cards/MasicSprite";
+
+    [SerializedDictionary("Card Rating", "Card Sprites")]
+    private static SerializedDictionary<string, (Sprite deck, Sprite field)> unitCardSprites = new(10);
+
+    private static SerializedDictionary<string, Sprite> masicCardSprites = new();
 
     protected override void Awake()
     {
         LoadUnitCardSprites();
+        LoadMasicCardSprite();
     }
 
     private void LoadUnitCardSprites()
     {
-        var deckTextures = Resources.LoadAll<Texture2D>(CARD_DECK_TEXTURES);
-        var fieldTextures = Resources.LoadAll<Texture2D>(CARD_FIELD_TEXTURES);
+        var deckTextures = Resources.LoadAll<Texture2D>(UNIT_CARD_DECK_TEXTURES);
+        var fieldTextures = Resources.LoadAll<Texture2D>(UNIT_CARD_FIELD_TEXTURES);
 
         for (int i = 0; i < deckTextures.Length; i++)
         {
             var cardRating = deckTextures[i].name.Split('_')[0];
 
-            cardTextures.Add(cardRating, (deckTextures[i], fieldTextures[i]));
-        }
+            Rect rect = new Rect(0, 0, deckTextures[i].width, deckTextures[i].height);
+            Sprite deck = Sprite.Create(deckTextures[i], rect, new Vector2(0.5f, 0.5f));
 
-        print(cardTextures.Count);
+            rect = new Rect(0, 0, fieldTextures[i].width, fieldTextures[i].height);
+            Sprite field = Sprite.Create(fieldTextures[i], rect, new Vector2(0.5f, 0.5f));
+
+            unitCardSprites.Add(cardRating, (deck, field));
+        }
+    }
+
+    private void LoadMasicCardSprite()
+    {
+        var deckTextures = Resources.LoadAll<Texture2D>(MASIC_CARD_FIELD_TEXTURES);
+
+        for (int i = 0; i < deckTextures.Length; i++)
+        {
+            var cardRating = deckTextures[i].name.Split('_')[0];
+
+            Rect rect = new Rect(0, 0, deckTextures[i].width, deckTextures[i].height);
+            Sprite sprite = Sprite.Create(deckTextures[i], rect, new Vector2(0.5f, 0.5f));
+
+            masicCardSprites.Add(cardRating, sprite);
+        }
     }
 
     public async Task<SerializedDictionary<string, UnitCardData>> AsyncRequestCardData()
@@ -89,23 +113,31 @@ public class ResourceManager : Singleton<ResourceManager>
     /// </summary>
     /// <param name="cardName"></param>
     /// <returns></returns>
-    public static (Sprite deck, Sprite field) GetCardSprites(string cardName)
+    public static (Sprite deck, Sprite field) GetUnitCardSprites(string cardName)
     {
-        (Texture2D deckTexture, Texture2D fieldTexture) textures = (null, null);
+        (Sprite deckTexture, Sprite fieldTexture) sprites = (null, null);
 
-        if (cardTextures.TryGetValue(cardName, out textures) == false)
+        if (unitCardSprites.TryGetValue(cardName, out sprites) == false)
         {
-            Debug.Assert(false, $"Method : {nameof(GetCardSprites)}\n cardName({cardName})이 이상함");
+            Debug.Assert(false, $"Method : {nameof(GetUnitCardSprites)}\n cardName({cardName})이 이상함");
 
             return (null, null);
         }
 
-        Rect rect = new Rect(0, 0, textures.deckTexture.width, textures.deckTexture.height);
-        Sprite deck = Sprite.Create(textures.deckTexture, rect, new Vector2(0.5f, 0.5f));
+        return sprites;
+    }
 
-        rect = new Rect(0, 0, textures.fieldTexture.width, textures.fieldTexture.height);
-        Sprite field = Sprite.Create(textures.fieldTexture, rect, new Vector2(0.5f, 0.5f));
+    public static Sprite GetMasicCardSprites(string cardName)
+    {
+        Sprite sprite = null;
 
-        return (deck, field);
+        if (masicCardSprites.TryGetValue(cardName, out sprite) == false)
+        {
+            Debug.Assert(false, $"Method : {nameof(GetMasicCardSprites)}\n cardName({cardName})이 이상함");
+
+            return null;
+        }
+
+        return sprite;
     }
 }

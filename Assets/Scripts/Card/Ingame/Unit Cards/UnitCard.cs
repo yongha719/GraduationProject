@@ -9,8 +9,7 @@ public class UnitCard : Card, IUnitCardSubject
 {
     public UnitCardData CardData;
 
-    [SerializeField]
-    private int hp = 1;
+    [SerializeField] private int hp = 1;
 
     public virtual int Hp
     {
@@ -37,8 +36,7 @@ public class UnitCard : Card, IUnitCardSubject
     public bool CanAttack =>
         IsEnemy == false && CardState == CardState.Field && TurnManager.Instance.MyTurn && isAttackableTurn;
 
-    [SerializeField]
-    protected bool isAttackableTurn = false;
+    [SerializeField] protected bool isAttackableTurn = false;
 
     public bool HasSpecialAbility => CardData.UnitCardSpecialAbilityType != UnitCardSpecialAbilityType.None;
 
@@ -71,11 +69,9 @@ public class UnitCard : Card, IUnitCardSubject
     {
         base.Start();
 
-
         hp = CardData.Hp;
 
         boxCollider = GetComponent<BoxCollider2D>();
-
 
         enableAttackCall = () =>
             TurnManager.Instance.ExecuteAfterTurn(1,
@@ -92,12 +88,6 @@ public class UnitCard : Card, IUnitCardSubject
 
         if (CardData.UnitCardSpecialAbilityType == UnitCardSpecialAbilityType.Charge)
             isAttackableTurn = true;
-        else
-            TurnManager.Instance.ExecuteAfterTurn(1, call: () =>
-            {
-                isAttackableTurn = true;
-                print($"now can attack  {isAttackableTurn}");
-            });
     }
 
     private void Update()
@@ -143,6 +133,7 @@ public class UnitCard : Card, IUnitCardSubject
                 {
                     boxCollider.size *= 0.6667f;
                 }
+
                 break;
             case CardState.ExpansionDeck:
                 if (IsEnemy == false)
@@ -154,8 +145,17 @@ public class UnitCard : Card, IUnitCardSubject
                 // 덱에 있는 카드를 눌렀을 때 커지는 모션
                 break;
             case CardState.Field:
+                cardDragAndDrop.ShadowEnable = false;
+
                 cardInfo.OnFieldStateChange();
 
+                TurnManager.Instance.ExecuteAfterTurn(1, call: () =>
+                {
+                    isAttackableTurn = true;
+                    print($"{name} : now can attack  [{isAttackableTurn}]");
+                });
+
+                rect.anchoredPosition3D += Vector3.forward;
                 rect.localScale = Vector3.one * 0.6f;
                 break;
         }
@@ -164,14 +164,14 @@ public class UnitCard : Card, IUnitCardSubject
 
     /// <summary> 이 카드를 공격할 수 있는지 확인 </summary>
     /// 이 메서드는 플레이어의 적 카드의 개체에서 호출됨
-    public bool CanAttackThisCard()
+    public bool CanAttackThisCard(UnitCard card)
     {
         if (IsEnemy == false) return false;
 
         // 이 카드가 적이고 필드에 도발 카드를 가지고 있는지 확인
         // 도발 카드가 없거나 이 카드가 도발 카드일 때 공격 가능
         if (CardManager.Instance.HasEnemyTauntCard)
-            return CardData.UnitCardSpecialAbilityType == UnitCardSpecialAbilityType.Taunt;
+            return card.CardData.UnitCardSpecialAbilityType == UnitCardSpecialAbilityType.Taunt;
 
         return true;
     }
@@ -230,16 +230,23 @@ public class UnitCard : Card, IUnitCardSubject
 
     protected override void OnDrop()
     {
-        if (CardState == CardState.Field && CanAttack == false)
-            return;
+        if (CardState == CardState.Field)
+        {
+            if (CanAttack == false)
+                return;
 
-        if (CanvasUtility.IsDropMyField())
+            Attack();
+        }
+
+        if (cardState != CardState.Field && CanvasUtility.IsDropMyField())
             MoveCardFromDeckToField();
     }
 
     protected override void Attack()
     {
         if (CanAttack == false) return;
+
+        print("Attack");
 
         Vector2 worldPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
 
@@ -249,13 +256,12 @@ public class UnitCard : Card, IUnitCardSubject
         {
             if (hit.collider is null ||
                 hit.collider.TryGetComponent(out UnitCard enemyCard) == false ||
-                enemyCard.CanAttackThisCard() == false)
+                enemyCard.CanAttackThisCard(enemyCard) == false)
                 continue;
 
             BasicAttack(enemyCard);
             enableAttackCall();
         }
-
     }
 
     protected virtual void MoveCardFromDeckToField()
@@ -272,12 +278,13 @@ public class UnitCard : Card, IUnitCardSubject
         var parentView = PhotonManager.GetFieldPhotonView(photonView.IsMine);
         CardState = CardState.Field;
 
+        cardDragAndDrop.ShadowEnable = false;
+
         rect.SetParent(parentView.transform);
     }
 
     public override void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
     {
-
     }
 
     #endregion
