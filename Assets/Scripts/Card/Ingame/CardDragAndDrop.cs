@@ -24,9 +24,9 @@ public class CardDragAndDrop : MonoBehaviourPun, IBeginDragHandler, IDragHandler
         set => card.CardState = value;
     }
 
-    private Vector2 originPos;
-    public Vector2 OriginPos => originPos; 
-    
+    private Vector3 originPos;
+    public Vector3 OriginPos => originPos;
+
     [Tooltip("덱 레이아웃이 회전값")] public Quaternion layoutRot;
 
     [Tooltip("클릭했을때 마우스 포인터와 카드 중앙에서의 거리")]
@@ -62,8 +62,8 @@ public class CardDragAndDrop : MonoBehaviourPun, IBeginDragHandler, IDragHandler
     public void Init()
     {
         card = GetComponent<Card>();
-        
-        if(isEnemy)
+
+        if (isEnemy)
             ShadowEnable = false;
     }
 
@@ -168,12 +168,12 @@ public class CardDragAndDrop : MonoBehaviourPun, IBeginDragHandler, IDragHandler
         // 왼쪽 버튼으로 드래그 시작했을때 원래 포지션 저장과 마우스 포인터와 거리도 저장
         if (eventData.button == PointerEventData.InputButton.Left)
         {
-            originPos = rectTransform.anchoredPosition;
-            mousePosDistance = originPos - CanvasUtility.GetMousePosToCanvasPos();
+            originPos = rectTransform.anchoredPosition3D;
+            mousePosDistance = originPos - (Vector3)CanvasUtility.GetMousePosToCanvasPos();
 
             // 드래그 할 때는 카드가 돌아가 있으면 안됨
             layoutRot = transform.localRotation;
-            transform.localRotation = Quaternion.identity;
+            rectTransform.localRotation = Quaternion.identity;
         }
     }
 
@@ -186,7 +186,7 @@ public class CardDragAndDrop : MonoBehaviourPun, IBeginDragHandler, IDragHandler
         {
             Vector2 mousePos = CanvasUtility.GetMousePosToCanvasPos();
 
-            rectTransform.anchoredPosition = mousePosDistance + mousePos;
+            rectTransform.anchoredPosition3D = mousePosDistance + mousePos;
         }
     }
 
@@ -198,18 +198,19 @@ public class CardDragAndDrop : MonoBehaviourPun, IBeginDragHandler, IDragHandler
 
         // 다시 돌아가
         transform.localRotation = cardState != CardState.Field ? layoutRot : Quaternion.identity;
-        rectTransform.anchoredPosition = originPos;
+        rectTransform.anchoredPosition3D = originPos;
     }
 
     void IDropHandler.OnDrop(PointerEventData eventData)
     {
         if (CanDrag == false) return;
-        
+
         hasExpansionCard = false;
         OnDrop();
 
         // TODO : 여기서 코스트 감소
-        if (GameManager.Instance.CheckCardCostAvailability((uint)card.Cost, out Action costDecrease) == false && cardState != CardState.Field)
+        if (GameManager.Instance.CheckCardCostAvailability((uint)card.Cost, out Action costDecrease) == false &&
+            cardState != CardState.Field)
             return;
 
         costDecrease();

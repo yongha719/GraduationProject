@@ -20,11 +20,12 @@ public class ResourceManager : Singleton<ResourceManager>
 
     private const string UNIT_CARD_DECK_TEXTURES = "Cards/UnitSprite/Deck";
     private const string UNIT_CARD_FIELD_TEXTURES = "Cards/UnitSprite/Field";
-    
+
     private const string MASIC_CARD_FIELD_TEXTURES = "Cards/MasicSprite";
 
     [SerializedDictionary("Card Rating", "Card Sprites")]
     private static SerializedDictionary<string, (Sprite deck, Sprite field)> unitCardSprites = new(10);
+
     private static SerializedDictionary<string, Sprite> masicCardSprites = new();
 
     protected override void Awake()
@@ -55,7 +56,7 @@ public class ResourceManager : Singleton<ResourceManager>
     private void LoadMasicCardSprite()
     {
         var deckTextures = Resources.LoadAll<Texture2D>(MASIC_CARD_FIELD_TEXTURES);
-        
+
         for (int i = 0; i < deckTextures.Length; i++)
         {
             var cardRating = deckTextures[i].name.Split('_')[0];
@@ -112,17 +113,31 @@ public class ResourceManager : Singleton<ResourceManager>
     /// </summary>
     /// <param name="cardName"></param>
     /// <returns></returns>
-    public static (Sprite deck, Sprite field) GetCardSprites(string cardName)
+    public static (Sprite deck, Sprite field) GetUnitCardSprites(string cardName)
     {
-        (Sprite deckTexture, Sprite fieldTexture) textures = (null, null);
+        (Sprite deckTexture, Sprite fieldTexture) sprites = (null, null);
 
-        if (unitCardSprites.TryGetValue(cardName, out textures) == false)
+        if (unitCardSprites.TryGetValue(cardName, out sprites) == false)
         {
-            Debug.Assert(false, $"Method : {nameof(GetCardSprites)}\n cardName({cardName})이 이상함");
+            Debug.Assert(false, $"Method : {nameof(GetUnitCardSprites)}\n cardName({cardName})이 이상함");
 
             return (null, null);
         }
-        
-        return textures;
+
+        return sprites;
+    }
+
+    public static Sprite GetMasicCardSprites(string cardName)
+    {
+        Sprite sprite = null;
+
+        if (masicCardSprites.TryGetValue(cardName, out sprite) == false)
+        {
+            Debug.Assert(false, $"Method : {nameof(GetMasicCardSprites)}\n cardName({cardName})이 이상함");
+
+            return null;
+        }
+
+        return sprite;
     }
 }

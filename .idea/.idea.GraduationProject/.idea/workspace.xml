@@ -6,45 +6,18 @@
   <component name="ChangeListManager">
     <list default="true" id="84fda498-b201-4473-bfed-18288e513613" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.GraduationProject/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.GraduationProject/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Resources/Cards/Sprite.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Resources/Cards/Sprite/Deck.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Resources/Cards/Sprite/Deck/A1_BaekYura_Deck.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Resources/Cards/Sprite/Deck/A1_BaekYura_Deck.png.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Resources/Cards/Sprite/Deck/A2_YooEunha_Deck.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Resources/Cards/Sprite/Deck/A2_YooEunha_Deck.png.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Resources/Cards/Sprite/Deck/A4_KangSebin_Deck.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Resources/Cards/Sprite/Deck/A4_KangSebin_Deck.png.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Resources/Cards/Sprite/Deck/B3_Yuki_Deck.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Resources/Cards/Sprite/Deck/B3_Yuki_Deck.png.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Resources/Cards/Sprite/Deck/B4_HanSeorin_Deck.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Resources/Cards/Sprite/Deck/B4_HanSeorin_Deck.png.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Resources/Cards/Sprite/Deck/C1_LeeSooha_Deck.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Resources/Cards/Sprite/Deck/C1_LeeSooha_Deck.png.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Resources/Cards/Sprite/Deck/C2_Endy_deck.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Resources/Cards/Sprite/Deck/C2_Endy_deck.png.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Resources/Cards/Sprite/Deck/C3_cleaningrobot_Deck.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Resources/Cards/Sprite/Deck/C3_cleaningrobot_Deck.png.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Resources/Cards/Sprite/Field.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Resources/Cards/Sprite/Field/A1_BaekYura_Field.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Resources/Cards/Sprite/Field/A1_BaekYura_Field.png.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Resources/Cards/Sprite/Field/A2_BaekYura_Field.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Resources/Cards/Sprite/Field/A2_BaekYura_Field.png.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Resources/Cards/Sprite/Field/A4_KangSebin_Field.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Resources/Cards/Sprite/Field/A4_KangSebin_Field.png.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Resources/Cards/Sprite/Field/B3_Yuki_Field.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Resources/Cards/Sprite/Field/B3_Yuki_Field.png.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Resources/Cards/Sprite/Field/B4_HanSeorin_Field.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Resources/Cards/Sprite/Field/B4_HanSeorin_Field.png.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Resources/Cards/Sprite/Field/C1_LeeSooha_Field.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Resources/Cards/Sprite/Field/C1_LeeSooha_Field.png.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Resources/Cards/Sprite/Field/C2_Endy_Field.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Resources/Cards/Sprite/Field/C2_Endy_Field.png.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Resources/Cards/Sprite/Field/C3_cleaningrobot_Field.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Resources/Cards/Sprite/Field/C3_cleaningrobot_Field.png.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Resources/Cards/Sprite/card_list_BaekYura.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Resources/Cards/Sprite/card_list_BaekYura.png.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scenes/Card.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/Card.unity" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Card/Ingame/CardDragAndDrop.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Card/Ingame/CardDragAndDrop.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Card/Ingame/CardInfo.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Card/Ingame/CardInfo.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scripts/Card/Ingame/Masic Cards/MasicCard.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Card/Ingame/Masic Cards/MasicCard.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Card/Ingame/Unit Cards/B2Unit.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Card/Ingame/Unit Cards/B2Unit.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Card/Ingame/Unit Cards/B3Unit.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Card/Ingame/Unit Cards/B3Unit.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Card/Ingame/Unit Cards/C1Unit.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Card/Ingame/Unit Cards/C1Unit.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Card/Ingame/Unit Cards/UnitCard.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Card/Ingame/Unit Cards/UnitCard.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Manager/CardManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Manager/CardManager.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scripts/Manager/ResourceManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Manager/ResourceManager.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Manager/TurnManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Manager/TurnManager.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Utility/CardDeckLayout.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Utility/CardDeckLayout.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -90,7 +63,9 @@
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/e8a406da998549af9a2680936c7da25a159c00/a7/9debc696/MonoBehaviour.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/d44b17e136d09081da1e8fd0e8c83fde60e11818b9f2442d7ed8cb733fae895e/System.Collections.Generic.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Card/Ingame/CardInfo.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/Scripts/Card/Ingame/Masic Cards/M1Masic.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Card/Ingame/Masic Cards/MasicCard.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/Scripts/Card/Ingame/Masic Cards/MasicCardData.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Card/Ingame/Unit Cards/A2ChoiceUI.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Card/Ingame/Unit Cards/A4Unit.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Card/Ingame/Unit Cards/B1Unit.cs" root0="FORCE_HIGHLIGHTING" />
@@ -117,31 +92,31 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;TODO_SCOPE&quot;: &quot;모든 위치&quot;,
-    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
-    &quot;XThreadsFramesViewSplitterKey&quot;: &quot;0.3371758&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
-    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;reference.settingsdialog.IDE.editor.colors.언어 디폴트 값&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "TODO_SCOPE": "모든 위치",
+    "WebServerToolWindowFactoryState": "false",
+    "XThreadsFramesViewSplitterKey": "0.3371758",
+    "git-widget-placeholder": "Yongha",
+    "ignore.virus.scanning.warn.message": "true",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "settings.editor.selected.configurable": "reference.settingsdialog.IDE.editor.colors.언어 디폴트 값",
+    "vue.rearranger.settings.migration": "true"
   },
-  &quot;keyToStringList&quot;: {
-    &quot;rider.external.source.directories&quot;: [
-      &quot;C:\\Users\\user\\AppData\\Roaming\\JetBrains\\Rider2023.1\\resharper-host\\DecompilerCache&quot;,
-      &quot;C:\\Users\\user\\AppData\\Roaming\\JetBrains\\Rider2023.1\\resharper-host\\SourcesCache&quot;,
-      &quot;C:\\Users\\user\\AppData\\Local\\Symbols\\src&quot;
+  "keyToStringList": {
+    "rider.external.source.directories": [
+      "C:\\Users\\user\\AppData\\Roaming\\JetBrains\\Rider2023.1\\resharper-host\\DecompilerCache",
+      "C:\\Users\\user\\AppData\\Roaming\\JetBrains\\Rider2023.1\\resharper-host\\SourcesCache",
+      "C:\\Users\\user\\AppData\\Local\\Symbols\\src"
     ]
   }
-}</component>
+}]]></component>
   <component name="ReadonlyStatusHandler">
     <option name="SHOW_DIALOG" value="false" />
   </component>
@@ -155,7 +130,7 @@
       <method v="2" />
     </configuration>
     <configuration name="독립실행형 플레이어" type="RunUnityExe" factoryName="Unity Executable">
-      <option name="EXE_PATH" value="$PROJECT_DIR$/../../Build/졸작/23_07_07/GraduationProject.exe" />
+      <option name="EXE_PATH" value="$PROJECT_DIR$/../../Build/졸작/23_07_09\GraduationProject.exe" />
       <option name="PROGRAM_PARAMETERS" value="" />
       <option name="WORKING_DIRECTORY" value="E:\Build\졸작\2023_05_21" />
       <option name="PASS_PARENT_ENVS" value="1" />
@@ -263,7 +238,7 @@
       <workItem from="1688736227333" duration="3732000" />
       <workItem from="1688741765422" duration="8062000" />
       <workItem from="1688803382976" duration="29117000" />
-      <workItem from="1688886940110" duration="9606000" />
+      <workItem from="1688886940110" duration="20141000" />
     </task>
     <servers />
   </component>

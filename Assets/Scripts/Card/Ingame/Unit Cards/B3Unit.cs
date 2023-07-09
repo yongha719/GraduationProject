@@ -43,20 +43,14 @@ public class B3Unit : UnitCard
         var enemyDamage = enemyCard.Damage;
 
         // 중앙으로 갔다가
-        yield return EMoveToTarget(centerPos, 1f);
-        print("중앙");
+        yield return EMoveToTarget(startPos, 0.4f);
+        print("원래 위치");
 
         // 상대한테 공격
         yield return EMoveToTarget(enemyPos, 0.5f);
         print("공격");
 
         enemyCard.Hit(Damage);
-        
-        
-
-        //다시 중앙으로 감
-        yield return EMoveToTarget(centerPos, 0.5f);
-        print("중앙");
 
         // 원래 위치로
         yield return EMoveToTarget(startPos, 0.5f);

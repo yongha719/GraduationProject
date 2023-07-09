@@ -804,10 +804,17 @@ MonoBehaviour:
   CardDatas:
     _serializedList: []
   cardNames:
+  - A1
+  - A2
+  - A2
   - A4
   - A4
+  - B2
   - B3
+  - B4
+  - B4
   - C1
+  - C3
 --- !u!114 &214781209
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2479,7 +2486,7 @@ MonoBehaviour:
     m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
     m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
     m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
-    m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
+    m_DisabledColor: {r: 1, g: 1, b: 1, a: 1}
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
   m_SpriteState:
@@ -2584,6 +2591,8 @@ MonoBehaviour:
   turnState: 0
   testTurnStateText: {fileID: 66819809}
   turnChangeButton: {fileID: 805898390}
+  turnFinishSprite: {fileID: 21300000, guid: a45c823d5a3b38e488c8ec15773ab2dd, type: 3}
+  enemyTurnSprite: {fileID: 21300000, guid: 4b3288156c27af74d9eb2853b9010f52, type: 3}
 --- !u!114 &831910252
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2884,7 +2893,7 @@ MonoBehaviour:
   PlayerName: 
   IsTest: 0
   IsPlayerInvincibility: 0
-  cost: 54
+  cost: 3
   maxCost: 3
 --- !u!114 &1018583212
 MonoBehaviour:
@@ -3264,7 +3273,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: -160.62628, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &1231272628
 MonoBehaviour:

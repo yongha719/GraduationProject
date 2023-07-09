@@ -5,7 +5,6 @@ using UnityEngine;
 public class B2Unit : UnitCard
 {
     // 맹독 공격이 특성임
-
     protected override void BasicAttack(UnitCard enemyCard)
     {
         base.BasicAttack(enemyCard);

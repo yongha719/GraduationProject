@@ -146,7 +146,7 @@ public class UnitCard : Card, IUnitCardSubject
                 break;
             case CardState.Field:
                 cardDragAndDrop.ShadowEnable = false;
-                
+
                 cardInfo.OnFieldStateChange();
 
                 TurnManager.Instance.ExecuteAfterTurn(1, call: () =>
@@ -155,6 +155,7 @@ public class UnitCard : Card, IUnitCardSubject
                     print($"{name} : now can attack  [{isAttackableTurn}]");
                 });
 
+                rect.anchoredPosition3D += Vector3.forward;
                 rect.localScale = Vector3.one * 0.6f;
                 break;
         }
@@ -237,7 +238,7 @@ public class UnitCard : Card, IUnitCardSubject
             Attack();
         }
 
-        if (CanvasUtility.IsDropMyField())
+        if (cardState != CardState.Field && CanvasUtility.IsDropMyField())
             MoveCardFromDeckToField();
     }
 

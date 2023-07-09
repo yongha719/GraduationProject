@@ -87,7 +87,7 @@ public class CardInfo : MonoBehaviourPun
 
         gameObject.name = name + (IsEnemy ? "_Enemy" : "_Player");
 
-        var sprites = ResourceManager.GetCardSprites(name);
+        var sprites = ResourceManager.GetUnitCardSprites(name);
 
         deckCardSprite = sprites.deck;
         fieldCardSprite = sprites.field;

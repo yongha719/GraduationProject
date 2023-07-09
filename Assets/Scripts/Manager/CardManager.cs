@@ -13,7 +13,8 @@ public class CardManager : SingletonPunCallbacks<CardManager>, IPunObservable
     public List<IUnitCardSubject> EnemyUnitCards = new(10);
 
     public Action CardDraw = () => { };
-    public Func<string, bool, bool, GameObject> CardDrawToName;
+    public event Func<string, bool, bool, bool, GameObject> CardDrawToName;
+    
     public Action EnemyCardDraw = () => { };
 
     [Tooltip("카드 데이터들"), SerializedDictionary("Card Rating", "Card Data")]
@@ -65,6 +66,11 @@ public class CardManager : SingletonPunCallbacks<CardManager>, IPunObservable
         MyDeckNames.RemoveAt(randomIndex);
 
         return cardName;
+    }
+
+    public static GameObject CardDrawCall(string name, bool isTest, bool isUnit , bool setParentAsDeck)
+    {
+       return Instance.CardDrawToName(name, isTest, isUnit, setParentAsDeck);
     }
 
     public void AddUnitCard<T>(T card) where T : UnitCard, IUnitCardSubject
