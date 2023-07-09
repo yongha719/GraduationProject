@@ -665,6 +665,7 @@ MonoBehaviour:
   IsPlayerInvincibility: 0
   cost: 3
   maxCost: 3
+  CommanderInherenceSkillType: 0
 --- !u!4 &401516146
 Transform:
   m_ObjectHideFlags: 0
@@ -673,7 +674,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 401516144}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1034.8792, y: 998.56616, z: -12.823874}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1008,7 +1009,6 @@ MonoBehaviour:
   title: {fileID: 1970814596}
   quitBtn: {fileID: 39441903}
   inherenceSkillUI: {fileID: 609915155}
-  inherenceSkillType: 0
   deckOrganizationButton: {fileID: 1583239847}
   deckOrganizationUI: {fileID: 1951099032}
   deckOrganizationQuitBtn: {fileID: 994358402}

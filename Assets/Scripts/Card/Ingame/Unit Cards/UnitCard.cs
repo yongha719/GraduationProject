@@ -53,6 +53,8 @@ public class UnitCard : Card, IUnitCardSubject
         set => isAttackableTurn = !value;
     }
 
+    protected event Action OnFieldChangeAction = (() => {});
+
     private RaycastHit2D[] raycastHits = new RaycastHit2D[10];
 
     private BoxCollider2D boxCollider;
@@ -147,6 +149,7 @@ public class UnitCard : Card, IUnitCardSubject
             case CardState.Field:
                 cardDragAndDrop.ShadowEnable = false;
 
+                OnFieldChangeAction();
                 cardInfo.OnFieldStateChange();
 
                 TurnManager.Instance.ExecuteAfterTurn(1, call: () =>

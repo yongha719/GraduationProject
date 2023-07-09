@@ -106,6 +106,4 @@ public class GameManager : SingletonPunCallbacks<GameManager>, IPunObservable
             EnemyMaxCost = (uint)(int)stream.PeekNext();
         }
     }
-    
-    
 }

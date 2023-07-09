@@ -35,6 +35,8 @@ public class TurnManager : SingletonPunCallbacks<TurnManager>, IPunObservable
 
     public event Action OnTurnChangeAction = () => { };
 
+    public event Action FirstTurnAction = () => { };
+
     [SerializeField] private TextMeshProUGUI testTurnStateText;
 
     [SerializeField] private Button turnChangeButton;
@@ -79,6 +81,8 @@ public class TurnManager : SingletonPunCallbacks<TurnManager>, IPunObservable
 
         testTurnStateText.text = TurnState.ToString();
 
+        FirstTurnAction();
+        
         playerDeck.CardDraw(3);
 
         if (MyTurn)

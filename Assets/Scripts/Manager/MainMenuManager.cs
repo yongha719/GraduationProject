@@ -61,11 +61,13 @@ public class MainMenuManager : MonoBehaviour
             allSkillButtonList[a].onClick.AddListener(() =>
             {
                GameManager.Instance.CommanderInherenceSkillType = (EInherenceSkillType)a;
-               
-                foreach (var item in selectProduction)
-                    item.gameObject.SetActive(false);
-                
-                selectProduction[a].gameObject.SetActive(true);
+
+               for (var index = 0; index < selectProduction.Count; index++)
+               {
+                   selectProduction[index].gameObject.SetActive(false);
+               }
+
+               selectProduction[a].gameObject.SetActive(true);
 
                 selectedSkillUI.gameObject.SetActive(false);
 
