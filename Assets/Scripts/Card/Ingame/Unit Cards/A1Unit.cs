@@ -7,7 +7,7 @@ using UnityEngine;
 
 public class A1Unit : UnitCard
 {
-    protected override void MoveCardFromDeckToField()
+    public override void MoveCardFromDeckToField()
     {
         base.MoveCardFromDeckToField();
 

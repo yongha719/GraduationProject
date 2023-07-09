@@ -47,12 +47,20 @@ public class TurnManager : SingletonPunCallbacks<TurnManager>, IPunObservable
     private static int playerTurnCount;
     private static int enemyTurnCount;
 
+    private const string MY_TURN_CHANGE_ACTION_PATH = "Effect/MyTurnProduction";
+    private GameObject myTurnChangeAction;
+
     private IEnumerator Start()
     {
         playerDeck = PhotonManager.GetPhotonViewByType(PhotonViewType.PlayerDeck).GetComponent<CardDeckLayout>();
         enemyDeck = PhotonManager.GetPhotonViewByType(PhotonViewType.EnemyDeck).GetComponent<CardDeckLayout>();
 
         turnChangeButton.onClick.AddListener(TurnChange);
+
+        myTurnChangeAction = Resources.Load<GameObject>(MY_TURN_CHANGE_ACTION_PATH);
+        myTurnChangeAction = Instantiate(myTurnChangeAction, Vector3.zero, Quaternion.identity);
+
+        myTurnChangeAction.SetActive(false);
 
         yield return WaitTurn(2);
 
@@ -112,6 +120,7 @@ public class TurnManager : SingletonPunCallbacks<TurnManager>, IPunObservable
 
         if (MyTurn)
         {
+            myTurnChangeAction.SetActive(true);
             OnPlayerTurnAction();
             playerTurnCount++;
         }

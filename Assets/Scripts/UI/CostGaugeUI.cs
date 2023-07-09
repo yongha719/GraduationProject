@@ -34,6 +34,8 @@ public class CostGaugeUI : MonoBehaviour
         // Test
         CostGaugeChange();
 
+        GameManager.Instance.CostGaugeChange = CostGaugeChange;
+
         TurnManager.Instance.OnTurnChangeAction += () =>
         {
             print("Cost UI");

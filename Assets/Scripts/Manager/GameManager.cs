@@ -51,7 +51,7 @@ public class GameManager : SingletonPunCallbacks<GameManager>, IPunObservable
 
     public EInherenceSkillType CommanderInherenceSkillType = EInherenceSkillType.None;
 
-    public CostGaugeUI costGaugeUI;
+    public Action CostGaugeChange;
 
     private GameObject LogCanvas;
 
@@ -92,7 +92,7 @@ public class GameManager : SingletonPunCallbacks<GameManager>, IPunObservable
     {
         MaxCost++;
         Cost = MaxCost;
-        costGaugeUI.CostGaugeChange();
+        CostGaugeChange();
     }
 
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)

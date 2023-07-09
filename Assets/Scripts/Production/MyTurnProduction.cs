@@ -7,7 +7,7 @@ public class MyTurnProduction : MonoBehaviour
 {
     private float smallingTime = 0.5f;
 
-    private void Start()
+    private void OnEnable()
     {
         StartCoroutine(ISmalling());
     }
@@ -33,8 +33,7 @@ public class MyTurnProduction : MonoBehaviour
             yield return null;
         }
 
-        Destroy(gameObject);
-        yield break;
+        gameObject.SetActive(false);
     }
 
 }
