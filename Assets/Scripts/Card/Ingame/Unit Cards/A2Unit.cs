@@ -31,7 +31,7 @@ public class A2Unit : UnitCard
     private UnitCard curHackedUnitCard;
 
 
-    protected override void MoveCardFromDeckToField()
+    public override void MoveCardFromDeckToField()
     {
         base.MoveCardFromDeckToField();
 
