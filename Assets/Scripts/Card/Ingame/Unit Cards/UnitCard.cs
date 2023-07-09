@@ -1,5 +1,6 @@
 using Photon.Pun;
 using System;
+using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
 
@@ -53,7 +54,19 @@ public class UnitCard : Card, IUnitCardSubject
         set => isAttackableTurn = !value;
     }
 
-    protected event Action OnFieldChangeAction = (() => {});
+    protected event Action OnFieldChangeAction = (() => { });
+
+    [Header("Effect")] 
+    
+    
+    private const string DAMAGE_EFFECT_PATH = "Effect/DamageEffect";
+    
+    [SerializeField] private DamageTextProduction damageEffect;
+
+    
+    private const string ILLUST_APPEAR_EFFECT_PATH = "Effect/DamageEffect";
+    [SerializeField] private CharacterProduction illustAppearEffect;
+
 
     private RaycastHit2D[] raycastHits = new RaycastHit2D[10];
 
@@ -70,6 +83,9 @@ public class UnitCard : Card, IUnitCardSubject
     protected override void Start()
     {
         base.Start();
+
+        damageEffect = Resources.Load<GameObject>(DAMAGE_EFFECT_PATH).GetComponent<DamageTextProduction>();
+        illustAppearEffect = Resources.Load<GameObject>(ILLUST_APPEAR_EFFECT_PATH).GetComponent<CharacterProduction>();
 
         hp = CardData.Hp;
 

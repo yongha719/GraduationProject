@@ -5,6 +5,7 @@ using Photon.Pun;
 using UnityEngine;
 using UnityEngine.UI;
 
+[SerializeField]
 public enum EInherenceSkillType
 {
     None,
@@ -17,7 +18,7 @@ public enum EInherenceSkillType
     End,
 }
 
-public abstract class InherenceSkill : MonoBehaviourPun, IPunObservable
+public abstract class InherenceSkill : MonoBehaviourPun
 {
     public abstract EInherenceSkillType InherenceSkillType { get; }
 
@@ -56,16 +57,4 @@ public abstract class InherenceSkill : MonoBehaviourPun, IPunObservable
     }
 
     protected abstract void Skill();
-
-    public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
-    {
-        if (isEnemy && stream.IsReading)
-        {
-            
-        }
-        else if (stream.IsWriting)
-        {
-            
-        }
-    }
 }

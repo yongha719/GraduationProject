@@ -22,14 +22,14 @@ public class Commander : MonoBehaviourPun, IPunObservable
         }
     }
 
-    [SerializeField] private bool isEnemy =false;
+    [SerializeField] private bool isEnemy = false;
 
     private bool isWin = true;
 
     [SerializeField] private EInherenceSkillType inherenceSkillType;
 
     [SerializeField] private Image commanderImage;
-    
+
     public bool CanAttackThis => CardManager.Instance.PlayerUnitCards.Count == 0;
 
     private void Start()
@@ -37,15 +37,18 @@ public class Commander : MonoBehaviourPun, IPunObservable
         inherenceSkillType = GameManager.Instance.CommanderInherenceSkillType;
 
         commanderImage = GetComponent<Image>();
-        
-       var skill =  transform.GetChild(0).gameObject.AddComponent(Type.GetType($"{inherenceSkillType}Skill"));
 
-       if (skill is InherenceSkill inherenceSkill)
-       {
-           inherenceSkill.isEnemy = isEnemy;
-       }
-       
         TurnManager.Instance.FirstTurnAction += Init;
+        
+        if (isEnemy)
+            return;
+        
+        var skill = transform.GetChild(0).gameObject.AddComponent(Type.GetType($"{inherenceSkillType}Skill"));
+
+        if (skill is InherenceSkill inherenceSkill)
+        {
+            inherenceSkill.isEnemy = isEnemy;
+        }
     }
 
     private void Init()
@@ -59,7 +62,7 @@ public class Commander : MonoBehaviourPun, IPunObservable
 
         commanderImage.sprite = Resources.Load<Sprite>(spritePath);
     }
-    
+
     [PunRPC]
     private void GameOver()
     {
@@ -78,11 +81,9 @@ public class Commander : MonoBehaviourPun, IPunObservable
     {
         if (stream.IsWriting)
         {
-            
         }
         else if (stream.IsReading && isEnemy)
         {
-            
         }
     }
 }

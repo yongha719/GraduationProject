@@ -13,11 +13,6 @@ public class DamageTextProduction : MonoBehaviour
     [SerializeField] private Image damageImg;
     [SerializeField] private Image healingImg;
 
-    private void Start()
-    {
-        SetDamage(5);
-    }
-
     public void SetDamage(int damage, bool isHeal = false)
     {
         if (isHeal == false)
