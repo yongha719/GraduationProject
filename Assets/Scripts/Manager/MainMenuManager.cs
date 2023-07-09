@@ -1,20 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using TMPro;
 
-public enum EInherenceSkillType
-{
-    PhotonShield,//광자 보호막
-    PistolShot,//권총 발사
-    Barrier,//방벽
-    EmergencyCall,//긴급호출
-    ChangeMood,//분위기 전환
-    FastCharger,//급속충전기
-    End,
-}
 
 public class MainMenuManager : MonoBehaviour
 {
@@ -23,8 +14,6 @@ public class MainMenuManager : MonoBehaviour
     public GameObject quitBtn;
     public GameObject inherenceSkillUI;
 
-
-    public EInherenceSkillType inherenceSkillType = EInherenceSkillType.PhotonShield;
 
     [Space(10f)]
     [Header("덱 편성 UIs")]
@@ -71,11 +60,11 @@ public class MainMenuManager : MonoBehaviour
             int a = i;
             allSkillButtonList[a].onClick.AddListener(() =>
             {
-                inherenceSkillType = (EInherenceSkillType)a;
-                for (int j = 0; j < selectProduction.Count; j++)
-                {
-                    selectProduction[j].gameObject.SetActive(false);
-                }
+               GameManager.Instance.CommanderInherenceSkillType = (EInherenceSkillType)a;
+               
+                foreach (var item in selectProduction)
+                    item.gameObject.SetActive(false);
+                
                 selectProduction[a].gameObject.SetActive(true);
 
                 selectedSkillUI.gameObject.SetActive(false);

@@ -6,9 +6,21 @@
   <component name="ChangeListManager">
     <list default="true" id="84fda498-b201-4473-bfed-18288e513613" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.GraduationProject/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.GraduationProject/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Font/GmarketSansTTFMedium SDF.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Font/GmarketSansTTFMedium SDF.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Resources/Cards/In Game Card.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Resources/Cards/In Game Card.prefab" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scenes/Card.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/Card.unity" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Card/Ingame/Unit Cards/C2Unit.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Card/Ingame/Unit Cards/C2Unit.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/In game/Commander.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/In game/Commander.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scripts/Manager/GameManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Manager/GameManager.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/UI/CostGaugeUI.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/UI/CostGaugeUI.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Manager/MainMenuManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Manager/MainMenuManager.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Manager/ResourceManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Manager/ResourceManager.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Sprites/CharacterEffectSprites/Cleaning robot/Cl_Name.png.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Sprites/CharacterEffectSprites/Cleaning robot/Cl_Name.png.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Sprites/InherenceSkillUI/광자 보호막_스킬.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Sprites/InherenceSkillUI/광자 보호막_스킬.png.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Sprites/InherenceSkillUI/급속 충전기_스킬.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Sprites/InherenceSkillUI/급속 충전기_스킬.png.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Sprites/InherenceSkillUI/긴급호출_스킬.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Sprites/InherenceSkillUI/긴급호출_스킬.png.meta" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -63,7 +75,11 @@
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Card/Ingame/Unit Cards/B2Unit.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Card/Ingame/Unit Cards/B3Unit.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Card/Ingame/Unit Cards/C2Unit.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/Scripts/In game/Comander Inherence Skill/EmergencyCallSkill.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/Scripts/In game/Comander Inherence Skill/InherenceSkill.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/Scripts/In game/Comander Inherence Skill/PhotonShieldSkill.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/In game/Commander.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/Scripts/Manager/GameInfo.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Manager/ResourceManager.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/UI/CostGaugeUI.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.ugui@1.0.0/Editor/UI/MenuOptions.cs" root0="SKIP_HIGHLIGHTING" />
@@ -122,7 +138,7 @@
       <method v="2" />
     </configuration>
     <configuration name="독립실행형 플레이어" type="RunUnityExe" factoryName="Unity Executable">
-      <option name="EXE_PATH" value="$PROJECT_DIR$/../../Build/졸작/23_07_09\GraduationProject.exe" />
+      <option name="EXE_PATH" value="$PROJECT_DIR$/../../Build/졸작/23_07_10\GraduationProject.exe" />
       <option name="PROGRAM_PARAMETERS" value="" />
       <option name="WORKING_DIRECTORY" value="E:\Build\졸작\2023_05_21" />
       <option name="PASS_PARENT_ENVS" value="1" />
@@ -230,7 +246,7 @@
       <workItem from="1688736227333" duration="3732000" />
       <workItem from="1688741765422" duration="8062000" />
       <workItem from="1688803382976" duration="29117000" />
-      <workItem from="1688886940110" duration="25939000" />
+      <workItem from="1688886940110" duration="34545000" />
     </task>
     <servers />
   </component>

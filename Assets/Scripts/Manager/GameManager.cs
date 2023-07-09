@@ -46,8 +46,10 @@ public class GameManager : SingletonPunCallbacks<GameManager>, IPunObservable
     }
 
     public uint EnemyCost { get; private set; }
-    
+
     public uint EnemyMaxCost { get; private set; }
+
+    public EInherenceSkillType CommanderInherenceSkillType = EInherenceSkillType.None;
 
     private GameObject LogCanvas;
 
@@ -55,12 +57,13 @@ public class GameManager : SingletonPunCallbacks<GameManager>, IPunObservable
     {
         base.Awake();
 
-        LogCanvas = FindObjectOfType<LogManager>().gameObject;
+        LogCanvas = FindObjectOfType<LogManager>()?.gameObject;
     }
 
     private void Start()
     {
-        TurnManager.Instance.OnPlayerTurnAction += IncreaseCost;
+        if (TurnManager.Instance != null)
+            TurnManager.Instance.OnPlayerTurnAction += IncreaseCost;
     }
 
     private void Update()
@@ -103,4 +106,6 @@ public class GameManager : SingletonPunCallbacks<GameManager>, IPunObservable
             EnemyMaxCost = (uint)(int)stream.PeekNext();
         }
     }
+    
+    
 }

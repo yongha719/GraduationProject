@@ -25,7 +25,7 @@ public class ResourceManager : Singleton<ResourceManager>
 
     [SerializedDictionary("Card Rating", "Card Sprites")]
     private static SerializedDictionary<string, (Sprite deck, Sprite field)> unitCardSprites = new(10);
-
+    
     private static SerializedDictionary<string, Sprite> masicCardSprites = new();
 
     protected override void Awake()
@@ -36,35 +36,26 @@ public class ResourceManager : Singleton<ResourceManager>
 
     private void LoadUnitCardSprites()
     {
-        var deckTextures = Resources.LoadAll<Texture2D>(UNIT_CARD_DECK_TEXTURES);
-        var fieldTextures = Resources.LoadAll<Texture2D>(UNIT_CARD_FIELD_TEXTURES);
+        var deckTextures = Resources.LoadAll<Sprite>(UNIT_CARD_DECK_TEXTURES);
+        var fieldTextures = Resources.LoadAll<Sprite>(UNIT_CARD_FIELD_TEXTURES);
 
         for (int i = 0; i < deckTextures.Length; i++)
         {
             var cardRating = deckTextures[i].name.Split('_')[0];
-
-            Rect rect = new Rect(0, 0, deckTextures[i].width, deckTextures[i].height);
-            Sprite deck = Sprite.Create(deckTextures[i], rect, new Vector2(0.5f, 0.5f));
-
-            rect = new Rect(0, 0, fieldTextures[i].width, fieldTextures[i].height);
-            Sprite field = Sprite.Create(fieldTextures[i], rect, new Vector2(0.5f, 0.5f));
-
-            unitCardSprites.Add(cardRating, (deck, field));
+            
+            unitCardSprites.Add(cardRating, (deckTextures[i], fieldTextures[i]));
         }
     }
 
     private void LoadMasicCardSprite()
     {
-        var deckTextures = Resources.LoadAll<Texture2D>(MASIC_CARD_FIELD_TEXTURES);
+        var deckTextures = Resources.LoadAll<Sprite>(MASIC_CARD_FIELD_TEXTURES);
 
         for (int i = 0; i < deckTextures.Length; i++)
         {
             var cardRating = deckTextures[i].name.Split('_')[0];
-
-            Rect rect = new Rect(0, 0, deckTextures[i].width, deckTextures[i].height);
-            Sprite sprite = Sprite.Create(deckTextures[i], rect, new Vector2(0.5f, 0.5f));
-
-            masicCardSprites.Add(cardRating, sprite);
+            
+            masicCardSprites.Add(cardRating, deckTextures[i]);
         }
     }
 
