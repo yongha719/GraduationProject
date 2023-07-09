@@ -46,7 +46,10 @@ public class GameManager : SingletonPunCallbacks<GameManager>, IPunObservable
     }
 
     public uint EnemyCost { get; private set; }
+
     public uint EnemyMaxCost { get; private set; }
+
+    public EInherenceSkillType CommanderInherenceSkillType = EInherenceSkillType.None;
 
     private GameObject LogCanvas;
 
@@ -54,12 +57,13 @@ public class GameManager : SingletonPunCallbacks<GameManager>, IPunObservable
     {
         base.Awake();
 
-        LogCanvas = FindObjectOfType<LogManager>().gameObject;
+        LogCanvas = FindObjectOfType<LogManager>()?.gameObject;
     }
 
     private void Start()
     {
-        TurnManager.Instance.OnPlayerTurnAction += IncreaseCost;
+        if (TurnManager.Instance != null)
+            TurnManager.Instance.OnPlayerTurnAction += IncreaseCost;
     }
 
     private void Update()
@@ -97,9 +101,11 @@ public class GameManager : SingletonPunCallbacks<GameManager>, IPunObservable
         }
         else
         {
-            // uint 로 변환하려면 이렇게 해야댐 포톤에서 
+            // uint 로 변환하려면 이렇게 해야댐 object에서 uint로 안되는듯 포톤에서 오류남
             EnemyCost = (uint)(int)stream.PeekNext();
             EnemyMaxCost = (uint)(int)stream.PeekNext();
         }
     }
+    
+    
 }

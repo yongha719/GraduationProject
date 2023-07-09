@@ -24,7 +24,6 @@ public class CostGaugeUI : MonoBehaviour
     [Tooltip("코스트 게이지칸"), SerializeField]
     private List<GameObject> costGaugeParts = new(10);
 
-    private List<GameObject> curCostGaugeParts = new(10);
 
     [Tooltip("코스트 게이지칸 배경"), SerializeField]
     private List<GameObject> costGaugeBackgroundParts = new(10);
