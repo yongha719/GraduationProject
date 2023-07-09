@@ -7,6 +7,13 @@ using UnityEngine;
 
 public class A1Unit : UnitCard
 {
+    protected override void MoveCardFromDeckToField()
+    {
+        base.MoveCardFromDeckToField();
+
+        Instantiate(illustAppearEffect).GetComponent<CharacterProduction>().characterType = ECharacterType.Baekyura;
+    }
+
     protected override void BasicAttack(UnitCard enemyCard)
     {
         var enemyList = CardManager.Instance.EnemyUnitCards;

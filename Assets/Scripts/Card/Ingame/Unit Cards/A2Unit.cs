@@ -30,6 +30,14 @@ public class A2Unit : UnitCard
 
     private UnitCard curHackedUnitCard;
 
+
+    protected override void MoveCardFromDeckToField()
+    {
+        base.MoveCardFromDeckToField();
+
+        Instantiate(illustAppearEffect).GetComponent<CharacterProduction>().characterType = ECharacterType.Yooeunha;
+    }
+
     protected override void Start()
     {
         base.Start();

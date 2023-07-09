@@ -54,18 +54,18 @@ public class UnitCard : Card, IUnitCardSubject
         set => isAttackableTurn = !value;
     }
 
-    protected event Action OnFieldChangeAction = (() => { });
+    protected event Action OnFieldChangeAction = () => { };
 
-    [Header("Effect")] 
-    
-    
+    [Header("Effect")]
+
+
     private const string DAMAGE_EFFECT_PATH = "Effect/DamageEffect";
-    
+
     [SerializeField] private DamageTextProduction damageEffect;
 
-    
-    private const string ILLUST_APPEAR_EFFECT_PATH = "Effect/DamageEffect";
-    [SerializeField] private CharacterProduction illustAppearEffect;
+
+    private const string ILLUST_APPEAR_EFFECT_PATH = "Effect/IllustAppearEffect";
+    [SerializeField] protected GameObject illustAppearEffect;
 
 
     private RaycastHit2D[] raycastHits = new RaycastHit2D[10];
@@ -84,12 +84,22 @@ public class UnitCard : Card, IUnitCardSubject
     {
         base.Start();
 
-        damageEffect = Resources.Load<GameObject>(DAMAGE_EFFECT_PATH).GetComponent<DamageTextProduction>();
-        illustAppearEffect = Resources.Load<GameObject>(ILLUST_APPEAR_EFFECT_PATH).GetComponent<CharacterProduction>();
+        var damageEffectObj = Resources.Load<GameObject>(DAMAGE_EFFECT_PATH);
+        damageEffect = Instantiate(damageEffectObj, Vector3.zero, Quaternion.identity, rect).GetComponent<DamageTextProduction>();
+
+        damageEffect.gameObject.SetActive(false);
+
+        illustAppearEffect = Resources.Load<GameObject>(ILLUST_APPEAR_EFFECT_PATH);
 
         hp = CardData.Hp;
 
         boxCollider = GetComponent<BoxCollider2D>();
+
+        cardDragAndDrop.OnDropAfterFieldAction += () =>
+        {
+            if (cardState != CardState.Field && CanvasUtility.IsDropMyField())
+                MoveCardFromDeckToField();
+        };
 
         enableAttackCall = () =>
             TurnManager.Instance.ExecuteAfterTurn(1,
@@ -123,7 +133,18 @@ public class UnitCard : Card, IUnitCardSubject
             return;
 
         if (value > CardData.Hp)
+        {
+            hp = CardData.Hp;
             return;
+        }
+
+        damageEffect.gameObject.SetActive(true);
+
+        if (hp > value)
+            damageEffect.SetDamage(hp - value, false);
+        else
+            damageEffect.SetDamage(value - hp, true);
+
 
         hp = value;
 
@@ -256,16 +277,11 @@ public class UnitCard : Card, IUnitCardSubject
 
             Attack();
         }
-
-        if (cardState != CardState.Field && CanvasUtility.IsDropMyField())
-            MoveCardFromDeckToField();
     }
 
     protected override void Attack()
     {
         if (CanAttack == false) return;
-
-        print("Attack");
 
         Vector2 worldPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
 
@@ -283,7 +299,7 @@ public class UnitCard : Card, IUnitCardSubject
         }
     }
 
-    protected virtual void MoveCardFromDeckToField()
+    public virtual void MoveCardFromDeckToField()
     {
         if (GameManager.Instance.IsTest)
             MoveCardFromDeckToFieldRPC();

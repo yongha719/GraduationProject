@@ -1,5 +1,6 @@
 using Photon.Pun;
 using System;
+using System.Diagnostics.Tracing;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -9,7 +10,8 @@ public class CardDragAndDrop : MonoBehaviourPun, IBeginDragHandler, IDragHandler
 {
     public event Action OnEndDrag;
     public event Action OnDrop = () => { };
-
+    public event Action OnDropAfterFieldAction = () => { };
+         
     /// <summary> 드래그 가능한 상태인지 체크 </summary>
     public bool CanDrag => isEnemy == false && TurnManager.Instance.MyTurn;
 

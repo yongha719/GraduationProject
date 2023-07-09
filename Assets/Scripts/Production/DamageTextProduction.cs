@@ -13,6 +13,12 @@ public class DamageTextProduction : MonoBehaviour
     [SerializeField] private Image damageImg;
     [SerializeField] private Image healingImg;
 
+    private void Start()
+    {
+        var rect = transform as RectTransform;
+        rect.anchoredPosition3D = Vector3.zero;
+    }
+
     public void SetDamage(int damage, bool isHeal = false)
     {
         if (isHeal == false)
@@ -30,6 +36,7 @@ public class DamageTextProduction : MonoBehaviour
 
         StartCoroutine(IScaleBig());
     }
+
     private IEnumerator IScaleBig()
     {
         float current = 0;
@@ -62,7 +69,8 @@ public class DamageTextProduction : MonoBehaviour
 
             yield return null;
         }
-        yield break;
+
+        gameObject.SetActive(false);
     }
 
 }

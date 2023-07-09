@@ -367,7 +367,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &66819808
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1046,6 +1046,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isEnemy: 0
   inherenceSkillType: 3
+  inherenceSkillParent: {fileID: 1376426649}
   commanderImage: {fileID: 0}
 --- !u!1 &254001434
 GameObject:
@@ -3241,6 +3242,7 @@ MonoBehaviour:
   cost: 3
   maxCost: 3
   CommanderInherenceSkillType: 5
+  costGaugeUI: {fileID: 0}
 --- !u!114 &1018583212
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3753,6 +3755,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isEnemy: 1
   inherenceSkillType: 0
+  inherenceSkillParent: {fileID: 185046583}
   commanderImage: {fileID: 0}
 --- !u!1 &1376426649
 GameObject:
