@@ -92,7 +92,7 @@ public class CardManager : SingletonPunCallbacks<CardManager>, IPunObservable
         else
             PlayerUnitCards.Remove(card);
 
-        card.Destroy();
+        CardDestroy(card);
     }
 
     public void HandleCards(bool myTurn)
@@ -113,6 +113,14 @@ public class CardManager : SingletonPunCallbacks<CardManager>, IPunObservable
     public void AttackEnemyCards(int damage)
     {
         EnemyUnitCards.ForEach(card => card.Hit(damage));
+    }
+
+    private void CardDestroy(UnitCard unitCard)
+    {
+        unitCard.gameObject.SetActive(false);
+        
+        if(!unitCard.IsEnemy)
+            PhotonNetwork.Destroy(unitCard.gameObject);
     }
 
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)

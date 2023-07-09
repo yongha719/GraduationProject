@@ -4,50 +4,68 @@ using UnityEngine;
 
 public class B3Unit : UnitCard
 {
-    private Vector3 dropPos;
-    private Vector3 startPos;
+    [SerializeField] private Vector3 dropPos;
+    [SerializeField] private Vector3 startPos;
+
+    private Vector2 centerPos = new Vector2(960, 0);
 
     protected override void Start()
     {
         base.Start();
 
-        cardDragAndDrop.OnDrop += () => { dropPos = rect.anchoredPosition; };
+        cardDragAndDrop.OnDrop += () => dropPos = rect.anchoredPosition;
     }
 
     protected override void BasicAttack(UnitCard enemyCard)
     {
         enemyCard.Hit(Damage);
 
-        startPos = rect.anchoredPosition;
-        print("Start pos : " + startPos);
-        rect.anchoredPosition = dropPos;
+        if (enemyCard.gameObject.activeSelf == false)
+        {
+            Hit(enemyCard.Damage);
+            return;
+        }
+
+        startPos = cardDragAndDrop.OriginPos;
+
         // 여기에 두번 공격하는거
         StartCoroutine(EAttackAction(enemyCard));
     }
 
     private IEnumerator EAttackAction(UnitCard enemyCard)
     {
-        Vector3 enemyPos = new Vector2(-enemyCard.rect.anchoredPosition.x, 155);
+        Vector3 enemyPos = new Vector2(1920 - enemyCard.rect.anchoredPosition.x, 155);
+        print($"enemy pos : {enemyPos}");
 
         Vector2 localPosition;
 
+        // 밑에서 공격했을 때 enemy가 죽어서 null이 되면 참조를 못하기 때문에 캐싱해줌
+        var enemyDamage = enemyCard.Damage;
+
         // 중앙으로 갔다가
-        yield return EMoveToTarget(new Vector3(startPos.x, 0), 1f);
+        yield return EMoveToTarget(centerPos, 1f);
+        print("중앙");
 
         // 상대한테 공격
         yield return EMoveToTarget(enemyPos, 0.5f);
+        print("공격");
 
         enemyCard.Hit(Damage);
+        
+        
 
         //다시 중앙으로 감
-        yield return EMoveToTarget(new Vector3(startPos.x, 0), 0.5f);
+        yield return EMoveToTarget(centerPos, 0.5f);
+        print("중앙");
 
         // 원래 위치로
         yield return EMoveToTarget(startPos, 0.5f);
+        print("원래 위치");
 
         yield return new WaitForSeconds(0.4f);
+        print("맞음");
 
-        Hit(enemyCard.Damage);
+        Hit(enemyDamage);
     }
 
     private IEnumerator EMoveToTarget(Vector3 targetPos, float duration)

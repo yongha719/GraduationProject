@@ -685,7 +685,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   layoutRot: {x: 0, y: 0, z: 0, w: 0}
-  shadow: {fileID: 0}
 --- !u!114 &9101778247568541867
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -25,13 +25,20 @@ public class CardDragAndDrop : MonoBehaviourPun, IBeginDragHandler, IDragHandler
     }
 
     private Vector2 originPos;
+    public Vector2 OriginPos => originPos; 
+    
     [Tooltip("덱 레이아웃이 회전값")] public Quaternion layoutRot;
 
     [Tooltip("클릭했을때 마우스 포인터와 카드 중앙에서의 거리")]
     private Vector2 mousePosDistance;
 
     private RectTransform rectTransform;
-    public Shadow shadow;
+    private Shadow shadow;
+
+    public bool ShadowEnable
+    {
+        set => shadow.enabled = value;
+    }
 
     private Card card;
 
@@ -55,6 +62,9 @@ public class CardDragAndDrop : MonoBehaviourPun, IBeginDragHandler, IDragHandler
     public void Init()
     {
         card = GetComponent<Card>();
+        
+        if(isEnemy)
+            ShadowEnable = false;
     }
 
     private void OnMouseEnter()
@@ -196,6 +206,7 @@ public class CardDragAndDrop : MonoBehaviourPun, IBeginDragHandler, IDragHandler
         if (CanDrag == false) return;
         
         hasExpansionCard = false;
+        OnDrop();
 
         // TODO : 여기서 코스트 감소
         if (GameManager.Instance.CheckCardCostAvailability((uint)card.Cost, out Action costDecrease) == false && cardState != CardState.Field)
@@ -203,8 +214,6 @@ public class CardDragAndDrop : MonoBehaviourPun, IBeginDragHandler, IDragHandler
 
         costDecrease();
 
-        OnDrop();
-        
         if (cardState == CardState.Field)
             shadow.enabled = false;
     }

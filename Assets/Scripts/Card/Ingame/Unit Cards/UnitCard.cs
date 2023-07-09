@@ -88,12 +88,6 @@ public class UnitCard : Card, IUnitCardSubject
 
         if (CardData.UnitCardSpecialAbilityType == UnitCardSpecialAbilityType.Charge)
             isAttackableTurn = true;
-        else
-            TurnManager.Instance.ExecuteAfterTurn(1, call: () =>
-            {
-                isAttackableTurn = true;
-                print($"now can attack  {isAttackableTurn}");
-            });
     }
 
     private void Update()
@@ -151,7 +145,15 @@ public class UnitCard : Card, IUnitCardSubject
                 // 덱에 있는 카드를 눌렀을 때 커지는 모션
                 break;
             case CardState.Field:
+                cardDragAndDrop.ShadowEnable = false;
+                
                 cardInfo.OnFieldStateChange();
+
+                TurnManager.Instance.ExecuteAfterTurn(1, call: () =>
+                {
+                    isAttackableTurn = true;
+                    print($"{name} : now can attack  [{isAttackableTurn}]");
+                });
 
                 rect.localScale = Vector3.one * 0.6f;
                 break;
@@ -244,7 +246,7 @@ public class UnitCard : Card, IUnitCardSubject
         if (CanAttack == false) return;
 
         print("Attack");
-        
+
         Vector2 worldPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
 
         Physics2D.RaycastNonAlloc(worldPosition, Vector2.zero, raycastHits);
@@ -275,7 +277,7 @@ public class UnitCard : Card, IUnitCardSubject
         var parentView = PhotonManager.GetFieldPhotonView(photonView.IsMine);
         CardState = CardState.Field;
 
-        cardDragAndDrop.shadow.enabled = false;
+        cardDragAndDrop.ShadowEnable = false;
 
         rect.SetParent(parentView.transform);
     }
