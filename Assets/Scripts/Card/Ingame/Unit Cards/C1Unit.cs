@@ -17,10 +17,10 @@ public class C1Unit : UnitCard
     {
         var slibingindex = transform.GetSiblingIndex();
 
-        var leftC2 = CardManager.Instance.CardDrawToName("C2");
-        leftC2.transform.SetSiblingIndex(slibingindex == 0 ? 0 : slibingindex - 1);
+        //var leftC2 = CardManager.Instance.CardDrawToName("C2");
+        //leftC2.transform.SetSiblingIndex(slibingindex == 0 ? 0 : slibingindex - 1);
 
-        var rightC2 = CardManager.Instance.CardDrawToName("C2");
-        rightC2.transform.SetSiblingIndex(transform.GetSiblingIndex() + 1);
+        //var rightC2 = CardManager.Instance.CardDrawToName("C2");
+        //rightC2.transform.SetSiblingIndex(transform.GetSiblingIndex() + 1);
     }
 }

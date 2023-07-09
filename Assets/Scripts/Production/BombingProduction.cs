@@ -12,7 +12,10 @@ public class BombingProduction : MonoBehaviour
     [SerializeField] private Vector2 shadowEndPos;
 
     [SerializeField] private float shadowMoveTime;
-
+    private void Start()
+    {
+        
+    }
 
     public IEnumerator IStartBombing(Transform[] targets)
     {
