@@ -6,13 +6,45 @@
   <component name="ChangeListManager">
     <list default="true" id="84fda498-b201-4473-bfed-18288e513613" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.GraduationProject/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.GraduationProject/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Font/GmarketSansTTFMedium SDF.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Font/GmarketSansTTFMedium SDF.asset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Resources/Cards/In Game Card.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Resources/Cards/In Game Card.prefab" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scenes/Card.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/Card.unity" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Card/Ingame/CardDragAndDrop.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Card/Ingame/CardDragAndDrop.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Card/Ingame/Unit Cards/B3Unit.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Card/Ingame/Unit Cards/B3Unit.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Card/Ingame/Unit Cards/UnitCard.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Card/Ingame/Unit Cards/UnitCard.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Manager/CardManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Manager/CardManager.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Resources/Cards/Sprite.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Resources/Cards/Sprite/Deck.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Resources/Cards/Sprite/Deck/A1_BaekYura_Deck.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Resources/Cards/Sprite/Deck/A1_BaekYura_Deck.png.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Resources/Cards/Sprite/Deck/A2_YooEunha_Deck.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Resources/Cards/Sprite/Deck/A2_YooEunha_Deck.png.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Resources/Cards/Sprite/Deck/A4_KangSebin_Deck.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Resources/Cards/Sprite/Deck/A4_KangSebin_Deck.png.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Resources/Cards/Sprite/Deck/B3_Yuki_Deck.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Resources/Cards/Sprite/Deck/B3_Yuki_Deck.png.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Resources/Cards/Sprite/Deck/B4_HanSeorin_Deck.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Resources/Cards/Sprite/Deck/B4_HanSeorin_Deck.png.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Resources/Cards/Sprite/Deck/C1_LeeSooha_Deck.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Resources/Cards/Sprite/Deck/C1_LeeSooha_Deck.png.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Resources/Cards/Sprite/Deck/C2_Endy_deck.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Resources/Cards/Sprite/Deck/C2_Endy_deck.png.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Resources/Cards/Sprite/Deck/C3_cleaningrobot_Deck.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Resources/Cards/Sprite/Deck/C3_cleaningrobot_Deck.png.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Resources/Cards/Sprite/Field.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Resources/Cards/Sprite/Field/A1_BaekYura_Field.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Resources/Cards/Sprite/Field/A1_BaekYura_Field.png.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Resources/Cards/Sprite/Field/A2_BaekYura_Field.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Resources/Cards/Sprite/Field/A2_BaekYura_Field.png.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Resources/Cards/Sprite/Field/A4_KangSebin_Field.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Resources/Cards/Sprite/Field/A4_KangSebin_Field.png.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Resources/Cards/Sprite/Field/B3_Yuki_Field.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Resources/Cards/Sprite/Field/B3_Yuki_Field.png.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Resources/Cards/Sprite/Field/B4_HanSeorin_Field.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Resources/Cards/Sprite/Field/B4_HanSeorin_Field.png.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Resources/Cards/Sprite/Field/C1_LeeSooha_Field.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Resources/Cards/Sprite/Field/C1_LeeSooha_Field.png.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Resources/Cards/Sprite/Field/C2_Endy_Field.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Resources/Cards/Sprite/Field/C2_Endy_Field.png.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Resources/Cards/Sprite/Field/C3_cleaningrobot_Field.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Resources/Cards/Sprite/Field/C3_cleaningrobot_Field.png.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Resources/Cards/Sprite/card_list_BaekYura.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Resources/Cards/Sprite/card_list_BaekYura.png.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Card/Ingame/Masic Cards/MasicCard.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Card/Ingame/Masic Cards/MasicCard.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Manager/ResourceManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Manager/ResourceManager.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -231,7 +263,7 @@
       <workItem from="1688736227333" duration="3732000" />
       <workItem from="1688741765422" duration="8062000" />
       <workItem from="1688803382976" duration="29117000" />
-      <workItem from="1688886940110" duration="6418000" />
+      <workItem from="1688886940110" duration="9606000" />
     </task>
     <servers />
   </component>
