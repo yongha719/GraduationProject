@@ -14,20 +14,43 @@ public class A2ChoiceUI : MonoBehaviour
     private Action AttackCall;
     private Action HackingCall;
 
+    private bool selectType = false;
+    
+    [SerializeField] private Button attackTypeSelectButton;
+
+    [SerializeField] private GameObject SelectAttackObj;
     [SerializeField] private Button attackButton;
     [SerializeField] private Button hackingButton;
 
     
-    public void Init(A2Unit card, Action attackCall, Action hackingCall)
+    public void Init(A2Unit card)
     {
         Card = card;
-        AttackCall = attackCall;
-        HackingCall = hackingCall;
     }
 
     private void Start()
     {
-        attackButton.onClick.AddListener(() => AttackCall());
-        hackingButton.onClick.AddListener(() => HackingCall());
+        attackTypeSelectButton.onClick.AddListener(() =>
+        {
+            SelectAttackObj.SetActive(!selectType); 
+            selectType = !selectType;
+        });
+        
+        attackButton.onClick.AddListener(() =>
+        {
+            print("Attack");
+            attackTypeSelectButton.image.sprite = attackButton.image.sprite;
+            Card.AttackType = A2AttackType.BasicAttack;
+        });
+        
+        hackingButton.onClick.AddListener(() =>
+        {
+            print("Hacking");
+            attackTypeSelectButton.image.sprite = hackingButton.image.sprite;
+            Card.AttackType = A2AttackType.Hacking;
+        });
+
+        var rect = transform as RectTransform;
+        rect.anchoredPosition3D = Vector3.zero;
     }
 }

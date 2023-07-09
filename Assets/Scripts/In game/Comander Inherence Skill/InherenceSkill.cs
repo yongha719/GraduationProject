@@ -17,28 +17,31 @@ public enum EInherenceSkillType
     End,
 }
 
-public abstract class InherenceSkill : MonoBehaviourPun
+public abstract class InherenceSkill : MonoBehaviourPun, IPunObservable
 {
     public abstract EInherenceSkillType InherenceSkillType { get; }
+
+    public bool isEnemy;
 
     [SerializeField] private Button useSkillButton;
 
     private Sprite OriginSprite;
     private Sprite disableSprite;
-    
+
     protected Action enableAttackCall;
     protected bool useSkill;
 
     private void Start()
     {
         useSkillButton = GetComponent<Button>();
-        
-        useSkillButton.onClick.AddListener(Skill);
 
-        useSkillButton.image.sprite = Resources.Load<Sprite>($"InherenceSkill/{InherenceSkillType}_Skill");
+        OriginSprite = Resources.Load<Sprite>($"InherenceSkill/{InherenceSkillType}_Skill");
         disableSprite = Resources.Load<Sprite>($"InherenceSkill/Disable_Skill");
 
-        enableAttackCall = () => 
+        useSkillButton.onClick.AddListener(Skill);
+        useSkillButton.image.sprite = OriginSprite;
+
+        enableAttackCall = () =>
             TurnManager.Instance.ExecuteAfterTurn(1,
                 beforeTurnCall: () =>
                 {
@@ -53,4 +56,16 @@ public abstract class InherenceSkill : MonoBehaviourPun
     }
 
     protected abstract void Skill();
+
+    public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
+    {
+        if (isEnemy && stream.IsReading)
+        {
+            
+        }
+        else if (stream.IsWriting)
+        {
+            
+        }
+    }
 }
