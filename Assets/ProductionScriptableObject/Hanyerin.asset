@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b0a3575475f505348a891de475010ed3, type: 3}
+  m_Name: Hanyerin
+  m_EditorClassIdentifier: 
+  effectBackGround:
+  - {fileID: 21300000, guid: 43f5715f5a5977345bf8d45e33263847, type: 3}
+  - {fileID: 21300000, guid: 8b36aec3a7b2af34d9943f6248b764c1, type: 3}
+  - {fileID: 21300000, guid: 465d77b257311c04082d2e9573d80555, type: 3}
+  effectFront:
+  - {fileID: 21300000, guid: f6fa4da7d10c8ab4b8e68d15b6a32f6c, type: 3}
+  - {fileID: 21300000, guid: 88a722a45e897004784d6e2e4bde5c3d, type: 3}
+  - {fileID: 21300000, guid: ce1d249881332d64b87838602cff448e, type: 3}
+  illust: {fileID: 21300000, guid: 2b912dcd5a696d9479e3765b7bdf851b, type: 3}
+  illustBack: {fileID: 21300000, guid: 18f0400b01714c9499357c98a09bb861, type: 3}
+  characterName: {fileID: 21300000, guid: 461d9c1a7c7cfa040aebe4d7a04ae56b, type: 3}

@@ -14,6 +14,8 @@ public enum ECharacterType
     Leesooha,
     Yooeunha,
     Yuki,
+    Hanyerin,
+    Endy,
     End,
 }
 public class CharacterProduction : MonoBehaviour

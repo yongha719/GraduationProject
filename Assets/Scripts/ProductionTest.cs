@@ -41,6 +41,14 @@ public class ProductionTest : MonoBehaviour
         {
             SpawnAppearEffect(ECharacterType.Yooeunha);
         }
+        else if (Input.GetKeyDown(KeyCode.Alpha8))
+        {
+            SpawnAppearEffect(ECharacterType.Hanyerin);
+        }
+        else if (Input.GetKeyDown(KeyCode.Alpha9))
+        {
+            SpawnAppearEffect(ECharacterType.Endy);
+        }
         #endregion
         if (Input.GetKeyDown(KeyCode.Q))
         {
