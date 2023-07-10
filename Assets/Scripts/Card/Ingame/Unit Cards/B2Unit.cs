@@ -7,7 +7,7 @@ public class B2Unit : UnitCard
     public override void MoveCardFromDeckToField()
     {
         base.MoveCardFromDeckToField();
-
+        Instantiate(illustAppearEffect).GetComponent<CharacterProduction>().characterType = ECharacterType.Hanyerin;
         SoundManager.Instance.PlaySFXSound("Hanyerin");
     }
 

@@ -25,6 +25,8 @@ public class C3Unit : UnitCard
         {
             Hp = 1;
             isSurvivedOnce = true;
+            GameObject obj = (GameObject)Resources.Load("Effect/LastBreathEffect");
+            Instantiate(obj, transform.parent.parent.parent);
         }
         else
             base.Hit(damage);

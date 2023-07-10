@@ -39,6 +39,7 @@ public class SoundManager : Singleton<SoundManager>
         GameObject go = new GameObject(backGroundSoundClipDic[name] + "Sound");
         go.transform.parent = backGroundSoundObject;
         go.AddComponent<AudioSource>().PlayOneShot(backGroundSoundClipDic[name]);
+        go.GetComponent<AudioSource>().loop = true;
         playingBackGroundSound.Add(go);
     }
 
@@ -55,6 +56,13 @@ public class SoundManager : Singleton<SoundManager>
         DontDestroyOnLoad(gameObject);
     }
 
+    private void FixedUpdate()
+    {
+        if (Input.GetKeyDown(KeyCode.Alpha1))
+        {
+            PlaySFXSound("Baekyura");
+        }
+    }
 
 
     public void PlaySFXSound(string name)
