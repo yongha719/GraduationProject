@@ -87,7 +87,7 @@ public class TurnManager : SingletonPunCallbacks<TurnManager>, IPunObservable
         testTurnStateText.text = TurnState.ToString();
 
         FirstTurnAction();
-        
+
         playerDeck.CardDraw(3);
 
         if (MyTurn)
@@ -118,6 +118,8 @@ public class TurnManager : SingletonPunCallbacks<TurnManager>, IPunObservable
         if (MyTurn)
         {
             Instantiate(myTurnChangeAction, Vector3.zero, Quaternion.identity);
+            SoundManager.Instance.PlayDialogue(PhotonNetwork.IsMasterClient);
+
             OnPlayerTurnAction();
             playerTurnCount++;
         }

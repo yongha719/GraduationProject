@@ -14,6 +14,7 @@ public class B3Unit : UnitCard
         base.MoveCardFromDeckToField();
 
         Instantiate(illustAppearEffect).GetComponent<CharacterProduction>().characterType = ECharacterType.Yuki;
+        SoundManager.Instance.PlaySFXSound(ECharacterType.Yuki.ToString());
     }
 
     protected override void Start()

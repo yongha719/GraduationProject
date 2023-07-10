@@ -12,6 +12,7 @@ public class A1Unit : UnitCard
         base.MoveCardFromDeckToField();
 
         Instantiate(illustAppearEffect).GetComponent<CharacterProduction>().characterType = ECharacterType.Baekyura;
+        SoundManager.Instance.PlaySFXSound(ECharacterType.Baekyura.ToString());
     }
 
     protected override void BasicAttack(UnitCard enemyCard)

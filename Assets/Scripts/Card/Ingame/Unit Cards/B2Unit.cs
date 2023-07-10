@@ -4,6 +4,13 @@ using UnityEngine;
 
 public class B2Unit : UnitCard
 {
+    public override void MoveCardFromDeckToField()
+    {
+        base.MoveCardFromDeckToField();
+
+        SoundManager.Instance.PlaySFXSound("Hanyerin");
+    }
+
     // 맹독 공격이 특성임
     protected override void BasicAttack(UnitCard enemyCard)
     {

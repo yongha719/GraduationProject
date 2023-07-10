@@ -12,5 +12,6 @@ public class A4Unit : UnitCard
         base.MoveCardFromDeckToField();
 
         Instantiate(illustAppearEffect).GetComponent<CharacterProduction>().characterType = ECharacterType.Kangsebin;
+        SoundManager.Instance.PlaySFXSound(ECharacterType.Kangsebin.ToString());
     }
 }

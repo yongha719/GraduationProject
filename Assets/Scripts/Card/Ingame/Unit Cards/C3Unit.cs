@@ -12,6 +12,7 @@ public class C3Unit : UnitCard
         base.MoveCardFromDeckToField();
 
         Instantiate(illustAppearEffect).GetComponent<CharacterProduction>().characterType = ECharacterType.CleaningRobot;
+        SoundManager.Instance.PlaySFXSound(ECharacterType.CleaningRobot.ToString());
     }
 
     // 한번 버텼는지 체크

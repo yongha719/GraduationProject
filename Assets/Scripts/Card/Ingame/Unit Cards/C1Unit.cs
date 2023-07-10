@@ -10,6 +10,8 @@ public class C1Unit : UnitCard
         base.MoveCardFromDeckToField();
 
         Instantiate(illustAppearEffect).GetComponent<CharacterProduction>().characterType = ECharacterType.Leesooha;
+
+        SoundManager.Instance.PlaySFXSound(ECharacterType.Leesooha.ToString());
         Spawn();
     }
     
@@ -23,5 +25,7 @@ public class C1Unit : UnitCard
         var rightC2 = 
             CardManager.CardDrawCall("C2", isTest: false, isUnit: true, setParentAsDeck: false);
         rightC2.transform.SetSiblingIndex(transform.GetSiblingIndex() + 1);
+
+        SoundManager.Instance.PlaySFXSound("EndySpawn");
     }
 }

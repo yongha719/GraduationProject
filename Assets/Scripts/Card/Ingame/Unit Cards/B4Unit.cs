@@ -13,6 +13,7 @@ public class B4Unit : UnitCard
         base.MoveCardFromDeckToField();
 
         Instantiate(illustAppearEffect).GetComponent<CharacterProduction>().characterType = ECharacterType.Hanseorin;
+        SoundManager.Instance.PlaySFXSound(ECharacterType.Hanseorin.ToString());
     }
 
 
