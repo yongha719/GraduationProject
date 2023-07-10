@@ -20,18 +20,33 @@ public class HypothermiaProduction : MonoBehaviour
         float percent = 0;
         Color color = img.color;
 
-        while(percent < 1)
+        while (true)
         {
-            current += Time.deltaTime;
-            percent = current / loopTime;
-            color.a = Mathf.Lerp(0.75f, 0.25f, percent);
+            current = 0;
+            percent = 0;
 
+            while (percent < 1)
+            {
+                current += Time.deltaTime;
+                percent = current / loopTime;
+                color.a = Mathf.Lerp(0.75f, 0.25f, percent);
+                img.color = color;
+                yield return null;
+            }
 
+            current = 0;
+            percent = 0;
+
+            while(percent < 1)
+            {
+                current += Time.deltaTime;
+                percent = current / loopTime;
+                color.a = Mathf.Lerp(0.25f, 0.75f, percent);
+                img.color = color;
+                yield return null;
+            }
             yield return null;
         }
-
-
-
 
         yield break;
     }
