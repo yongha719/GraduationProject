@@ -83,7 +83,11 @@ public class GameManager : SingletonPunCallbacks<GameManager>, IPunObservable
     /// </summary>
     public bool CheckCardCostAvailability(uint cost, out Action costDecrease)
     {
-        costDecrease = () => Cost -= cost;
+        costDecrease = () =>
+        {
+            Cost -= cost;
+            CostGaugeUI.CostGaugeChange();
+        };
 
         return cost <= Cost;
     }
@@ -98,7 +102,7 @@ public class GameManager : SingletonPunCallbacks<GameManager>, IPunObservable
 
     public static void CostGaugeChange()
     {
-        Instance.CostGaugeUI.CostGaugeChange(true); 
+        Instance.CostGaugeUI.CostGaugeChange(true);
     }
 
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)

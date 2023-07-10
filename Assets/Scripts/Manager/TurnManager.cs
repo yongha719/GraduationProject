@@ -74,6 +74,8 @@ public class TurnManager : SingletonPunCallbacks<TurnManager>, IPunObservable
     public void FirstTurn()
     {
         photonView.RPC(nameof(firstTurnRPC), RpcTarget.AllBuffered);
+
+        SoundManager.Instance.PlayBackGroundSound("InGameSound");
     }
 
     [PunRPC]
