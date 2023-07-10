@@ -7,6 +7,13 @@ using UnityEngine;
 
 public class C3Unit : UnitCard
 {
+    public override void MoveCardFromDeckToField()
+    {
+        base.MoveCardFromDeckToField();
+
+        Instantiate(illustAppearEffect).GetComponent<CharacterProduction>().characterType = ECharacterType.CleaningRobot;
+    }
+
     // 한번 버텼는지 체크
     private bool isSurvivedOnce = false;
 

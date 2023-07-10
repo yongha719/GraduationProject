@@ -58,9 +58,6 @@ public class TurnManager : SingletonPunCallbacks<TurnManager>, IPunObservable
         turnChangeButton.onClick.AddListener(TurnChange);
 
         myTurnChangeAction = Resources.Load<GameObject>(MY_TURN_CHANGE_ACTION_PATH);
-        myTurnChangeAction = Instantiate(myTurnChangeAction, Vector3.zero, Quaternion.identity);
-
-        myTurnChangeAction.SetActive(false);
 
         yield return WaitTurn(2);
 
@@ -120,7 +117,7 @@ public class TurnManager : SingletonPunCallbacks<TurnManager>, IPunObservable
 
         if (MyTurn)
         {
-            myTurnChangeAction.SetActive(true);
+            Instantiate(myTurnChangeAction, Vector3.zero, Quaternion.identity);
             OnPlayerTurnAction();
             playerTurnCount++;
         }

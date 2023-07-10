@@ -9,6 +9,7 @@ public class C1Unit : UnitCard
     {
         base.MoveCardFromDeckToField();
 
+        Instantiate(illustAppearEffect).GetComponent<CharacterProduction>().characterType = ECharacterType.Leesooha;
         Spawn();
     }
     

@@ -33,7 +33,7 @@ public class MyTurnProduction : MonoBehaviour
             yield return null;
         }
 
-        gameObject.SetActive(false);
+        Destroy(gameObject);
     }
 
 }

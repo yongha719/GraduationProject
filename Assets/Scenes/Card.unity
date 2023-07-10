@@ -925,11 +925,22 @@ MonoBehaviour:
   CardDatas:
     _serializedList: []
   cardNames:
+  - A1
+  - A1
   - A2
   - A2
-  - A2
-  - A2
-  - A2
+  - A4
+  - A4
+  - B2
+  - B2
+  - B3
+  - B3
+  - B4
+  - B4
+  - C1
+  - C1
+  - C3
+  - C3
 --- !u!114 &214781209
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3242,7 +3253,7 @@ MonoBehaviour:
   cost: 3
   maxCost: 3
   CommanderInherenceSkillType: 5
-  costGaugeUI: {fileID: 0}
+  CostGaugeUI: {fileID: 0}
 --- !u!114 &1018583212
 MonoBehaviour:
   m_ObjectHideFlags: 0

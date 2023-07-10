@@ -9,6 +9,13 @@ public class B3Unit : UnitCard
 
     private Vector2 centerPos = new Vector2(960, 0);
 
+    public override void MoveCardFromDeckToField()
+    {
+        base.MoveCardFromDeckToField();
+
+        Instantiate(illustAppearEffect).GetComponent<CharacterProduction>().characterType = ECharacterType.Yuki;
+    }
+
     protected override void Start()
     {
         base.Start();

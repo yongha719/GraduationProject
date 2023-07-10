@@ -9,6 +9,8 @@ public class B2Unit : UnitCard
     {
         base.BasicAttack(enemyCard);
 
+        var deadlyPoisonProduction = enemyCard.gameObject.AddComponent<DeadlyPoisonProduction>();
+
         // 맹독 공격
         enemyCard.Hit(1);
 
@@ -16,6 +18,8 @@ public class B2Unit : UnitCard
         TurnManager.Instance.ExecuteAfterTurn(1, () =>
         {
             enemyCard.Hit(1);
+
+            Destroy(deadlyPoisonProduction);
             print("Attack");
         });
     }

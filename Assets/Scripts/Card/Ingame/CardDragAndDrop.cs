@@ -215,6 +215,8 @@ public class CardDragAndDrop : MonoBehaviourPun, IBeginDragHandler, IDragHandler
             cardState != CardState.Field)
             return;
 
+        OnDropAfterFieldAction();
+
         costDecrease();
 
         if (cardState == CardState.Field)
