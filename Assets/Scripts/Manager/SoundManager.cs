@@ -4,6 +4,11 @@ using System.Linq;
 using Unity.VisualScripting;
 using UnityEngine;
 
+public enum CommanderSoundType
+{
+    MaleCommander,
+    FemaleCommander
+}
 public class SoundManager : Singleton<SoundManager>
 {
     public float backGroundVolume;
@@ -35,6 +40,10 @@ public class SoundManager : Singleton<SoundManager>
         go.AddComponent<AudioSource>().PlayOneShot(backGroundSoundClipDic[name]);
     }
 
+
+
+
+
     public void PlaySFXSound(string name)
     {
         GameObject go = new GameObject(sfxSoundClipDic[name] + "Sound");
@@ -43,6 +52,13 @@ public class SoundManager : Singleton<SoundManager>
         go.AddComponent<AudioSource>().PlayOneShot(sfxSoundClipDic[name]);
 
         Destroy(go, sfxSoundClipDic[name].length);
+    }
+
+    //ItsMyTurn
+    public void PlayDialogue(bool isMan)
+    {
+        var soundName = Random.Range(0, 2) == 0 ? "ItsMyTurn" : "MyTurn";
+        PlayDialogue(soundName, isMan);
     }
 
     public void PlayDialogue(string name, bool isMan)

@@ -36,6 +36,7 @@ public class A2Unit : UnitCard
         base.MoveCardFromDeckToField();
 
         Instantiate(illustAppearEffect).GetComponent<CharacterProduction>().characterType = ECharacterType.Yooeunha;
+        SoundManager.Instance.PlaySFXSound(ECharacterType.Yooeunha.ToString());
     }
 
     protected override void Start()
