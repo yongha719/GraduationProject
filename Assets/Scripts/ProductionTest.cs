@@ -50,6 +50,10 @@ public class ProductionTest : MonoBehaviour
         {
             Instantiate(trap, canvas.transform);
         }
+        else if (Input.GetKeyDown(KeyCode.E))
+        {
+            SoundManager.Instance.PlayDialogue("Iknow", false);
+        }
     }
 
     private void SpawnAppearEffect(ECharacterType type)
