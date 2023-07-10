@@ -4,8 +4,6 @@ public class C2Unit : UnitCard
     protected override void Start()
     {
         CardState = CardState.Field;
-
-        cardInfo.OnFieldStateChange();
     }
 
     // 고유스킬 땜에 만들었음

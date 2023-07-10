@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -52,5 +53,10 @@ public class A2ChoiceUI : MonoBehaviour
 
         var rect = transform as RectTransform;
         rect.anchoredPosition3D = Vector3.zero;
+    }
+
+    private void Update()
+    {
+        
     }
 }

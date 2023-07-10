@@ -4,7 +4,7 @@ using TMPro;
 using UnityEngine;
 using Photon.Pun;
 
-public class CostGaugeUI : MonoBehaviour
+public class CostGaugeUI : MonoBehaviourPun
 {
     private Sprite costGaugeBottomSprite;
     private Sprite costGaugeMiddleSprite;
@@ -15,9 +15,9 @@ public class CostGaugeUI : MonoBehaviour
     [SerializeField]
     private TextMeshProUGUI costText;
 
-    [SerializeField] 
+    [SerializeField]
     private TextMeshProUGUI enemyCostText;
-    
+
 
     [Space]
 
@@ -32,20 +32,28 @@ public class CostGaugeUI : MonoBehaviour
     void Start()
     {
         // Test
-        CostGaugeChange();
+        CostGaugeChangeRPC();
 
-        GameManager.Instance.CostGaugeChange = CostGaugeChange;
+        GameManager.Instance.CostGaugeUI = this;
 
         TurnManager.Instance.OnTurnChangeAction += () =>
         {
             print("Cost UI");
 
-            CostGaugeChange();
+            CostGaugeChangeRPC();
         };
     }
 
+    public void CostGaugeChange(bool isTest = false)
+    {
+        if (isTest)
+            CostGaugeChangeRPC();
+        else
+            photonView.RPC(nameof(CostGaugeChangeRPC), RpcTarget.AllBuffered);
+    }
+
     [PunRPC]
-    public void CostGaugeChange()
+    private void CostGaugeChangeRPC()
     {
         var maxCost = GameManager.Instance.MaxCost;
         var cost = GameManager.Instance.Cost;

@@ -4,7 +4,17 @@ using UnityEngine;
 
 public class B4Unit : UnitCard
 {
+
+
     private const int ADDITIONAL_DAMAGE = 1;
+
+    public override void MoveCardFromDeckToField()
+    {
+        base.MoveCardFromDeckToField();
+
+        Instantiate(illustAppearEffect).GetComponent<CharacterProduction>().characterType = ECharacterType.Hanseorin;
+    }
+
 
     protected override void BasicAttack(UnitCard enemyCard)
     {

@@ -24,7 +24,7 @@ public class DeadlyPoisonProduction : MonoBehaviour
         float current = 0;
         float percent = 0;
         Color color = img.color;
-        while (gameObject.active)
+        while (gameObject.activeSelf)
         {
             current = 0;
             percent = 0;
