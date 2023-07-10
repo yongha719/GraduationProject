@@ -20,6 +20,8 @@ public class GameManager : SingletonPunCallbacks<GameManager>, IPunObservable
 
         set
         {
+            print(value);
+
             if (value > MaxCost)
             {
                 cost = MaxCost;
@@ -90,6 +92,12 @@ public class GameManager : SingletonPunCallbacks<GameManager>, IPunObservable
         };
 
         return cost <= Cost;
+    }
+
+    public void DecreaseCost(uint cost)
+    {
+        Cost -= cost;
+        CostGaugeUI.CostGaugeChange();
     }
 
     private void IncreaseCost()
