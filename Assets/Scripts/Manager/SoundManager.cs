@@ -22,7 +22,7 @@ public class SoundManager : Singleton<SoundManager>
 
     private Dictionary<string, AudioClip> backGroundSoundClipDic = new Dictionary<string, AudioClip>();
 
-    private Dictionary<string, AudioClip> sfxSoundClipDic = new Dictionary<string , AudioClip>();
+    private Dictionary<string, AudioClip> sfxSoundClipDic = new Dictionary<string, AudioClip>();
 
     private Dictionary<string, AudioClip> manDialogueRecordingDic = new Dictionary<string, AudioClip>();
 
@@ -32,7 +32,7 @@ public class SoundManager : Singleton<SoundManager>
     {
         GameObject go = new GameObject(backGroundSoundClipDic[name] + "Sound");
         go.transform.parent = backGroundSoundObject;
-        go.GetComponent<AudioSource>().PlayOneShot(backGroundSoundClipDic[name]);
+        go.AddComponent<AudioSource>().PlayOneShot(backGroundSoundClipDic[name]);
     }
 
     public void PlaySFXSound(string name)
@@ -40,7 +40,7 @@ public class SoundManager : Singleton<SoundManager>
         GameObject go = new GameObject(sfxSoundClipDic[name] + "Sound");
         go.transform.parent = sfxSoundObject;
 
-        go.GetComponent<AudioSource>().PlayOneShot(sfxSoundClipDic[name]);
+        go.AddComponent<AudioSource>().PlayOneShot(sfxSoundClipDic[name]);
 
         Destroy(go, sfxSoundClipDic[name].length);
     }
@@ -51,7 +51,7 @@ public class SoundManager : Singleton<SoundManager>
         {
             GameObject go = new GameObject(manDialogueRecordingDic[name] + "Sound");
             go.transform.parent = sfxSoundObject;
-            go.GetComponent<AudioSource>().PlayOneShot(manDialogueRecordingDic[name]);
+            go.AddComponent<AudioSource>().PlayOneShot(manDialogueRecordingDic[name]);
 
             Destroy(go, manDialogueRecordingDic[name].length);
         }
@@ -59,11 +59,11 @@ public class SoundManager : Singleton<SoundManager>
         {
             GameObject go = new GameObject(womanDialogueRecordingDic[name] + "Sound");
             go.transform.parent = sfxSoundObject;
-            go.GetComponent<AudioSource>().PlayOneShot(womanDialogueRecordingDic[name]);
+            go.AddComponent<AudioSource>().PlayOneShot(womanDialogueRecordingDic[name]);
 
             Destroy(go, womanDialogueRecordingDic[name].length);
         }
-        
+
     }
 
     private void Start()
@@ -74,7 +74,7 @@ public class SoundManager : Singleton<SoundManager>
     private void LoadSound()
     {
         Object[] backObjs = Resources.LoadAll("Sound/BackGround");
-        foreach(Object obj in backObjs)
+        foreach (Object obj in backObjs)
         {
             backGroundSoundClipList.Add((AudioClip)obj);
         }
@@ -85,7 +85,7 @@ public class SoundManager : Singleton<SoundManager>
         }
 
         Object[] sfxObjs = Resources.LoadAll("Sound/SFX");
-        foreach(Object obj in sfxObjs)
+        foreach (Object obj in sfxObjs)
         {
             sfxSoundClipList.Add((AudioClip)obj);
         }
@@ -96,7 +96,7 @@ public class SoundManager : Singleton<SoundManager>
         }
 
         Object[] manDialongObjs = Resources.LoadAll("Sound/DialogueRecording/Man");
-        foreach(Object obj in manDialongObjs)
+        foreach (Object obj in manDialongObjs)
         {
             manDialogueRecordingList.Add((AudioClip)obj);
         }
@@ -128,7 +128,7 @@ public class SoundManager : Singleton<SoundManager>
         backGroundVolume = value;
         AudioSource[] playingBackGroundSoundList = backGroundSoundObject.GetComponentsInChildren<AudioSource>();
 
-        if(playingBackGroundSoundList.Length == 0)
+        if (playingBackGroundSoundList.Length == 0)
         {
             return;
         }
@@ -137,6 +137,15 @@ public class SoundManager : Singleton<SoundManager>
         for (int i = 0; i < playingBackGroundSoundList.Length; i++)
         {
             playingBackGroundSoundList[i].volume = value;
+        }
+    }
+
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.E))
+        {
+            PlayDialogue("Iknow", false);
         }
     }
 }
