@@ -40,7 +40,7 @@ public class CostGaugeUI : MonoBehaviourPun
         {
             print("Cost UI");
 
-            CostGaugeChangeRPC();
+            CostGaugeChange();
         };
     }
 
@@ -55,6 +55,8 @@ public class CostGaugeUI : MonoBehaviourPun
     [PunRPC]
     private void CostGaugeChangeRPC()
     {
+        print("Cost Change");
+
         var maxCost = GameManager.Instance.MaxCost;
         var cost = GameManager.Instance.Cost;
 

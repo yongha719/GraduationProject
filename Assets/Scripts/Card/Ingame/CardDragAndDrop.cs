@@ -215,9 +215,9 @@ public class CardDragAndDrop : MonoBehaviourPun, IBeginDragHandler, IDragHandler
             cardState != CardState.Field)
             return;
 
-        OnDropAfterFieldAction();
+        GameManager.Instance.DecreaseCost((uint)card.Cost);
 
-        costDecrease();
+        OnDropAfterFieldAction();
 
         if (cardState == CardState.Field)
             shadow.enabled = false;
