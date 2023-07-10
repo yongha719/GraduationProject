@@ -33,14 +33,27 @@ public class SoundManager : Singleton<SoundManager>
 
     private Dictionary<string, AudioClip> womanDialogueRecordingDic = new Dictionary<string, AudioClip>();
 
+    private List<GameObject> playingBackGroundSound = new List<GameObject>();
     public void PlayBackGroundSound(string name)
     {
         GameObject go = new GameObject(backGroundSoundClipDic[name] + "Sound");
         go.transform.parent = backGroundSoundObject;
         go.AddComponent<AudioSource>().PlayOneShot(backGroundSoundClipDic[name]);
+        playingBackGroundSound.Add(go);
     }
 
+    public void AllStopBackGroundSound()
+    {
+        for (int i = 0; i < playingBackGroundSound.Count; i++)
+        {
+            Destroy(playingBackGroundSound[i]);
+        }
+    }
 
+    private void Awake()
+    {
+        DontDestroyOnLoad(gameObject);
+    }
 
 
 

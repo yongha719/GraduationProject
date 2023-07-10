@@ -40,12 +40,15 @@ public class MainMenuManager : MonoBehaviour
     void Start()
     {
         AddListener();
+
+        SoundManager.Instance.PlayBackGroundSound("MainMenu");
     }
 
     private void AddListener()
     {
         gameStartBtn.onClick.AddListener(() =>
         {
+            SoundManager.Instance.AllStopBackGroundSound();
             SceneManager.LoadScene("Card");
         });
 
