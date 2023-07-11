@@ -34,8 +34,11 @@ public class SoundManager : Singleton<SoundManager>
     private Dictionary<string, AudioClip> womanDialogueRecordingDic = new Dictionary<string, AudioClip>();
 
     private List<GameObject> playingBackGroundSound = new List<GameObject>();
+
     public void PlayBackGroundSound(string name)
     {
+        return;
+
         GameObject go = new GameObject(backGroundSoundClipDic[name] + "Sound");
         go.transform.parent = backGroundSoundObject;
         go.AddComponent<AudioSource>().PlayOneShot(backGroundSoundClipDic[name]);
@@ -51,7 +54,7 @@ public class SoundManager : Singleton<SoundManager>
         }
     }
 
-    private void Awake()
+    protected override void Awake()
     {
         DontDestroyOnLoad(gameObject);
     }
@@ -67,6 +70,8 @@ public class SoundManager : Singleton<SoundManager>
 
     public void PlaySFXSound(string name)
     {
+        return;
+
         GameObject go = new GameObject(sfxSoundClipDic[name] + "Sound");
         go.transform.parent = sfxSoundObject;
 
@@ -78,12 +83,16 @@ public class SoundManager : Singleton<SoundManager>
     //ItsMyTurn
     public void PlayDialogue(bool isMan)
     {
+        return;
+
         var soundName = Random.Range(0, 2) == 0 ? "ItsMyTurn" : "MyTurn";
         PlayDialogue(soundName, isMan);
     }
 
     public void PlayDialogue(string name, bool isMan)
     {
+        return;
+
         if (isMan)
         {
             GameObject go = new GameObject(manDialogueRecordingDic[name] + "Sound");

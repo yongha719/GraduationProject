@@ -64,7 +64,7 @@ namespace Photon.Pun
 
                 {
                     tr.localPosition = Vector3.MoveTowards(tr.localPosition, this.m_NetworkPosition, this.m_Distance  * Time.deltaTime * PhotonNetwork.SerializationRate);
-                    tr.localRotation = Quaternion.RotateTowards(tr.localRotation, this.m_NetworkRotation, this.m_Angle * Time.deltaTime * PhotonNetwork.SerializationRate);
+                    // tr.localRotation = Quaternion.RotateTowards(tr.localRotation, this.m_NetworkRotation, this.m_Angle * Time.deltaTime * PhotonNetwork.SerializationRate);
                 }
                 else
                 {
@@ -149,7 +149,7 @@ namespace Photon.Pun
 
                 }
 
-                if (this.m_SynchronizeRotation)
+                if (this.m_SynchronizeRotation && false)
                 {
                     this.m_NetworkRotation = (Quaternion)stream.ReceiveNext();
 

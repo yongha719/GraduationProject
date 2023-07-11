@@ -5,13 +5,12 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class CardDragAndDrop : MonoBehaviourPun, IBeginDragHandler, IDragHandler, IEndDragHandler, IDropHandler,
-    IPunObservable
+public class CardDragAndDrop : MonoBehaviourPun, IBeginDragHandler, IDragHandler, IEndDragHandler, IDropHandler
 {
     public event Action OnEndDrag;
     public event Action OnDrop = () => { };
     public event Action OnDropAfterFieldAction = () => { };
-         
+
     /// <summary> 드래그 가능한 상태인지 체크 </summary>
     public bool CanDrag => isEnemy == false && TurnManager.Instance.MyTurn;
 
@@ -77,10 +76,7 @@ public class CardDragAndDrop : MonoBehaviourPun, IBeginDragHandler, IDragHandler
                 if (isEnemy == false && hasExpansionCard == false && isDragging == false)
                 {
                     cardState = CardState.ExpansionDeck;
-
-                    layoutRot = rectTransform.localRotation;
-                    rectTransform.localRotation = Quaternion.identity;
-
+                    
                     silblingIndex = rectTransform.GetSiblingIndex();
                     rectTransform.SetAsLastSibling();
                 }
@@ -141,9 +137,10 @@ public class CardDragAndDrop : MonoBehaviourPun, IBeginDragHandler, IDragHandler
 
     private void OnMouseExit()
     {
-        if (isEnemy == false && cardState == CardState.ExpansionDeck && hasExpansionCard)
+        if (isEnemy == false && cardState == CardState.ExpansionDeck && hasExpansionCard && photonView.IsMine)
         {
             cardState = CardState.Deck;
+            
             rectTransform.localRotation = layoutRot;
             rectTransform.SetSiblingIndex(silblingIndex);
 
@@ -155,11 +152,6 @@ public class CardDragAndDrop : MonoBehaviourPun, IBeginDragHandler, IDragHandler
 
     void IBeginDragHandler.OnBeginDrag(PointerEventData eventData)
     {
-        if (cardState == CardState.Field)
-        {
-            // lineRenderer.SetPosition(0, (Vector3)CanvasUtility.GetMousePosToCanvasPos() + Vector3.back);
-        }
-
         if (CanDrag == false) return;
 
         isDragging = true;
@@ -174,7 +166,6 @@ public class CardDragAndDrop : MonoBehaviourPun, IBeginDragHandler, IDragHandler
             mousePosDistance = originPos - (Vector3)CanvasUtility.GetMousePosToCanvasPos();
 
             // 드래그 할 때는 카드가 돌아가 있으면 안됨
-            layoutRot = transform.localRotation;
             rectTransform.localRotation = Quaternion.identity;
         }
     }
@@ -199,7 +190,7 @@ public class CardDragAndDrop : MonoBehaviourPun, IBeginDragHandler, IDragHandler
         isDragging = false;
 
         // 다시 돌아가
-        transform.localRotation = cardState != CardState.Field ? layoutRot : Quaternion.identity;
+        // transform.localRotation = cardState != CardState.Field ? layoutRot : Quaternion.identity;
         rectTransform.anchoredPosition3D = originPos;
     }
 
@@ -210,17 +201,19 @@ public class CardDragAndDrop : MonoBehaviourPun, IBeginDragHandler, IDragHandler
         hasExpansionCard = false;
         OnDrop();
 
-        // TODO : 여기서 코스트 감소
-        if (GameManager.Instance.CheckCardCostAvailability((uint)card.Cost, out Action costDecrease) == false &&
-            cardState != CardState.Field)
-            return;
+        if (cardState != CardState.Field)
+        {
+            // TODO : 여기서 코스트 감소
+            if (GameManager.Instance.CheckCardCostAvailability((uint)card.Cost, out Action costDecrease) == false)
+                return;
 
-        GameManager.Instance.DecreaseCost((uint)card.Cost);
+            GameManager.Instance.DecreaseCost((uint)card.Cost);
 
-        OnDropAfterFieldAction();
+            OnDropAfterFieldAction();
 
-        if (cardState == CardState.Field)
-            shadow.enabled = false;
+            if (cardState == CardState.Field)
+                shadow.enabled = false;
+        }
     }
 
     float MapToZeroToOneX(float value)
@@ -243,9 +236,5 @@ public class CardDragAndDrop : MonoBehaviourPun, IBeginDragHandler, IDragHandler
         float mappedValue = Mathf.Clamp01(relativePosition);
 
         return mappedValue;
-    }
-
-    public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
-    {
     }
 }

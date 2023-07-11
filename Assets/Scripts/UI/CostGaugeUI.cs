@@ -38,8 +38,6 @@ public class CostGaugeUI : MonoBehaviourPun
 
         TurnManager.Instance.OnTurnChangeAction += () =>
         {
-            print("Cost UI");
-
             CostGaugeChange();
         };
     }
@@ -67,8 +65,8 @@ public class CostGaugeUI : MonoBehaviourPun
         }
 
         costGaugeBackgroundParts[9].SetActive(true);
-
-        costGaugeParts[(int)cost - 1].SetActive(maxCost != cost);
+        if (cost != 0)
+            costGaugeParts[(int)cost - 1].SetActive(maxCost != cost);
         costGaugeParts[9].SetActive(maxCost == cost);
 
         costText.text = $"{cost}/{maxCost}";

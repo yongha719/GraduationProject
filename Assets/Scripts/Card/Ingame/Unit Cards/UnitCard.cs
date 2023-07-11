@@ -166,7 +166,6 @@ public class UnitCard : Card, IUnitCardSubject
         switch (value)
         {
             case CardState.Deck:
-                rect.localRotation = Quaternion.identity;
                 rect.localScale = Vector3.one;
                 if (IsEnemy == false)
                 {

@@ -32,7 +32,7 @@ public class GameManager : SingletonPunCallbacks<GameManager>, IPunObservable
         }
     }
 
-    [Tooltip("내 최대 코스트"), SerializeField] private uint maxCost = 3;
+    [Tooltip("내 최대 코스트"), SerializeField] private uint maxCost = 4;
 
     public uint MaxCost
     {
@@ -122,6 +122,8 @@ public class GameManager : SingletonPunCallbacks<GameManager>, IPunObservable
         }
         else
         {
+            print("코스트 받아옴");
+
             // uint 로 변환하려면 이렇게 해야댐 object에서 uint로 안되는듯 포톤에서 오류남
             EnemyCost = (uint)(int)stream.PeekNext();
             EnemyMaxCost = (uint)(int)stream.PeekNext();
