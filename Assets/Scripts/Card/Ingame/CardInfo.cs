@@ -44,57 +44,48 @@ public class CardInfo : MonoBehaviourPun
         cardImageComponent = GetComponent<Image>();
     }
 
-    private void Start()
-    {
-        #region Init Texts
-
-        if (card is UnitCard unitcard)
-        {
-            deckHpText.text = unitcard.CardData.Hp.ToString();
-            deckPowerText.text = unitcard.CardData.Power.ToString();
-            deckCostText.text = unitcard.CardData.Cost.ToString();
-
-            fieldHpText.text = deckHpText.text;
-            fieldPowerText.text = deckPowerText.text;
-        }
-        else if(card is MasicCard masicCard)
-        {
-
-        }
-        #endregion
-    }
-
     public void Init(Card card)
     {
+        IsEnemy = !photonView.IsMine;
+        deckStat.SetActive(!IsEnemy);
+
+
         this.card = card;
+
+
+        // 카드 이미지 불러오기
+        var sprites = ResourceManager.GetUnitCardSprites(card.name);
+
+        deckCardSprite = sprites.deck;
+
+        cardImageComponent.sprite = IsEnemy ? cardBackSprite : deckCardSprite;
+
 
         // 카드가 유닛카드와 마법카드가 있어서 이렇게 했음
         if (card is UnitCard unitCard)
         {
+            fieldCardSprite = sprites.field;
+
             unitCard.OnSetHpChange += hp =>
             {
                 fieldHpText.text = hp.ToString();
             };
-        }
 
+            // 텍스트 초기화
+            deckHpText.text = unitCard.CardData.Hp.ToString();
+            deckPowerText.text = unitCard.CardData.Power.ToString();
+            deckCostText.text = unitCard.CardData.Cost.ToString();
+
+            fieldHpText.text = deckHpText.text;
+            fieldPowerText.text = deckPowerText.text;
+        }
         else if (card is MasicCard masicCard)
         {
             deckHpText.gameObject.SetActive(false);
             deckPowerText.gameObject.SetActive(false);
         }
 
-        IsEnemy = !photonView.IsMine;
-
-        var sprites = ResourceManager.GetUnitCardSprites(card.name);
-
-        deckCardSprite = sprites.deck;
-        fieldCardSprite = sprites.field;
-
         gameObject.name = card.name + (IsEnemy ? "_Enemy" : "_Player");
-
-        cardImageComponent.sprite = IsEnemy ? cardBackSprite : deckCardSprite;
-
-        deckStat.SetActive(!IsEnemy);
     }
 
     public void OnFieldStateChange()

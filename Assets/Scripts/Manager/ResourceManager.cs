@@ -108,7 +108,6 @@ public class ResourceManager : Singleton<ResourceManager>
     /// Card의 Deck Sprite와 Field Sprite를 반환
     /// </summary>
     /// <param name="cardName"></param>
-    /// <returns></returns>
     public static (Sprite deck, Sprite field) GetUnitCardSprites(string cardName)
     {
         (Sprite deckTexture, Sprite fieldTexture) sprites = (null, null);
