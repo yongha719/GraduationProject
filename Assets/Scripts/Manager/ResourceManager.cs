@@ -1,21 +1,26 @@
-using System.IO;
-using System.Threading.Tasks;
 using AYellowpaper.SerializedCollections;
+using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.Networking;
 
+// 이 스크립트가 하는 역할===
+// 유닛, 마법 카드 데이터들 불러오고 관리
+// 유닛, 마법 카드 스프라이트 관리
+
 public class ResourceManager : Singleton<ResourceManager>
 {
-    [Tooltip("유닛 카드 데이터 받아올 스프레드시트 링크")] private const string UNIT_CARD_DATA_URL =
+    [Tooltip("유닛 카드 데이터 받아올 스프레드시트 링크")]
+    private const string UNIT_CARD_DATA_URL =
         "https://docs.google.com/spreadsheets/d/1uZHW4YokPwbg9gl0dDWcIjlWeieUlkiMwRk_PvQCPWU/export?format=tsv&range=A3:J16";
 
-    [Tooltip("마법 카드 데이터 받아올 스프레드시트 링크")] private const string MASIC_CARD_DATA_URL =
+    [Tooltip("마법 카드 데이터 받아올 스프레드시트 링크")]
+    private const string MASIC_CARD_DATA_URL =
         "https://docs.google.com/spreadsheets/d/1uZHW4YokPwbg9gl0dDWcIjlWeieUlkiMwRk_PvQCPWU/export?format=tsv&range=A20:F28";
 
     [SerializedDictionary("유닛 카드 등급", "유닛 카드 데이터")]
     private SerializedDictionary<string, UnitCardData> unitCardDatas = new();
 
-    private SerializedDictionary<string, UnitCardData> masicCardDatas = new();
+    private SerializedDictionary<string, MasicCardData> masicCardDatas = new();
 
 
     private const string UNIT_CARD_DECK_TEXTURES = "Cards/UnitSprite/Deck";
@@ -25,36 +30,36 @@ public class ResourceManager : Singleton<ResourceManager>
 
     [SerializedDictionary("Card Rating", "Card Sprites")]
     private static SerializedDictionary<string, (Sprite deck, Sprite field)> unitCardSprites = new(10);
-    
+
     private static SerializedDictionary<string, Sprite> masicCardSprites = new();
 
     protected override void Awake()
     {
         LoadUnitCardSprites();
-        LoadMasicCardSprite();
+        LoadMasicCardSprites();
     }
 
     private void LoadUnitCardSprites()
     {
-        var deckTextures = Resources.LoadAll<Sprite>(UNIT_CARD_DECK_TEXTURES);
-        var fieldTextures = Resources.LoadAll<Sprite>(UNIT_CARD_FIELD_TEXTURES);
+        var deckSprites = Resources.LoadAll<Sprite>(UNIT_CARD_DECK_TEXTURES);
+        var fieldSprites = Resources.LoadAll<Sprite>(UNIT_CARD_FIELD_TEXTURES);
 
-        for (int i = 0; i < deckTextures.Length; i++)
+        for (int i = 0; i < deckSprites.Length; i++)
         {
-            var cardRating = deckTextures[i].name.Split('_')[0];
-            
-            unitCardSprites.Add(cardRating, (deckTextures[i], fieldTextures[i]));
+            var cardRating = deckSprites[i].name.Split('_')[0];
+
+            unitCardSprites.Add(cardRating, (deckSprites[i], fieldSprites[i]));
         }
     }
 
-    private void LoadMasicCardSprite()
+    private void LoadMasicCardSprites()
     {
         var deckTextures = Resources.LoadAll<Sprite>(MASIC_CARD_FIELD_TEXTURES);
 
         for (int i = 0; i < deckTextures.Length; i++)
         {
             var cardRating = deckTextures[i].name.Split('_')[0];
-            
+
             masicCardSprites.Add(cardRating, deckTextures[i]);
         }
     }
@@ -87,9 +92,9 @@ public class ResourceManager : Singleton<ResourceManager>
     }
 
     /// <summary> Request로 받은 데이터를 카드 데이터로 파싱해서 반환 </summary>
-    private void ParsingCardData(string requsetdata)
+    private void ParsingCardData(string requsetText)
     {
-        string[] line = requsetdata.Split('\n');
+        string[] line = requsetText.Split('\n');
 
         for (int i = 0; i < line.Length; i++)
         {

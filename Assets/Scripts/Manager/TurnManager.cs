@@ -1,11 +1,14 @@
 using Photon.Pun;
 using System;
 using System.Collections;
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
+
+// 이 스크립트가 하는 역할===
+// 턴 전환 관리
+// N턴 뒤에 실행할 함수
 
 public enum TurnState
 {
@@ -15,9 +18,6 @@ public enum TurnState
 
 public class TurnManager : SingletonPunCallbacks<TurnManager>, IPunObservable
 {
-    private CardDeckLayout playerDeck;
-    private CardDeckLayout enemyDeck;
-
     [SerializeField] private TurnState turnState;
 
     public TurnState TurnState
@@ -26,6 +26,9 @@ public class TurnManager : SingletonPunCallbacks<TurnManager>, IPunObservable
 
         set { turnState = value; }
     }
+
+    [Tooltip("처음 드로우될 카드 갯수"),SerializeField]
+    private int drawCardCount;
 
     public bool MyTurn => TurnState == TurnState.PlayerTurn;
 
@@ -48,26 +51,17 @@ public class TurnManager : SingletonPunCallbacks<TurnManager>, IPunObservable
     private static int enemyTurnCount;
 
     private const string MY_TURN_CHANGE_ACTION_PATH = "Effect/MyTurnProduction";
-    private GameObject myTurnChangeAction;
+    private GameObject myTurnChangeEffect;
 
     private IEnumerator Start()
     {
-        playerDeck = PhotonManager.GetPhotonViewByType(PhotonViewType.PlayerDeck).GetComponent<CardDeckLayout>();
-        enemyDeck = PhotonManager.GetPhotonViewByType(PhotonViewType.EnemyDeck).GetComponent<CardDeckLayout>();
-
         turnChangeButton.onClick.AddListener(TurnChange);
 
-        myTurnChangeAction = Resources.Load<GameObject>(MY_TURN_CHANGE_ACTION_PATH);
+        myTurnChangeEffect = Resources.Load<GameObject>(MY_TURN_CHANGE_ACTION_PATH);
 
         yield return WaitTurn(2);
 
         print("2턴뒤임");
-    }
-
-    public void PlayerCardDraw()
-    {
-        if (MyTurn)
-            playerDeck.CardDraw(isTest: true);
     }
 
     /// <summary> 처음 턴 시작시 호출 </summary>
@@ -90,7 +84,7 @@ public class TurnManager : SingletonPunCallbacks<TurnManager>, IPunObservable
 
         FirstTurnAction();
 
-        playerDeck.CardDraw(3);
+        CardManager.Instance.CardDraw(drawCardCount);
 
         if (MyTurn)
             playerTurnCount++;
@@ -119,7 +113,7 @@ public class TurnManager : SingletonPunCallbacks<TurnManager>, IPunObservable
 
         if (MyTurn)
         {
-            Instantiate(myTurnChangeAction, Vector3.zero, Quaternion.identity);
+            Instantiate(myTurnChangeEffect, Vector3.zero, Quaternion.identity);
             SoundManager.Instance.PlayDialogue(PhotonNetwork.IsMasterClient);
 
             OnPlayerTurnAction();

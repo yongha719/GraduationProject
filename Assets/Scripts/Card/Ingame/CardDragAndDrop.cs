@@ -75,6 +75,8 @@ public class CardDragAndDrop : MonoBehaviourPun, IBeginDragHandler, IDragHandler
             case CardState.Deck:
                 if (isEnemy == false && hasExpansionCard == false && isDragging == false)
                 {
+                    layoutRot = rectTransform.localRotation;
+
                     cardState = CardState.ExpansionDeck;
                     
                     silblingIndex = rectTransform.GetSiblingIndex();
@@ -207,7 +209,7 @@ public class CardDragAndDrop : MonoBehaviourPun, IBeginDragHandler, IDragHandler
             if (GameManager.Instance.CheckCardCostAvailability((uint)card.Cost, out Action costDecrease) == false)
                 return;
 
-            GameManager.Instance.DecreaseCost((uint)card.Cost);
+            costDecrease();
 
             OnDropAfterFieldAction();
 

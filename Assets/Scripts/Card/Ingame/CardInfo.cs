@@ -64,7 +64,7 @@ public class CardInfo : MonoBehaviourPun
         #endregion
     }
 
-    public void Init(Card card, string name)
+    public void Init(Card card)
     {
         this.card = card;
 
@@ -85,12 +85,12 @@ public class CardInfo : MonoBehaviourPun
 
         IsEnemy = !photonView.IsMine;
 
-        gameObject.name = name + (IsEnemy ? "_Enemy" : "_Player");
-
-        var sprites = ResourceManager.GetUnitCardSprites(name);
+        var sprites = ResourceManager.GetUnitCardSprites(card.name);
 
         deckCardSprite = sprites.deck;
         fieldCardSprite = sprites.field;
+
+        gameObject.name = card.name + (IsEnemy ? "_Enemy" : "_Player");
 
         cardImageComponent.sprite = IsEnemy ? cardBackSprite : deckCardSprite;
 

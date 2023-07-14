@@ -87,6 +87,7 @@ public class GameManager : SingletonPunCallbacks<GameManager>, IPunObservable
     {
         costDecrease = () =>
         {
+            print($"Gm : 코스트 감소");
             Cost -= cost;
             CostGaugeUI.CostGaugeChange();
         };
@@ -94,23 +95,12 @@ public class GameManager : SingletonPunCallbacks<GameManager>, IPunObservable
         return cost <= Cost;
     }
 
-    public void DecreaseCost(uint cost)
-    {
-        Cost -= cost;
-        CostGaugeUI.CostGaugeChange();
-    }
-
     private void IncreaseCost()
     {
         MaxCost++;
         Cost = MaxCost;
 
-        CostGaugeUI.CostGaugeChange(true);
-    }
-
-    public static void CostGaugeChange()
-    {
-        Instance.CostGaugeUI.CostGaugeChange(true);
+        CostGaugeUI.CostGaugeChange();
     }
 
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
@@ -122,8 +112,6 @@ public class GameManager : SingletonPunCallbacks<GameManager>, IPunObservable
         }
         else
         {
-            print("코스트 받아옴");
-
             // uint 로 변환하려면 이렇게 해야댐 object에서 uint로 안되는듯 포톤에서 오류남
             EnemyCost = (uint)(int)stream.PeekNext();
             EnemyMaxCost = (uint)(int)stream.PeekNext();

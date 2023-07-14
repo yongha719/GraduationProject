@@ -57,20 +57,16 @@ public abstract class Card : MonoBehaviourPun, IPunObservable
         cardDragAndDrop.OnDrop += OnDrop;
     }
 
-    public void Init(string name, Transform parent = null)
+    public void Init(Transform parent = null)
     {
-        if (parent != null)
-        {
-            transform.SetParent(parent);
-        }
-
         transform.localScale = Vector3.one;
 
         // PosZ가 0이 아니라서 콜라이더 크기가 이상해짐
         // Vector2로 대입해줘서 0 만들어주기
         rect.anchoredPosition3D = rect.anchoredPosition;
 
-        cardInfo.Init(this, name);
+        print($"Card : {name}");
+        cardInfo.Init(this);
     }
 
     protected virtual void OnEndDrag() { }
@@ -94,4 +90,19 @@ public abstract class Card : MonoBehaviourPun, IPunObservable
     {
 
     }
+
+    public static explicit operator Card(Type type)
+    {
+        // type이 Card의 자식 타입인지 확인함
+        if (type != null && type.IsSubclassOf(typeof(Card)))
+        {
+            Card card = (Card)Activator.CreateInstance(type);
+            return card;
+        }
+        else
+        {
+            throw new InvalidCastException($"{type}을(를) Card로 변환할 수 없습니다.");
+        }
+    }
+
 }

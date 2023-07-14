@@ -32,24 +32,24 @@ public class PhotonManager : SingletonPunCallbacks<PhotonManager>
     private TypedLobby TestLobby = new TypedLobby("TestLobby", LobbyType.Default);
     private List<RoomInfo> roomInfos = new List<RoomInfo>();
 
-    private Photon.Realtime.Player Player;
-    private Photon.Realtime.Player EnemyPlayer;
-
     private Room room;
+
+    public static bool IsAlone => PhotonNetwork.CurrentRoom.PlayerCount == 1;
+
 
     private static Dictionary<PhotonViewType, PhotonView> viewTypePhotonViews = new();
 
     private static Dictionary<int, PhotonView> viewIdPhotonViews = new();
 
     /// <summary> Type으로 PhotonView를 가져옴 </summary>
-    public static PhotonView GetPhotonViewByType(PhotonViewType photonViewType) => viewTypePhotonViews[photonViewType];
+    public static PhotonView GetPhotonViewByViewType(PhotonViewType photonViewType) => viewTypePhotonViews[photonViewType];
 
     public static PhotonView GetFieldPhotonView(bool isMine)
     {
         if (isMine)
-            return GetPhotonViewByType(PhotonViewType.PlayerField);
+            return GetPhotonViewByViewType(PhotonViewType.PlayerField);
         else
-            return GetPhotonViewByType(PhotonViewType.EnemyField);
+            return GetPhotonViewByViewType(PhotonViewType.EnemyField);
     }
 
     protected override void Awake()
@@ -66,11 +66,6 @@ public class PhotonManager : SingletonPunCallbacks<PhotonManager>
         PhotonNetwork.ConnectUsingSettings();
     }
 
-
-    private void Start()
-    {
-
-    }
 
     public static PhotonView GetPhotonView(int viewId)
     {
@@ -91,8 +86,6 @@ public class PhotonManager : SingletonPunCallbacks<PhotonManager>
     public override void OnConnected()
     {
         print("On Connected");
-
-        Player = PhotonNetwork.LocalPlayer;
     }
 
     public override void OnConnectedToMaster()

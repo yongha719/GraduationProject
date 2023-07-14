@@ -32,7 +32,7 @@ public abstract class InherenceSkill : MonoBehaviourPun
     protected Action enableAttackCall;
     protected bool useSkill;
 
-    private void Start()
+    protected virtual void Start()
     {
         useSkillButton = GetComponent<Button>();
 
@@ -42,15 +42,18 @@ public abstract class InherenceSkill : MonoBehaviourPun
         useSkillButton.onClick.AddListener(Skill);
         useSkillButton.image.sprite = OriginSprite;
 
+        // 스킬 버튼을 비활성화하고 1턴 뒤에 다시 활성화
         enableAttackCall = () =>
             TurnManager.Instance.ExecuteAfterTurn(1,
                 beforeTurnCall: () =>
                 {
+                    useSkillButton.interactable = false;
                     useSkillButton.image.sprite = disableSprite;
                     print($"Can't Attack :  {useSkill}");
                 },
                 afterTurnCall: () =>
                 {
+                    useSkillButton.interactable = true;
                     useSkillButton.image.sprite = OriginSprite;
                     print($"Can Attack : {useSkill}");
                 });

@@ -42,9 +42,9 @@ public class CostGaugeUI : MonoBehaviourPun
         };
     }
 
-    public void CostGaugeChange(bool isTest = false)
+    public void CostGaugeChange()
     {
-        if (isTest)
+        if (PhotonManager.IsAlone)
             CostGaugeChangeRPC();
         else
             photonView.RPC(nameof(CostGaugeChangeRPC), RpcTarget.AllBuffered);

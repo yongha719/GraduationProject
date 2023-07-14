@@ -10,11 +10,21 @@ using UnityEngine;
 
 public class MasicCard : Card, IMasicCardSubject
 {
-    public virtual MasicAbilityTarget AbilityTarget { get; protected set; }
+    private const int COST = 2;
+
+    public MasicCardData MasicCardData
+    {
+        get; private set;
+    }
+
+    public virtual MasicAbilityTarget AbilityTarget { get; }
 
     private RaycastHit2D[] raycastHits = new RaycastHit2D[10];
 
-    private bool CheckAbilityTargetConditionsAndExecuteAttack(Collider2D collider)
+    /// <summary>
+    /// 들어온 콜라이더를 검사해서 마법 사용 타입에 따라 마법을 사용하고 값을 반환함
+    /// </summary>
+    protected virtual bool CheckAbilityTargetConditionsAndExecuteAttack(Collider2D collider)
     {
         if (AbilityTarget == MasicAbilityTarget.Field && collider.TryGetComponent(out CardFieldLayout layout))
         {
@@ -48,7 +58,7 @@ public class MasicCard : Card, IMasicCardSubject
         foreach (var hit in raycastHits)
         {
             if (hit.collider is not null &&
-                GameManager.Instance.CheckCardCostAvailability(2, out Action costDecrease) &&
+                GameManager.Instance.CheckCardCostAvailability(COST, out Action costDecrease) &&
                 CheckAbilityTargetConditionsAndExecuteAttack(hit.collider))
             {
                 costDecrease();

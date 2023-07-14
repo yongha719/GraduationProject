@@ -142,7 +142,7 @@ public class UnitCard : Card, IUnitCardSubject
 
         if (hp > value)
             damageEffect.SetDamage(hp - value, false);
-        else
+        else if (value > hp)
             damageEffect.SetDamage(value - hp, true);
 
 
@@ -176,8 +176,8 @@ public class UnitCard : Card, IUnitCardSubject
             case CardState.ExpansionDeck:
                 if (IsEnemy == false)
                 {
-                    rect.localScale *= 1.5f;
-                    boxCollider.size *= 1.5f;
+                    rect.localScale *= 1.2f;
+                    boxCollider.size *= 1.2f;
                 }
 
                 // 덱에 있는 카드를 눌렀을 때 커지는 모션
@@ -205,14 +205,9 @@ public class UnitCard : Card, IUnitCardSubject
     /// 이 메서드는 플레이어의 적 카드의 개체에서 호출됨
     public bool CanAttackThisCard(UnitCard card)
     {
-        if (IsEnemy == false) return false;
-
         // 이 카드가 적이고 필드에 도발 카드를 가지고 있는지 확인
         // 도발 카드가 없거나 이 카드가 도발 카드일 때 공격 가능
-        if (CardManager.Instance.HasEnemyTauntCard)
-            return card.CardData.UnitCardSpecialAbilityType == UnitCardSpecialAbilityType.Taunt;
-
-        return true;
+        return (IsEnemy && (CardManager.Instance.HasEnemyTauntCard == false || card.CardData.UnitCardSpecialAbilityType == UnitCardSpecialAbilityType.Taunt));
     }
 
     #region UnitCard Virtuals
@@ -302,7 +297,7 @@ public class UnitCard : Card, IUnitCardSubject
 
     public virtual void MoveCardFromDeckToField()
     {
-        if (GameManager.Instance.IsTest)
+        if (PhotonManager.IsAlone)
             MoveCardFromDeckToFieldRPC();
         else
             photonView.RPC(nameof(MoveCardFromDeckToFieldRPC), RpcTarget.AllBuffered);
