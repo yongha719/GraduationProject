@@ -83,6 +83,8 @@ public class CardInfo : MonoBehaviourPun
         {
             deckHpText.gameObject.SetActive(false);
             deckPowerText.gameObject.SetActive(false);
+
+            deckCostText.text = masicCard.Cost.ToString();
         }
 
         gameObject.name = card.name + (IsEnemy ? "_Enemy" : "_Player");

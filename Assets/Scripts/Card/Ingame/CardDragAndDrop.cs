@@ -9,7 +9,7 @@ public class CardDragAndDrop : MonoBehaviourPun, IBeginDragHandler, IDragHandler
 {
     public event Action OnEndDrag;
     public event Action OnDrop = () => { };
-    public event Action OnDropAfterFieldAction = () => { };
+    public event Action MoveCardToFieldAction = () => { };
 
     /// <summary> 드래그 가능한 상태인지 체크 </summary>
     public bool CanDrag => isEnemy == false && TurnManager.Instance.MyTurn;
@@ -36,11 +36,6 @@ public class CardDragAndDrop : MonoBehaviourPun, IBeginDragHandler, IDragHandler
     private RectTransform rectTransform;
     private Shadow shadow;
 
-    public bool ShadowEnable
-    {
-        set => shadow.enabled = value;
-    }
-
     private Card card;
 
     private Vector2 rectMax;
@@ -58,6 +53,12 @@ public class CardDragAndDrop : MonoBehaviourPun, IBeginDragHandler, IDragHandler
 
         rectMax = rectTransform.rect.max * 1.5f;
         rectMin = rectTransform.rect.min * 1.5f;
+
+        MoveCardToFieldAction += () =>
+        {
+            if (cardState == CardState.Field)
+                shadow.enabled = false;
+        };
     }
 
     public void Init()
@@ -65,7 +66,7 @@ public class CardDragAndDrop : MonoBehaviourPun, IBeginDragHandler, IDragHandler
         card = GetComponent<Card>();
 
         if (isEnemy)
-            ShadowEnable = false;
+            shadow.enabled = false;
     }
 
     private void OnMouseEnter()
@@ -78,7 +79,7 @@ public class CardDragAndDrop : MonoBehaviourPun, IBeginDragHandler, IDragHandler
                     layoutRot = rectTransform.localRotation;
 
                     cardState = CardState.ExpansionDeck;
-                    
+
                     silblingIndex = rectTransform.GetSiblingIndex();
                     rectTransform.SetAsLastSibling();
                 }
@@ -142,7 +143,7 @@ public class CardDragAndDrop : MonoBehaviourPun, IBeginDragHandler, IDragHandler
         if (isEnemy == false && cardState == CardState.ExpansionDeck && hasExpansionCard && photonView.IsMine)
         {
             cardState = CardState.Deck;
-            
+
             rectTransform.localRotation = layoutRot;
             rectTransform.SetSiblingIndex(silblingIndex);
 
@@ -211,10 +212,7 @@ public class CardDragAndDrop : MonoBehaviourPun, IBeginDragHandler, IDragHandler
 
             costDecrease();
 
-            OnDropAfterFieldAction();
-
-            if (cardState == CardState.Field)
-                shadow.enabled = false;
+            MoveCardToFieldAction();
         }
     }
 

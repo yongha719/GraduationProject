@@ -56,10 +56,7 @@ public class UnitCard : Card, IUnitCardSubject
 
     protected event Action OnFieldChangeAction = () => { };
 
-    [Header("Effect")]
-
-
-    private const string DAMAGE_EFFECT_PATH = "Effect/DamageEffect";
+    [Header("Effect")] private const string DAMAGE_EFFECT_PATH = "Effect/DamageEffect";
 
     [SerializeField] private DamageTextProduction damageEffect;
 
@@ -85,7 +82,8 @@ public class UnitCard : Card, IUnitCardSubject
         base.Start();
 
         var damageEffectObj = Resources.Load<GameObject>(DAMAGE_EFFECT_PATH);
-        damageEffect = Instantiate(damageEffectObj, Vector3.zero, Quaternion.identity, rect).GetComponent<DamageTextProduction>();
+        damageEffect = Instantiate(damageEffectObj, Vector3.zero, Quaternion.identity, rect)
+            .GetComponent<DamageTextProduction>();
 
         damageEffect.gameObject.SetActive(false);
 
@@ -95,7 +93,7 @@ public class UnitCard : Card, IUnitCardSubject
 
         boxCollider = GetComponent<BoxCollider2D>();
 
-        cardDragAndDrop.OnDropAfterFieldAction += () =>
+        cardDragAndDrop.MoveCardToFieldAction += () =>
         {
             if (cardState != CardState.Field && CanvasUtility.IsDropMyField())
                 MoveCardFromDeckToField();
@@ -183,8 +181,6 @@ public class UnitCard : Card, IUnitCardSubject
                 // 덱에 있는 카드를 눌렀을 때 커지는 모션
                 break;
             case CardState.Field:
-                cardDragAndDrop.ShadowEnable = false;
-
                 OnFieldChangeAction();
                 cardInfo.OnFieldStateChange();
 
@@ -207,7 +203,8 @@ public class UnitCard : Card, IUnitCardSubject
     {
         // 이 카드가 적이고 필드에 도발 카드를 가지고 있는지 확인
         // 도발 카드가 없거나 이 카드가 도발 카드일 때 공격 가능
-        return (IsEnemy && (CardManager.Instance.HasEnemyTauntCard == false || card.CardData.UnitCardSpecialAbilityType == UnitCardSpecialAbilityType.Taunt));
+        return (IsEnemy && (CardManager.Instance.HasEnemyTauntCard == false ||
+                            card.CardData.UnitCardSpecialAbilityType == UnitCardSpecialAbilityType.Taunt));
     }
 
     #region UnitCard Virtuals
@@ -254,25 +251,6 @@ public class UnitCard : Card, IUnitCardSubject
 
     #region Card Overrides
 
-    protected override void OnEndDrag()
-    {
-        if (CardState == CardState.Field && CanAttack == false)
-            return;
-
-        Attack();
-    }
-
-    protected override void OnDrop()
-    {
-        if (CardState == CardState.Field)
-        {
-            if (CanAttack == false)
-                return;
-
-            Attack();
-        }
-    }
-
     protected override void Attack()
     {
         if (CanAttack == false) return;
@@ -308,8 +286,6 @@ public class UnitCard : Card, IUnitCardSubject
     {
         var parentView = PhotonManager.GetFieldPhotonView(photonView.IsMine);
         CardState = CardState.Field;
-
-        cardDragAndDrop.ShadowEnable = false;
 
         rect.SetParent(parentView.transform);
     }
