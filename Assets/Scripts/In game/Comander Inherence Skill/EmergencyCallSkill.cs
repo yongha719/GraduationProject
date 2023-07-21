@@ -11,6 +11,6 @@ public class EmergencyCallSkill : InherenceSkill
     {
         var C2 = CardManager.Instance.CardDraw("C2", isUnit: true, setParentAsDeck: false);
         
-        C2.GetComponent<C2Unit>().SetStat(1,1);
+        C2.GetComponent<C2Card>().SetStat(1,1);
     }
 }

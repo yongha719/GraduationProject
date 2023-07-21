@@ -74,6 +74,7 @@ public class CardDragAndDrop : MonoBehaviourPun, IBeginDragHandler, IDragHandler
         switch (cardState)
         {
             case CardState.Deck:
+                print($"hasExpansionCard : {hasExpansionCard}");
                 if (isEnemy == false && hasExpansionCard == false && isDragging == false)
                 {
                     layoutRot = rectTransform.localRotation;
@@ -97,8 +98,6 @@ public class CardDragAndDrop : MonoBehaviourPun, IBeginDragHandler, IDragHandler
     {
         if (cardState == CardState.Field || isEnemy)
             return;
-
-        hasExpansionCard = true;
 
         Vector2 mousePosition = Input.mousePosition;
 
@@ -140,13 +139,15 @@ public class CardDragAndDrop : MonoBehaviourPun, IBeginDragHandler, IDragHandler
 
     private void OnMouseExit()
     {
-        if (isEnemy == false && cardState == CardState.ExpansionDeck && hasExpansionCard && photonView.IsMine)
+        print("OnMouseExit");
+        if (isEnemy == false && cardState == CardState.ExpansionDeck && photonView.IsMine)
         {
             cardState = CardState.Deck;
 
             rectTransform.localRotation = layoutRot;
             rectTransform.SetSiblingIndex(silblingIndex);
 
+            print($"OnMouseExit (hasExpansionCard : {hasExpansionCard})");
             hasExpansionCard = false;
 
             shadow.effectDistance = Vector2.zero;
@@ -157,6 +158,7 @@ public class CardDragAndDrop : MonoBehaviourPun, IBeginDragHandler, IDragHandler
     {
         if (CanDrag == false) return;
 
+        hasExpansionCard = false;
         isDragging = true;
 
         if (cardState == CardState.ExpansionDeck)
@@ -177,6 +179,7 @@ public class CardDragAndDrop : MonoBehaviourPun, IBeginDragHandler, IDragHandler
     {
         if (CanDrag == false) return;
 
+
         // 드래그할 때 포지션 바꿔줌
         if (eventData.button == PointerEventData.InputButton.Left)
         {
@@ -193,7 +196,7 @@ public class CardDragAndDrop : MonoBehaviourPun, IBeginDragHandler, IDragHandler
         isDragging = false;
 
         // 다시 돌아가
-        // transform.localRotation = cardState != CardState.Field ? layoutRot : Quaternion.identity;
+        transform.localRotation = cardState != CardState.Field ? layoutRot : Quaternion.identity;
         rectTransform.anchoredPosition3D = originPos;
     }
 
@@ -201,16 +204,14 @@ public class CardDragAndDrop : MonoBehaviourPun, IBeginDragHandler, IDragHandler
     {
         if (CanDrag == false) return;
 
-        hasExpansionCard = false;
         OnDrop();
 
         if (cardState != CardState.Field)
         {
             // TODO : 여기서 코스트 감소
-            if (GameManager.Instance.CheckCardCostAvailability((uint)card.Cost, out Action costDecrease) == false)
+            if (GameManager.Instance.CheckCardCostAvailability((uint)card.Cost, out Action costDecrease) == false &&
+                CanvasUtility.IsDropMyField())
                 return;
-
-            costDecrease();
 
             MoveCardToFieldAction();
         }

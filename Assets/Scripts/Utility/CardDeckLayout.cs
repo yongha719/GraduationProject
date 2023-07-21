@@ -78,8 +78,6 @@ public class CardDeckLayout : MonoBehaviourPunCallbacks, IPunObservable
             RectTransform rect = transform.GetChild(i) as RectTransform;
             rect.anchoredPosition = targetPos;
             rect.localRotation = targetRos;
-
-            //rect.GetComponent<CardDragAndDrop>().layoutRot = targetRos;
         }
 
         childCount = transform.childCount;

@@ -255,8 +255,6 @@ public class UnitCard : Card, IUnitCardSubject
     {
         if (CanAttack == false) return;
 
-        print("Attack");
-
         Vector2 worldPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
 
         Physics2D.RaycastNonAlloc(worldPosition, Vector2.zero, raycastHits);
