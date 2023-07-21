@@ -19,11 +19,11 @@ public class C1Card : UnitCard
     private void Spawn()
     {
         var leftC2 =
-            CardManager.Instance.CardDraw("C2", isUnit: true, setParentAsDeck: false);
+            CardManager.Instance.CardDraw("C2", setParentAsDeck: false);
         leftC2.transform.SetSiblingIndex(transform.GetSiblingIndex());
 
         var rightC2 =
-            CardManager.Instance.CardDraw("C2", isUnit: true, setParentAsDeck: false);
+            CardManager.Instance.CardDraw("C2", setParentAsDeck: false);
         rightC2.transform.SetSiblingIndex(transform.GetSiblingIndex() + 1);
 
         SoundManager.Instance.PlaySFXSound("EndySpawn");

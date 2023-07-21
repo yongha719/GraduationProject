@@ -10,7 +10,8 @@ public class UnitCard : Card, IUnitCardSubject
 {
     public UnitCardData CardData;
 
-    [SerializeField] private int hp = 1;
+    [SerializeField] 
+    private int hp = 1;
 
     public virtual int Hp
     {
@@ -37,7 +38,8 @@ public class UnitCard : Card, IUnitCardSubject
     public bool CanAttack =>
         IsEnemy == false && CardState == CardState.Field && TurnManager.Instance.MyTurn && isAttackableTurn;
 
-    [SerializeField] protected bool isAttackableTurn = false;
+    [SerializeField] 
+    protected bool isAttackableTurn = false;
 
     public bool HasSpecialAbility => CardData.UnitCardSpecialAbilityType != UnitCardSpecialAbilityType.None;
 
@@ -47,23 +49,32 @@ public class UnitCard : Card, IUnitCardSubject
 
     [Tooltip("저체온증 상태인지 체크")] public bool isHypothermic;
 
-    [Tooltip("공격 턴 기다리는거 캐싱")] protected Action enableAttackCall;
 
     public bool IsHacked
     {
         set => isAttackableTurn = !value;
     }
 
-    protected event Action OnFieldChangeAction = () => { };
+    [Tooltip("공격 턴 기다리는거 캐싱")] protected Action enableAttackCall;
 
-    [Header("Effect")] private const string DAMAGE_EFFECT_PATH = "Effect/DamageEffect";
+    public event Action OnFieldChangeAction = () => { };
 
-    [SerializeField] private DamageTextProduction damageEffect;
+    #region 연출
+
+    [Header("Effect")] 
+    
+    private const string DAMAGE_EFFECT_PATH = "Effect/DamageEffect";
+
+    [SerializeField] 
+    private DamageTextProduction damageEffect;
 
 
     private const string ILLUST_APPEAR_EFFECT_PATH = "Effect/IllustAppearEffect";
-    [SerializeField] protected GameObject illustAppearEffect;
+    
+    [SerializeField] 
+    protected GameObject illustAppearEffect;
 
+    #endregion
 
     private RaycastHit2D[] raycastHits = new RaycastHit2D[10];
 

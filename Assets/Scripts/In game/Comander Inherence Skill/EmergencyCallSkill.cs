@@ -9,7 +9,7 @@ public class EmergencyCallSkill : InherenceSkill
     
     protected override void Skill()
     {
-        var C2 = CardManager.Instance.CardDraw("C2", isUnit: true, setParentAsDeck: false);
+        var C2 = CardManager.Instance.CardDraw("C2", setParentAsDeck: false);
         
         C2.GetComponent<C2Card>().SetStat(1,1);
     }
