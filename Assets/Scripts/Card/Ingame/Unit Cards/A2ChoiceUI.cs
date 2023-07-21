@@ -10,7 +10,7 @@ using UnityEngine.UI;
 // UI를 만들어놨음
 public class A2ChoiceUI : MonoBehaviour
 {
-    private A2Unit Card;
+    private A2Card Card;
 
     private Action AttackCall;
     private Action HackingCall;
@@ -24,7 +24,7 @@ public class A2ChoiceUI : MonoBehaviour
     [SerializeField] private Button hackingButton;
 
     RectTransform rect;
-    public void Init(A2Unit card)
+    public void Init(A2Card card)
     {
         Card = card;
     }

@@ -25,7 +25,7 @@ public class CardManager : SingletonPunCallbacks<CardManager>, IPunObservable
     [SerializeField] private List<string> cardNames = new(20);
 
     /// <summary> - 내 덱 </summary>
-    public List<string> MyDeckNames
+    public List<string> CardNames
     {
         get => cardNames;
 
@@ -69,6 +69,22 @@ public class CardManager : SingletonPunCallbacks<CardManager>, IPunObservable
 #endif
     }
 
+    /// <summary>
+    /// 카드 등급을 카드 이름으로 했음
+    /// </summary>
+    public string GetRandomCardType(out bool isUnit)
+    {
+        int randomIndex = Random.Range(0, CardNames.Count);
+        string cardName = CardNames[randomIndex];
+
+        CardNames.RemoveAt(randomIndex);
+
+        // 마법카드인지 확인
+        isUnit = cardName.StartsWith("M");
+
+        return cardName;
+    }
+
     public void CardDraw(int count)
     {
         for (int i = 0; i < count; i++)
@@ -77,7 +93,7 @@ public class CardManager : SingletonPunCallbacks<CardManager>, IPunObservable
 
     public GameObject CardDraw(bool isUnit = true)
     {
-        return CardDraw(GetRandomCardType());
+        return CardDraw(GetRandomCardType(out isUnit), isUnit);
     }
 
 
@@ -129,7 +145,7 @@ public class CardManager : SingletonPunCallbacks<CardManager>, IPunObservable
                 : PhotonViewType.EnemyField);
         }
 
-        cardPhotonView.gameObject.transform.SetParent(parentPhotonView.transform);
+        cardPhotonView.transform.SetParent(parentPhotonView.transform);
 
         var card = cardType as Card;
 
@@ -142,19 +158,6 @@ public class CardManager : SingletonPunCallbacks<CardManager>, IPunObservable
             Debug.Assert(false,
                 $"뭔가 잘못됨\n {nameof(CardDeckLayout)} : 카드 이름: {cardName}, 카드 is null :{cardIsNull}");
         }
-    }
-
-    /// <summary>
-    /// 카드 등급을 카드 이름으로 했음
-    /// </summary>
-    public string GetRandomCardType()
-    {
-        int randomIndex = Random.Range(0, MyDeckNames.Count);
-        string cardName = MyDeckNames[randomIndex];
-
-        MyDeckNames.RemoveAt(randomIndex);
-
-        return cardName;
     }
 
 

@@ -1,0 +1,21 @@
+fileFormatVersion: 2
+guid: 841232587653cbb4ea6ab0edc2c7d31b
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - cardBackSprite: {fileID: 21300000, guid: d388c52741e50554c8e35c3295e25dd3, type: 3}
+  - deckCardSprite: {instanceID: 0}
+  - fieldCardSprite: {instanceID: 0}
+  - deckStat: {instanceID: 0}
+  - fieldStat: {instanceID: 0}
+  - deckHpText: {instanceID: 0}
+  - deckPowerText: {instanceID: 0}
+  - deckCostText: {instanceID: 0}
+  - fieldHpText: {instanceID: 0}
+  - fieldPowerText: {instanceID: 0}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

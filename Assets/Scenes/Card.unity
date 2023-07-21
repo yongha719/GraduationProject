@@ -935,12 +935,9 @@ MonoBehaviour:
   - B2
   - B3
   - B3
-  - B4
-  - B4
-  - C1
-  - C1
-  - C3
-  - C3
+  - M1
+  - M1
+  - M1
 --- !u!114 &214781209
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3028,8 +3025,6 @@ MonoBehaviour:
   rightPosition: {x: 440, y: -30, z: 0}
   leftRotation: {x: 0, y: 0, z: 0.1305262, w: 0.9914449}
   rightRotation: {x: 0, y: 0, z: -0.1305262, w: 0.9914449}
-  photonResources:
-    _serializedList: []
   IsMine: 0
   childCount: 0
 --- !u!114 &865640729
@@ -4783,8 +4778,6 @@ MonoBehaviour:
   rightPosition: {x: 440, y: -30, z: 0}
   leftRotation: {x: 0, y: 0, z: 0.1305262, w: 0.9914449}
   rightRotation: {x: 0, y: 0, z: -0.1305262, w: 0.9914449}
-  photonResources:
-    _serializedList: []
   IsMine: 0
   childCount: 0
 --- !u!114 &1895077808

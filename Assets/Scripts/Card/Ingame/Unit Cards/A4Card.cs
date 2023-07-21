@@ -1,0 +1,17 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class A4Card : UnitCard
+{
+    // 딱히 이 카드에서 구현할 게 없음
+    // 근데 AddComponent로 유닛등급으로 추가하기 때문에 만들어둠
+
+    public override void MoveCardFromDeckToField()
+    {
+        base.MoveCardFromDeckToField();
+
+        Instantiate(illustAppearEffect).GetComponent<CharacterProduction>().characterType = ECharacterType.Kangsebin;
+        SoundManager.Instance.PlaySFXSound(ECharacterType.Kangsebin.ToString());
+    }
+}
