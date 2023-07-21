@@ -9,34 +9,31 @@ public enum MasicAbilityTarget
 }
 
 [Serializable]
-public class MasicCardData
+public class MasicCardData : CardData
 {
-    [Tooltip("카드 이름")]
-    private string name;
-
-    public string Name => name;
-
-    [Tooltip("타겟 타입")]
+    [Tooltip("타겟 타입"), SerializeField]
     private MasicAbilityTarget masicAbilityTarget;
 
     public MasicAbilityTarget MasicAbilityTarget => masicAbilityTarget;
-
-    [Tooltip("카드 등급")]
-    private string cardRating;
-
-    public string CardRating => cardRating;
-
+    
+    public MasicCardData(){}
+    
     public MasicCardData(MasicCardData data)
     {
-        name = data.name;
+        Name = data.Name;
         masicAbilityTarget = data.masicAbilityTarget;
-        cardRating = data.cardRating;
+        CardRating = data.CardRating;
     }
 
-    public MasicCardData(string[] data)
+    public override void Init(string[] data)
     {
-        name = data[0];
+        Name = data[0];
         Enum.TryParse(data[1], out masicAbilityTarget);
-        cardRating = data[2];
+        CardRating = data[2];
+    }
+
+    public override CardData Copy()
+    {
+        return new MasicCardData(this);
     }
 }

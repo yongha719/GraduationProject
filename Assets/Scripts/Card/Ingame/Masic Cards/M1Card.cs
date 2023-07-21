@@ -6,6 +6,8 @@ public class M1Card : MasicCard
 {
     private const int MISSILE_DAMAGE = 1;
 
+    public override int Cost => 2;
+
     public override void Ability()
     {
         var enemyList = CardManager.Instance.EnemyUnitCards;

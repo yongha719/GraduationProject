@@ -1,3 +1,4 @@
+using System;
 using AYellowpaper.SerializedCollections;
 using System.Threading.Tasks;
 using UnityEngine;
@@ -15,13 +16,10 @@ public class ResourceManager : Singleton<ResourceManager>
 
     [Tooltip("마법 카드 데이터 받아올 스프레드시트 링크")]
     private const string MASIC_CARD_DATA_URL =
-        "https://docs.google.com/spreadsheets/d/1uZHW4YokPwbg9gl0dDWcIjlWeieUlkiMwRk_PvQCPWU/export?format=tsv&range=A20:F28";
+        "https://docs.google.com/spreadsheets/d/1uZHW4YokPwbg9gl0dDWcIjlWeieUlkiMwRk_PvQCPWU/export?format=tsv&range=A20:C28";
 
-    [SerializedDictionary("유닛 카드 등급", "유닛 카드 데이터")]
-    private SerializedDictionary<string, UnitCardData> unitCardDatas = new();
-
-    private SerializedDictionary<string, MasicCardData> masicCardDatas = new();
-
+    [SerializedDictionary("카드 등급", "카드 데이터")]
+    private SerializedDictionary<string, CardData> CardDatas = new(30);
 
     private const string UNIT_CARD_DECK_TEXTURES = "Cards/UnitSprite/Deck";
     private const string UNIT_CARD_FIELD_TEXTURES = "Cards/UnitSprite/Field";
@@ -64,14 +62,24 @@ public class ResourceManager : Singleton<ResourceManager>
         }
     }
 
-    public async Task<SerializedDictionary<string, UnitCardData>> AsyncRequestCardData()
+
+    public async Task<SerializedDictionary<string, CardData>> GetCardDatas()
+    {
+        await AsyncRequestCardData<UnitCardData>(UNIT_CARD_DATA_URL);
+        await AsyncRequestCardData<MasicCardData>(MASIC_CARD_DATA_URL);
+        
+        return CardDatas;
+    }
+    
+    public async Task AsyncRequestCardData<T>(string cardDataURL)
+        where T : CardData, new()
     {
         if (Application.internetReachability == NetworkReachability.NotReachable)
         {
             Debug.Assert(false, "인터넷 연결안됨");
         }
 
-        var request = UnityWebRequest.Get(UNIT_CARD_DATA_URL);
+        UnityWebRequest request = UnityWebRequest.Get(cardDataURL);
 
         // 비동기 작업의 완료를 나타내는 개체임
         // bool 반환값을 가지는 개체 생성
@@ -86,28 +94,29 @@ public class ResourceManager : Singleton<ResourceManager>
         await Task.Run(() => tcs.Task);
         // 여기서 다음 코드 실행
 
-        ParsingCardData(request.downloadHandler.text);
-
-        return unitCardDatas;
+        ParsingUnitCardData<T>(request.downloadHandler.text);
     }
 
     /// <summary> Request로 받은 데이터를 카드 데이터로 파싱해서 반환 </summary>
-    private void ParsingCardData(string requsetText)
+    private void ParsingUnitCardData<T>(string requsetText) where T : CardData, new()
     {
         string[] line = requsetText.Split('\n');
 
         for (int i = 0; i < line.Length; i++)
         {
-            var cardData = new UnitCardData(line[i].Split('\t'));
+            var cardData = new T();
+            cardData.Init(line[i].Split('\t'));
 
-            unitCardDatas.Add(cardData.CardRating, cardData);
+            CardDatas.Add(cardData.CardRating, cardData);
         }
     }
 
+
     /// <summary>
-    /// Card의 Deck Sprite와 Field Sprite를 반환
+    /// 유닛카드 Deck Sprite와 Field Sprite를 반환
     /// </summary>
-    /// <param name="cardName"></param>
+    /// <param name="cardName">카드 이름</param>
+    /// <returns>Deck Sprite, Field Sprite 반환</returns>
     public static (Sprite deck, Sprite field) GetUnitCardSprites(string cardName)
     {
         (Sprite deckTexture, Sprite fieldTexture) sprites = (null, null);
@@ -122,6 +131,11 @@ public class ResourceManager : Singleton<ResourceManager>
         return sprites;
     }
 
+    /// <summary>
+    /// 마법카드 Deck Sprite 반환해주는 함수
+    /// </summary>
+    /// <param name="cardName">카드 이름</param>
+    /// <returns>Deck Sprite를 반환</returns>
     public static Sprite GetMasicCardSprites(string cardName)
     {
         Sprite sprite = null;

@@ -35,14 +35,6 @@ public class TestWindow : EditorWindow
                 CardManager.Instance.CardDraw();
         }
         
-        if (GUILayout.Button("Enemy Card Draw", GUILayout.Width(130), GUILayout.Height(40)))
-        {
-            // 여기에 버튼을 눌렀을 때 액션을 넣어주면됨
-            Debug.Log("적 카드 소환");
-
-            if (CardManager.Instance != null)
-                CardManager.Instance.EnemyCardDraw();
-        }
         #endregion
 
         GUILayout.Space(15);

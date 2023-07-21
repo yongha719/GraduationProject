@@ -1,8 +1,10 @@
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using AYellowpaper.SerializedCollections;
 using Photon.Pun;
 using UnityEngine;
+using UnityEngine.Serialization;
 using Random = UnityEngine.Random;
 
 // 이 스크립트가 하는 역할===
@@ -16,15 +18,21 @@ public class CardManager : SingletonPunCallbacks<CardManager>, IPunObservable
     public List<IUnitCardSubject> PlayerUnitCards = new(10);
     public List<IUnitCardSubject> EnemyUnitCards = new(10);
 
-    public Action EnemyCardDraw = () => { };
 
-    [Tooltip("카드 데이터들"), SerializedDictionary("Card Rating", "Card Data")]
-    public SerializedDictionary<string, UnitCardData> CardDatas = new(15);
+    [FormerlySerializedAs("UnitCardDatas")]
+    [Header("카드 데이터들")]
+    
+    
+    [Tooltip("유닛카드 데이터들"), SerializedDictionary("Card Rating", "Card Data")]
+    public SerializedDictionary<string, CardData> CardDatas = new(30);
 
-    // 포톤은 오브젝트를 리소스 폴더에서 가져와서 오브젝트의 이름으로 가져오기 위해 string으로 함
-    [SerializeField] private List<string> cardNames = new(20);
+    // 카드의 이름으로 AddComponent를 해줘야 하기 떄문에 string으로
+    // 구성해둔 덱을 받아옴
+    [SerializeField]
+    private List<string> cardNames = new(20);
 
     /// <summary> - 내 덱 </summary>
+    [field: SerializeField]
     public List<string> CardNames
     {
         get => cardNames;
@@ -40,12 +48,12 @@ public class CardManager : SingletonPunCallbacks<CardManager>, IPunObservable
     /// <summary> 인게임 카드 경로 </summary>
     /// 포톤에서 Resource.Load를 사용하기 때문에
     /// 이런식으로 경로를 정의함
-    private string CardPath => "Cards/In Game Card";
+    private const string CARD_PATH = "Cards/In Game Card";
 
 
-    async void Start()
+    private async void Start()
     {
-        CardDatas = await ResourceManager.Instance.AsyncRequestCardData();
+        CardDatas = await ResourceManager.Instance.GetCardDatas();
     }
 
     /// <summary>
@@ -53,13 +61,14 @@ public class CardManager : SingletonPunCallbacks<CardManager>, IPunObservable
     /// 없을 경우 null반환
     /// </summary>
     /// <param name="name">카드의 등급을 인자로 받음</param>
-    public void TryGetCardData(string name, ref UnitCardData cardData)
+    public void TryGetCardData<T>(string name, ref T unitCardData) where T : CardData
     {
-        if (CardDatas.TryGetValue(name, out cardData) == false)
+        if (CardDatas.TryGetValue(name, out CardData data))
+            unitCardData = (T)data.Copy();
+        else
             Debug.Assert(false, $"카드 등급이 없음 \n 카드 등급 : {name}");
-
-        cardData = cardData.Copy();
     }
+
 
     private void Update()
     {
@@ -72,15 +81,12 @@ public class CardManager : SingletonPunCallbacks<CardManager>, IPunObservable
     /// <summary>
     /// 카드 등급을 카드 이름으로 했음
     /// </summary>
-    public string GetRandomCardType(out bool isUnit)
+    public string GetRandomCardType()
     {
         int randomIndex = Random.Range(0, CardNames.Count);
         string cardName = CardNames[randomIndex];
 
         CardNames.RemoveAt(randomIndex);
-
-        // 마법카드인지 확인
-        isUnit = cardName.StartsWith("M");
 
         return cardName;
     }
@@ -91,23 +97,23 @@ public class CardManager : SingletonPunCallbacks<CardManager>, IPunObservable
             CardDraw();
     }
 
-    public GameObject CardDraw(bool isUnit = true)
+    public GameObject CardDraw()
     {
-        return CardDraw(GetRandomCardType(out isUnit), isUnit);
+        return CardDraw(GetRandomCardType());
     }
 
 
-    public GameObject CardDraw(string cardName, bool isUnit = true, bool setParentAsDeck = true)
+    public GameObject CardDraw(string cardName, bool setParentAsDeck = true)
     {
-        var cardObj = PhotonNetwork.Instantiate(CardPath, Vector2.zero, Quaternion.identity);
+        var cardObj = PhotonNetwork.Instantiate(CARD_PATH, Vector2.zero, Quaternion.identity);
 
         PhotonView cardPhotonView = cardObj.GetPhotonView();
 
         if (PhotonManager.IsAlone)
-            SetCardAndParentRPC(cardName, cardPhotonView.ViewID, isUnit, setParentAsDeck);
+            SetCardAndParentRPC(cardName, cardPhotonView.ViewID, setParentAsDeck);
         else
             photonView.RPC(nameof(SetCardAndParentRPC), RpcTarget.AllBuffered,
-           cardName, cardPhotonView.ViewID, isUnit, setParentAsDeck);
+                cardName, cardPhotonView.ViewID, setParentAsDeck);
 
         return cardObj;
     }
@@ -118,7 +124,7 @@ public class CardManager : SingletonPunCallbacks<CardManager>, IPunObservable
     /// RPC 호출이라 다른 클라이언트에서는 어떤 개체인지 모르기 때문에
     /// viewId로 찾아야 하기 때문에 인자로 넘겨줘야함
     [PunRPC]
-    private void SetCardAndParentRPC(string cardName, int cardViewId, bool isUnit = true, bool setParentAsDeck = true)
+    private void SetCardAndParentRPC(string cardName, int cardViewId, bool setParentAsDeck = true)
     {
         PhotonView cardPhotonView = PhotonManager.GetPhotonView(cardViewId);
 
@@ -126,9 +132,8 @@ public class CardManager : SingletonPunCallbacks<CardManager>, IPunObservable
 
         Component cardType = null;
 
-        var cardTypeName = isUnit ? $"{cardName}Unit" : $"{cardName}Masic";
-
-        cardType = cardPhotonView.gameObject.AddComponent(Type.GetType(cardTypeName));
+        cardName = $"{cardName}Card";
+        cardType = cardPhotonView.gameObject.AddComponent(Type.GetType(cardName));
 
         PhotonView parentPhotonView;
 
@@ -219,6 +224,5 @@ public class CardManager : SingletonPunCallbacks<CardManager>, IPunObservable
 
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
     {
-
     }
 }

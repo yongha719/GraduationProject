@@ -32,7 +32,6 @@ public class CardInfo : MonoBehaviourPun
     [SerializeField] protected TextMeshProUGUI fieldHpText;
     [SerializeField] protected TextMeshProUGUI fieldPowerText;
 
-
     private bool IsEnemy;
 
     private Image cardImageComponent;
@@ -49,21 +48,15 @@ public class CardInfo : MonoBehaviourPun
         IsEnemy = !photonView.IsMine;
         deckStat.SetActive(!IsEnemy);
 
-
         this.card = card;
-
-
-        // 카드 이미지 불러오기
-        var sprites = ResourceManager.GetUnitCardSprites(card.name);
-
-        deckCardSprite = sprites.deck;
-
-        cardImageComponent.sprite = IsEnemy ? cardBackSprite : deckCardSprite;
-
 
         // 카드가 유닛카드와 마법카드가 있어서 이렇게 했음
         if (card is UnitCard unitCard)
         {
+            // 카드 이미지 불러오기
+            var sprites = ResourceManager.GetUnitCardSprites(card.name);
+            
+            deckCardSprite = sprites.deck;
             fieldCardSprite = sprites.field;
 
             unitCard.OnSetHpChange += hp =>
@@ -71,6 +64,8 @@ public class CardInfo : MonoBehaviourPun
                 fieldHpText.text = hp.ToString();
             };
 
+            unitCard.OnFieldChangeAction += OnFieldStateChange;
+            
             // 텍스트 초기화
             deckHpText.text = unitCard.CardData.Hp.ToString();
             deckPowerText.text = unitCard.CardData.Power.ToString();
@@ -81,12 +76,16 @@ public class CardInfo : MonoBehaviourPun
         }
         else if (card is MasicCard masicCard)
         {
+            var sprites = ResourceManager.GetMasicCardSprites(card.name);
+            deckCardSprite = sprites;
+            
             deckHpText.gameObject.SetActive(false);
             deckPowerText.gameObject.SetActive(false);
 
             deckCostText.text = masicCard.Cost.ToString();
         }
 
+        cardImageComponent.sprite = IsEnemy ? cardBackSprite : deckCardSprite;
         gameObject.name = card.name + (IsEnemy ? "_Enemy" : "_Player");
     }
 

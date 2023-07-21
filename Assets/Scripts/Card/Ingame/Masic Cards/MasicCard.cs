@@ -15,6 +15,11 @@ public class MasicCard : Card, IMasicCardSubject
 
     private RaycastHit2D[] raycastHits = new RaycastHit2D[10];
 
+    protected virtual void Start()
+    {
+        
+    }
+    
     /// <summary>
     /// 들어온 콜라이더를 검사해서 마법 사용 타입에 따라 마법을 사용하고 값을 반환함
     /// </summary>
