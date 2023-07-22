@@ -684,7 +684,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e822603cb775f8547baf34d6d58d4911, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <OriginPos>k__BackingField: {x: 0, y: 0, z: 0}
   layoutRot: {x: 0, y: 0, z: 0, w: 0}
+  silblingIndex: 0
 --- !u!114 &9101778247568541867
 MonoBehaviour:
   m_ObjectHideFlags: 0

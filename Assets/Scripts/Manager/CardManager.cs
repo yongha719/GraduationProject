@@ -19,9 +19,7 @@ public class CardManager : SingletonPunCallbacks<CardManager>, IPunObservable
     public List<IUnitCardSubject> EnemyUnitCards = new(10);
 
 
-    [FormerlySerializedAs("UnitCardDatas")]
     [Header("카드 데이터들")]
-    
     
     [Tooltip("유닛카드 데이터들"), SerializedDictionary("Card Rating", "Card Data")]
     public SerializedDictionary<string, CardData> CardDatas = new(30);

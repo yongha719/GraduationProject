@@ -18,7 +18,8 @@ public enum TurnState
 
 public class TurnManager : SingletonPunCallbacks<TurnManager>, IPunObservable
 {
-    [SerializeField] private TurnState turnState;
+    [SerializeField]
+    private TurnState turnState;
 
     public TurnState TurnState
     {
@@ -27,7 +28,7 @@ public class TurnManager : SingletonPunCallbacks<TurnManager>, IPunObservable
         set { turnState = value; }
     }
 
-    [Tooltip("처음 드로우될 카드 갯수"),SerializeField]
+    [Tooltip("처음 드로우될 카드 갯수"), SerializeField]
     private int drawCardCount;
 
     public bool MyTurn => TurnState == TurnState.PlayerTurn;
@@ -40,12 +41,17 @@ public class TurnManager : SingletonPunCallbacks<TurnManager>, IPunObservable
 
     public event Action FirstTurnAction = () => { };
 
-    [SerializeField] private TextMeshProUGUI testTurnStateText;
+    [SerializeField]
+    private TextMeshProUGUI testTurnStateText;
 
-    [SerializeField] private Button turnChangeButton;
+    [SerializeField]
+    private Button turnChangeButton;
 
-    [SerializeField] private Sprite turnFinishSprite;
-    [SerializeField] private Sprite enemyTurnSprite;
+    [SerializeField]
+    private Sprite turnFinishSprite;
+
+    [SerializeField]
+    private Sprite enemyTurnSprite;
 
     private static int playerTurnCount;
     private static int enemyTurnCount;

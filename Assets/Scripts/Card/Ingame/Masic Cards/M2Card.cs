@@ -4,8 +4,12 @@ using UnityEngine;
 
 public class M2Card : MasicCard
 {
-    protected override void Start()
+    public override int Cost => 4;
+
+    private const int DAMAGE = 6;
+
+    public override void Ability(UnitCard enemyCard)
     {
-        base.Start();
+        enemyCard.Hit(DAMAGE);
     }
 }

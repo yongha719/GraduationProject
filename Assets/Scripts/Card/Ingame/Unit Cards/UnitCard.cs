@@ -85,7 +85,7 @@ public class UnitCard : Card, IUnitCardSubject
         base.Awake();
 
         // 오브젝트의 이름이 카드의 등급이고 딕셔너리의 키 값이 카드의 등급임 
-        CardManager.Instance.TryGetCardData(name.Split("_")[0], ref CardData);
+        CardManager.Instance.TryGetCardData(name, ref CardData);
     }
 
     protected override void Start()

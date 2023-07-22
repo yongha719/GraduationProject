@@ -15,10 +15,6 @@ public abstract class CardData
     [field: SerializeField]
     public virtual string CardRating { get; protected set; }
 
-    public CardData()
-    {
-    }
-
     public abstract void Init(string[] data);
 
     public abstract CardData Copy();

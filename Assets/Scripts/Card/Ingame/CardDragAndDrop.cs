@@ -1,6 +1,5 @@
-using Photon.Pun;
 using System;
-using System.Diagnostics.Tracing;
+using Photon.Pun;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -25,23 +24,25 @@ public class CardDragAndDrop : MonoBehaviourPun, IBeginDragHandler, IDragHandler
         set => card.CardState = value;
     }
 
-    private Vector3 originPos;
-    public Vector3 OriginPos => originPos;
+    [field: SerializeField]
+    public Vector3 OriginPos { get; private set; }
 
-    [Tooltip("덱 레이아웃이 회전값")] public Quaternion layoutRot;
+    [Tooltip("덱 레이아웃이 회전값")]
+    public Quaternion layoutRot;
 
     [Tooltip("클릭했을때 마우스 포인터와 카드 중앙에서의 거리")]
     private Vector2 mousePosDistance;
+
+    [SerializeField]
+    private int silblingIndex;
+
+    private Vector2 rectMax;
+    private Vector2 rectMin;
 
     private RectTransform rectTransform;
     private Shadow shadow;
 
     private Card card;
-
-    private Vector2 rectMax;
-    private Vector2 rectMin;
-
-    private int silblingIndex;
 
     private void Start()
     {
@@ -71,26 +72,15 @@ public class CardDragAndDrop : MonoBehaviourPun, IBeginDragHandler, IDragHandler
 
     private void OnMouseEnter()
     {
-        switch (cardState)
+        if (cardState == CardState.Deck && isEnemy == false && hasExpansionCard == false && isDragging == false)
         {
-            case CardState.Deck:
-                print($"hasExpansionCard : {hasExpansionCard}");
-                if (isEnemy == false && hasExpansionCard == false && isDragging == false)
-                {
-                    layoutRot = rectTransform.localRotation;
+            print($"hasExpansionCard : {hasExpansionCard}");
+            layoutRot = rectTransform.localRotation;
 
-                    cardState = CardState.ExpansionDeck;
+            cardState = CardState.ExpansionDeck;
 
-                    silblingIndex = rectTransform.GetSiblingIndex();
-                    rectTransform.SetAsLastSibling();
-                }
-
-                break;
-            case CardState.ExpansionDeck:
-                break;
-            case CardState.Field:
-                shadow.enabled = false;
-                break;
+            silblingIndex = rectTransform.GetSiblingIndex();
+            rectTransform.SetAsLastSibling();
         }
     }
 
@@ -167,8 +157,8 @@ public class CardDragAndDrop : MonoBehaviourPun, IBeginDragHandler, IDragHandler
         // 왼쪽 버튼으로 드래그 시작했을때 원래 포지션 저장과 마우스 포인터와 거리도 저장
         if (eventData.button == PointerEventData.InputButton.Left)
         {
-            originPos = rectTransform.anchoredPosition3D;
-            mousePosDistance = originPos - (Vector3)CanvasUtility.GetMousePosToCanvasPos();
+            OriginPos = rectTransform.anchoredPosition3D;
+            mousePosDistance = OriginPos - (Vector3)CanvasUtility.GetMousePosToCanvasPos();
 
             // 드래그 할 때는 카드가 돌아가 있으면 안됨
             rectTransform.localRotation = Quaternion.identity;
@@ -197,7 +187,7 @@ public class CardDragAndDrop : MonoBehaviourPun, IBeginDragHandler, IDragHandler
 
         // 다시 돌아가
         transform.localRotation = cardState != CardState.Field ? layoutRot : Quaternion.identity;
-        rectTransform.anchoredPosition3D = originPos;
+        rectTransform.anchoredPosition3D = OriginPos;
     }
 
     void IDropHandler.OnDrop(PointerEventData eventData)

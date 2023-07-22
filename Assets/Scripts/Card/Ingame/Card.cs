@@ -52,6 +52,8 @@ public abstract class Card : MonoBehaviourPun, IPunObservable
 
     protected virtual void Start()
     {
+        gameObject.name = name + (IsEnemy ? "_Enemy" : "_Player");
+        
         cardDragAndDrop.OnEndDrag += OnEndDrag;
         cardDragAndDrop.OnDrop += OnDrop;
     }

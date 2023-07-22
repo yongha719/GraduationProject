@@ -10,27 +10,39 @@ using UnityEngine.UI;
 public class CardInfo : MonoBehaviourPun
 {
     [Space(15f), Header("Sprites")]
+    [SerializeField]
+    protected Sprite cardBackSprite;
 
-    [SerializeField] protected Sprite cardBackSprite;
-    [SerializeField] protected Sprite deckCardSprite;
-    [SerializeField] protected Sprite fieldCardSprite;
+    [SerializeField]
+    protected Sprite deckCardSprite;
+
+    [SerializeField]
+    protected Sprite fieldCardSprite;
 
     [Space(15f), Header("Stats")]
+    [SerializeField]
+    protected GameObject deckStat;
 
-    [SerializeField] protected GameObject deckStat;
-    [SerializeField] protected GameObject fieldStat;
+    [SerializeField]
+    protected GameObject fieldStat;
 
     [Space(15f), Header("Deck Stat Texts")]
+    [SerializeField]
+    protected TextMeshProUGUI deckHpText;
 
-    [SerializeField] protected TextMeshProUGUI deckHpText;
-    [SerializeField] protected TextMeshProUGUI deckPowerText;
-    [SerializeField] protected TextMeshProUGUI deckCostText;
+    [SerializeField]
+    protected TextMeshProUGUI deckPowerText;
+
+    [SerializeField]
+    protected TextMeshProUGUI deckCostText;
 
 
     [Space(15f), Header("Field Stat Texts")]
+    [SerializeField]
+    protected TextMeshProUGUI fieldHpText;
 
-    [SerializeField] protected TextMeshProUGUI fieldHpText;
-    [SerializeField] protected TextMeshProUGUI fieldPowerText;
+    [SerializeField]
+    protected TextMeshProUGUI fieldPowerText;
 
     private bool IsEnemy;
 
@@ -55,21 +67,18 @@ public class CardInfo : MonoBehaviourPun
         {
             // 카드 이미지 불러오기
             var sprites = ResourceManager.GetUnitCardSprites(card.name);
-            
+
             deckCardSprite = sprites.deck;
             fieldCardSprite = sprites.field;
 
-            unitCard.OnSetHpChange += hp =>
-            {
-                fieldHpText.text = hp.ToString();
-            };
+            unitCard.OnSetHpChange += hp => { fieldHpText.text = hp.ToString(); };
 
             unitCard.OnFieldChangeAction += OnFieldStateChange;
-            
+
             // 텍스트 초기화
-            deckHpText.text = unitCard.CardData.Hp.ToString();
-            deckPowerText.text = unitCard.CardData.Power.ToString();
-            deckCostText.text = unitCard.CardData.Cost.ToString();
+            deckHpText.text = $"{unitCard.CardData.Hp}";
+            deckPowerText.text = $"{unitCard.CardData.Power}";
+            deckCostText.text = $"{unitCard.CardData.Cost}";
 
             fieldHpText.text = deckHpText.text;
             fieldPowerText.text = deckPowerText.text;
@@ -78,15 +87,14 @@ public class CardInfo : MonoBehaviourPun
         {
             var sprites = ResourceManager.GetMasicCardSprites(card.name);
             deckCardSprite = sprites;
-            
-            deckHpText.gameObject.SetActive(false);
-            deckPowerText.gameObject.SetActive(false);
+
+            deckHpText.ParentObjectSetActive(false);
+            deckPowerText.ParentObjectSetActive(false);
 
             deckCostText.text = masicCard.Cost.ToString();
         }
 
         cardImageComponent.sprite = IsEnemy ? cardBackSprite : deckCardSprite;
-        gameObject.name = card.name + (IsEnemy ? "_Enemy" : "_Player");
     }
 
     public void OnFieldStateChange()

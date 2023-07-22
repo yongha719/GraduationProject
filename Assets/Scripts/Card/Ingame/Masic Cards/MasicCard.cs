@@ -6,12 +6,10 @@ public class MasicCard : Card, IMasicCardSubject
 {
     private const int COST = 2;
 
-    public MasicCardData MasicCardData
-    {
-        get; private set;
-    }
+    [field: SerializeField]
+    public MasicCardData MasicCardData { get; protected set; }
 
-    public virtual MasicAbilityTarget AbilityTarget { get; }
+    public MasicAbilityTarget AbilityTarget => MasicCardData.MasicAbilityTarget;
 
     private RaycastHit2D[] raycastHits = new RaycastHit2D[10];
 
@@ -39,7 +37,7 @@ public class MasicCard : Card, IMasicCardSubject
         }
 
         if (AbilityTarget == MasicAbilityTarget.Enemy && collider.TryGetComponent(out UnitCard enemycard) &&
-            enemycard.IsEnemy)
+            enemycard.CanAttackThisCard(enemycard))
         {
             Ability(enemycard);
             return true;
