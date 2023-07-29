@@ -47,7 +47,6 @@ public abstract class Card : MonoBehaviourPun, IPunObservable
 
         cardDragAndDrop.Init();
 
-        IsEnemy = !photonView.IsMine;
     }
 
     protected virtual void Start()
@@ -58,8 +57,10 @@ public abstract class Card : MonoBehaviourPun, IPunObservable
         cardDragAndDrop.OnDrop += OnDrop;
     }
 
-    public void Init(Transform parent = null)
+    public void Init(bool isEnemy, Transform parent = null)
     {
+        IsEnemy = isEnemy;
+        
         transform.localScale = Vector3.one;
 
         // PosZ가 0이 아니라서 콜라이더 크기가 이상해짐
@@ -72,15 +73,15 @@ public abstract class Card : MonoBehaviourPun, IPunObservable
 
     protected virtual void OnEndDrag()
     {
-        Attack();
+        DropField();
     }
 
     protected virtual void OnDrop()
     {
-        Attack();
+        DropField();
     }
 
-    protected virtual void Attack() { }
+    protected virtual void DropField() { }
 
     public void Destroy()
     {

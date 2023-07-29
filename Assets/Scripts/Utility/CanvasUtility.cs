@@ -22,7 +22,8 @@ public class CanvasUtility : MonoBehaviour
     /// <summary> 현재 마우스 위치를 캔버스 좌표 기준으로 가져오는 함수 </summary>
     public static Vector2 GetMousePosToCanvasPos()
     {
-        RectTransformUtility.ScreenPointToLocalPointInRectangle(CanvasTr, Input.mousePosition, Camera.main, out screenPoint);
+        RectTransformUtility.ScreenPointToLocalPointInRectangle(CanvasTr, Input.mousePosition, Camera.main,
+            out screenPoint);
 
         return screenPoint;
     }
@@ -53,14 +54,54 @@ public class CanvasUtility : MonoBehaviour
         }
 
         return false;
+    }
 
-        //// 마우스 포지션이 내 필드 안에 있는지 확인
-        //if (MyFieldRect.rect.xMin < mousePos.x && MyFieldRect.rect.yMin < mousePos.y
-        //    && MyFieldRect.rect.xMax > mousePos.x & MyFieldRect.rect.yMax > mousePos.y)
-        //{
-        //    return true;
-        //}
-        //else
-        //    return false;
+    /// <summary>
+    /// Rect의 안에 마우스 위치에 따라 min과 max 사이에 값을 Vector2로 Lerp함
+    /// <br></br>
+    /// -- x와 y가 min과 max가 반대일 경우만 사용
+    /// </summary>
+    /// <param name="min">러프할 Min 값</param>
+    /// <param name="max">러프할 Max 값</param>
+    /// <param name="rect">RectTransform의 Rect</param>
+    /// <param name="localPoint">마우스 포지션을 RectTransform의 로컬 좌표로 변환한 값이 필요함</param>
+    /// <returns>Vector2로 Lerp 값</returns>
+    public static Vector2 LerpVector2InRect(float min, float max, Rect rect, Vector2 localPoint)
+    {
+        Vector2 result = Vector2.zero;
+
+        result.x = LerpValueInRect(min, max, rect, localPoint);
+        result.y = LerpValueInRect(max, min, rect, localPoint);
+
+        return result;
+    }
+    
+    /// <summary>
+    /// Rect의 안에 마우스 위치에 따라 min과 max 사이에 값을 Lerp한 값을 반환
+    /// </summary>
+    public static float LerpValueInRect(float min, float max, Rect rect, Vector2 localPoint)
+    {
+        float result = Mathf.Lerp(min, max, Clamp01(rect.xMin, rect.xMax, localPoint.x));
+
+        return result;
+    }
+
+
+    /// <summary>
+    /// 0과 1 사이의 값으로 반환
+    /// </summary>
+    /// <param name="min">Min 값</param>
+    /// <param name="max">Max 값</param>
+    /// <param name="value">0과 1 사이의 값의 기준</param>
+    /// <returns></returns>
+    private static float Clamp01(float min, float max, float value)
+    {
+        // 상대적인 위치 계산
+        float relativePosition = (value - min) / (max - min);
+
+        // 0과 1 사이의 범위로 매핑
+        float mappedValue = Mathf.Clamp01(relativePosition);
+
+        return mappedValue;
     }
 }

@@ -46,7 +46,7 @@ public class MasicCard : Card, IMasicCardSubject
         return false;
     }
 
-    protected override void Attack()
+    protected override void DropField()
     {
         Vector2 worldPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
 
@@ -66,7 +66,7 @@ public class MasicCard : Card, IMasicCardSubject
 
     protected override void OnEndDrag()
     {
-        Attack();
+        DropField();
     }
 
     public virtual void Ability()

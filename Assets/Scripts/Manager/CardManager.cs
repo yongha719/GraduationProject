@@ -20,7 +20,6 @@ public class CardManager : SingletonPunCallbacks<CardManager>, IPunObservable
 
 
     [Header("카드 데이터들")]
-    
     [Tooltip("유닛카드 데이터들"), SerializedDictionary("Card Rating", "Card Data")]
     public SerializedDictionary<string, CardData> CardDatas = new(30);
 
@@ -97,21 +96,25 @@ public class CardManager : SingletonPunCallbacks<CardManager>, IPunObservable
 
     public GameObject CardDraw()
     {
-        return CardDraw(GetRandomCardType());
+        return CardDraw(GetRandomCardType(), isPlayeDraw: true, setParentAsDeck: true);
     }
 
+    public GameObject CardDraw(string cardName, bool isPlayeDraw = true)
+    {
+        return CardDraw(cardName, isPlayeDraw, setParentAsDeck: true);
+    }
 
-    public GameObject CardDraw(string cardName, bool setParentAsDeck = true)
+    public GameObject CardDraw(string cardName, bool isPlayeDraw = true, bool setParentAsDeck = true)
     {
         var cardObj = PhotonNetwork.Instantiate(CARD_PATH, Vector2.zero, Quaternion.identity);
 
         PhotonView cardPhotonView = cardObj.GetPhotonView();
 
         if (PhotonManager.IsAlone)
-            SetCardAndParentRPC(cardName, cardPhotonView.ViewID, setParentAsDeck);
+            SetCardAndParentRPC(cardName, cardPhotonView.ViewID, isPlayeDraw, setParentAsDeck);
         else
             photonView.RPC(nameof(SetCardAndParentRPC), RpcTarget.AllBuffered,
-                cardName, cardPhotonView.ViewID, setParentAsDeck);
+                cardName, cardPhotonView.ViewID, isPlayeDraw, setParentAsDeck);
 
         return cardObj;
     }
@@ -122,7 +125,7 @@ public class CardManager : SingletonPunCallbacks<CardManager>, IPunObservable
     /// RPC 호출이라 다른 클라이언트에서는 어떤 개체인지 모르기 때문에
     /// viewId로 찾아야 하기 때문에 인자로 넘겨줘야함
     [PunRPC]
-    private void SetCardAndParentRPC(string cardName, int cardViewId, bool setParentAsDeck = true)
+    private void SetCardAndParentRPC(string cardName, int cardViewId, bool isPlayeDraw = true, bool setParentAsDeck = true)
     {
         PhotonView cardPhotonView = PhotonManager.GetPhotonView(cardViewId);
 
@@ -137,13 +140,13 @@ public class CardManager : SingletonPunCallbacks<CardManager>, IPunObservable
 
         if (setParentAsDeck)
         {
-            parentPhotonView = PhotonManager.GetPhotonViewByViewType(cardPhotonView.IsMine
+            parentPhotonView = PhotonManager.GetPhotonViewByViewType(isPlayeDraw
                 ? PhotonViewType.PlayerDeck
                 : PhotonViewType.EnemyDeck);
         }
         else
         {
-            parentPhotonView = PhotonManager.GetPhotonViewByViewType(cardPhotonView.IsMine
+            parentPhotonView = PhotonManager.GetPhotonViewByViewType(isPlayeDraw
                 ? PhotonViewType.PlayerField
                 : PhotonViewType.EnemyField);
         }
@@ -155,7 +158,7 @@ public class CardManager : SingletonPunCallbacks<CardManager>, IPunObservable
         bool cardIsNull = card == null;
 
         if (cardIsNull == false)
-            card.Init(parentPhotonView.transform);
+            card.Init(isPlayeDraw, parentPhotonView.transform);
         else
         {
             Debug.Assert(false,

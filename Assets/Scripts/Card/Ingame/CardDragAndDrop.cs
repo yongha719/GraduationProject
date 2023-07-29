@@ -36,8 +36,13 @@ public class CardDragAndDrop : MonoBehaviourPun, IBeginDragHandler, IDragHandler
     [SerializeField]
     private int silblingIndex;
 
-    private Vector2 rectMax;
-    private Vector2 rectMin;
+    private Rect rect;
+
+    [SerializeField, Tooltip("3D 카드 효과 회전값")]
+    private float cardRotationValue;
+
+    [SerializeField, Tooltip("3D 카드 효과 그림자 크기값")]
+    private float effectDistanceValue;
 
     private RectTransform rectTransform;
     private Shadow shadow;
@@ -46,14 +51,13 @@ public class CardDragAndDrop : MonoBehaviourPun, IBeginDragHandler, IDragHandler
 
     private void Start()
     {
-        isEnemy = !photonView.IsMine;
-
         rectTransform = transform as RectTransform;
 
         shadow = GetComponent<Shadow>();
 
-        rectMax = rectTransform.rect.max * 1.5f;
-        rectMin = rectTransform.rect.min * 1.5f;
+        rect = rectTransform.rect;
+        rect.max *= 1.5f;
+        rect.min *= 1.5f;
 
         MoveCardToFieldAction += () =>
         {
@@ -66,6 +70,7 @@ public class CardDragAndDrop : MonoBehaviourPun, IBeginDragHandler, IDragHandler
     {
         card = GetComponent<Card>();
 
+        isEnemy = card.IsEnemy;
         if (isEnemy)
             shadow.enabled = false;
     }
@@ -94,50 +99,32 @@ public class CardDragAndDrop : MonoBehaviourPun, IBeginDragHandler, IDragHandler
         RectTransformUtility.ScreenPointToLocalPointInRectangle(rectTransform, mousePosition, Camera.main,
             out Vector2 localPoint);
 
-        if (RectangleContainsScreenPoint(rectTransform, mousePosition, Camera.main, localPoint))
+        if (rect.Contains(localPoint))
         {
             // rect 회전값
-            Vector3 rotation = Vector3.one;
-
-            rotation.y = Mathf.Lerp(-25, 25, MapToZeroToOneX(localPoint.x));
-            rotation.x = Mathf.Lerp(25, -25, MapToZeroToOneY(localPoint.y));
+            Vector3 rotation =
+                CanvasUtility.LerpVector2InRect(cardRotationValue, -cardRotationValue, rect, localPoint);
 
             rectTransform.rotation = Quaternion.Euler(rotation);
 
             // Shadow effectDistance 값
-            Vector2 effectDistance;
-
-            effectDistance.x = Mathf.Lerp(-10, 10, MapToZeroToOneX(localPoint.x));
-            effectDistance.y = Mathf.Lerp(-10, 10, MapToZeroToOneY(localPoint.y));
+            Vector2 effectDistance =
+                CanvasUtility.LerpVector2InRect(effectDistanceValue, -effectDistanceValue, rect, localPoint);
 
             shadow.effectDistance = effectDistance;
         }
     }
-
-    // 1.5 배 큰 범위로 잡고 싶어서 만들었음
-    private bool RectangleContainsScreenPoint(RectTransform rectTransform, Vector2 screenPoint, Camera camera,
-        Vector2 rectPosition)
-    {
-        // 로컬 좌표가 RectTransform의 경계 내에 있는지 확인합니다.
-        Rect rect = rectTransform.rect;
-
-        rect.max *= 1.5f;
-        rect.min *= 1.5f;
-
-        return rect.Contains(rectPosition);
-    }
+    
 
     private void OnMouseExit()
     {
-        print("OnMouseExit");
         if (isEnemy == false && cardState == CardState.ExpansionDeck && photonView.IsMine)
         {
             cardState = CardState.Deck;
 
             rectTransform.localRotation = layoutRot;
             rectTransform.SetSiblingIndex(silblingIndex);
-
-            print($"OnMouseExit (hasExpansionCard : {hasExpansionCard})");
+            
             hasExpansionCard = false;
 
             shadow.effectDistance = Vector2.zero;
@@ -205,27 +192,5 @@ public class CardDragAndDrop : MonoBehaviourPun, IBeginDragHandler, IDragHandler
 
             MoveCardToFieldAction();
         }
-    }
-
-    float MapToZeroToOneX(float value)
-    {
-        // 상대적인 위치 계산
-        float relativePosition = (value - rectMin.x) / (rectMax.x - rectMin.x);
-
-        // 0과 1 사이의 범위로 매핑
-        float mappedValue = Mathf.Clamp01(relativePosition);
-
-        return mappedValue;
-    }
-
-    float MapToZeroToOneY(float value)
-    {
-        // 상대적인 위치 계산
-        float relativePosition = (value - rectMin.y) / (rectMax.y - rectMin.y);
-
-        // 0과 1 사이의 범위로 매핑
-        float mappedValue = Mathf.Clamp01(relativePosition);
-
-        return mappedValue;
     }
 }

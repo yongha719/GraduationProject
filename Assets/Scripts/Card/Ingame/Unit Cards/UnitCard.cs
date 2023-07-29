@@ -262,7 +262,7 @@ public class UnitCard : Card, IUnitCardSubject
 
     #region Card Overrides
 
-    protected override void Attack()
+    protected override void DropField()
     {
         if (CanAttack == false) return;
 

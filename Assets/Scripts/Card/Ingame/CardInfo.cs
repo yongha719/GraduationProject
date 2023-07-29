@@ -57,7 +57,7 @@ public class CardInfo : MonoBehaviourPun
 
     public void Init(Card card)
     {
-        IsEnemy = !photonView.IsMine;
+        IsEnemy = card.IsEnemy;
         deckStat.SetActive(!IsEnemy);
 
         this.card = card;

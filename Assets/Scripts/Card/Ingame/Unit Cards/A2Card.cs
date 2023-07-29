@@ -20,7 +20,7 @@ public class A2Card : UnitCard
         set
         {
             if (value == A2AttackType.BasicAttack)
-                attackTypeAction = Attack;
+                attackTypeAction = DropField;
             else
                 attackTypeAction = Hacking;
         }
@@ -60,7 +60,7 @@ public class A2Card : UnitCard
         curHackedUnitCard = enemyCard;
     }
 
-    protected override void Attack()
+    protected override void DropField()
     {
         base.BasicAttack(curHackedUnitCard);
     }

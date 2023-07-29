@@ -33,16 +33,22 @@ public class TurnManager : SingletonPunCallbacks<TurnManager>, IPunObservable
 
     public bool MyTurn => TurnState == TurnState.PlayerTurn;
 
+    #region Events
+
     public event Action<UnitCard> OnEnemySpawnAction;
 
+    /// <summary> 플레이어 턴이 됐을 때 이벤트  </summary>
     public event Action OnPlayerTurnAction = () => { };
 
     public event Action OnTurnChangeAction = () => { };
 
     public event Action FirstTurnAction = () => { };
 
-    [SerializeField]
-    private TextMeshProUGUI testTurnStateText;
+    #endregion
+
+    // TODO : 다른 스크립트로 옮기기
+
+    #region Turn Change Action
 
     [SerializeField]
     private Button turnChangeButton;
@@ -53,21 +59,22 @@ public class TurnManager : SingletonPunCallbacks<TurnManager>, IPunObservable
     [SerializeField]
     private Sprite enemyTurnSprite;
 
-    private static int playerTurnCount;
-    private static int enemyTurnCount;
-
     private const string MY_TURN_CHANGE_ACTION_PATH = "Effect/MyTurnProduction";
     private GameObject myTurnChangeEffect;
 
-    private IEnumerator Start()
+    #endregion
+
+    private static int playerTurnCount;
+    private static int enemyTurnCount;
+
+    public bool ShouldSummonCopy;
+    private string enemySpawnCardName;
+
+    private void Start()
     {
         turnChangeButton.onClick.AddListener(TurnChange);
 
         myTurnChangeEffect = Resources.Load<GameObject>(MY_TURN_CHANGE_ACTION_PATH);
-
-        yield return WaitTurn(2);
-
-        print("2턴뒤임");
     }
 
     /// <summary> 처음 턴 시작시 호출 </summary>
@@ -85,8 +92,6 @@ public class TurnManager : SingletonPunCallbacks<TurnManager>, IPunObservable
 
         turnChangeButton.interactable = MyTurn;
         turnChangeButton.image.sprite = MyTurn ? turnFinishSprite : enemyTurnSprite;
-
-        testTurnStateText.text = TurnState.ToString();
 
         FirstTurnAction();
 
@@ -114,8 +119,6 @@ public class TurnManager : SingletonPunCallbacks<TurnManager>, IPunObservable
     {
         TurnFinished();
 
-        // 나중에 턴 전환시 액션 넣을 예정
-        testTurnStateText.text = TurnState.ToString();
 
         if (MyTurn)
         {
@@ -150,7 +153,14 @@ public class TurnManager : SingletonPunCallbacks<TurnManager>, IPunObservable
         CardManager.Instance.HandleCards(MyTurn);
 
         if (playerTurnCount != 1 && MyTurn)
-            CardManager.Instance.CardDraw();
+        {
+            enemySpawnCardName = CardManager.Instance.CardDraw().name;
+            if (ShouldSummonCopy)
+            {
+                CardManager.Instance.CardDraw(enemySpawnCardName, isPlayeDraw: false);
+                ShouldSummonCopy = false;
+            }
+        }
     }
 
     public void ExecuteAfterTurn(int turnCount, Action call)
@@ -194,5 +204,13 @@ public class TurnManager : SingletonPunCallbacks<TurnManager>, IPunObservable
 
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
     {
+        if (stream.IsWriting && MyTurn == false)
+        {
+            stream.SendNext(enemySpawnCardName);
+        }
+        else
+        {
+            enemySpawnCardName = (string)stream.PeekNext();
+        }
     }
 }
