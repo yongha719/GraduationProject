@@ -6,7 +6,7 @@ using UnityEngine;
 [Serializable]
 public abstract class CardData
 {
-    [field:SerializeField]
+    [field: SerializeField]
     public virtual string Name { get; protected set; }
 
     [field: SerializeField]

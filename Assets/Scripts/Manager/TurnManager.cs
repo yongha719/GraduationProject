@@ -155,12 +155,25 @@ public class TurnManager : SingletonPunCallbacks<TurnManager>, IPunObservable
         if (playerTurnCount != 1 && MyTurn)
         {
             enemySpawnCardName = CardManager.Instance.CardDraw().name;
-            if (ShouldSummonCopy)
-            {
-                CardManager.Instance.CardDraw(enemySpawnCardName, isPlayeDraw: false);
-                ShouldSummonCopy = false;
-            }
         }
+    }
+
+    /// <summary>
+    /// 적 카드 소환할 때 복사해야하는지 검사하고 소환함
+    /// </summary>
+    /// <returns></returns>
+    public bool CanEnemyCardCopyDraw()
+    {
+        if (ShouldSummonCopy)
+        {
+            CardManager.Instance.CardDraw(enemySpawnCardName, isPlayeDraw: false);
+            print("적 카드 소환함 : " + enemySpawnCardName);
+            ShouldSummonCopy = false;
+            return true;
+        }
+
+        print("적 카드 소환 못함 : " + enemySpawnCardName);
+        return false;
     }
 
     public void ExecuteAfterTurn(int turnCount, Action call)
@@ -208,7 +221,7 @@ public class TurnManager : SingletonPunCallbacks<TurnManager>, IPunObservable
         {
             stream.SendNext(enemySpawnCardName);
         }
-        else
+        else if (stream.IsReading)
         {
             enemySpawnCardName = (string)stream.PeekNext();
         }

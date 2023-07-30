@@ -41,17 +41,6 @@ public class PhotonManager : SingletonPunCallbacks<PhotonManager>
 
     private static Dictionary<int, PhotonView> viewIdPhotonViews = new();
 
-    /// <summary> Type으로 PhotonView를 가져옴 </summary>
-    public static PhotonView GetPhotonViewByViewType(PhotonViewType photonViewType) => viewTypePhotonViews[photonViewType];
-
-    public static PhotonView GetFieldPhotonView(bool isMine)
-    {
-        if (isMine)
-            return GetPhotonViewByViewType(PhotonViewType.PlayerField);
-        else
-            return GetPhotonViewByViewType(PhotonViewType.EnemyField);
-    }
-
     protected override void Awake()
     {
         base.Awake();
@@ -82,6 +71,21 @@ public class PhotonManager : SingletonPunCallbacks<PhotonManager>
     {
         viewIdPhotonViews.Remove(viewId);
     }
+    
+    /// <summary> Type으로 PhotonView를 가져옴 </summary>
+    public static PhotonView GetPhotonViewByViewType(PhotonViewType photonViewType) =>
+        viewTypePhotonViews[photonViewType];
+
+    public static PhotonView GetFieldPhotonView(bool isMine)
+    {
+        return GetPhotonViewByViewType(isMine ? PhotonViewType.PlayerField : PhotonViewType.EnemyField);
+    }
+    
+    public static PhotonView GetDeckPhotonView(bool isMine)
+    {
+        return GetPhotonViewByViewType(isMine ? PhotonViewType.PlayerDeck : PhotonViewType.EnemyDeck);
+    }
+    
 
     public override void OnConnected()
     {
@@ -133,4 +137,3 @@ public class PhotonManager : SingletonPunCallbacks<PhotonManager>
         }
     }
 }
-

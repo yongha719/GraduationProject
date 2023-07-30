@@ -10,7 +10,7 @@ public class UnitCard : Card, IUnitCardSubject
 {
     public UnitCardData CardData;
 
-    [SerializeField] 
+    [SerializeField]
     private int hp = 1;
 
     public virtual int Hp
@@ -36,9 +36,9 @@ public class UnitCard : Card, IUnitCardSubject
     }
 
     public bool CanAttack =>
-        IsEnemy == false && CardState == CardState.Field && TurnManager.Instance.MyTurn && isAttackableTurn;
+        IsMine && CardState == CardState.Field && TurnManager.Instance.MyTurn && isAttackableTurn;
 
-    [SerializeField] 
+    [SerializeField]
     protected bool isAttackableTurn = false;
 
     public bool HasSpecialAbility => CardData.UnitCardSpecialAbilityType != UnitCardSpecialAbilityType.None;
@@ -47,7 +47,8 @@ public class UnitCard : Card, IUnitCardSubject
 
     public override int Cost => CardData.Cost;
 
-    [Tooltip("저체온증 상태인지 체크")] public bool isHypothermic;
+    [Tooltip("저체온증 상태인지 체크")]
+    public bool isHypothermic;
 
 
     public bool IsHacked
@@ -55,23 +56,23 @@ public class UnitCard : Card, IUnitCardSubject
         set => isAttackableTurn = !value;
     }
 
-    [Tooltip("공격 턴 기다리는거 캐싱")] protected Action enableAttackCall;
+    [Tooltip("공격 턴 기다리는거 캐싱")]
+    protected Action enableAttackCall;
 
     public event Action OnFieldChangeAction = () => { };
 
     #region 연출
 
-    [Header("Effect")] 
-    
+    [Header("Effect")]
     private const string DAMAGE_EFFECT_PATH = "Effect/DamageEffect";
 
-    [SerializeField] 
+    [SerializeField]
     private DamageTextProduction damageEffect;
 
 
     private const string ILLUST_APPEAR_EFFECT_PATH = "Effect/IllustAppearEffect";
-    
-    [SerializeField] 
+
+    [SerializeField]
     protected GameObject illustAppearEffect;
 
     #endregion
@@ -79,6 +80,9 @@ public class UnitCard : Card, IUnitCardSubject
     private RaycastHit2D[] raycastHits = new RaycastHit2D[10];
 
     private BoxCollider2D boxCollider;
+
+    private Vector2 originColliderSize;
+    private Vector2 expandColliderSize;
 
     protected override void Awake()
     {
@@ -103,6 +107,9 @@ public class UnitCard : Card, IUnitCardSubject
         hp = CardData.Hp;
 
         boxCollider = GetComponent<BoxCollider2D>();
+
+        originColliderSize = boxCollider.size;
+        expandColliderSize = originColliderSize * 0.8333f;
 
         cardDragAndDrop.MoveCardToFieldAction += () =>
         {
@@ -129,7 +136,7 @@ public class UnitCard : Card, IUnitCardSubject
 
     private void Update()
     {
-        if (CardState == CardState.Field && IsEnemy)
+        if (CardState == CardState.Field && IsMine == false)
         {
             transform.localRotation = Quaternion.Euler(0, 0, 180);
         }
@@ -176,17 +183,17 @@ public class UnitCard : Card, IUnitCardSubject
         {
             case CardState.Deck:
                 rect.localScale = Vector3.one;
-                if (IsEnemy == false)
+                if (IsMine)
                 {
-                    boxCollider.size *= 0.6667f;
+                    boxCollider.size = originColliderSize;
                 }
 
                 break;
             case CardState.ExpansionDeck:
-                if (IsEnemy == false)
+                if (IsMine)
                 {
-                    rect.localScale *= 1.2f;
-                    boxCollider.size *= 1.2f;
+                    rect.localScale = Vector3.one * 1.2f;
+                    boxCollider.size = expandColliderSize;
                 }
 
                 // 덱에 있는 카드를 눌렀을 때 커지는 모션
@@ -214,8 +221,8 @@ public class UnitCard : Card, IUnitCardSubject
     {
         // 이 카드가 적이고 필드에 도발 카드를 가지고 있는지 확인
         // 도발 카드가 없거나 이 카드가 도발 카드일 때 공격 가능
-        return (IsEnemy && (CardManager.Instance.HasEnemyTauntCard == false ||
-                            card.CardData.UnitCardSpecialAbilityType == UnitCardSpecialAbilityType.Taunt));
+        return (IsMine == false && (CardManager.Instance.HasEnemyTauntCard == false ||
+                                    card.CardData.UnitCardSpecialAbilityType == UnitCardSpecialAbilityType.Taunt));
     }
 
     #region UnitCard Virtuals

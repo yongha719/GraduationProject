@@ -26,14 +26,7 @@ public class CardDeckLayout : MonoBehaviourPunCallbacks, IPunObservable
     [SerializeField]
     private Quaternion rightRotation = Quaternion.Euler(0, 0, -15f);
 
-    [SerializeField] private bool IsMine;
-
     [SerializeField] private int childCount;
-
-    private void Start()
-    {
-        IsMine = photonView.ViewID == (int)PhotonViewType.PlayerDeck;
-    }
 
     private void OnTransformChildrenChanged()
     {

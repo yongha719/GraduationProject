@@ -27,7 +27,7 @@ public class PhotonShieldSkill : InherenceSkill
         {
             if (hit.collider is null ||
                 hit.collider.TryGetComponent(out UnitCard card) == false ||
-                card.IsEnemy)
+                card.IsMine == false)
                 continue;
 
             // 카드한테 보호막주는 코드싸기

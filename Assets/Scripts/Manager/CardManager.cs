@@ -21,7 +21,7 @@ public class CardManager : SingletonPunCallbacks<CardManager>, IPunObservable
 
     [Header("카드 데이터들")]
     [Tooltip("유닛카드 데이터들"), SerializedDictionary("Card Rating", "Card Data")]
-    public SerializedDictionary<string, CardData> CardDatas = new(30);
+    private SerializedDictionary<string, CardData> CardDatas = new(30);
 
     // 카드의 이름으로 AddComponent를 해줘야 하기 떄문에 string으로
     // 구성해둔 덱을 받아옴
@@ -37,6 +37,8 @@ public class CardManager : SingletonPunCallbacks<CardManager>, IPunObservable
         set => cardNames = value;
     }
 
+    public List<string> CardDataNames;
+    
     public bool HasEnemyTauntCard => enemyTauntCardCount != 0;
 
     [Tooltip("적 도발 카드 갯수")]
@@ -51,6 +53,8 @@ public class CardManager : SingletonPunCallbacks<CardManager>, IPunObservable
     private async void Start()
     {
         CardDatas = await ResourceManager.Instance.GetCardDatas();
+
+        CardDataNames = new List<string>(CardDatas.Keys);
     }
 
     /// <summary>
@@ -58,12 +62,12 @@ public class CardManager : SingletonPunCallbacks<CardManager>, IPunObservable
     /// 없을 경우 null반환
     /// </summary>
     /// <param name="name">카드의 등급을 인자로 받음</param>
-    public void TryGetCardData<T>(string name, ref T unitCardData) where T : CardData
+    public void TryGetCardData<T>(string name, ref T CardData) where T : CardData
     {
         if (CardDatas.TryGetValue(name, out CardData data))
-            unitCardData = (T)data.Copy();
+            CardData = (T)data.Copy();
         else
-            Debug.Assert(false, $"카드 등급이 없음 \n 카드 등급 : {name}");
+            Debug.Assert(false, $"카드 등급이 없음 \n카드 등급 : {name}");
     }
 
 
@@ -96,15 +100,15 @@ public class CardManager : SingletonPunCallbacks<CardManager>, IPunObservable
 
     public GameObject CardDraw()
     {
-        return CardDraw(GetRandomCardType(), isPlayeDraw: true, setParentAsDeck: true);
+        return CardDraw(GetRandomCardType(), isPlayeDraw: false, setParentAsDeck: true);
     }
 
-    public GameObject CardDraw(string cardName, bool isPlayeDraw = true)
+    public GameObject CardDraw(string cardName, bool isPlayeDraw = false)
     {
         return CardDraw(cardName, isPlayeDraw, setParentAsDeck: true);
     }
 
-    public GameObject CardDraw(string cardName, bool isPlayeDraw = true, bool setParentAsDeck = true)
+    public GameObject CardDraw(string cardName, bool isPlayeDraw = false, bool setParentAsDeck = true)
     {
         var cardObj = PhotonNetwork.Instantiate(CARD_PATH, Vector2.zero, Quaternion.identity);
 
@@ -125,56 +129,63 @@ public class CardManager : SingletonPunCallbacks<CardManager>, IPunObservable
     /// RPC 호출이라 다른 클라이언트에서는 어떤 개체인지 모르기 때문에
     /// viewId로 찾아야 하기 때문에 인자로 넘겨줘야함
     [PunRPC]
-    private void SetCardAndParentRPC(string cardName, int cardViewId, bool isPlayeDraw = true, bool setParentAsDeck = true)
+    private void SetCardAndParentRPC(string cardName, int cardViewId, bool isPlayeDraw = false,
+        bool setParentAsDeck = true)
     {
         PhotonView cardPhotonView = PhotonManager.GetPhotonView(cardViewId);
 
         cardPhotonView.gameObject.name = cardName;
 
-        Component cardType = null;
-
         cardName = $"{cardName}Card";
-        cardType = cardPhotonView.gameObject.AddComponent(Type.GetType(cardName));
+
+        Component cardType = cardPhotonView.gameObject.AddComponent(Type.GetType(cardName));
 
         PhotonView parentPhotonView;
 
+        // 카드를 덱에 소환하는지 확인 후
         if (setParentAsDeck)
         {
-            parentPhotonView = PhotonManager.GetPhotonViewByViewType(isPlayeDraw
-                ? PhotonViewType.PlayerDeck
-                : PhotonViewType.EnemyDeck);
+            // 카드가 플레이어의 덱에 들어와야하는지 확인
+            if (isPlayeDraw)
+                parentPhotonView = PhotonManager.GetPhotonViewByViewType(PhotonViewType.PlayerDeck);
+            else
+                parentPhotonView = PhotonManager.GetDeckPhotonView(cardPhotonView.IsMine);
         }
         else
         {
-            parentPhotonView = PhotonManager.GetPhotonViewByViewType(isPlayeDraw
-                ? PhotonViewType.PlayerField
-                : PhotonViewType.EnemyField);
+            // 카드가 플레이어의 필드에 소환돼야하는지 확인
+            if (isPlayeDraw)
+                parentPhotonView = PhotonManager.GetPhotonViewByViewType(PhotonViewType.PlayerField);
+            else
+                parentPhotonView = PhotonManager.GetFieldPhotonView(cardPhotonView.IsMine);
         }
 
         cardPhotonView.transform.SetParent(parentPhotonView.transform);
 
-        var card = cardType as Card;
-
-        bool cardIsNull = card == null;
-
-        if (cardIsNull == false)
-            card.Init(isPlayeDraw, parentPhotonView.transform);
-        else
+        if (cardType is Card card)
         {
-            Debug.Assert(false,
-                $"뭔가 잘못됨\n {nameof(CardDeckLayout)} : 카드 이름: {cardName}, 카드 is null :{cardIsNull}");
+            card.Init(isPlayeDraw ? isPlayeDraw : cardPhotonView.IsMine, parentPhotonView.transform);
+            print("isMine : " + (isPlayeDraw ? isPlayeDraw : cardPhotonView.IsMine));
         }
+        else
+            Debug.Assert(false,
+                $"뭔가 잘못됨\n {nameof(CardDeckLayout)} : 카드 이름: {cardName}, 카드 is null :{cardType == null}");
     }
 
 
     public void AddUnitCard(UnitCard card)
     {
-        if (card.IsEnemy)
+        if (!card.IsMine)
         {
             EnemyUnitCards.Add(card);
 
             if (card.CardData.UnitCardSpecialAbilityType == UnitCardSpecialAbilityType.Taunt)
                 enemyTauntCardCount++;
+
+            if (TurnManager.Instance.CanEnemyCardCopyDraw())
+            {
+                print("적 카드 복사");
+            }
         }
         else
             PlayerUnitCards.Add(card);
@@ -182,7 +193,7 @@ public class CardManager : SingletonPunCallbacks<CardManager>, IPunObservable
 
     public void RemoveUnitCard(UnitCard card)
     {
-        if (card.IsEnemy)
+        if (!card.IsMine)
         {
             EnemyUnitCards.Remove(card);
 
@@ -219,7 +230,7 @@ public class CardManager : SingletonPunCallbacks<CardManager>, IPunObservable
     {
         unitCard.gameObject.SetActive(false);
 
-        if (!unitCard.IsEnemy)
+        if (unitCard.IsMine)
             PhotonNetwork.Destroy(unitCard.gameObject);
     }
 

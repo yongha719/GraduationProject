@@ -44,7 +44,7 @@ public class CardInfo : MonoBehaviourPun
     [SerializeField]
     protected TextMeshProUGUI fieldPowerText;
 
-    private bool IsEnemy;
+    private bool IsMine;
 
     private Image cardImageComponent;
 
@@ -57,10 +57,11 @@ public class CardInfo : MonoBehaviourPun
 
     public void Init(Card card)
     {
-        IsEnemy = card.IsEnemy;
-        deckStat.SetActive(!IsEnemy);
-
         this.card = card;
+        
+        IsMine = card.IsMine;
+        print("Card Info - IsMine : " + IsMine);
+        deckStat.SetActive(IsMine);
 
         // 카드가 유닛카드와 마법카드가 있어서 이렇게 했음
         if (card is UnitCard unitCard)
@@ -85,6 +86,7 @@ public class CardInfo : MonoBehaviourPun
         }
         else if (card is MasicCard masicCard)
         {
+            print("Masic Card");
             var sprites = ResourceManager.GetMasicCardSprites(card.name);
             deckCardSprite = sprites;
 
@@ -94,7 +96,7 @@ public class CardInfo : MonoBehaviourPun
             deckCostText.text = masicCard.Cost.ToString();
         }
 
-        cardImageComponent.sprite = IsEnemy ? cardBackSprite : deckCardSprite;
+        cardImageComponent.sprite = IsMine ? deckCardSprite : cardBackSprite;
     }
 
     public void OnFieldStateChange()

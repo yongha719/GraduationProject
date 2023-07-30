@@ -11,12 +11,12 @@ public class CardDragAndDrop : MonoBehaviourPun, IBeginDragHandler, IDragHandler
     public event Action MoveCardToFieldAction = () => { };
 
     /// <summary> 드래그 가능한 상태인지 체크 </summary>
-    public bool CanDrag => isEnemy == false && TurnManager.Instance.MyTurn;
+    public bool CanDrag => !isMine == false && TurnManager.Instance.MyTurn;
 
     private static bool hasExpansionCard;
     private bool isDragging;
 
-    private bool isEnemy;
+    private bool isMine;
 
     private CardState cardState
     {
@@ -53,8 +53,6 @@ public class CardDragAndDrop : MonoBehaviourPun, IBeginDragHandler, IDragHandler
     {
         rectTransform = transform as RectTransform;
 
-        shadow = GetComponent<Shadow>();
-
         rect = rectTransform.rect;
         rect.max *= 1.5f;
         rect.min *= 1.5f;
@@ -69,15 +67,16 @@ public class CardDragAndDrop : MonoBehaviourPun, IBeginDragHandler, IDragHandler
     public void Init()
     {
         card = GetComponent<Card>();
+        shadow = GetComponent<Shadow>();
 
-        isEnemy = card.IsEnemy;
-        if (isEnemy)
+        isMine = card.IsMine;
+        if (isMine == false)
             shadow.enabled = false;
     }
 
     private void OnMouseEnter()
     {
-        if (cardState == CardState.Deck && isEnemy == false && hasExpansionCard == false && isDragging == false)
+        if (cardState == CardState.Deck && isMine && hasExpansionCard == false && isDragging == false)
         {
             print($"hasExpansionCard : {hasExpansionCard}");
             layoutRot = rectTransform.localRotation;
@@ -91,7 +90,7 @@ public class CardDragAndDrop : MonoBehaviourPun, IBeginDragHandler, IDragHandler
 
     private void OnMouseOver()
     {
-        if (cardState == CardState.Field || isEnemy)
+        if (cardState == CardState.Field || isMine == false)
             return;
 
         Vector2 mousePosition = Input.mousePosition;
@@ -118,7 +117,7 @@ public class CardDragAndDrop : MonoBehaviourPun, IBeginDragHandler, IDragHandler
 
     private void OnMouseExit()
     {
-        if (isEnemy == false && cardState == CardState.ExpansionDeck && photonView.IsMine)
+        if (isMine && cardState == CardState.ExpansionDeck && photonView.IsMine)
         {
             cardState = CardState.Deck;
 
@@ -149,6 +148,7 @@ public class CardDragAndDrop : MonoBehaviourPun, IBeginDragHandler, IDragHandler
 
             // 드래그 할 때는 카드가 돌아가 있으면 안됨
             rectTransform.localRotation = Quaternion.identity;
+            rectTransform.SetSiblingIndex(silblingIndex);
         }
     }
 

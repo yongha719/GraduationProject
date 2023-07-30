@@ -2,6 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// 유닛카드 힐 해주는 사령관 고유 스킬
+/// </summary>
 public class FastChargerSkill : InherenceSkill
 {
     private WaitUntil waitClick = new WaitUntil(() => Input.GetMouseButtonDown(0));
@@ -30,7 +33,7 @@ public class FastChargerSkill : InherenceSkill
         {
             if (hit.collider is null ||
                 hit.collider.TryGetComponent(out UnitCard card) == false ||
-                card.IsEnemy && card.Hp == card.CardData.Hp)
+                card.IsMine == false && card.Hp == card.CardData.Hp)
                 continue;
 
             // 카드한테 보호막주는 코드싸기

@@ -68,6 +68,8 @@ public class ResourceManager : Singleton<ResourceManager>
         await AsyncRequestCardData<UnitCardData>(UNIT_CARD_DATA_URL);
         await AsyncRequestCardData<MasicCardData>(MASIC_CARD_DATA_URL);
         
+        print("카드 데이터 가져옴");
+        
         return CardDatas;
     }
     
@@ -106,7 +108,10 @@ public class ResourceManager : Singleton<ResourceManager>
         {
             var cardData = new T();
             cardData.Init(line[i].Split('\t'));
-
+            
+            print(cardData.CardRating);
+            print(cardData);
+            
             CardDatas.Add(cardData.CardRating, cardData);
         }
     }

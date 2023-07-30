@@ -7,15 +7,23 @@ public class MasicCard : Card, IMasicCardSubject
     private const int COST = 2;
 
     [field: SerializeField]
-    public MasicCardData MasicCardData { get; protected set; }
+    public MasicCardData MasicCardData;
 
     public MasicAbilityTarget AbilityTarget => MasicCardData.MasicAbilityTarget;
 
     private RaycastHit2D[] raycastHits = new RaycastHit2D[10];
 
+    protected override void Awake()
+    {
+        base.Awake();
+        
+        // 오브젝트의 이름이 카드의 등급이고 딕셔너리의 키 값이 카드의 등급임 
+        CardManager.Instance.TryGetCardData(name, ref MasicCardData);
+    }
+
     protected virtual void Start()
     {
-        
+        base.Start();
     }
     
     /// <summary>
@@ -30,7 +38,7 @@ public class MasicCard : Card, IMasicCardSubject
         }
 
         if (AbilityTarget == MasicAbilityTarget.Ally && collider.TryGetComponent(out UnitCard card) &&
-            card.IsEnemy == false)
+            card.IsMine)
         {
             Ability(card);
             return true;

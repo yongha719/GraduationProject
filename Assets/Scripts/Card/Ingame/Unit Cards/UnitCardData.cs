@@ -83,13 +83,14 @@ public sealed class UnitCardData : CardData
         {
             if (UnityEngine.Random.Range(0, 100) <= criticalPercentage)
                 return power + CriticalPower; // 크리티컬 데미지까지 추가된 공격력
-            else
-                return power;
+
+            return power;
         }
-        set => throw new NotImplementedException();
     }
 
-    public UnitCardData(){}
+    public UnitCardData()
+    {
+    }
 
     public UnitCardData(UnitCardData data)
     {

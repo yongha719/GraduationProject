@@ -1,6 +1,7 @@
 using Photon.Pun;
 using UnityEngine;
 using System;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 [Serializable]
@@ -15,9 +16,10 @@ public enum CardState
 /// <summary> 인게임 카드의 부모 클래스 </summary>
 public abstract class Card : MonoBehaviourPun, IPunObservable
 {
-    public bool IsEnemy;
+    public bool IsMine;
 
-    [SerializeField] protected CardState cardState = CardState.Deck;
+    [SerializeField]
+    protected CardState cardState = CardState.Deck;
 
     public virtual CardState CardState
     {
@@ -44,23 +46,20 @@ public abstract class Card : MonoBehaviourPun, IPunObservable
 
         cardDragAndDrop = GetComponent<CardDragAndDrop>();
         cardInfo = GetComponent<CardInfo>();
-
-        cardDragAndDrop.Init();
-
     }
 
     protected virtual void Start()
     {
-        gameObject.name = name + (IsEnemy ? "_Enemy" : "_Player");
-        
+        gameObject.name = name + (IsMine ? "_Player" : "_Enemy");
+
         cardDragAndDrop.OnEndDrag += OnEndDrag;
         cardDragAndDrop.OnDrop += OnDrop;
     }
 
-    public void Init(bool isEnemy, Transform parent = null)
+    public void Init(bool isMine, Transform parent = null)
     {
-        IsEnemy = isEnemy;
-        
+        IsMine = isMine;
+
         transform.localScale = Vector3.one;
 
         // PosZ가 0이 아니라서 콜라이더 크기가 이상해짐
@@ -68,7 +67,9 @@ public abstract class Card : MonoBehaviourPun, IPunObservable
         rect.anchoredPosition3D = rect.anchoredPosition;
 
         print($"Card : {name}");
+
         cardInfo.Init(this);
+        cardDragAndDrop.Init();
     }
 
     protected virtual void OnEndDrag()
@@ -81,7 +82,9 @@ public abstract class Card : MonoBehaviourPun, IPunObservable
         DropField();
     }
 
-    protected virtual void DropField() { }
+    protected virtual void DropField()
+    {
+    }
 
     public void Destroy()
     {
@@ -96,7 +99,6 @@ public abstract class Card : MonoBehaviourPun, IPunObservable
 
     public virtual void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
     {
-
     }
 
     public static explicit operator Card(Type type)
@@ -112,5 +114,4 @@ public abstract class Card : MonoBehaviourPun, IPunObservable
             throw new InvalidCastException($"{type}을(를) Card로 변환할 수 없습니다.");
         }
     }
-
 }

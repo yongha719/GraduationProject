@@ -1,6 +1,7 @@
 using System;
 using UnityEngine;
 
+[Serializable]
 public enum MasicAbilityTarget
 {
     Field,
