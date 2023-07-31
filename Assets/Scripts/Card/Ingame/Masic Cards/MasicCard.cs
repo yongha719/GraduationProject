@@ -67,6 +67,8 @@ public class MasicCard : Card, IMasicCardSubject
                 CheckAbilityTargetConditionsAndExecuteAttack(hit.collider))
             {
                 costDecrease();
+                
+                Destroy();
                 print("Use Ability");
             }
         }

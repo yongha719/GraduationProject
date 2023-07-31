@@ -38,8 +38,6 @@ public class CanvasUtility : MonoBehaviour
 
     public static bool IsDropMyField()
     {
-        var mousePos = GetMousePosToCanvasPos();
-
         Vector2 worldPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
 
         Physics2D.RaycastNonAlloc(worldPosition, Vector2.zero, raycastHits);
@@ -55,7 +53,7 @@ public class CanvasUtility : MonoBehaviour
 
         return false;
     }
-
+    
     /// <summary>
     /// Rect의 안에 마우스 위치에 따라 min과 max 사이에 값을 Vector2로 Lerp함
     /// <br></br>
@@ -70,8 +68,8 @@ public class CanvasUtility : MonoBehaviour
     {
         Vector2 result = Vector2.zero;
 
-        result.x = LerpValueInRect(min, max, rect, localPoint);
-        result.y = LerpValueInRect(max, min, rect, localPoint);
+        result.x = LerpValueInRect(min, max, rect.xMin, rect.xMax, localPoint.x);
+        result.y = LerpValueInRect(max, min, rect.yMin, rect.yMax, localPoint.y);
 
         return result;
     }
@@ -79,9 +77,9 @@ public class CanvasUtility : MonoBehaviour
     /// <summary>
     /// Rect의 안에 마우스 위치에 따라 min과 max 사이에 값을 Lerp한 값을 반환
     /// </summary>
-    public static float LerpValueInRect(float min, float max, Rect rect, Vector2 localPoint)
+    public static float LerpValueInRect(float min, float max, float rectMin, float rectMax, float localPoint)
     {
-        float result = Mathf.Lerp(min, max, Clamp01(rect.xMin, rect.xMax, localPoint.x));
+        float result = Mathf.Lerp(min, max, Clamp01(rectMin, rectMax, localPoint));
 
         return result;
     }

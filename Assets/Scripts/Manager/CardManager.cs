@@ -5,6 +5,7 @@ using AYellowpaper.SerializedCollections;
 using Photon.Pun;
 using UnityEngine;
 using UnityEngine.Serialization;
+using UnityEngine.UI;
 using Random = UnityEngine.Random;
 
 // 이 스크립트가 하는 역할===
@@ -38,7 +39,7 @@ public class CardManager : SingletonPunCallbacks<CardManager>, IPunObservable
     }
 
     public List<string> CardDataNames;
-    
+
     public bool HasEnemyTauntCard => enemyTauntCardCount != 0;
 
     [Tooltip("적 도발 카드 갯수")]
@@ -49,12 +50,21 @@ public class CardManager : SingletonPunCallbacks<CardManager>, IPunObservable
     /// 이런식으로 경로를 정의함
     private const string CARD_PATH = "Cards/In Game Card";
 
+    public bool ShouldSummonCopy;
 
     private async void Start()
     {
         CardDatas = await ResourceManager.Instance.GetCardDatas();
 
         CardDataNames = new List<string>(CardDatas.Keys);
+    }
+
+    private void Update()
+    {
+#if UNITY_EDITOR
+        if (Input.GetKeyDown(KeyCode.Alpha1))
+            CardDraw();
+#endif
     }
 
     /// <summary>
@@ -68,15 +78,6 @@ public class CardManager : SingletonPunCallbacks<CardManager>, IPunObservable
             CardData = (T)data.Copy();
         else
             Debug.Assert(false, $"카드 등급이 없음 \n카드 등급 : {name}");
-    }
-
-
-    private void Update()
-    {
-#if UNITY_EDITOR
-        if (Input.GetKeyDown(KeyCode.Alpha1))
-            CardDraw();
-#endif
     }
 
     /// <summary>
@@ -108,7 +109,7 @@ public class CardManager : SingletonPunCallbacks<CardManager>, IPunObservable
         return CardDraw(cardName, isPlayeDraw, setParentAsDeck: true);
     }
 
-    public GameObject CardDraw(string cardName, bool isPlayeDraw = false, bool setParentAsDeck = true)
+    public GameObject CardDraw(string cardName, bool isPlayeDraw, bool setParentAsDeck = true)
     {
         var cardObj = PhotonNetwork.Instantiate(CARD_PATH, Vector2.zero, Quaternion.identity);
 
@@ -182,9 +183,15 @@ public class CardManager : SingletonPunCallbacks<CardManager>, IPunObservable
             if (card.CardData.UnitCardSpecialAbilityType == UnitCardSpecialAbilityType.Taunt)
                 enemyTauntCardCount++;
 
-            if (TurnManager.Instance.CanEnemyCardCopyDraw())
+            if (ShouldSummonCopy)
             {
-                print("적 카드 복사");
+                string cardName = card.name.Split("_")[0];
+
+                var copyCard = CardDraw(cardName, isPlayeDraw: false, setParentAsDeck: false);
+                copyCard.GetComponent<UnitCard>().CardState = CardState.Field;
+
+                print("적 카드 소환함 : " + cardName);
+                ShouldSummonCopy = false;
             }
         }
         else

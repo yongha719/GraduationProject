@@ -6,8 +6,6 @@ using UnityEngine;
 
 public interface IUnitCardSubject
 {
-    int eventCountAfterNTurns { get; set; }
-    
     void HealCard(int healAmount);
 
     void Hit(int damage);

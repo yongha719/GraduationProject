@@ -16,9 +16,9 @@ public class MasicCardData : CardData
     private MasicAbilityTarget masicAbilityTarget;
 
     public MasicAbilityTarget MasicAbilityTarget => masicAbilityTarget;
-    
-    public MasicCardData(){}
-    
+
+    public MasicCardData() { }
+
     public MasicCardData(MasicCardData data)
     {
         Name = data.Name;
@@ -30,7 +30,7 @@ public class MasicCardData : CardData
     {
         Name = data[0];
         Enum.TryParse(data[1], out masicAbilityTarget);
-        CardRating = data[2];
+        CardRating = data[2].Replace("\r", "");
     }
 
     public override CardData Copy()

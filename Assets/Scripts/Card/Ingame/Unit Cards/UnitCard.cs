@@ -233,15 +233,11 @@ public class UnitCard : Card, IUnitCardSubject
         print("Attack");
     }
 
-    protected virtual void SpecialAbility()
-    {
-    }
+    protected virtual void SpecialAbility() { }
 
     #endregion
 
     #region IUnitCardSubject override
-
-    public int eventCountAfterNTurns { get; set; }
 
     public void HealCard(int healAmount)
     {

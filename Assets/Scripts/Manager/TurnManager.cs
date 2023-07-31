@@ -104,7 +104,7 @@ public class TurnManager : SingletonPunCallbacks<TurnManager>, IPunObservable
     }
 
     /// <summary> 턴의 시간이 끝났을 때 </summary>
-    public void TurnChange()
+    private void TurnChange()
     {
         photonView.RPC(nameof(TurnChangeRPC), RpcTarget.AllBuffered);
     }
@@ -139,7 +139,7 @@ public class TurnManager : SingletonPunCallbacks<TurnManager>, IPunObservable
     }
 
     /// <summary> 턴이 끝났을때 </summary>
-    public void TurnFinished()
+    private void TurnFinished()
     {
         TurnState = MyTurn ? TurnState.EnemyTurn : TurnState.PlayerTurn;
 
@@ -148,7 +148,7 @@ public class TurnManager : SingletonPunCallbacks<TurnManager>, IPunObservable
     }
 
     /// <summary> 턴이 시작했을 때 </summary>
-    public void TurnBegin()
+    private void TurnBegin()
     {
         CardManager.Instance.HandleCards(MyTurn);
 
@@ -156,24 +156,6 @@ public class TurnManager : SingletonPunCallbacks<TurnManager>, IPunObservable
         {
             enemySpawnCardName = CardManager.Instance.CardDraw().name;
         }
-    }
-
-    /// <summary>
-    /// 적 카드 소환할 때 복사해야하는지 검사하고 소환함
-    /// </summary>
-    /// <returns></returns>
-    public bool CanEnemyCardCopyDraw()
-    {
-        if (ShouldSummonCopy)
-        {
-            CardManager.Instance.CardDraw(enemySpawnCardName, isPlayeDraw: false);
-            print("적 카드 소환함 : " + enemySpawnCardName);
-            ShouldSummonCopy = false;
-            return true;
-        }
-
-        print("적 카드 소환 못함 : " + enemySpawnCardName);
-        return false;
     }
 
     public void ExecuteAfterTurn(int turnCount, Action call)
@@ -186,7 +168,7 @@ public class TurnManager : SingletonPunCallbacks<TurnManager>, IPunObservable
         StartCoroutine(ExecuteAfterTurnCoroutine(turnCount, beforeTurnCall, afterTurnCall));
     }
 
-    private IEnumerator ExecuteAfterTurnCoroutine(int turnCount, Action beforeTurnCall, Action afterTurnCall)
+    public IEnumerator ExecuteAfterTurnCoroutine(int turnCount, Action beforeTurnCall, Action afterTurnCall)
     {
         beforeTurnCall();
 
@@ -195,7 +177,7 @@ public class TurnManager : SingletonPunCallbacks<TurnManager>, IPunObservable
         afterTurnCall();
     }
 
-    private IEnumerator ExecuteAfterTurnCoroutine(int turnCount, Action call)
+    public IEnumerator ExecuteAfterTurnCoroutine(int turnCount, Action call)
     {
         yield return WaitTurn(turnCount);
 

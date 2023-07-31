@@ -76,9 +76,8 @@ public class CardDragAndDrop : MonoBehaviourPun, IBeginDragHandler, IDragHandler
 
     private void OnMouseEnter()
     {
-        if (cardState == CardState.Deck && isMine && hasExpansionCard == false && isDragging == false)
+        if (cardState == CardState.Deck && isMine && isDragging == false)
         {
-            print($"hasExpansionCard : {hasExpansionCard}");
             layoutRot = rectTransform.localRotation;
 
             cardState = CardState.ExpansionDeck;
@@ -101,30 +100,33 @@ public class CardDragAndDrop : MonoBehaviourPun, IBeginDragHandler, IDragHandler
         if (rect.Contains(localPoint))
         {
             // rect 회전값
-            Vector3 rotation =
-                CanvasUtility.LerpVector2InRect(cardRotationValue, -cardRotationValue, rect, localPoint);
+            Vector2 rotation = Vector2.zero;
+
+            rotation.x = CanvasUtility.LerpValueInRect(cardRotationValue, -cardRotationValue,
+                rect.xMin, rect.xMax, localPoint.y);
+            
+            rotation.y = CanvasUtility.LerpValueInRect(-cardRotationValue, cardRotationValue,
+                rect.yMin, rect.yMax, localPoint.x);
 
             rectTransform.rotation = Quaternion.Euler(rotation);
 
             // Shadow effectDistance 값
             Vector2 effectDistance =
-                CanvasUtility.LerpVector2InRect(effectDistanceValue, -effectDistanceValue, rect, localPoint);
+                CanvasUtility.LerpVector2InRect(-effectDistanceValue, effectDistanceValue, rect, localPoint);
 
             shadow.effectDistance = effectDistance;
         }
     }
-    
+
 
     private void OnMouseExit()
     {
-        if (isMine && cardState == CardState.ExpansionDeck && photonView.IsMine)
+        if (isMine && cardState == CardState.ExpansionDeck)
         {
             cardState = CardState.Deck;
 
             rectTransform.localRotation = layoutRot;
             rectTransform.SetSiblingIndex(silblingIndex);
-            
-            hasExpansionCard = false;
 
             shadow.effectDistance = Vector2.zero;
         }
@@ -185,7 +187,6 @@ public class CardDragAndDrop : MonoBehaviourPun, IBeginDragHandler, IDragHandler
 
         if (cardState != CardState.Field)
         {
-            // TODO : 여기서 코스트 감소
             if (GameManager.Instance.CheckCardCostAvailability((uint)card.Cost, out Action costDecrease) == false &&
                 CanvasUtility.IsDropMyField())
                 return;
