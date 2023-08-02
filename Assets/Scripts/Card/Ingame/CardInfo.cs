@@ -63,37 +63,42 @@ public class CardInfo : MonoBehaviourPun
         print("Card Info - IsMine : " + IsMine);
         deckStat.SetActive(IsMine);
 
-        // 카드가 유닛카드와 마법카드가 있어서 이렇게 했음
-        if (card is UnitCard unitCard)
+        switch (card)
         {
-            // 카드 이미지 불러오기
-            var sprites = ResourceManager.GetUnitCardSprites(card.name);
+            // 카드가 유닛카드와 마법카드가 있어서 이렇게 했음
+            case UnitCard unitCard:
+            {
+                // 카드 이미지 불러오기
+                var sprites = ResourceManager.GetUnitCardSprites(card.name);
 
-            deckCardSprite = sprites.deck;
-            fieldCardSprite = sprites.field;
+                deckCardSprite = sprites.deck;
+                fieldCardSprite = sprites.field;
 
-            unitCard.OnSetHpChange += hp => { fieldHpText.text = hp.ToString(); };
+                unitCard.OnSetHpChange += hp => { fieldHpText.text = hp.ToString(); };
 
-            unitCard.OnFieldChangeAction += OnFieldStateChange;
+                unitCard.OnFieldChangeAction += OnFieldStateChange;
 
-            // 텍스트 초기화
-            deckHpText.text = $"{unitCard.CardData.Hp}";
-            deckPowerText.text = $"{unitCard.CardData.Power}";
-            deckCostText.text = $"{unitCard.CardData.Cost}";
+                // 텍스트 초기화
+                deckHpText.text = $"{unitCard.CardData.Hp}";
+                deckPowerText.text = $"{unitCard.CardData.Power}";
+                deckCostText.text = $"{unitCard.CardData.Cost}";
 
-            fieldHpText.text = deckHpText.text;
-            fieldPowerText.text = deckPowerText.text;
-        }
-        else if (card is MasicCard masicCard)
-        {
-            print("Masic Card");
-            var sprites = ResourceManager.GetMasicCardSprites(card.name);
-            deckCardSprite = sprites;
+                fieldHpText.text = deckHpText.text;
+                fieldPowerText.text = deckPowerText.text;
+                break;
+            }
+            case MasicCard masicCard:
+            {
+                print("Masic Card");
+                var sprites = ResourceManager.GetMasicCardSprites(card.name);
+                deckCardSprite = sprites;
 
-            deckHpText.ParentObjectSetActive(false);
-            deckPowerText.ParentObjectSetActive(false);
+                deckHpText.ParentObjectSetActive(false);
+                deckPowerText.ParentObjectSetActive(false);
 
-            deckCostText.text = masicCard.Cost.ToString();
+                deckCostText.text = masicCard.Cost.ToString();
+                break;
+            }
         }
 
         cardImageComponent.sprite = IsMine ? deckCardSprite : cardBackSprite;

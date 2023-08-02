@@ -27,11 +27,11 @@ public class LogManager : MonoBehaviour
     void LogHandler(string message, string stackTrace, LogType logType)
     {
         if (logType != LogType.Warning)
-            StartCoroutine(ECreateLog(message));
+            StartCoroutine(CreateLogCoroutine(message));
     }
 
     // 그래픽 리빌드 루프가 진행 중일 때 실행이 돼 오류가 나서 루프가 끝난뒤 출력하려고 코루틴을 사용했음
-    private IEnumerator ECreateLog(string message)
+    private IEnumerator CreateLogCoroutine(string message)
     {
         yield return wait;
 

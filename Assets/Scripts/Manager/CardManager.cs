@@ -16,8 +16,8 @@ using Random = UnityEngine.Random;
 public class CardManager : SingletonPunCallbacks<CardManager>, IPunObservable
 {
     // 필드에 낼 수 있는 카드가 최대 10이기 때문에 Capacity를 10으로 정해줌
-    public List<IUnitCardSubject> PlayerUnitCards = new(10);
-    public List<IUnitCardSubject> EnemyUnitCards = new(10);
+    public List<UnitCard> PlayerUnitCards = new(10);
+    public List<UnitCard> EnemyUnitCards = new(10);
 
 
     [Header("카드 데이터들")]
@@ -50,8 +50,16 @@ public class CardManager : SingletonPunCallbacks<CardManager>, IPunObservable
     /// 이런식으로 경로를 정의함
     private const string CARD_PATH = "Cards/In Game Card";
 
+    [Header("마법 카드 스킬들")]
+    
+    [Tooltip("상대가 유닛 카드를 냈을 때 복사")]
     public bool ShouldSummonCopy;
 
+    [Tooltip("지뢰 마법카드 썼는지 체크")]
+    public bool UseMineMasic;
+
+    private const int MINE_DAMAGE = 5;
+    
     private async void Start()
     {
         CardDatas = await ResourceManager.Instance.GetCardDatas();
@@ -64,6 +72,21 @@ public class CardManager : SingletonPunCallbacks<CardManager>, IPunObservable
 #if UNITY_EDITOR
         if (Input.GetKeyDown(KeyCode.Alpha1))
             CardDraw();
+        else if (Input.GetKeyDown(KeyCode.Alpha2))
+        {
+            print("press 2");
+            print(PlayerUnitCards.Count);
+            print(EnemyUnitCards.Count);
+            
+            foreach (var card in PlayerUnitCards)
+            {
+                TurnManager.Instance.ExecuteAfterTurn(1,
+                    () =>
+                    {
+                        print(card.name);
+                    });
+            }
+        }
 #endif
     }
 
@@ -176,7 +199,9 @@ public class CardManager : SingletonPunCallbacks<CardManager>, IPunObservable
 
     public void AddUnitCard(UnitCard card)
     {
-        if (!card.IsMine)
+        if (card.IsMine)
+            PlayerUnitCards.Add(card);
+        else
         {
             EnemyUnitCards.Add(card);
 
@@ -193,22 +218,29 @@ public class CardManager : SingletonPunCallbacks<CardManager>, IPunObservable
                 print("적 카드 소환함 : " + cardName);
                 ShouldSummonCopy = false;
             }
+
+            if (UseMineMasic)
+            {
+                // 지뢰썼을때 이펙트
+                
+                card.Hit(MINE_DAMAGE);
+
+                UseMineMasic = false;
+            }
         }
-        else
-            PlayerUnitCards.Add(card);
     }
 
     public void RemoveUnitCard(UnitCard card)
     {
-        if (!card.IsMine)
+        if (card.IsMine)
+            PlayerUnitCards.Remove(card);
+        else
         {
             EnemyUnitCards.Remove(card);
 
             if (card.CardData.UnitCardSpecialAbilityType == UnitCardSpecialAbilityType.Taunt)
                 enemyTauntCardCount--;
         }
-        else
-            PlayerUnitCards.Remove(card);
 
         CardDestroy(card);
     }

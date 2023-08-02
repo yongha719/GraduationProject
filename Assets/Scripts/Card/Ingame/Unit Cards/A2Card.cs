@@ -20,13 +20,13 @@ public class A2Card : UnitCard
         set
         {
             if (value == A2AttackType.BasicAttack)
-                attackTypeAction = DropField;
+                attackTypeAction = Attack;
             else
                 attackTypeAction = Hacking;
         }
     }
 
-    private Action attackTypeAction;
+    private Action<UnitCard> attackTypeAction;
 
     private UnitCard curHackedUnitCard;
 
@@ -36,7 +36,7 @@ public class A2Card : UnitCard
         base.MoveCardFromDeckToField();
 
         Instantiate(illustAppearEffect).GetComponent<CharacterProduction>().characterType = ECharacterType.Yooeunha;
-        SoundManager.Instance.PlaySFXSound(ECharacterType.Yooeunha.ToString());
+        SoundManager.Instance?.PlaySFXSound(ECharacterType.Yooeunha.ToString());
     }
 
     protected override void Start()
@@ -57,20 +57,21 @@ public class A2Card : UnitCard
 
     protected override void BasicAttack(UnitCard enemyCard)
     {
-        curHackedUnitCard = enemyCard;
+        attackTypeAction(enemyCard);
     }
 
-    protected override void DropField()
+    // 공격
+    private void Attack(UnitCard enemyCard)
     {
-        base.BasicAttack(curHackedUnitCard);
+        enemyCard.Hit(Damage);
     }
-
+    
     // 해킹
-    public void Hacking()
+    private void Hacking(UnitCard enemyCard)
     {
         TurnManager.Instance.ExecuteAfterTurn(1,
-            beforeTurnCall: () => curHackedUnitCard.IsHacked = true,
-            afterTurnCall: () => curHackedUnitCard.IsHacked = false);
+            beforeTurnCall: () => enemyCard.IsHacked = true,
+            afterTurnCall: () => enemyCard.IsHacked = false);
     }
 
     protected override void OnDestroy()

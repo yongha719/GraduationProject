@@ -100,18 +100,4 @@ public abstract class Card : MonoBehaviourPun, IPunObservable
     public virtual void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
     {
     }
-
-    public static explicit operator Card(Type type)
-    {
-        // type이 Card의 자식 타입인지 확인함
-        if (type != null && type.IsSubclassOf(typeof(Card)))
-        {
-            Card card = (Card)Activator.CreateInstance(type);
-            return card;
-        }
-        else
-        {
-            throw new InvalidCastException($"{type}을(를) Card로 변환할 수 없습니다.");
-        }
-    }
 }

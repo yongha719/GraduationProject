@@ -10,14 +10,15 @@ public class CardDragAndDrop : MonoBehaviourPun, IBeginDragHandler, IDragHandler
     public event Action OnDrop = () => { };
     public event Action MoveCardToFieldAction = () => { };
 
-    /// <summary> 드래그 가능한 상태인지 체크 </summary>
-    public bool CanDrag => !isMine == false && TurnManager.Instance.MyTurn;
 
     private static bool hasExpansionCard;
     private bool isDragging;
 
     private bool isMine;
 
+    /// <summary> 드래그 가능한 상태인지 체크 </summary>
+    public bool CanDrag => isMine && TurnManager.Instance.MyTurn;
+    
     private CardState cardState
     {
         get => card.CardState;
@@ -36,7 +37,6 @@ public class CardDragAndDrop : MonoBehaviourPun, IBeginDragHandler, IDragHandler
     [SerializeField]
     private int silblingIndex;
 
-    private Rect rect;
 
     [SerializeField, Tooltip("3D 카드 효과 회전값")]
     private float cardRotationValue;
@@ -47,6 +47,8 @@ public class CardDragAndDrop : MonoBehaviourPun, IBeginDragHandler, IDragHandler
     private RectTransform rectTransform;
     private Shadow shadow;
 
+    private Rect rect;
+    
     private Card card;
 
     private void Start()
@@ -64,6 +66,7 @@ public class CardDragAndDrop : MonoBehaviourPun, IBeginDragHandler, IDragHandler
         };
     }
 
+    // ReSharper disable Unity.PerformanceAnalysis
     public void Init()
     {
         card = GetComponent<Card>();
@@ -100,18 +103,18 @@ public class CardDragAndDrop : MonoBehaviourPun, IBeginDragHandler, IDragHandler
         if (rect.Contains(localPoint))
         {
             // rect 회전값
-            Vector2 rotation = Vector2.zero;
+            var rotation = Vector2.zero;
 
             rotation.x = CanvasUtility.LerpValueInRect(cardRotationValue, -cardRotationValue,
                 rect.xMin, rect.xMax, localPoint.y);
-            
+
             rotation.y = CanvasUtility.LerpValueInRect(-cardRotationValue, cardRotationValue,
                 rect.yMin, rect.yMax, localPoint.x);
 
             rectTransform.rotation = Quaternion.Euler(rotation);
 
             // Shadow effectDistance 값
-            Vector2 effectDistance =
+            var effectDistance =
                 CanvasUtility.LerpVector2InRect(-effectDistanceValue, effectDistanceValue, rect, localPoint);
 
             shadow.effectDistance = effectDistance;
@@ -162,7 +165,7 @@ public class CardDragAndDrop : MonoBehaviourPun, IBeginDragHandler, IDragHandler
         // 드래그할 때 포지션 바꿔줌
         if (eventData.button == PointerEventData.InputButton.Left)
         {
-            Vector2 mousePos = CanvasUtility.GetMousePosToCanvasPos();
+            var mousePos = CanvasUtility.GetMousePosToCanvasPos();
 
             rectTransform.anchoredPosition3D = mousePosDistance + mousePos;
         }

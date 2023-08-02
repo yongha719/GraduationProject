@@ -18,7 +18,7 @@ public class GameManager : SingletonPunCallbacks<GameManager>, IPunObservable
     {
         get => cost;
 
-        set
+        private set
         {
             print(value);
 

@@ -39,7 +39,7 @@ public class UnitCard : Card, IUnitCardSubject
         IsMine && CardState == CardState.Field && TurnManager.Instance.MyTurn && isAttackableTurn;
 
     [SerializeField]
-    protected bool isAttackableTurn = false;
+    protected bool isAttackableTurn;
 
     public bool HasSpecialAbility => CardData.UnitCardSpecialAbilityType != UnitCardSpecialAbilityType.None;
 
@@ -258,7 +258,7 @@ public class UnitCard : Card, IUnitCardSubject
 
     public virtual void HandleTurn()
     {
-        isAttackableTurn = true;
+        
     }
 
     #endregion
@@ -307,4 +307,9 @@ public class UnitCard : Card, IUnitCardSubject
     }
 
     #endregion
+
+    public override string ToString()
+    {
+        return name;
+    }
 }

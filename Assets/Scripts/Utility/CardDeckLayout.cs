@@ -56,7 +56,7 @@ public class CardDeckLayout : MonoBehaviourPunCallbacks, IPunObservable
                 break;
         }
 
-        for (int i = 0; i < transform.childCount; i++)
+        for (var i = 0; i < transform.childCount; i++)
         {
             Vector3 targetPos = Vector3.Lerp(leftPosition, rightPosition, lerpValue[i]);
             Quaternion targetRos = Quaternion.identity;

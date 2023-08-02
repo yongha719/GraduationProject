@@ -6,6 +6,8 @@ using UnityEngine;
 
 public interface IUnitCardSubject
 {
+    public bool IsHacked { set; }
+    
     void HealCard(int healAmount);
 
     void Hit(int damage);

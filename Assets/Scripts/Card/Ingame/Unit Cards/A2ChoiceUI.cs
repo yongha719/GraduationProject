@@ -24,6 +24,7 @@ public class A2ChoiceUI : MonoBehaviour
     [SerializeField] private Button hackingButton;
 
     RectTransform rect;
+    
     public void Init(A2Card card)
     {
         Card = card;
@@ -39,14 +40,14 @@ public class A2ChoiceUI : MonoBehaviour
 
         attackButton.onClick.AddListener(() =>
         {
-            print("Attack");
+            print("A2 Select Attack");
             attackTypeSelectButton.image.sprite = attackButton.image.sprite;
             Card.AttackType = A2AttackType.BasicAttack;
         });
 
         hackingButton.onClick.AddListener(() =>
         {
-            print("Hacking");
+            print("A2 Select Hacking");
             attackTypeSelectButton.image.sprite = hackingButton.image.sprite;
             Card.AttackType = A2AttackType.Hacking;
         });

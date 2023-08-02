@@ -80,13 +80,13 @@ public class TurnManager : SingletonPunCallbacks<TurnManager>, IPunObservable
     /// <summary> 처음 턴 시작시 호출 </summary>
     public void FirstTurn()
     {
-        photonView.RPC(nameof(firstTurnRPC), RpcTarget.AllBuffered);
+        photonView.RPC(nameof(FirstTurnRPC), RpcTarget.AllBuffered);
 
         SoundManager.Instance.PlayBackGroundSound("InGameSound");
     }
 
     [PunRPC]
-    private void firstTurnRPC()
+    private void FirstTurnRPC()
     {
         TurnState = PhotonNetwork.IsMasterClient ? TurnState.PlayerTurn : TurnState.EnemyTurn;
 
@@ -112,14 +112,15 @@ public class TurnManager : SingletonPunCallbacks<TurnManager>, IPunObservable
     [PunRPC]
     private void TurnChangeRPC()
     {
-        StartCoroutine(ETurnChange());
+        TurnFinished();
+        
+        StartCoroutine(TurnChangeCoroutine());
+        
+        TurnBegin();
     }
 
-    private IEnumerator ETurnChange()
+    private IEnumerator TurnChangeCoroutine()
     {
-        TurnFinished();
-
-
         if (MyTurn)
         {
             Instantiate(myTurnChangeEffect, Vector3.zero, Quaternion.identity);
@@ -134,8 +135,6 @@ public class TurnManager : SingletonPunCallbacks<TurnManager>, IPunObservable
         OnTurnChangeAction();
 
         yield return null;
-
-        TurnBegin();
     }
 
     /// <summary> 턴이 끝났을때 </summary>
@@ -158,16 +157,25 @@ public class TurnManager : SingletonPunCallbacks<TurnManager>, IPunObservable
         }
     }
 
+    /// <summary>
+    /// turnCount로 넣은 턴 뒤에 Call 호출
+    /// </summary>
     public void ExecuteAfterTurn(int turnCount, Action call)
     {
         StartCoroutine(ExecuteAfterTurnCoroutine(turnCount, call));
     }
 
+    /// <summary>
+    /// beforeTurnCall 호출한 뒤 turnCount로 넣은 턴 뒤에 afterTurnCall 호출
+    /// </summary>
     public void ExecuteAfterTurn(int turnCount, Action beforeTurnCall, Action afterTurnCall)
     {
         StartCoroutine(ExecuteAfterTurnCoroutine(turnCount, beforeTurnCall, afterTurnCall));
     }
 
+    /// <summary>
+    /// beforeTurnCall 호출한 뒤 turnCount로 넣은 턴 뒤에 afterTurnCall 호출
+    /// </summary>
     public IEnumerator ExecuteAfterTurnCoroutine(int turnCount, Action beforeTurnCall, Action afterTurnCall)
     {
         beforeTurnCall();
@@ -177,6 +185,9 @@ public class TurnManager : SingletonPunCallbacks<TurnManager>, IPunObservable
         afterTurnCall();
     }
 
+    /// <summary>
+    /// turnCount로 넣은 턴 뒤에 Call 호출
+    /// </summary>
     public IEnumerator ExecuteAfterTurnCoroutine(int turnCount, Action call)
     {
         yield return WaitTurn(turnCount);
