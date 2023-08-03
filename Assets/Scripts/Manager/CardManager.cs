@@ -59,6 +59,9 @@ public class CardManager : SingletonPunCallbacks<CardManager>, IPunObservable
     public bool UseMineMasic;
 
     private const int MINE_DAMAGE = 5;
+
+    [Tooltip("")]
+    public bool CanUseMasicCard = true;
     
     private async void Start()
     {
@@ -90,6 +93,13 @@ public class CardManager : SingletonPunCallbacks<CardManager>, IPunObservable
 #endif
     }
 
+    [PunRPC]
+    private void Test()
+    {
+        CanUseMasicCard = false;
+        
+    }
+    
     /// <summary>
     /// 카드의 등급에 맞는 CardData를 반환<br></br>
     /// 없을 경우 null반환
