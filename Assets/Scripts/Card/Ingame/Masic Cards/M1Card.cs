@@ -6,7 +6,7 @@ public class M1Card : MasicCard
 
     public override int Cost => 2;
 
-    public override void Ability()
+    public override void Ability(UnitCard card = null)
     {
         var enemyList = CardManager.Instance.EnemyUnitCards;
 

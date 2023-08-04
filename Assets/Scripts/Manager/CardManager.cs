@@ -42,6 +42,7 @@ public class CardManager : SingletonPunCallbacks<CardManager>, IPunObservable
 
     public bool HasEnemyTauntCard => enemyTauntCardCount != 0;
 
+
     [Tooltip("적 도발 카드 갯수")]
     private uint enemyTauntCardCount = 0;
 
@@ -51,7 +52,6 @@ public class CardManager : SingletonPunCallbacks<CardManager>, IPunObservable
     private const string CARD_PATH = "Cards/In Game Card";
 
     [Header("마법 카드 스킬들")]
-    
     [Tooltip("상대가 유닛 카드를 냈을 때 복사")]
     public bool ShouldSummonCopy;
 
@@ -60,9 +60,26 @@ public class CardManager : SingletonPunCallbacks<CardManager>, IPunObservable
 
     private const int MINE_DAMAGE = 5;
 
-    [Tooltip("")]
-    public bool CanUseMasicCard = true;
-    
+    [Tooltip("마법카드 무력화 명령\n상대가 마법카드 썼을 때 무력화시킴")]
+    private bool canUseMasicCard = true;
+
+    public bool CanUseMasicCard
+    {
+        get
+        {
+            if (canUseMasicCard == false)
+            {
+                // 여기에 무력화 연출
+
+                canUseMasicCard = true;
+                return false;
+            }
+
+            return true;
+        }
+        set => photonView.RPC(nameof(CanUseMasicCardRPC), RpcTarget.AllBuffered, value);
+    }
+
     private async void Start()
     {
         CardDatas = await ResourceManager.Instance.GetCardDatas();
@@ -80,26 +97,19 @@ public class CardManager : SingletonPunCallbacks<CardManager>, IPunObservable
             print("press 2");
             print(PlayerUnitCards.Count);
             print(EnemyUnitCards.Count);
-            
+
             foreach (var card in PlayerUnitCards)
             {
                 TurnManager.Instance.ExecuteAfterTurn(1,
-                    () =>
-                    {
-                        print(card.name);
-                    });
+                    () => { print(card.name); });
             }
         }
 #endif
     }
 
     [PunRPC]
-    private void Test()
-    {
-        CanUseMasicCard = false;
-        
-    }
-    
+    private void CanUseMasicCardRPC(bool value) => canUseMasicCard = value;
+
     /// <summary>
     /// 카드의 등급에 맞는 CardData를 반환<br></br>
     /// 없을 경우 null반환
@@ -232,7 +242,7 @@ public class CardManager : SingletonPunCallbacks<CardManager>, IPunObservable
             if (UseMineMasic)
             {
                 // 지뢰썼을때 이펙트
-                
+
                 card.Hit(MINE_DAMAGE);
 
                 UseMineMasic = false;

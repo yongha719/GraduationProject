@@ -7,8 +7,8 @@ using UnityEngine;
 /// </summary>
 public class M6Card : MasicCard
 {
-    public override void Ability()
+    public override void Ability(UnitCard card = null)
     {
-        
+        CardManager.Instance.CanUseMasicCard = false;
     }
 }

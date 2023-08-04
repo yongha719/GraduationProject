@@ -7,7 +7,7 @@ using System.Collections.Specialized;
 /// </summary>
 public sealed class M4Card : MasicCard
 {
-    public override void Ability()
+    public override void Ability(UnitCard card = null)
     {
         var enemyCards = CardManager.Instance.PlayerUnitCards;
 
