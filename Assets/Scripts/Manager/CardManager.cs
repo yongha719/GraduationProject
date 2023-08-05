@@ -17,6 +17,8 @@ public class CardManager : SingletonPunCallbacks<CardManager>, IPunObservable
 {
     // 필드에 낼 수 있는 카드가 최대 10이기 때문에 Capacity를 10으로 정해줌
     public List<UnitCard> PlayerUnitCards = new(10);
+    
+    [Space]
     public List<UnitCard> EnemyUnitCards = new(10);
 
 
@@ -24,6 +26,8 @@ public class CardManager : SingletonPunCallbacks<CardManager>, IPunObservable
     [Tooltip("유닛카드 데이터들"), SerializedDictionary("Card Rating", "Card Data")]
     private SerializedDictionary<string, CardData> CardDatas = new(30);
 
+    
+    [Space(20f)]
     // 카드의 이름으로 AddComponent를 해줘야 하기 떄문에 string으로
     // 구성해둔 덱을 받아옴
     [SerializeField]
@@ -38,8 +42,6 @@ public class CardManager : SingletonPunCallbacks<CardManager>, IPunObservable
         set => cardNames = value;
     }
 
-    public List<string> CardDataNames;
-
     public bool HasEnemyTauntCard => enemyTauntCardCount != 0;
 
 
@@ -51,7 +53,10 @@ public class CardManager : SingletonPunCallbacks<CardManager>, IPunObservable
     /// 이런식으로 경로를 정의함
     private const string CARD_PATH = "Cards/In Game Card";
 
+    [Space]
+    
     [Header("마법 카드 스킬들")]
+    
     [Tooltip("상대가 유닛 카드를 냈을 때 복사")]
     public bool ShouldSummonCopy;
 
@@ -83,8 +88,6 @@ public class CardManager : SingletonPunCallbacks<CardManager>, IPunObservable
     private async void Start()
     {
         CardDatas = await ResourceManager.Instance.GetCardDatas();
-
-        CardDataNames = new List<string>(CardDatas.Keys);
     }
 
     private void Update()
@@ -136,33 +139,37 @@ public class CardManager : SingletonPunCallbacks<CardManager>, IPunObservable
         return cardName;
     }
 
-    public void CardDraw(int count)
+    public List<GameObject> CardDraw(int count)
     {
+        List<GameObject> cards = new List<GameObject>();
+        
         for (int i = 0; i < count; i++)
-            CardDraw();
+            cards.Add(CardDraw());
+        
+        return cards;
     }
 
     public GameObject CardDraw()
     {
-        return CardDraw(GetRandomCardType(), isPlayeDraw: false, setParentAsDeck: true);
+        return CardDraw(GetRandomCardType());
     }
 
-    public GameObject CardDraw(string cardName, bool isPlayeDraw = false)
+    public GameObject CardDraw(string cardName, bool isPlayerDraw = false)
     {
-        return CardDraw(cardName, isPlayeDraw, setParentAsDeck: true);
+        return CardDraw(cardName, isPlayerDraw, setParentAsDeck: true);
     }
 
-    public GameObject CardDraw(string cardName, bool isPlayeDraw, bool setParentAsDeck = true)
+    public GameObject CardDraw(string cardName, bool isPlayerDraw, bool setParentAsDeck = true)
     {
         var cardObj = PhotonNetwork.Instantiate(CARD_PATH, Vector2.zero, Quaternion.identity);
 
         PhotonView cardPhotonView = cardObj.GetPhotonView();
 
         if (PhotonManager.IsAlone)
-            SetCardAndParentRPC(cardName, cardPhotonView.ViewID, isPlayeDraw, setParentAsDeck);
+            SetCardAndParentRPC(cardName, cardPhotonView.ViewID, isPlayerDraw, setParentAsDeck);
         else
             photonView.RPC(nameof(SetCardAndParentRPC), RpcTarget.AllBuffered,
-                cardName, cardPhotonView.ViewID, isPlayeDraw, setParentAsDeck);
+                cardName, cardPhotonView.ViewID, isPlayerDraw, setParentAsDeck);
 
         return cardObj;
     }
@@ -232,7 +239,7 @@ public class CardManager : SingletonPunCallbacks<CardManager>, IPunObservable
             {
                 string cardName = card.name.Split("_")[0];
 
-                var copyCard = CardDraw(cardName, isPlayeDraw: false, setParentAsDeck: false);
+                var copyCard = CardDraw(cardName, isPlayerDraw: false, setParentAsDeck: false);
                 copyCard.GetComponent<UnitCard>().CardState = CardState.Field;
 
                 print("적 카드 소환함 : " + cardName);
@@ -269,7 +276,10 @@ public class CardManager : SingletonPunCallbacks<CardManager>, IPunObservable
     {
         var cards = myTurn ? PlayerUnitCards : EnemyUnitCards;
 
-        cards.ForEach(card => card.HandleTurn());
+        foreach (var card in cards)
+        {
+            card.HandleTurn();
+        }
     }
 
     public void HealCards(int healAmount)
@@ -277,6 +287,14 @@ public class CardManager : SingletonPunCallbacks<CardManager>, IPunObservable
         foreach (var card in PlayerUnitCards)
         {
             card.HealCard(healAmount);
+        }
+    }
+
+    public void HandleCards(Action<UnitCard> action)
+    {
+        foreach (var card in PlayerUnitCards)
+        {
+            action(card);
         }
     }
 

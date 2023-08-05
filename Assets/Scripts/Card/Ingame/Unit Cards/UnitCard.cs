@@ -55,7 +55,7 @@ public class UnitCard : Card, IUnitCardSubject
     {
         set => isAttackableTurn = !value;
     }
-
+    
     [Tooltip("공격 턴 기다리는거 캐싱")]
     protected Action enableAttackCall;
 
@@ -214,6 +214,14 @@ public class UnitCard : Card, IUnitCardSubject
         }
     }
 
+    /// <summary>
+    /// 디버프들 정화함
+    /// </summary>
+    public void Cleanse()
+    {
+        isHypothermic = false;
+        IsHacked = false;
+    }
 
     /// <summary> 이 카드를 공격할 수 있는지 확인 </summary>
     /// 이 메서드는 플레이어의 적 카드의 개체에서 호출됨

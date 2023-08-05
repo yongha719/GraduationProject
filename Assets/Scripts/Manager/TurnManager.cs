@@ -67,9 +67,6 @@ public class TurnManager : SingletonPunCallbacks<TurnManager>, IPunObservable
     private static int playerTurnCount;
     private static int enemyTurnCount;
 
-    public bool ShouldSummonCopy;
-    private string enemySpawnCardName;
-
     private void Start()
     {
         turnChangeButton.onClick.AddListener(TurnChange);
@@ -153,7 +150,7 @@ public class TurnManager : SingletonPunCallbacks<TurnManager>, IPunObservable
 
         if (playerTurnCount != 1 && MyTurn)
         {
-            enemySpawnCardName = CardManager.Instance.CardDraw().name;
+            CardManager.Instance.CardDraw();
         }
     }
 
@@ -210,13 +207,5 @@ public class TurnManager : SingletonPunCallbacks<TurnManager>, IPunObservable
 
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
     {
-        if (stream.IsWriting && MyTurn == false)
-        {
-            stream.SendNext(enemySpawnCardName);
-        }
-        else if (stream.IsReading)
-        {
-            enemySpawnCardName = (string)stream.PeekNext();
-        }
     }
 }

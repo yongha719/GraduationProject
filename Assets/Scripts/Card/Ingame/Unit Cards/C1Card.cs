@@ -19,13 +19,13 @@ public class C1Card : UnitCard
     private void Spawn()
     {
         var leftC2 =
-            CardManager.Instance.CardDraw("C2", isPlayeDraw: false, setParentAsDeck: false);
+            CardManager.Instance.CardDraw("C2", isPlayerDraw: false, setParentAsDeck: false);
 
         leftC2.GetComponent<UnitCard>().CardState = CardState.Field;
         leftC2.transform.SetSiblingIndex(transform.GetSiblingIndex());
 
         var rightC2 =
-            CardManager.Instance.CardDraw("C2", isPlayeDraw: false, setParentAsDeck: false);
+            CardManager.Instance.CardDraw("C2", isPlayerDraw: false, setParentAsDeck: false);
         rightC2.transform.SetSiblingIndex(transform.GetSiblingIndex() + 1);
         rightC2.GetComponent<UnitCard>().CardState = CardState.Field;
 

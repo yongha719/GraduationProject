@@ -316,9 +316,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8790b843f1b17a24a91be7b417d06136, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  IsMine: 0
-  Cards: []
-  spacing: 10
 --- !u!1 &44141131
 GameObject:
   m_ObjectHideFlags: 0
@@ -922,6 +919,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c7c0ba11b64ec354fa922b5c21e3cc6d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  PlayerUnitCards: []
+  EnemyUnitCards: []
   cardNames:
   - A1
   - A1
@@ -938,6 +937,7 @@ MonoBehaviour:
   - M3
   CardDataNames: []
   ShouldSummonCopy: 1
+  UseMineMasic: 0
 --- !u!114 &214781209
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4235,9 +4235,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8790b843f1b17a24a91be7b417d06136, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  IsMine: 0
-  Cards: []
-  spacing: 10
 --- !u!1 &1635485359
 GameObject:
   m_ObjectHideFlags: 0
