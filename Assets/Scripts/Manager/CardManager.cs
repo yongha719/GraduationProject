@@ -197,18 +197,16 @@ public class CardManager : SingletonPunCallbacks<CardManager>, IPunObservable
         if (setParentAsDeck)
         {
             // 카드가 플레이어의 덱에 들어와야하는지 확인
-            if (isPlayeDraw)
-                parentPhotonView = PhotonManager.GetPhotonViewByViewType(PhotonViewType.PlayerDeck);
-            else
-                parentPhotonView = PhotonManager.GetDeckPhotonView(cardPhotonView.IsMine);
+            parentPhotonView = isPlayeDraw ? 
+                PhotonManager.GetPhotonViewByViewType(PhotonViewType.PlayerDeck) : 
+                PhotonManager.GetDeckPhotonView(cardPhotonView.IsMine);
         }
         else
         {
             // 카드가 플레이어의 필드에 소환돼야하는지 확인
-            if (isPlayeDraw)
-                parentPhotonView = PhotonManager.GetPhotonViewByViewType(PhotonViewType.PlayerField);
-            else
-                parentPhotonView = PhotonManager.GetFieldPhotonView(cardPhotonView.IsMine);
+            parentPhotonView = isPlayeDraw ? 
+                PhotonManager.GetPhotonViewByViewType(PhotonViewType.PlayerField) : 
+                PhotonManager.GetFieldPhotonView(cardPhotonView.IsMine);
         }
 
         cardPhotonView.transform.SetParent(parentPhotonView.transform);
