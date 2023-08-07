@@ -109,7 +109,7 @@ public class UnitCard : Card, IUnitCardSubject
         boxCollider = GetComponent<BoxCollider2D>();
 
         originColliderSize = boxCollider.size;
-        expandColliderSize = originColliderSize * 0.8333f;
+        expandColliderSize = originColliderSize * 1.2f;
 
         cardDragAndDrop.MoveCardToFieldAction += () =>
         {
@@ -318,6 +318,6 @@ public class UnitCard : Card, IUnitCardSubject
 
     public override string ToString()
     {
-        return name;
+        return name.Split("_")[0];
     }
 }

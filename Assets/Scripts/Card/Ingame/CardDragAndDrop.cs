@@ -87,6 +87,10 @@ public class CardDragAndDrop : MonoBehaviourPun, IBeginDragHandler, IDragHandler
 
             silblingIndex = rectTransform.GetSiblingIndex();
             rectTransform.SetAsLastSibling();
+
+            var pos = rectTransform.anchoredPosition3D;
+            pos.z = -10f;
+            rectTransform.anchoredPosition3D = pos;
         }
     }
 
@@ -132,6 +136,8 @@ public class CardDragAndDrop : MonoBehaviourPun, IBeginDragHandler, IDragHandler
             rectTransform.SetSiblingIndex(silblingIndex);
 
             shadow.effectDistance = Vector2.zero;
+            
+            rectTransform.anchoredPosition3D = rectTransform.anchoredPosition;
         }
     }
 

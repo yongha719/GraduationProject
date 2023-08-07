@@ -21,6 +21,8 @@ public enum EInherenceSkillType
 public abstract class InherenceSkill : MonoBehaviourPun
 {
     public abstract EInherenceSkillType InherenceSkillType { get; }
+    
+    protected virtual WaitUntil waitClick { get; }
 
     public bool isEnemy;
 

@@ -109,9 +109,6 @@ public class ResourceManager : Singleton<ResourceManager>
             var cardData = new T();
             cardData.Init(line[i].Split('\t'));
             
-            print(cardData.CardRating);
-            print(cardData);
-            
             CardDatas.Add(cardData.CardRating, cardData);
         }
     }

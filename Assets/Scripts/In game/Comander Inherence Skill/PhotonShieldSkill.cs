@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class PhotonShieldSkill : InherenceSkill
 {
-    private WaitUntil waitClick = new WaitUntil(() => Input.GetMouseButtonDown(0));
+    protected override WaitUntil waitClick => new(() => Input.GetMouseButtonDown(0));
     
     public override EInherenceSkillType InherenceSkillType => EInherenceSkillType.PhotonShield;
 
@@ -12,10 +12,10 @@ public class PhotonShieldSkill : InherenceSkill
     
     protected override void Skill()
     {
-        StartCoroutine(EPhotonShieldSkill());
+        StartCoroutine(PhotonShieldSkillCoroutine());
     }
 
-    private IEnumerator EPhotonShieldSkill()
+    private IEnumerator PhotonShieldSkillCoroutine()
     {
         yield return waitClick;
         
