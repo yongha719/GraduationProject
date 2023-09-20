@@ -66,8 +66,6 @@ public abstract class Card : MonoBehaviourPun, IPunObservable
         // Vector2로 대입해줘서 0 만들어주기
         rect.anchoredPosition3D = rect.anchoredPosition;
 
-        print($"Card : {name}");
-
         cardInfo.Init(this);
         cardDragAndDrop.Init();
     }

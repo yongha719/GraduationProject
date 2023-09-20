@@ -55,21 +55,20 @@ public class CardInfo : MonoBehaviourPun
         cardImageComponent = GetComponent<Image>();
     }
 
-    public void Init(Card card)
+    public void Init(Card _card)
     {
-        this.card = card;
+        card = _card;
         
-        IsMine = card.IsMine;
-        print("Card Info - IsMine : " + IsMine);
+        IsMine = _card.IsMine;
         deckStat.SetActive(IsMine);
 
-        switch (card)
+        switch (_card)
         {
             // 카드가 유닛카드와 마법카드가 있어서 이렇게 했음
             case UnitCard unitCard:
             {
                 // 카드 이미지 불러오기
-                var sprites = ResourceManager.GetUnitCardSprites(card.name);
+                var sprites = ResourceManager.GetUnitCardSprites(_card.name);
 
                 deckCardSprite = sprites.deck;
                 fieldCardSprite = sprites.field;
@@ -90,11 +89,12 @@ public class CardInfo : MonoBehaviourPun
             case MasicCard masicCard:
             {
                 print("Masic Card");
-                var sprites = ResourceManager.GetMasicCardSprites(card.name);
+                var sprites = ResourceManager.GetMasicCardSprites(_card.name);
                 deckCardSprite = sprites;
 
-                deckHpText.ParentObjectSetActive(false);
-                deckPowerText.ParentObjectSetActive(false);
+                print(deckStat.activeSelf);
+                deckHpText.SetActive(false);
+                deckPowerText.SetActive(false);
 
                 deckCostText.text = masicCard.Cost.ToString();
                 break;

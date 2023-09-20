@@ -700,7 +700,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &192736469
 RectTransform:
   m_ObjectHideFlags: 0
@@ -932,10 +932,12 @@ MonoBehaviour:
   - M1
   - M2
   - M2
-  - M3
-  - M3
-  - M3
-  CardDataNames: []
+  - M6
+  - M7
+  - M8
+  - M9
+  - M5
+  - M4
   ShouldSummonCopy: 1
   UseMineMasic: 0
 --- !u!114 &214781209
@@ -2947,7 +2949,6 @@ MonoBehaviour:
   turnChangeButton: {fileID: 805898390}
   turnFinishSprite: {fileID: 21300000, guid: a45c823d5a3b38e488c8ec15773ab2dd, type: 3}
   enemyTurnSprite: {fileID: 21300000, guid: 4b3288156c27af74d9eb2853b9010f52, type: 3}
-  ShouldSummonCopy: 0
 --- !u!114 &831910252
 MonoBehaviour:
   m_ObjectHideFlags: 0

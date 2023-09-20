@@ -9,7 +9,7 @@ public class MasicCard : Card, IMasicCardSubject
     [field: SerializeField]
     public MasicCardData MasicCardData;
 
-    protected uint cost => (uint)MasicCardData.Cost;
+    private uint cost => (uint)MasicCardData.Cost;
 
     public MasicAbilityTarget AbilityTarget => MasicCardData.MasicAbilityTarget;
 
@@ -20,7 +20,8 @@ public class MasicCard : Card, IMasicCardSubject
         base.Awake();
 
         // 오브젝트의 이름이 카드의 등급이고 딕셔너리의 키 값이 카드의 등급임 
-        CardManager.Instance.TryGetCardData(name, ref MasicCardData);
+        CardManager.Instance.TryGetCardData(name, out MasicCardData);
+        print(cost);
     }
 
     protected virtual void Start()
@@ -42,6 +43,7 @@ public class MasicCard : Card, IMasicCardSubject
                 CheckAbilityTargetConditionsAndUseAbility(hit.collider))
             {
                 costDecrease();
+                print(cost);
 
                 print("Use Ability");
                 Destroy();

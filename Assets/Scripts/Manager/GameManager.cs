@@ -78,9 +78,7 @@ public class GameManager : SingletonPunCallbacks<GameManager>, IPunObservable
         if (Input.GetKey(KeyCode.F11))
             LogCanvas.SetActive(true);
         else if (Input.GetKey(KeyCode.F2))
-        {
             IncreaseCost();
-        }
     }
 
     /// <summary>

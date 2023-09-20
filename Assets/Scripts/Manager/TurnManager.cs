@@ -2,6 +2,7 @@ using Photon.Pun;
 using System;
 using System.Collections;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -150,7 +151,7 @@ public class TurnManager : SingletonPunCallbacks<TurnManager>, IPunObservable
 
         if (playerTurnCount != 1 && MyTurn)
         {
-            CardManager.Instance.CardDraw();
+            CardManager.Instance.CardDraw(GameManager.Instance.MaxCost == 10 ? 3 : 0);
         }
     }
 

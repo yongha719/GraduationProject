@@ -118,8 +118,11 @@ public class CardManager : SingletonPunCallbacks<CardManager>, IPunObservable
     /// 없을 경우 null반환
     /// </summary>
     /// <param name="name">카드의 등급을 인자로 받음</param>
-    public void TryGetCardData<T>(string name, ref T CardData) where T : CardData
+    /// <param name="CardData"></param>
+    public void TryGetCardData<T>(string name, out T CardData) where T : CardData
     {
+        CardData = null;
+        
         if (CardDatas.TryGetValue(name, out CardData data))
             CardData = (T)data.Copy();
         else
@@ -212,10 +215,7 @@ public class CardManager : SingletonPunCallbacks<CardManager>, IPunObservable
         cardPhotonView.transform.SetParent(parentPhotonView.transform);
 
         if (cardType is Card card)
-        {
             card.Init(isPlayeDraw ? isPlayeDraw : cardPhotonView.IsMine, parentPhotonView.transform);
-            print("isMine : " + (isPlayeDraw ? isPlayeDraw : cardPhotonView.IsMine));
-        }
         else
             Debug.Assert(false,
                 $"뭔가 잘못됨\n {nameof(CardDeckLayout)} : 카드 이름: {cardName}, 카드 is null :{cardType == null}");

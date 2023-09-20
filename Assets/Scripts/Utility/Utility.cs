@@ -11,4 +11,9 @@ public static class Utility
     {
         @object.transform.parent.gameObject.SetActive(value);
     }
+
+    public static void SetActive(this MonoBehaviour @object, bool value)
+    {
+        @object.gameObject.SetActive(value);
+    }
 }

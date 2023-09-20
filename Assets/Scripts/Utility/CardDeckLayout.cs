@@ -51,8 +51,6 @@ public class CardDeckLayout : MonoBehaviourPunCallbacks, IPunObservable
 
             lerpValues.Add(lerpValue);
         }
-
-        print(lerpValues.Capacity);
     }
 
     private void OnTransformChildrenChanged()

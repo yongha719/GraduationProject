@@ -72,9 +72,4 @@ public class CostGaugeUI : MonoBehaviourPun
         costText.text = $"{cost}/{maxCost}";
         enemyCostText.text = $"{GameManager.Instance.EnemyCost}/{GameManager.Instance.EnemyMaxCost}";
     }
-
-    // Update is called once per frame
-    void Update()
-    {
-    }
 }
